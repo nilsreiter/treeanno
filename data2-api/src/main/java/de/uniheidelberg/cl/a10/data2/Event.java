@@ -10,4 +10,8 @@ public interface Event extends HasTarget, HasId, AnnotationObjectInDocument {
 		Frame, Token
 	};
 
+	Frame getFrame();
+
+	double position();
+
 }

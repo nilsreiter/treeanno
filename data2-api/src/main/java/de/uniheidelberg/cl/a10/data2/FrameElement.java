@@ -3,7 +3,8 @@ package de.uniheidelberg.cl.a10.data2;
 import java.util.Collection;
 import java.util.List;
 
-public interface FrameElement extends AnnotationObjectInDocument, HasTokensAndHead {
+public interface FrameElement extends AnnotationObjectInDocument,
+		HasTokensAndHead {
 
 	Collection<? extends Mention> getMentions();
 
@@ -20,6 +21,4 @@ public interface FrameElement extends AnnotationObjectInDocument, HasTokensAndHe
 
 	List<? extends Entity> getInLinkingEntities();
 
-	@Deprecated
-	String toTargetString();
 }
