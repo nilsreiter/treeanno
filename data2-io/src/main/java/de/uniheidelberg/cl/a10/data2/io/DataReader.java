@@ -1,7 +1,5 @@
 package de.uniheidelberg.cl.a10.data2.io;
 
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.TreeSet;
 
 import nu.xom.Element;
@@ -51,41 +49,6 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 					this.ritDoc.addMantra(mantra);
 				}
 			}
-		}
-	}
-
-	protected Iterable<Element> getElements(Element start, String... names) {
-		Elements elements = start.getChildElements(names[0]);
-		if (names.length > 1) {
-			return getElements(elements.get(0),
-					Arrays.copyOfRange(names, 1, names.length));
-		} else {
-			final Elements fElements = elements;
-			return new Iterable<Element>() {
-
-				@Override
-				public Iterator<Element> iterator() {
-					return new Iterator<Element>() {
-
-						int current = 0;
-
-						@Override
-						public boolean hasNext() {
-							return current < fElements.size();
-						}
-
-						@Override
-						public Element next() {
-							return fElements.get(current++);
-						}
-
-						@Override
-						public void remove() {
-							throw new UnsupportedOperationException();
-						}
-					};
-				}
-			};
 		}
 	}
 

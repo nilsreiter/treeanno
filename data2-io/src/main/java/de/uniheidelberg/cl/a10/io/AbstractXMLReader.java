@@ -2,10 +2,13 @@ package de.uniheidelberg.cl.a10.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Iterator;
 
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
+import nu.xom.Elements;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
@@ -35,4 +38,38 @@ public abstract class AbstractXMLReader<T> extends AbstractReader<T> {
 
 	protected abstract T read(final Element rootElement) throws IOException;
 
+	protected Iterable<Element> getElements(Element start, String... names) {
+		Elements elements = start.getChildElements(names[0]);
+		if (names.length > 1) {
+			return getElements(elements.get(0),
+					Arrays.copyOfRange(names, 1, names.length));
+		} else {
+			final Elements fElements = elements;
+			return new Iterable<Element>() {
+
+				@Override
+				public Iterator<Element> iterator() {
+					return new Iterator<Element>() {
+
+						int current = 0;
+
+						@Override
+						public boolean hasNext() {
+							return current < fElements.size();
+						}
+
+						@Override
+						public Element next() {
+							return fElements.get(current++);
+						}
+
+						@Override
+						public void remove() {
+							throw new UnsupportedOperationException();
+						}
+					};
+				}
+			};
+		}
+	}
 }

@@ -32,6 +32,9 @@
   	<module>data2-api</module>
   	<module>data2-core</module>
   	<module>data2-io</module>
+  	<module>alignment-api</module>
+  	<module>alignment-core</module>
+  	<module>alignment-io</module>
   </modules>
   <dependencies>
   	<dependency>
