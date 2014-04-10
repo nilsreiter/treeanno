@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+  <document id="doc_1">
+    <originaltext>
+      <![CDATA[The man and the child chant the hymn. It is old]]>
+    </originaltext>
+    <sentences>
+      <sentence id="sent_1">
+	<token id="t1" characterOffsetBegin="0" characterOffsetEnd="3" lemma="the" word="the" deprel="" pos="DET" sense="sense_1" governor="t2">
+	</token>
+	<token id="t2" characterOffsetBegin="4" characterOffsetEnd="7" lemma="man" word="man" deprel="subj" pos="NN" sense="sense_2" governor="t6">
+	</token>
+	<token id="t3" characterOffsetBegin="8" characterOffsetEnd="11" lemma="and" word="and" deprel="subj" pos="NN" sense="sense_2" governor="t6">
+	</token>
+	<token id="t4" characterOffsetBegin="12" characterOffsetEnd="15" lemma="the" word="the" deprel="subj" pos="NN" sense="sense_2" governor="t6">
+	</token>
+	  <token id="t5" characterOffsetBegin="6" characterOffsetEnd="20" lemma="child" word="child" deprel="subj" pos="NN">
+	  <!--sense idref="sense_2"></sense-->
+	  <!--governor idref="t6"></governor-->
+	</token>
+	<token id="t6" characterOffsetBegin="21" characterOffsetEnd="25" lemma="chant" word="chant" deprel="subj" pos="NN">
+	  <!--sense idref="sense_2"></sense-->
+	  <!--governor idref="t6"></governor-->
+	</token>
+	<token id="t7" characterOffsetBegin="26" characterOffsetEnd="29" lemma="the" word="the" deprel="subj" pos="NN" sense="sense_2" governor="t6">
+	</token>
+	<token id="t8" characterOffsetBegin="30" characterOffsetEnd="34" lemma="hymn" word="hymn" deprel="subj" pos="NN" sense="sense_2" governor="t6">
+	</token>
+	<token id="t9" characterOffsetBegin="34" characterOffsetEnd="35" lemma="." word="." deprel="subj" pos="NN" sense="sense_2" governor="t6">
+	</token>
+      </sentence>
+      <sentence id="sent_2">
+	<token id="t10" characterOffsetBegin="36" characterOffsetEnd="38" lemma="it" word="It" deprel="subj" pos="NN" sense="sense_2" governor="t6">
+	</token>
+	<token id="t11" characterOffsetBegin="39" characterOffsetEnd="41" lemma="be" word="is" deprel="subj" pos="NN" sense="sense_2" governor="t6">
+	</token>
+	<token id="t12" characterOffsetBegin="42" characterOffsetEnd="45" lemma="old" word="old" deprel="subj" pos="NN" sense="sense_2" governor="t6">
+	</token>
+      </sentence>
+    </sentences>
+    <coreference>
+      <entity id="ent_1">
+	<sense idref="sense_3"></sense>
+	<mention id="men_1">
+	  <token idref="t1"></token>
+	  <token idref="t2"></token>
+	  <fe idref="fe_1"></fe>
+	</mention>
+	<mention id="men_2">
+	  <token idref="t4"></token>
+	  <token idref="t5"></token>
+	  <fe idref="fe_1"></fe>
+	</mention>
+	<mention id="men_3">
+	  <token idref="t1"></token>
+	  <token idref="t2"></token>
+	  <token idref="t3"></token>
+	  <token idref="t4"></token>
+	  <token idref="t5"></token>
+	  <fe idref="fe_1"></fe>
+	</mention>
+      </entity>
+      <entity id="ent_2">
+	<sense idref="sense_4"></sense>
+	<mention id="men_4">
+	  <token idref="t7"></token>
+	 <token idref="t8"></token>
+	 <fe idref="fe_2"></fe>
+	</mention>
+	<mention id="men_5">
+	  <token idref="t10"></token>
+	</mention>
+      </entity>
+      <singletons/>
+    </coreference>
+    <frames>
+      <frame id="frame_1" name="chant_frame">
+	     <token idref="t6"></token>
+	<frame_element id="fe_1" name="singer">
+	  <mention idref="men_1"></mention>
+	  <mention idref="men_2"></mention>
+	  <mention idref="men_3"></mention>
+	  <token idref="t1"></token>
+	  <token idref="t2"></token>
+	  <token idref="t3"></token>
+	  <token idref="t4"></token>
+	  <token idref="t5"></token>
+	</frame_element>
+	<frame_element id="fe_2" name="song">
+	  <mention idref="men_4"></mention>
+	  <token idref="t7"></token>	  
+	  <token idref="t8"></token>	
+	</frame_element>
+      </frame>
+      <order type="temporal"></order></frames>
+    <chunks>
+      <chunk id="ch_1" category="cat1" sentence="sent_1">
+	<token idref="t1"></token>
+	<token idref="t2"></token>
+	<token idref="t3"></token>
+	<token idref="t4"></token>
+	<token idref="t5"></token>
+      </chunk>
+      <chunk id="ch_2" category="cat_2" sentence="sent_1">
+	<token idref="t6"></token>
+	<token idref="t7"></token>
+	<token idref="t8"></token>
+      </chunk>
+    </chunks>
+    <sections>
+      <section id="sec_1">
+      <sentence idref="sent_1"></sentence>
+	<sentence idref ="sent_2"></sentence>
+      </section>
+    </sections>
+    <senses>
+      <sense id="sense_1" wordnet="sense_the"></sense>
+      <sense id="sense_2" wordnet="sense_person"></sense>
+      <sense id="sense_3" wordnet="sense_sing"></sense>
+      <sense id="sense_4" wordnet="sense_song"></sense>
+    </senses>
+    <mantras>
+    	<mantra id="mantra1">
+    		<token idref="t1"></token></mantra>
+    	<mantra id="mantra2">
+    		<token idref="t2"></token></mantra></mantras></document>
+</root>
