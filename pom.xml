@@ -5,7 +5,7 @@
   <groupId>de.nilsreiter</groupId>
   <artifactId>a10</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
   <name>a10</name>
   <url>http://maven.apache.org</url>
@@ -14,12 +14,30 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+<build>
+<pluginManagement>
+  <plugins>
+  	<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <version>3.1</version>
+  <configuration>
+    <source>1.6</source>
+    <target>1.6</target>
+  </configuration>
+</plugin>
+  </plugins>
+</pluginManagement></build>
+  <modules>
+  	<module>data2-api</module>
+  	<module>data2-core</module>
+  	<module>data2-io</module>
+  </modules>
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.11</version>
+  	</dependency>
   </dependencies>
 </project>
