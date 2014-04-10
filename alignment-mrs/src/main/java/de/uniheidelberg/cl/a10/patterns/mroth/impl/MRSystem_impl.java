@@ -7,9 +7,26 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import de.uniheidelberg.cl.a10.patterns.mroth.MRSystem;
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.WeightedGraph;
+import org.jgrapht.alg.MinSourceSinkCut;
+import org.jgrapht.alg.StrongConnectivityInspector;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.DirectedWeightedSubgraph;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
-public class MRSystem_impl<T extends Alignable> implements MRSystem<T> {
+import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
+import de.uniheidelberg.cl.a10.data2.alignment.AlignmentIdProvider;
+import de.uniheidelberg.cl.a10.data2.alignment.Link;
+import de.uniheidelberg.cl.a10.data2.alignment.impl.AlignmentIdProvider_impl;
+import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
+import de.uniheidelberg.cl.a10.patterns.data.Probability;
+import de.uniheidelberg.cl.a10.patterns.mroth.MRSystem;
+import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
+
+public class MRSystem_impl<T extends Event> implements MRSystem<T> {
 
 	List<T> sequence1;
 	List<T> sequence2;
@@ -45,7 +62,7 @@ public class MRSystem_impl<T extends Alignable> implements MRSystem<T> {
 	@Override
 	public Alignment<T> getAlignment() throws IncompatibleException {
 		DirectedGraph<T, DefaultWeightedEdge> graph = this.getGraph();
-		AlignmentIdProvider idp = new IdProvider();
+		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		Set<Set<T>> set = this.recurse(graph, 0);
 		Alignment<T> al = new Alignment_impl<T>("mrs");
 
