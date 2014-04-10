@@ -17,7 +17,8 @@ import de.uniheidelberg.cl.a10.data2.Token;
  * @author hartmann
  * 
  */
-public class FrameElm_impl extends HasTokensAndHead_impl implements FrameElement {
+public class FrameElm_impl extends HasTokensAndHead_impl implements
+		FrameElement {
 
 	Collection<Mention_impl> mentions = null;
 	Frame_impl frame = null;
@@ -102,17 +103,6 @@ public class FrameElm_impl extends HasTokensAndHead_impl implements FrameElement
 		}
 		s.append("[" + this.getName() + "]");
 		return s.toString();
-	}
-
-	@Override
-	@Deprecated
-	public String toTargetString() {
-		return this.toFormattedString(true);
-		/*
-		 * StringBuilder b = new StringBuilder(); for (Token t :
-		 * this.getTokens()) { b.append(t.getLemma()); b.append(" "); } return
-		 * b.toString().trim();
-		 */
 	}
 
 	public String toString(final boolean coref) {

@@ -35,6 +35,11 @@
   	<module>alignment-api</module>
   	<module>alignment-core</module>
   	<module>alignment-io</module>
+  	<module>alignment-mrs</module>
+  	<module>alignment-similarity</module>
+  	<module>alignment-util</module>
+  	<module>edu.sussex.nlp.jws</module>
+  	<module>de.saar.coli.salsa.reiter.framenet</module>
   </modules>
   <dependencies>
   	<dependency>
