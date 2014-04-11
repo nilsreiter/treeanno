@@ -41,6 +41,7 @@
   	<module>edu.sussex.nlp.jws</module>
   	<module>de.saar.coli.salsa.reiter.framenet</module>
   	<module>alignment-nw</module>
+  	<module>alignment-bmm</module>
   </modules>
   <dependencies>
   	<dependency>
