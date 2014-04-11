@@ -10,25 +10,23 @@ import de.saar.coli.salsa.reiter.framenet.FrameNet;
 import de.saar.coli.salsa.reiter.framenet.FrameNetVersion;
 
 public abstract class TestBase15 {
-    protected static String fnhome =
-	    "/Users/reiter/Documents/Eclipse/A10/framenet-1.5";
-    // "/Network/resources/corpora/monolingual/annotated/framenet-1.5";
-    protected static String fnhome13 =
-	    "/Network/resources/corpora/monolingual/annotated/framenet-1.3";
+	protected static String fnhome = "/fs/tmp-local/users/reiterns/framenet-1.5";
+	// "/Network/resources/corpora/monolingual/annotated/framenet-1.5";
+	protected static String fnhome13 = "/Network/resources/corpora/monolingual/annotated/framenet-1.3";
 
-    protected static String version = "1.5";
-    protected static FrameNet frameNet;
+	protected static String version = "1.5";
+	protected static FrameNet frameNet;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-	frameNet = new FrameNet();
-	frameNet.readData(FNDatabaseReader.createInstance(new File(fnhome),
-		FrameNetVersion.fromString(version)));
-    }
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		frameNet = new FrameNet();
+		frameNet.readData(FNDatabaseReader.createInstance(new File(fnhome),
+				FrameNetVersion.fromString(version)));
+	}
 
-    @AfterClass
-    public static void tearDown() throws Exception {
-	frameNet = null;
-	System.gc();
-    }
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		frameNet = null;
+		System.gc();
+	}
 }

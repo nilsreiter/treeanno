@@ -16,14 +16,14 @@ public abstract class TestBase13 {
 	protected static FrameNet frameNet;
 
 	@BeforeClass
-	public static void setUp() throws Exception {
+	public static void setUpClass() throws Exception {
 		frameNet = new FrameNet();
 		frameNet.readData(FNDatabaseReader.createInstance(new File(fnhome),
 				FrameNetVersion.fromString(version)));
 	}
 
 	@AfterClass
-	public static void tearDown() throws Exception {
+	public static void tearDownClass() throws Exception {
 		frameNet = null;
 		System.gc();
 	}

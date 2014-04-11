@@ -40,6 +40,7 @@
   	<module>alignment-util</module>
   	<module>edu.sussex.nlp.jws</module>
   	<module>de.saar.coli.salsa.reiter.framenet</module>
+  	<module>alignment-nw</module>
   </modules>
   <dependencies>
   	<dependency>

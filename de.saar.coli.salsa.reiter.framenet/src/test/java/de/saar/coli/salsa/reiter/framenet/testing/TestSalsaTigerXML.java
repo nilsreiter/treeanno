@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.util.logging.Logger;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -25,18 +26,24 @@ public class TestSalsaTigerXML {
 	@Rule
 	public BenchmarkRule benchmarkRun = new BenchmarkRule();
 
-	static String example1 = System.getProperty("user.dir")
-			+ "/data/SalsaTigerExample-1.xml";
-	static String example2 = System.getProperty("user.dir")
-			+ "/data/SalsaTigerExample-2.xml";
-	static String example3 = System.getProperty("user.dir")
-			+ "/data/SalsaTigerExample-3.xml";
 	static String example4 = "/proj/rituals/annotation/salto-repository/master/r0025_Placing_merged_jom.nl.xml";
+
+	File example1, example2, example3;
+
+	@Before
+	public void setUp() {
+		example1 = new File(this.getClass()
+				.getResource("/SalsaTigerExample-1.xml").getFile());
+		example2 = new File(this.getClass()
+				.getResource("/SalsaTigerExample-2.xml").getFile());
+		example3 = new File(this.getClass()
+				.getResource("/SalsaTigerExample-3.xml").getFile());
+	}
 
 	@Test
 	public void testLoading() {
 		FrameNet fn = new FrameNet();
-		fn.readData(new STXDatabaseReader(new File(example2)));
+		fn.readData(new STXDatabaseReader(example2));
 		assertEquals(5, fn.getFrames().size());
 		try {
 			Frame frame = fn.getFrame("Placing");
@@ -56,7 +63,7 @@ public class TestSalsaTigerXML {
 		FrameNet fn = new FrameNet();
 		SalsaTigerXML stx = new SalsaTigerXML(fn, Logger.getAnonymousLogger());
 		try {
-			stx.parse(new File(example3));
+			stx.parse(example3);
 			assertEquals(2, stx.getSentences().size());
 			Sentence sentence = stx.getSentences().get(0);
 

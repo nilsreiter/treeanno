@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<corpus corpusname="test-corpus" target="">
+	<head>
+		<meta>
+			<format>
+      
+	NeGra format, version 3</format>
+		</meta>
+		<frames xmlns="http://www.clt-st.de/framenet/frame-database">
+			<frame name="Attack">
+				<element name="Victim" optional="false"/>
+				<element name="Weapon" optional="true"/>
+				<element name="Assailant" optional="false"/>
+				<element name="Manner" optional="true"/>
+				<element name="Means" optional="true"/>
+				<element name="Place" optional="true"/>
+				<element name="Purpose" optional="true"/>
+				<element name="Reason" optional="true"/>
+				<element name="Time" optional="true"/>
+				<element name="Source" optional="true"/>
+				<element name="Depictive" optional="true"/>
+			</frame>
+			<frame name="Being_employed">
+				<element name="Compensation" optional="true"/>
+				<element name="Employee" optional="false"/>
+				<element name="Employer" optional="false"/>
+				<element name="Manner" optional="true"/>
+				<element name="Place_of_employment" optional="false"/>
+				<element name="Position" optional="false"/>
+				<element name="Purpose" optional="true"/>
+				<element name="Task" optional="false"/>
+				<element name="Time" optional="true"/>
+				<element name="Field" optional="false"/>
+				<element name="Duration" optional="true"/>
+				<element name="Rank" optional="true"/>
+				<element name="Type" optional="true"/>
+				<element name="Contract_basis" optional="true"/>
+			</frame>
+			<frame name="Criminal_process">
+				<element name="Court" optional="false"/>
+				<element name="Place" optional="true"/>
+				<element name="Time" optional="true"/>
+				<element name="Defendant" optional="false"/>
+				<element name="Judge" optional="false"/>
+				<element name="Prosecution" optional="false"/>
+				<element name="Charges" optional="false"/>
+				<element name="Defense" optional="false"/>
+				<element name="Jury" optional="false"/>
+				<element name="Offense" optional="false"/>
+			</frame>
+			<frame name="Placing">
+				<element name="Agent" optional="false"/>
+				<element name="Goal" optional="false"/>
+				<element name="Theme" optional="false"/>
+			</frame>
+			<frame name="Possession">
+				<element name="Owner" optional="false"/>
+				<element name="Possession" optional="false"/>
+				<element name="Depictive" optional="true"/>
+				<element name="Manner" optional="true"/>
+			</frame>
+		</frames>
+		<wordtags xmlns="http://www.clt-st.de/salsa/wordtags">
+		</wordtags>
+		<flags>
+		</flags>
+		<annotation>
+			<edgelabel>
+			</edgelabel>
+			<secedgelabel>
+			</secedgelabel>
+		</annotation>
+	</head>
+	<body>
+		<s id="rit_2">
+			<graph root="rit_2_root">
+				<terminals>
+					<t id="rit_2_1" word="Into" pos="P" lemma="into"/>
+					<t id="rit_2_2" word="the" pos="" lemma=""/>
+					<t id="rit_2_3" word="basin" pos="" lemma=""/>
+					<t id="rit_2_4" word="for" pos="" lemma=""/>
+					<t id="rit_2_5" word="holy" pos="" lemma=""/>
+					<t id="rit_2_6" word="water" pos="" lemma=""/>
+					<t id="rit_2_7" word="you" pos="" lemma=""/>
+					<t id="rit_2_8" word="throw" pos="" lemma=""/>
+					<t id="rit_2_9" word="silver" pos="" lemma=""/>
+				</terminals>
+				<nonterminals>
+					<nt id="rit_2_14" cat="VP">
+						<edge label="-" idref="rit_2_8"/>
+						<edge label="-" idref="rit_2_9"/>
+					</nt>
+					<nt id="rit_2_15" cat="VP">
+						<edge label="-" idref="rit_2_7"/>
+						<edge label="-" idref="rit_2_14"/>
+					</nt>
+					<nt id="rit_2_10" cat="NP">
+						<edge label="-" idref="rit_2_2"/>
+						<edge label="-" idref="rit_2_3"/>
+					</nt>
+					<nt id="rit_2_12" cat="PP">
+						<edge label="-" idref="rit_2_1"/>
+						<edge label="-" idref="rit_2_10"/>
+					</nt>
+					<nt id="rit_2_11" cat="NP">
+						<edge label="-" idref="rit_2_5"/>
+						<edge label="-" idref="rit_2_6"/>
+					</nt>
+					<nt id="rit_2_13" cat="PP">
+						<edge label="-" idref="rit_2_4"/>
+						<edge label="-" idref="rit_2_11"/>
+					</nt>
+					<nt id="rit_2_16" cat="PP">
+						<edge label="-" idref="rit_2_12"/>
+						<edge label="-" idref="rit_2_13"/>
+					</nt>
+					<nt id="rit_2_root" cat="S">
+						<edge label="-" idref="rit_2_15"/>
+						<edge label="-" idref="rit_2_16"/>
+					</nt>
+				</nonterminals>
+			</graph>
+			<matches>
+			</matches>
+			<sem>
+				<globals>
+				</globals>
+				<frames>
+					<frame name="Placing" id="rit_2_f1">
+						<target>
+							<fenode idref="rit_2_8"/>
+						</target>
+						<fe name="Agent" id="rit_2_f1_e1">
+							<fenode idref="rit_2_7"/>
+						</fe>
+						<fe name="Goal" id="rit_2_f1_e2">
+							<fenode idref="rit_2_16"/>
+						</fe>
+						<fe name="Theme" id="rit_2_f1_e3">
+							<fenode idref="rit_2_9"/>
+						</fe>
+					</frame>
+				</frames>
+				<usp>
+					<uspframes>
+					</uspframes>
+					<uspfes>
+					</uspfes>
+				</usp>
+				<wordtags>
+				</wordtags>
+			</sem>
+		</s>
+		<s id="rit_1">
+			<graph root="rit_1_root">
+				<terminals>
+					<t id="rit_1_1" word="The" pos="DT" lemma="the"/>
+					<t id="rit_1_2" word="priest" pos="NN" lemma="priest"/>
+					<t id="rit_1_3" word="puts" pos="V"/>
+					<t id="rit_1_4" word="some"/>
+					<t id="rit_1_5" word="rice" pos="" lemma=""/>
+					<t id="rit_1_6" word="in" pos="" lemma=""/>
+					<t id="rit_1_7" word="the" pos="" lemma=""/>
+					<t id="rit_1_8" word="middle" pos="" lemma=""/>
+					<t id="rit_1_9" word="square" pos="" lemma=""/>
+				</terminals>
+				<nonterminals>
+					<nt id="rit_1_11" cat="NP">
+						<edge label="-" idref="rit_1_1"/>
+						<edge label="-" idref="rit_1_2"/>
+					</nt>
+					<nt id="rit_1_12" cat="NP">
+						<edge label="-" idref="rit_1_4"/>
+						<edge label="-" idref="rit_1_5"/>
+					</nt>
+					<nt id="rit_1_16" cat="VP">
+						<edge label="-" idref="rit_1_3"/>
+						<edge label="-" idref="rit_1_12"/>
+					</nt>
+					<nt id="rit_1_13" cat="NP">
+						<edge label="-" idref="rit_1_8"/>
+						<edge label="-" idref="rit_1_9"/>
+					</nt>
+					<nt id="rit_1_14" cat="NP">
+						<edge label="-" idref="rit_1_7"/>
+						<edge label="-" idref="rit_1_13"/>
+					</nt>
+					<nt id="rit_1_15" cat="PP">
+						<edge label="-" idref="rit_1_6"/>
+						<edge label="-" idref="rit_1_14"/>
+					</nt>
+					<nt id="rit_1_17" cat="VP">
+						<edge label="-" idref="rit_1_16"/>
+						<edge label="-" idref="rit_1_15"/>
+					</nt>
+					<nt id="rit_1_root" cat="S">
+						<edge label="-" idref="rit_1_11"/>
+						<edge label="-" idref="rit_1_17"/>
+					</nt>
+				</nonterminals>
+			</graph>
+			<matches>
+			</matches>
+			<sem>
+				<globals>
+				</globals>
+				<frames>
+					<frame name="Placing" id="rit_1_f1">
+						<target>
+							<fenode idref="rit_1_3"/>
+						</target>
+						<fe name="Agent" id="rit_1_f1_e1">
+							<fenode idref="rit_1_11"/>
+						</fe>
+						<fe name="Goal" id="rit_1_f1_e2">
+							<fenode idref="rit_1_14"/>
+						</fe>
+						<fe name="Theme" id="rit_1_f1_e3">
+							<fenode idref="rit_1_12"/>
+						</fe>
+					</frame>
+				</frames>
+				<usp>
+					<uspframes>
+					</uspframes>
+					<uspfes>
+					</uspfes>
+				</usp>
+				<wordtags>
+				</wordtags>
+			</sem>
+		</s>
+	</body>
+</corpus>
