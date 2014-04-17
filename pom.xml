@@ -43,6 +43,7 @@
   	<module>alignment-nw</module>
   	<module>alignment-bmm</module>
   	<module>alignment-main</module>
+  	<module>alignment-baseline</module>
   </modules>
   <dependencies>
   	<dependency>
