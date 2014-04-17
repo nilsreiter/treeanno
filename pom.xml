@@ -42,6 +42,7 @@
   	<module>de.saar.coli.salsa.reiter.framenet</module>
   	<module>alignment-nw</module>
   	<module>alignment-bmm</module>
+  	<module>alignment-main</module>
   </modules>
   <dependencies>
   	<dependency>
