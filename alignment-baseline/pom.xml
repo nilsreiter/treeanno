@@ -6,4 +6,21 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>alignment-baseline</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>alignment-api</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>alignment-core</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>alignment-similarity</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
