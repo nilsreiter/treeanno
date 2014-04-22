@@ -6,9 +6,8 @@ import java.util.Set;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
-import de.uniheidelberg.cl.a10.data2.alignment.Alignment_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.Link;
-import de.uniheidelberg.cl.a10.patterns.Converter;
+import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 
 /**
  * This class can be used to convert a frame-based alignment to a token-based
@@ -17,10 +16,8 @@ import de.uniheidelberg.cl.a10.patterns.Converter;
  * @author reiter
  * 
  */
-public class FrameTokenConverter implements
-		Converter<Alignment<Frame>, Alignment<Token>> {
+public class FrameTokenConverter {
 
-	@Override
 	public Alignment<Token> convert(final Alignment<Frame> document) {
 		Alignment<Token> ret = new Alignment_impl<Token>(document.getId());
 

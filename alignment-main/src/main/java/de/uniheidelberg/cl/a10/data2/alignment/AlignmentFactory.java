@@ -9,6 +9,7 @@ import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.AlignmentIdProvider_impl;
+import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.FullAlignment_impl;
 import de.uniheidelberg.cl.a10.patterns.models.impl.HiddenMarkovModel_impl;
 import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
@@ -97,5 +98,28 @@ public class AlignmentFactory<T extends HasTarget & HasDocument> {
 
 	public void setSimilarity(final SimilarityFunction<T> similarity) {
 		this.similarity = similarity;
+	}
+
+	public static <T extends HasDocument> Alignment<T> fromPairwiseAlignment(
+			final de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment<T> pa,
+			final Document text1, final Document text2) {
+		Alignment<T> document = new Alignment_impl<T>("");
+		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
+		document.getDocuments().add(text1);
+		document.getDocuments().add(text2);
+		int length = pa.getScoreTagLine().size();
+		for (int i = 0; i < length; i++) {
+			T f1 = pa.getGappedSequence1().get(i);
+			T f2 = pa.getGappedSequence2().get(i);
+
+			Set<T> aligned = new HashSet<T>();
+			if (f1 != null)
+				aligned.add(f1);
+			if (f2 != null)
+				aligned.add(f2);
+			document.addAlignment(idp.getNextAlignmentId(), aligned).setScore(
+					pa.getScoreTagLine().get(i).getScore());
+		}
+		return document;
 	}
 }

@@ -20,12 +20,12 @@ import de.saar.coli.salsa.reiter.framenet.FrameElementNotFoundException;
 import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.uniheidelberg.cl.a10.Main;
 import de.uniheidelberg.cl.a10.NullOutputStream;
+import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.Frame;
-import de.uniheidelberg.cl.a10.data2.RitualDocument;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
-import de.uniheidelberg.cl.a10.data2.alignment.FrameAlignmentDocument;
-import de.uniheidelberg.cl.a10.data2.io.AlignmentWriter;
+import de.uniheidelberg.cl.a10.data2.alignment.AlignmentFactory;
+import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
 import de.uniheidelberg.cl.a10.data2.io.DataReader;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.AdvancedScoringScheme;
@@ -70,7 +70,7 @@ public class SequenceAlignment extends MainWithInputSequences {
 	}
 
 	public PairwiseAlignment<Event> getAlignmentFromAlgorithm(
-			final RitualDocument doc1, final RitualDocument doc2)
+			final Document doc1, final Document doc2)
 			throws IncompatibleScoringSchemeException, SecurityException,
 			InstantiationException, IllegalAccessException,
 			ClassNotFoundException, ParserConfigurationException, SAXException,
@@ -122,14 +122,14 @@ public class SequenceAlignment extends MainWithInputSequences {
 			stdout = new PrintStream(new NullOutputStream());
 		}
 
-		RitualDocument d1, d2;
+		Document d1, d2;
 		DataReader dr = new DataReader();
 		d1 = dr.read(getArguments().get(0));
 		d2 = dr.read(getArguments().get(1));
 
 		PairwiseAlignment<Event> alignment = this.getAlignmentFromAlgorithm(d1,
 				d2);
-		doc = FrameAlignmentDocument.fromPairwiseAlignment(alignment, d1, d2);
+		doc = AlignmentFactory.fromPairwiseAlignment(alignment, d1, d2);
 
 		AlignmentWriter dw = new AlignmentWriter(
 				this.getOutputStreamForFileOption(output, stdout));
