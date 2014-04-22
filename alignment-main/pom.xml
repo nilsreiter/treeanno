@@ -17,5 +17,40 @@
   		<artifactId>alignment-api</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>alignment-baseline</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>alignment-bmm</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>data2-io</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>alignment-io</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>alignment-similarity</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>alignment-eval</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>alignment-mrs</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>

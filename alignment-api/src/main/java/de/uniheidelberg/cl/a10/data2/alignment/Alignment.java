@@ -40,4 +40,6 @@ public interface Alignment<T> extends HasId {
 	Link<T> getLink(T obj1, T obj2);
 
 	Collection<? extends Link<T>> getNonSingletonAlignments();
+
+	Collection<? extends T> getObjects();
 }

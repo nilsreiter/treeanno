@@ -208,4 +208,9 @@ public class Alignment_impl<T extends HasDocument> implements Alignment<T> {
 	public String getId() {
 		return this.id;
 	}
+
+	@Override
+	public Collection<? extends T> getObjects() {
+		return this.graph.getVertices();
+	}
 }

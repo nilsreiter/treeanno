@@ -44,6 +44,7 @@
   	<module>alignment-bmm</module>
   	<module>alignment-main</module>
   	<module>alignment-baseline</module>
+  	<module>alignment-eval</module>
   </modules>
   <dependencies>
   	<dependency>

@@ -1,10 +1,12 @@
 package de.uniheidelberg.cl.a10.data2.impl;
 
+import de.uniheidelberg.cl.a10.HasId;
 import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.Token;
 
-public abstract class Event_impl extends AnnotationObjectInDocument_impl implements
-		Event {
+public abstract class Event_impl extends AnnotationObjectInDocument_impl
+		implements Event {
 
 	Token target = null;
 
@@ -26,6 +28,7 @@ public abstract class Event_impl extends AnnotationObjectInDocument_impl impleme
 	 * @return the position
 	 */
 
+	@Override
 	public double position() {
 		return position;
 	}
@@ -44,6 +47,16 @@ public abstract class Event_impl extends AnnotationObjectInDocument_impl impleme
 	@Override
 	public Token getTarget() {
 		return target;
+	}
+
+	public static Event getEvent(final HasId a) {
+		if (a instanceof Event) {
+			return (Event) a;
+		}
+		if (a instanceof Frame) {
+			return new FrameEvent_impl((Frame) a);
+		}
+		return null;
 	}
 
 }
