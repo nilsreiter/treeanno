@@ -5,15 +5,12 @@
     <artifactId>a10</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  
-   
-  
+  <artifactId>alignment-alg-impl</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>de.nilsreiter</groupId>
-  		<artifactId>data2-api</artifactId>
+  		<artifactId>alignment-alg-api</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
-  <artifactId>data2-core</artifactId>
 </project>

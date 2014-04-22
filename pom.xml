@@ -45,6 +45,8 @@
   	<module>alignment-main</module>
   	<module>alignment-baseline</module>
   	<module>alignment-eval</module>
+  	<module>alignment-alg-api</module>
+  	<module>alignment-alg-impl</module>
   </modules>
   <dependencies>
   	<dependency>
