@@ -5,12 +5,18 @@
     <artifactId>a10</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>alignment-main</artifactId>
+  <artifactId>alignment-algorithms</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>de.nilsreiter</groupId>
-  		<artifactId>data2-api</artifactId>
+  		<artifactId>alignment-similarity</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.mockito</groupId>
+  		<artifactId>mockito-core</artifactId>
+  		<version>1.9.5</version>
+  		<scope>test</scope>
   	</dependency>
   	<dependency>
   		<groupId>de.nilsreiter</groupId>
@@ -19,27 +25,7 @@
   	</dependency>
   	<dependency>
   		<groupId>de.nilsreiter</groupId>
-  		<artifactId>data2-io</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.nilsreiter</groupId>
-  		<artifactId>alignment-io</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.nilsreiter</groupId>
-  		<artifactId>alignment-similarity</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.nilsreiter</groupId>
-  		<artifactId>alignment-eval</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.nilsreiter</groupId>
-  		<artifactId>alignment-algorithms</artifactId>
+  		<artifactId>alignment-core</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
