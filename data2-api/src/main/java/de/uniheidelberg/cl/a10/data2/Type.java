@@ -1,6 +1,6 @@
 package de.uniheidelberg.cl.a10.data2;
 
-
+@Deprecated
 public enum Type {
 	Token, Entity, Frame, FrameElm, Mention, Mantra, Sentence, Section, Sense, Chunk, Document, Event;
 

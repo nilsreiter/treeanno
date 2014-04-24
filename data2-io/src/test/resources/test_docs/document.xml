@@ -123,5 +123,10 @@
     	<mantra id="mantra1">
     		<token idref="t1"></token></mantra>
     	<mantra id="mantra2">
-    		<token idref="t2"></token></mantra></mantras></document>
+    		<token idref="t2"></token></mantra></mantras>
+    <events>
+    	<event>
+    		<anchor idref="t6">
+    			</anchor><argument role="Subject">
+    				<target idref="t1"></target><target idref="t2"></target><target idref="t3"></target><target idref="t4"></target><target idref="t5"></target></argument></event></events></document>
 </root>

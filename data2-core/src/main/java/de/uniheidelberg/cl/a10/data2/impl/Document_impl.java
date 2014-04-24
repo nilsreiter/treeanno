@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import de.uniheidelberg.cl.a10.HasId;
-import de.uniheidelberg.cl.a10.data2.Chunk;
 import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
-import de.uniheidelberg.cl.a10.data2.Entity;
-import de.uniheidelberg.cl.a10.data2.FrameElement;
+import de.uniheidelberg.cl.a10.data2.Chunk;
 import de.uniheidelberg.cl.a10.data2.Document;
+import de.uniheidelberg.cl.a10.data2.Entity;
+import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.Frame;
+import de.uniheidelberg.cl.a10.data2.FrameElement;
 import de.uniheidelberg.cl.a10.data2.Section;
 import de.uniheidelberg.cl.a10.data2.Token;
 
@@ -88,6 +90,8 @@ public class Document_impl extends AnnotationObject_impl implements
 	 */
 	transient List<Token> listOfTokens = null;
 
+	transient List<Event> listOfEvents = null;
+
 	private String originalText;
 
 	private String documentTitle = null;
@@ -106,6 +110,8 @@ public class Document_impl extends AnnotationObject_impl implements
 		this.mapOfFrameElements = new HashMap<String, FrameElm_impl>();
 
 		this.frames_temporalOrdering = new LinkedList<Frame_impl>();
+
+		this.listOfEvents = new LinkedList<Event>();
 	}
 
 	public void resetLists() {
@@ -597,4 +603,26 @@ public class Document_impl extends AnnotationObject_impl implements
 		this.documentTitle = title;
 	}
 
+	@Override
+	public List<? extends Event> getEvents() {
+		return this.listOfEvents;
+	}
+
+	@Override
+	public void addEvent(Event ev) {
+		this.listOfEvents.add(ev);
+	}
+
+	/**
+	 * TODO: This needs to be extended to cover other types
+	 */
+	@Override
+	public List<AnnotationObjectInDocument> getAnnotations(Class<?> clazz) {
+		List<AnnotationObjectInDocument> ret = new LinkedList<AnnotationObjectInDocument>();
+		if (clazz.equals(Token.class))
+			ret.addAll(this.getTokens());
+		if (clazz.equals(Frame.class))
+			ret.addAll(this.getFrames());
+		return ret;
+	}
 }

@@ -5,8 +5,10 @@ import java.io.OutputStream;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import de.uniheidelberg.cl.a10.data2.AnnotationObject;
+import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
 import de.uniheidelberg.cl.a10.data2.Chunk;
 import de.uniheidelberg.cl.a10.data2.Entity;
+import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.FrameElement;
 import de.uniheidelberg.cl.a10.data2.Mantra;
@@ -148,7 +150,9 @@ public class DataWriter extends
 	protected Element getElement(final Frame frame) {
 		Element element = new Element("frame");
 		element.addAttribute(new Attribute(XMLConstants.ID, frame.getId()));
-		element.addAttribute(new Attribute(XMLConstants.OLDID, frame.getOldId()));
+		if (frame.getOldId() != null)
+			element.addAttribute(new Attribute(XMLConstants.OLDID, frame
+					.getOldId()));
 		element.addAttribute(new Attribute("name", frame.getFrameName()));
 		element.appendChild(this.getRefElement("token", frame.getTokens()
 				.get(0)));
@@ -258,6 +262,13 @@ public class DataWriter extends
 			mantrasElement.appendChild(this.getElement(mantra));
 		}
 
+		// Events
+		Element eventsElement = new Element("events");
+		for (Event event : text.getEvents()) {
+			eventsElement.appendChild(this.getElement(event));
+
+		}
+
 		textElement.appendChild(sentencesElement);
 		textElement.appendChild(corefElement);
 		textElement.appendChild(framesElement);
@@ -265,8 +276,26 @@ public class DataWriter extends
 		textElement.appendChild(sectionsElement);
 		textElement.appendChild(sensesElement);
 		textElement.appendChild(mantrasElement);
+		textElement.appendChild(eventsElement);
 
 		return rootElement;
+	}
+
+	protected Element getElement(Event event) {
+		Element element = new Element(XMLConstants.EVENT);
+		element.addAttribute(new Attribute(XMLConstants.ID, event.getId()));
+		element.appendChild(getRefElement(XMLConstants.ANCHOR,
+				event.getAnchor()));
+		for (String argKey : event.getArguments().keySet()) {
+			Element argElement = new Element(XMLConstants.ARGUMENT);
+			argElement.addAttribute(new Attribute(XMLConstants.ROLE, argKey));
+			for (AnnotationObjectInDocument aoi : event.getArguments().get(
+					argKey)) {
+				argElement.appendChild(getRefElement(XMLConstants.TARGET, aoi));
+			}
+			element.appendChild(argElement);
+		}
+		return element;
 	}
 
 	protected Element getElement(final Sense sense) {

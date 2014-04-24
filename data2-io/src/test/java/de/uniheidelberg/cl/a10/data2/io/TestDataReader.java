@@ -84,5 +84,11 @@ public class TestDataReader {
 		assertEquals("mantra2", text.getMantras().get(1).getId());
 		assertEquals("t2", text.getMantras().get(1).getTokens().get(0).getId());
 
+		// events
+		assertEquals(1, text.getEvents().size());
+		assertEquals("t6", text.getEvents().get(0).getAnchor().getId());
+		assertEquals(1, text.getEvents().get(0).getArguments().size());
+		assertEquals(5, text.getEvents().get(0).getArguments().get("Subject")
+				.size());
 	}
 }

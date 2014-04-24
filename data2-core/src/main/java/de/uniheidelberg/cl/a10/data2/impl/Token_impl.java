@@ -16,7 +16,8 @@ import de.uniheidelberg.cl.a10.data2.Token;
  * @author hartmann
  * 
  */
-public class Token_impl extends AnnotationObjectInDocument_impl implements Token {
+public class Token_impl extends AnnotationObjectInDocument_impl implements
+		Token {
 
 	/**
 	 * The token surface
@@ -201,19 +202,9 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements Token
 		this.frameElms.add(frameElm);
 	}
 
-	/**
-	 * @deprecated Use {@link #getSurface()} instead.
-	 * @return
-	 */
-	@Deprecated
-	public String getStringToken() {
-		return this.getSurface();
-	}
-
 	@Override
 	public String toString() {
-		String out = this.getStringToken() + " (" + this.getPartOfSpeech()
-				+ ")";
+		String out = this.getSurface() + " (" + this.getPartOfSpeech() + ")";
 		return out;
 	}
 
