@@ -66,4 +66,10 @@ public interface Document extends AnnotationObject, HasId {
 
 	void setTitle(String title);
 
+	List<? extends Event> getEvents();
+
+	List<AnnotationObjectInDocument> getAnnotations(Class<?> clazz);
+
+	void addEvent(Event ev);
+
 }

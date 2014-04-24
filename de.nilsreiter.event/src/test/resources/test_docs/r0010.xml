@@ -1,0 +1,2021 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+  <document id="r0010">
+    <originaltext><![CDATA[Now the rules for the night vigil for the goddess Ṣaṣṭhī in the sixth night after delivery. 
+Let the child take a bath.
+Wherever Viṣṇu is established i.e. the place where the ritual is commenced, exactly there the visarjana should be performed. 
+Send a share of the bali to the pikhālakhu. 
+Make a ritual bath of the statue of Nārāyaṇa. 
+Welcome the child with a white cloth at the auspicious time. 
+Give a finger to the boy to welcome him. 
+Place a person on the door holding a sword. 
+Here hand over the flower basket. Worship Viṣṇu according to the custom i.e. with incense, light, recitations and prayers. 
+Worship the Brahmin. 
+Recite the svasti no mimītā ; the kanikrada; the āśuḥ śiśāno; the yaj jāgrato; themantra; the agnes tanūr and the vayam̐ soma.
+Worship at the birth place of the child in the temple of Ṣaṣṭhī at the auspicious time. 
+Place a grinding stone. 
+Offer a lamp with six wicks to the Ṣaṣṭhī goddess. 
+Offer fragrant materials etc. 
+Recitation and the following prayer: "Śivā, Sambhūti, Prīti, Saṃtati, Anusūyā and Kṣemā – these six are the names of the Ṣaṣṭhī goddess." 
+Offer fragrant materials etc. 
+Give flower during the recitation of the śāntikamantra. 
+Make the ritual decision for food. 
+dakṣiṇā should be given to the gods and priest. 
+Auspicious recitations. 
+Blessings from the gods in the form of prasāda. 
+Release the deities. 
+Send a share of the bali to the pikhālākhu. 
+Ritual washing. 
+Fragrant materials etc. 
+Blessings. 
+Speak a few pleasing words to the newborn child. 
+Here end the rules for the night vigil for the goddess Ṣaṣṭhī. 
+Hail.
+]]></originaltext>
+    <sentences>
+      <sentence id="s0">
+        <token id="t224" word="Now" lemma="now" deprel="ADVMOD" sense="sen62" characterOffsetBegin="0" characterOffsetEnd="3" governor="t278" pos="RB" OldId="r0010_0_t_0"/>
+        <token id="t255" word="the" lemma="the" deprel="DET" characterOffsetBegin="4" characterOffsetEnd="7" governor="t278" pos="DT" OldId="r0010_0_t_1"/>
+        <token id="t278" word="rules" lemma="rule" sense="sen26" characterOffsetBegin="8" characterOffsetEnd="13" pos="NNS" OldId="r0010_0_t_2">
+          <frame idref="f0"/>
+        </token>
+        <token id="t263" word="for" lemma="for" deprel="PREP" characterOffsetBegin="14" characterOffsetEnd="17" governor="t278" pos="IN" OldId="r0010_0_t_3"/>
+        <token id="t292" word="the" lemma="the" deprel="DET" characterOffsetBegin="18" characterOffsetEnd="21" governor="t41" pos="DT" OldId="r0010_0_t_4"/>
+        <token id="t23" word="night" lemma="night" deprel="NN" sense="sen5" characterOffsetBegin="22" characterOffsetEnd="27" governor="t41" pos="NN" OldId="r0010_0_t_5">
+          <frame idref="f1"/>
+        </token>
+        <token id="t41" word="vigil" lemma="vigil" deprel="POBJ" sense="sen11" characterOffsetBegin="28" characterOffsetEnd="33" governor="t263" pos="NN" OldId="r0010_0_t_6"/>
+        <token id="t12" word="for" lemma="for" deprel="PREP" characterOffsetBegin="34" characterOffsetEnd="37" governor="t41" pos="IN" OldId="r0010_0_t_7"/>
+        <token id="t75" word="the" lemma="the" deprel="DET" characterOffsetBegin="38" characterOffsetEnd="41" governor="t53" pos="DT" OldId="r0010_0_t_8"/>
+        <token id="t80" word="goddess" lemma="goddess" deprel="NN" sense="sen12" characterOffsetBegin="42" characterOffsetEnd="49" governor="t53" pos="NN" OldId="r0010_0_t_9"/>
+        <token id="t53" word="Ṣaṣṭhī" lemma="ṣaṣṭhī" deprel="POBJ" characterOffsetBegin="50" characterOffsetEnd="56" governor="t12" pos="NN" OldId="r0010_0_t_10"/>
+        <token id="t102" word="in" lemma="in" deprel="PREP" characterOffsetBegin="57" characterOffsetEnd="59" governor="t53" pos="IN" OldId="r0010_0_t_11"/>
+        <token id="t89" word="the" lemma="the" deprel="DET" characterOffsetBegin="60" characterOffsetEnd="63" governor="t133" pos="DT" OldId="r0010_0_t_12"/>
+        <token id="t95" word="sixth" lemma="sixth" deprel="AMOD" sense="sen25" characterOffsetBegin="64" characterOffsetEnd="69" governor="t133" pos="JJ" OldId="r0010_0_t_13"/>
+        <token id="t133" word="night" lemma="night" deprel="POBJ" sense="sen5" characterOffsetBegin="70" characterOffsetEnd="75" governor="t102" pos="NN" OldId="r0010_0_t_14">
+          <frame idref="f2"/>
+        </token>
+        <token id="t121" word="after" lemma="after" deprel="PREP" characterOffsetBegin="76" characterOffsetEnd="81" governor="t133" pos="IN" OldId="r0010_0_t_15"/>
+        <token id="t124" word="delivery" lemma="delivery" deprel="POBJ" sense="sen36" characterOffsetBegin="82" characterOffsetEnd="90" governor="t121" pos="NN" OldId="r0010_0_t_16"/>
+        <token id="t178" word="." lemma="." deprel="PUNCT" characterOffsetBegin="90" characterOffsetEnd="91" governor="t278" pos="." OldId="r0010_0_t_17"/>
+      </sentence>
+      <sentence id="s1">
+        <token id="t163" word="Let" lemma="let" sense="sen45" characterOffsetBegin="93" characterOffsetEnd="96" pos="VB" OldId="r0010_1_t_0">
+          <frame idref="f3"/>
+        </token>
+        <token id="t158" word="the" lemma="the" deprel="DET" characterOffsetBegin="97" characterOffsetEnd="100" governor="t218" pos="DT" OldId="r0010_1_t_1"/>
+        <token id="t218" word="child" lemma="child" deprel="NSUBJ" sense="sen4" characterOffsetBegin="101" characterOffsetEnd="106" governor="t198" pos="NN" OldId="r0010_1_t_2"/>
+        <token id="t198" word="take" lemma="take" deprel="CCOMP" sense="sen53" characterOffsetBegin="107" characterOffsetEnd="111" governor="t163" pos="VB" OldId="r0010_1_t_3">
+          <frame idref="f4"/>
+        </token>
+        <token id="t195" word="a" lemma="a" deprel="DET" characterOffsetBegin="112" characterOffsetEnd="113" governor="t250" pos="DT" OldId="r0010_1_t_4"/>
+        <token id="t250" word="bath" lemma="bath" deprel="DOBJ" sense="sen70" characterOffsetBegin="114" characterOffsetEnd="118" governor="t198" pos="NN" OldId="r0010_1_t_5"/>
+        <token id="t233" word="." lemma="." deprel="PUNCT" characterOffsetBegin="118" characterOffsetEnd="119" governor="t163" pos="." OldId="r0010_1_t_6"/>
+      </sentence>
+      <sentence id="s2">
+        <token id="t222" word="Wherever" lemma="wherever" deprel="PREP" characterOffsetBegin="120" characterOffsetEnd="128" governor="t262" pos="IN" OldId="r0010_2_t_0"/>
+        <token id="t288" word="Viṣṇu" lemma="Viṣṇu" deprel="POBJ" characterOffsetBegin="129" characterOffsetEnd="134" governor="t222" pos="NNP" OldId="r0010_2_t_1"/>
+        <token id="t279" word="is" lemma="be" deprel="AUXPASS" sense="sen13" characterOffsetBegin="135" characterOffsetEnd="137" governor="t262" pos="VBZ" OldId="r0010_2_t_2"/>
+        <token id="t262" word="established" lemma="establish" deprel="ADVCL" sense="sen72" characterOffsetBegin="138" characterOffsetEnd="149" governor="t175" pos="VBN" OldId="r0010_2_t_3"/>
+        <token id="t65" word="i.e." lemma="i.e." deprel="DOBJ" characterOffsetBegin="150" characterOffsetEnd="154" governor="t262" pos="FW" OldId="r0010_2_t_4"/>
+        <token id="t70" word="the" lemma="the" deprel="DEP" characterOffsetBegin="155" characterOffsetEnd="158" governor="t5" pos="DT" OldId="r0010_2_t_5"/>
+        <token id="t5" word="place" lemma="place" deprel="DEP" characterOffsetBegin="159" characterOffsetEnd="164" governor="t65" pos="VBP" OldId="r0010_2_t_6">
+          <frame idref="f5"/>
+        </token>
+        <token id="t13" word="where" lemma="where" deprel="ADVMOD" characterOffsetBegin="165" characterOffsetEnd="170" governor="t142" pos="WRB" OldId="r0010_2_t_7"/>
+        <token id="t25" word="the" lemma="the" deprel="DET" characterOffsetBegin="171" characterOffsetEnd="174" governor="t115" pos="DT" OldId="r0010_2_t_8"/>
+        <token id="t115" word="ritual" lemma="ritual" deprel="NSUBJPASS" characterOffsetBegin="175" characterOffsetEnd="181" governor="t142" pos="NN" OldId="r0010_2_t_9">
+          <frame idref="f6"/>
+        </token>
+        <token id="t128" word="is" lemma="be" deprel="AUXPASS" characterOffsetBegin="182" characterOffsetEnd="184" governor="t142" pos="VBZ" OldId="r0010_2_t_10"/>
+        <token id="t142" word="commenced" lemma="commence" deprel="ADVCL" characterOffsetBegin="185" characterOffsetEnd="194" governor="t5" pos="VBN" OldId="r0010_2_t_11"/>
+        <token id="t81" word="," lemma="," deprel="PUNCT" sense="sen22" characterOffsetBegin="194" characterOffsetEnd="195" governor="t5" pos="," OldId="r0010_2_t_12"/>
+        <token id="t97" word="exactly" lemma="exactly" deprel="ADVMOD" sense="sen13" characterOffsetBegin="196" characterOffsetEnd="203" governor="t104" pos="RB" OldId="r0010_2_t_13">
+          <frame idref="f7"/>
+        </token>
+        <token id="t104" word="there" lemma="there" deprel="ADVMOD" sense="sen27" characterOffsetBegin="204" characterOffsetEnd="209" governor="t262" pos="RB" OldId="r0010_2_t_14">
+          <frame idref="f8"/>
+        </token>
+        <token id="t202" word="the" lemma="the" deprel="DET" characterOffsetBegin="210" characterOffsetEnd="213" governor="t3" pos="DT" OldId="r0010_2_t_15"/>
+        <token id="t3" word="visarjana" lemma="visarjana" deprel="NSUBJPASS" characterOffsetBegin="214" characterOffsetEnd="223" governor="t175" pos="FW" OldId="r0010_2_t_17">
+          <frame idref="f9"/>
+        </token>
+        <token id="t164" word="should" lemma="should" deprel="AUX" characterOffsetBegin="224" characterOffsetEnd="230" governor="t175" pos="MD" OldId="r0010_2_t_18"/>
+        <token id="t154" word="be" lemma="be" deprel="AUXPASS" sense="sen22" characterOffsetBegin="231" characterOffsetEnd="233" governor="t175" pos="VB" OldId="r0010_2_t_19"/>
+        <token id="t175" word="performed" lemma="perform" characterOffsetBegin="234" characterOffsetEnd="243" pos="VBN" OldId="r0010_2_t_20">
+          <frame idref="f10"/>
+        </token>
+        <token id="t273" word="." lemma="." deprel="PUNCT" characterOffsetBegin="243" characterOffsetEnd="244" governor="t175" pos="." OldId="r0010_2_t_21"/>
+      </sentence>
+      <sentence id="s3">
+        <token id="t267" word="Send" lemma="send" sense="sen74" characterOffsetBegin="246" characterOffsetEnd="250" pos="VBZ" OldId="r0010_3_t_0">
+          <frame idref="f11"/>
+        </token>
+        <token id="t287" word="a" lemma="a" deprel="DET" characterOffsetBegin="251" characterOffsetEnd="252" governor="t238" pos="DT" OldId="r0010_3_t_1"/>
+        <token id="t238" word="share" lemma="share" deprel="DOBJ" sense="sen51" characterOffsetBegin="253" characterOffsetEnd="258" governor="t267" pos="NN" OldId="r0010_3_t_2"/>
+        <token id="t256" word="of" lemma="of" deprel="PREP" characterOffsetBegin="259" characterOffsetEnd="261" governor="t238" pos="IN" OldId="r0010_3_t_3"/>
+        <token id="t242" word="the" lemma="the" deprel="DET" characterOffsetBegin="262" characterOffsetEnd="265" governor="t6" pos="DT" OldId="r0010_3_t_4"/>
+        <token id="t6" word="bali" lemma="bali" deprel="POBJ" characterOffsetBegin="266" characterOffsetEnd="270" governor="t256" pos="FW" OldId="r0010_3_t_5">
+          <frame idref="f12"/>
+        </token>
+        <token id="t50" word="to" lemma="to" deprel="PREP" characterOffsetBegin="271" characterOffsetEnd="273" governor="t267" pos="TO" OldId="r0010_3_t_6"/>
+        <token id="t59" word="the" lemma="the" deprel="DET" characterOffsetBegin="274" characterOffsetEnd="277" governor="t14" pos="DT" OldId="r0010_3_t_7"/>
+        <token id="t14" word="pikhālakhu" lemma="pikhālakhu" deprel="POBJ" characterOffsetBegin="278" characterOffsetEnd="288" governor="t50" pos="FW" OldId="r0010_3_t_9">
+          <frame idref="f13"/>
+        </token>
+        <token id="t10" word="." lemma="." deprel="PUNCT" characterOffsetBegin="288" characterOffsetEnd="289" governor="t267" pos="." OldId="r0010_3_t_10"/>
+      </sentence>
+      <sentence id="s4">
+        <token id="t136" word="Make" lemma="make" sense="sen39" characterOffsetBegin="291" characterOffsetEnd="295" pos="VB" OldId="r0010_4_t_0">
+          <frame idref="f14"/>
+        </token>
+        <token id="t116" word="a" lemma="a" deprel="DET" characterOffsetBegin="296" characterOffsetEnd="297" governor="t105" pos="DT" OldId="r0010_4_t_1"/>
+        <token id="t131" word="ritual" lemma="ritual" deprel="NN" sense="sen2" characterOffsetBegin="298" characterOffsetEnd="304" governor="t105" pos="NN" OldId="r0010_4_t_2">
+          <frame idref="f15"/>
+        </token>
+        <token id="t105" word="bath" lemma="bath" deprel="DOBJ" sense="sen28" characterOffsetBegin="305" characterOffsetEnd="309" governor="t136" pos="NN" OldId="r0010_4_t_3"/>
+        <token id="t84" word="of" lemma="of" deprel="PREP" characterOffsetBegin="310" characterOffsetEnd="312" governor="t105" pos="IN" OldId="r0010_4_t_4"/>
+        <token id="t98" word="the" lemma="the" deprel="DET" characterOffsetBegin="313" characterOffsetEnd="316" governor="t211" pos="DT" OldId="r0010_4_t_5"/>
+        <token id="t211" word="statue" lemma="statue" deprel="POBJ" sense="sen58" characterOffsetBegin="317" characterOffsetEnd="323" governor="t84" pos="NN" OldId="r0010_4_t_6">
+          <frame idref="f16"/>
+        </token>
+        <token id="t197" word="of" lemma="of" deprel="PREP" characterOffsetBegin="324" characterOffsetEnd="326" governor="t211" pos="IN" OldId="r0010_4_t_7"/>
+        <token id="t181" word="Nārāyaṇa" lemma="Nārāyaṇa" deprel="POBJ" characterOffsetBegin="327" characterOffsetEnd="335" governor="t197" pos="NNP" OldId="r0010_4_t_8"/>
+        <token id="t174" word="." lemma="." deprel="PUNCT" characterOffsetBegin="335" characterOffsetEnd="336" governor="t136" pos="." OldId="r0010_4_t_9"/>
+      </sentence>
+      <sentence id="s5">
+        <token id="t159" word="Welcome" lemma="welcome" characterOffsetBegin="338" characterOffsetEnd="345" pos="UH" OldId="r0010_5_t_0"/>
+        <token id="t298" word="the" lemma="the" deprel="DET" characterOffsetBegin="346" characterOffsetEnd="349" governor="t283" pos="DT" OldId="r0010_5_t_1"/>
+        <token id="t283" word="child" lemma="child" deprel="DEP" sense="sen4" characterOffsetBegin="350" characterOffsetEnd="355" governor="t159" pos="NN" OldId="r0010_5_t_2"/>
+        <token id="t276" word="with" lemma="with" deprel="PREP" characterOffsetBegin="356" characterOffsetEnd="360" governor="t283" pos="IN" OldId="r0010_5_t_3"/>
+        <token id="t251" word="a" lemma="a" deprel="DET" characterOffsetBegin="361" characterOffsetEnd="362" governor="t234" pos="DT" OldId="r0010_5_t_4"/>
+        <token id="t244" word="white" lemma="white" deprel="AMOD" sense="sen67" characterOffsetBegin="363" characterOffsetEnd="368" governor="t234" pos="JJ" OldId="r0010_5_t_5">
+          <frame idref="f17"/>
+        </token>
+        <token id="t234" word="cloth" lemma="cloth" deprel="POBJ" sense="sen8" characterOffsetBegin="369" characterOffsetEnd="374" governor="t276" pos="NN" OldId="r0010_5_t_6"/>
+        <token id="t92" word="at" lemma="at" deprel="PREP" characterOffsetBegin="375" characterOffsetEnd="377" governor="t234" pos="IN" OldId="r0010_5_t_7"/>
+        <token id="t87" word="the" lemma="the" deprel="DET" characterOffsetBegin="378" characterOffsetEnd="381" governor="t127" pos="DT" OldId="r0010_5_t_8"/>
+        <token id="t113" word="auspicious" lemma="auspicious" deprel="AMOD" sense="sen32" characterOffsetBegin="382" characterOffsetEnd="392" governor="t127" pos="JJ" OldId="r0010_5_t_9"/>
+        <token id="t127" word="time" lemma="time" deprel="POBJ" sense="sen37" characterOffsetBegin="393" characterOffsetEnd="397" governor="t92" pos="NN" OldId="r0010_5_t_10"/>
+        <token id="t123" word="." lemma="." deprel="PUNCT" characterOffsetBegin="397" characterOffsetEnd="398" governor="t159" pos="." OldId="r0010_5_t_11"/>
+      </sentence>
+      <sentence id="s6">
+        <token id="t146" word="Give" lemma="give" sense="sen23" characterOffsetBegin="400" characterOffsetEnd="404" pos="VB" OldId="r0010_6_t_0">
+          <frame idref="f18"/>
+        </token>
+        <token id="t8" word="a" lemma="a" deprel="DET" characterOffsetBegin="405" characterOffsetEnd="406" governor="t0" pos="DT" OldId="r0010_6_t_1"/>
+        <token id="t0" word="finger" lemma="finger" deprel="DOBJ" sense="sen0" characterOffsetBegin="407" characterOffsetEnd="413" governor="t146" pos="NN" OldId="r0010_6_t_2"/>
+        <token id="t30" word="to" lemma="to" deprel="PREP" characterOffsetBegin="414" characterOffsetEnd="416" governor="t146" pos="TO" OldId="r0010_6_t_3"/>
+        <token id="t61" word="the" lemma="the" deprel="DET" characterOffsetBegin="417" characterOffsetEnd="420" governor="t45" pos="DT" OldId="r0010_6_t_4"/>
+        <token id="t45" word="boy" lemma="boy" deprel="POBJ" sense="sen14" characterOffsetBegin="421" characterOffsetEnd="424" governor="t30" pos="NN" OldId="r0010_6_t_5">
+          <frame idref="f19"/>
+        </token>
+        <token id="t74" word="to" lemma="to" deprel="AUX" characterOffsetBegin="425" characterOffsetEnd="427" governor="t227" pos="TO" OldId="r0010_6_t_6"/>
+        <token id="t227" word="welcome" lemma="welcome" deprel="INFMOD" sense="sen63" characterOffsetBegin="428" characterOffsetEnd="435" governor="t45" pos="VB" OldId="r0010_6_t_7"/>
+        <token id="t240" word="him" lemma="he" deprel="DOBJ" characterOffsetBegin="436" characterOffsetEnd="439" governor="t227" pos="PRP" OldId="r0010_6_t_8"/>
+        <token id="t257" word="." lemma="." deprel="PUNCT" characterOffsetBegin="439" characterOffsetEnd="440" governor="t146" pos="." OldId="r0010_6_t_9"/>
+      </sentence>
+      <sentence id="s7">
+        <token id="t269" word="Place" lemma="place" sense="sen48" characterOffsetBegin="442" characterOffsetEnd="447" pos="VB" OldId="r0010_7_t_0">
+          <frame idref="f20"/>
+        </token>
+        <token id="t280" word="a" lemma="a" deprel="DET" characterOffsetBegin="448" characterOffsetEnd="449" governor="t302" pos="DT" OldId="r0010_7_t_1"/>
+        <token id="t302" word="person" lemma="person" deprel="DOBJ" sense="sen78" characterOffsetBegin="450" characterOffsetEnd="456" governor="t269" pos="NN" OldId="r0010_7_t_2"/>
+        <token id="t152" word="on" lemma="on" deprel="PREP" characterOffsetBegin="457" characterOffsetEnd="459" governor="t269" pos="IN" OldId="r0010_7_t_3"/>
+        <token id="t173" word="the" lemma="the" deprel="DET" characterOffsetBegin="460" characterOffsetEnd="463" governor="t176" pos="DT" OldId="r0010_7_t_4"/>
+        <token id="t176" word="door" lemma="door" deprel="POBJ" sense="sen47" characterOffsetBegin="464" characterOffsetEnd="468" governor="t152" pos="NN" OldId="r0010_7_t_5"/>
+        <token id="t203" word="holding" lemma="hold" deprel="PARTMOD" sense="sen55" characterOffsetBegin="469" characterOffsetEnd="476" governor="t269" pos="VBG" OldId="r0010_7_t_6">
+          <frame idref="f21"/>
+        </token>
+        <token id="t209" word="a" lemma="a" deprel="DET" characterOffsetBegin="477" characterOffsetEnd="478" governor="t212" pos="DT" OldId="r0010_7_t_7"/>
+        <token id="t212" word="sword" lemma="sword" deprel="DOBJ" sense="sen59" characterOffsetBegin="479" characterOffsetEnd="484" governor="t203" pos="NN" OldId="r0010_7_t_8"/>
+        <token id="t103" word="." lemma="." deprel="PUNCT" characterOffsetBegin="484" characterOffsetEnd="485" governor="t269" pos="." OldId="r0010_7_t_9"/>
+      </sentence>
+      <sentence id="s8">
+        <token id="t90" word="Here" lemma="here" deprel="ADVMOD" sense="sen24" characterOffsetBegin="487" characterOffsetEnd="491" governor="t134" pos="RB" OldId="r0010_8_t_0">
+          <frame idref="f22"/>
+        </token>
+        <token id="t86" word="hand" lemma="hand" deprel="DEP" sense="sen23" characterOffsetBegin="492" characterOffsetEnd="496" governor="t90" pos="VBZ" OldId="r0010_8_t_1"/>
+        <token id="t134" word="over" lemma="over" characterOffsetBegin="497" characterOffsetEnd="501" pos="VBZ" OldId="r0010_8_t_2"/>
+        <token id="t130" word="the" lemma="the" deprel="DET" characterOffsetBegin="502" characterOffsetEnd="505" governor="t29" pos="DT" OldId="r0010_8_t_3"/>
+        <token id="t39" word="flower" lemma="flower" deprel="NN" sense="sen10" characterOffsetBegin="506" characterOffsetEnd="512" governor="t29" pos="NN" OldId="r0010_8_t_4"/>
+        <token id="t29" word="basket" lemma="basket" deprel="DOBJ" sense="sen7" characterOffsetBegin="513" characterOffsetEnd="519" governor="t134" pos="NN" OldId="r0010_8_t_5"/>
+        <token id="t9" word="." lemma="." deprel="PUNCT" characterOffsetBegin="519" characterOffsetEnd="520" governor="t29" pos="." OldId="r0010_8_t_6"/>
+        <token id="t79" word="Worship" lemma="worship" deprel="NN" sense="sen21" characterOffsetBegin="521" characterOffsetEnd="528" governor="t76" pos="NN" OldId="r0010_8_t_7">
+          <frame idref="f23"/>
+        </token>
+        <token id="t76" word="Viṣṇu" lemma="Viṣṇu" deprel="DEP" characterOffsetBegin="529" characterOffsetEnd="534" governor="t29" pos="NNP" OldId="r0010_8_t_8"/>
+        <token id="t60" word="according" lemma="accord" deprel="PREP" sense="sen18" characterOffsetBegin="535" characterOffsetEnd="544" governor="t134" pos="VBG" OldId="r0010_8_t_9"/>
+        <token id="t241" word="to" lemma="to" deprel="PREP" characterOffsetBegin="545" characterOffsetEnd="547" governor="t60" pos="TO" OldId="r0010_8_t_10"/>
+        <token id="t259" word="the" lemma="the" deprel="DET" characterOffsetBegin="548" characterOffsetEnd="551" governor="t229" pos="DT" OldId="r0010_8_t_11"/>
+        <token id="t229" word="custom" lemma="custom" deprel="POBJ" sense="sen64" characterOffsetBegin="552" characterOffsetEnd="558" governor="t241" pos="NN" OldId="r0010_8_t_12"/>
+        <token id="t289" word="i.e." lemma="i.e." deprel="DEP" characterOffsetBegin="559" characterOffsetEnd="563" governor="t229" pos="FW" OldId="r0010_8_t_13"/>
+        <token id="t304" word="with" lemma="with" deprel="PREP" characterOffsetBegin="564" characterOffsetEnd="568" governor="t229" pos="IN" OldId="r0010_8_t_14"/>
+        <token id="t272" word="incense" lemma="incense" deprel="NN" characterOffsetBegin="569" characterOffsetEnd="576" governor="t210" pos="NN" OldId="r0010_8_t_15"/>
+        <token id="t171" word="," lemma="," deprel="PUNCT" characterOffsetBegin="576" characterOffsetEnd="577" governor="t210" pos="," OldId="r0010_8_t_16"/>
+        <token id="t177" word="light" lemma="light" deprel="NN" characterOffsetBegin="578" characterOffsetEnd="583" governor="t210" pos="NN" OldId="r0010_8_t_17">
+          <frame idref="f24"/>
+        </token>
+        <token id="t150" word="," lemma="," deprel="PUNCT" sense="sen43" characterOffsetBegin="583" characterOffsetEnd="584" governor="t210" pos="," OldId="r0010_8_t_18"/>
+        <token id="t210" word="recitations" lemma="recitation" deprel="POBJ" characterOffsetBegin="585" characterOffsetEnd="596" governor="t304" pos="NNS" OldId="r0010_8_t_19">
+          <frame idref="f25"/>
+        </token>
+        <token id="t213" word="and" lemma="and" deprel="CC" sense="sen60" characterOffsetBegin="597" characterOffsetEnd="600" governor="t210" pos="CC" OldId="r0010_8_t_20"/>
+        <token id="t200" word="prayers" lemma="prayer" deprel="CONJ" characterOffsetBegin="601" characterOffsetEnd="608" governor="t210" pos="NNS" OldId="r0010_8_t_21">
+          <frame idref="f26"/>
+        </token>
+        <token id="t132" word="." lemma="." deprel="PUNCT" sense="sen31" characterOffsetBegin="608" characterOffsetEnd="609" governor="t134" pos="." OldId="r0010_8_t_22"/>
+      </sentence>
+      <sentence id="s9">
+        <token id="t117" word="Worship" lemma="worship" sense="sen33" characterOffsetBegin="611" characterOffsetEnd="618" pos="VB" OldId="r0010_9_t_0"/>
+        <token id="t137" word="the" lemma="the" deprel="DET" characterOffsetBegin="619" characterOffsetEnd="622" governor="t96" pos="DT" OldId="r0010_9_t_1"/>
+        <token id="t96" word="Brahmin" lemma="Brahmin" deprel="DOBJ" characterOffsetBegin="623" characterOffsetEnd="630" governor="t117" pos="NNP" OldId="r0010_9_t_2"/>
+        <token id="t82" word="." lemma="." deprel="PUNCT" characterOffsetBegin="630" characterOffsetEnd="631" governor="t117" pos="." OldId="r0010_9_t_3"/>
+      </sentence>
+      <sentence id="s10">
+        <token id="t106" word="Recite" lemma="recite" sense="sen29" characterOffsetBegin="633" characterOffsetEnd="639" pos="VB" OldId="r0010_10_t_0">
+          <frame idref="f27"/>
+        </token>
+        <token id="t64" word="the" lemma="the" deprel="DET" characterOffsetBegin="640" characterOffsetEnd="643" governor="t18" pos="DT" OldId="r0010_10_t_1"/>
+        <token id="t18" word="svasti no mimītā" lemma="svasti no mimītā" deprel="DOBJ" characterOffsetBegin="644" characterOffsetEnd="660" governor="t106" pos="FW" OldId="r0010_10_t_3"/>
+        <token id="t1" word=";" lemma=";" deprel="PUNCT" characterOffsetBegin="661" characterOffsetEnd="662" governor="t18" pos=":" OldId="r0010_10_t_4"/>
+        <token id="t34" word="the" lemma="the" deprel="DET" characterOffsetBegin="663" characterOffsetEnd="666" governor="t22" pos="DT" OldId="r0010_10_t_5"/>
+        <token id="t22" word="kanikrada" lemma="kanikrada" deprel="DEP" characterOffsetBegin="667" characterOffsetEnd="676" governor="t18" pos="FW" OldId="r0010_10_t_6"/>
+        <token id="t264" word=";" lemma=";" deprel="PUNCT" characterOffsetBegin="676" characterOffsetEnd="677" governor="t18" pos=":" OldId="r0010_10_t_7"/>
+        <token id="t291" word="the" lemma="the" deprel="DET" characterOffsetBegin="678" characterOffsetEnd="681" governor="t26" pos="DT" OldId="r0010_10_t_8"/>
+        <token id="t26" word="āśuḥ śiśāno" lemma="āśuḥ śiśāno" deprel="DEP" characterOffsetBegin="682" characterOffsetEnd="693" governor="t18" pos="FW" OldId="r0010_10_t_9"/>
+        <token id="t223" word=";" lemma=";" deprel="PUNCT" characterOffsetBegin="693" characterOffsetEnd="694" governor="t18" pos=":" OldId="r0010_10_t_10"/>
+        <token id="t248" word="the" lemma="the" deprel="DET" characterOffsetBegin="695" characterOffsetEnd="698" governor="t201" pos="DT" OldId="r0010_10_t_11"/>
+        <token id="t32" word="yaj jāgrato" lemma="yaj jāgrato" deprel="NN" characterOffsetBegin="699" characterOffsetEnd="710" governor="t201" pos="FW" OldId="r0010_10_t_12"/>
+        <token id="t191" word=";" lemma=";" deprel="PUNCT" characterOffsetBegin="710" characterOffsetEnd="711" governor="t201" pos=":" OldId="r0010_10_t_13"/>
+        <token id="t201" word="themantra" lemma="themantra" deprel="CONJ" characterOffsetBegin="712" characterOffsetEnd="721" governor="t18" pos="NN" OldId="r0010_10_t_14"/>
+        <token id="t215" word=";" lemma=";" deprel="PUNCT" characterOffsetBegin="721" characterOffsetEnd="722" governor="t201" pos=":" OldId="r0010_10_t_15"/>
+        <token id="t156" word="the" lemma="the" deprel="DET" characterOffsetBegin="723" characterOffsetEnd="726" governor="t37" pos="DT" OldId="r0010_10_t_16"/>
+        <token id="t37" word="agnes tanūr" lemma="agnes tanūr" deprel="CONJ" characterOffsetBegin="727" characterOffsetEnd="738" governor="t201" pos="FW" OldId="r0010_10_t_17"/>
+        <token id="t186" word="and" lemma="and" deprel="CC" characterOffsetBegin="739" characterOffsetEnd="742" governor="t37" pos="CC" OldId="r0010_10_t_18"/>
+        <token id="t144" word="the" lemma="the" deprel="DET" characterOffsetBegin="743" characterOffsetEnd="746" governor="t38" pos="DT" OldId="r0010_10_t_19"/>
+        <token id="t38" word="vayam̐ soma" lemma="vayam̐ soma" deprel="CONJ" characterOffsetBegin="747" characterOffsetEnd="758" governor="t37" pos="FW" OldId="r0010_10_t_20"/>
+        <token id="t119" word="." lemma="." deprel="PUNCT" characterOffsetBegin="758" characterOffsetEnd="759" governor="t106" pos="." OldId="r0010_10_t_21"/>
+      </sentence>
+      <sentence id="s11">
+        <token id="t108" word="Worship" lemma="worship" sense="sen30" characterOffsetBegin="760" characterOffsetEnd="767" pos="VB" OldId="r0010_11_t_0"/>
+        <token id="t99" word="at" lemma="at" deprel="PREP" characterOffsetBegin="768" characterOffsetEnd="770" governor="t108" pos="IN" OldId="r0010_11_t_1"/>
+        <token id="t85" word="the" lemma="the" deprel="DET" characterOffsetBegin="771" characterOffsetEnd="774" governor="t57" pos="DT" OldId="r0010_11_t_2"/>
+        <token id="t69" word="birth" lemma="birth" deprel="NN" sense="sen19" characterOffsetBegin="775" characterOffsetEnd="780" governor="t57" pos="NN" OldId="r0010_11_t_3"/>
+        <token id="t57" word="place" lemma="place" deprel="POBJ" sense="sen17" characterOffsetBegin="781" characterOffsetEnd="786" governor="t99" pos="NN" OldId="r0010_11_t_4">
+          <frame idref="f28"/>
+        </token>
+        <token id="t46" word="of" lemma="of" deprel="PREP" characterOffsetBegin="787" characterOffsetEnd="789" governor="t57" pos="IN" OldId="r0010_11_t_5"/>
+        <token id="t27" word="the" lemma="the" deprel="DET" characterOffsetBegin="790" characterOffsetEnd="793" governor="t17" pos="DT" OldId="r0010_11_t_6"/>
+        <token id="t17" word="child" lemma="child" deprel="POBJ" sense="sen4" characterOffsetBegin="794" characterOffsetEnd="799" governor="t46" pos="NN" OldId="r0010_11_t_7"/>
+        <token id="t293" word="in" lemma="in" deprel="PREP" characterOffsetBegin="800" characterOffsetEnd="802" governor="t57" pos="IN" OldId="r0010_11_t_8"/>
+        <token id="t299" word="the" lemma="the" deprel="DET" characterOffsetBegin="803" characterOffsetEnd="806" governor="t266" pos="DT" OldId="r0010_11_t_9"/>
+        <token id="t266" word="temple" lemma="temple" deprel="POBJ" sense="sen73" characterOffsetBegin="807" characterOffsetEnd="813" governor="t293" pos="NN" OldId="r0010_11_t_10">
+          <frame idref="f29"/>
+        </token>
+        <token id="t249" word="of" lemma="of" deprel="PREP" characterOffsetBegin="814" characterOffsetEnd="816" governor="t266" pos="IN" OldId="r0010_11_t_11"/>
+        <token id="t252" word="Ṣaṣṭhī" lemma="ṣaṣṭhī" deprel="POBJ" characterOffsetBegin="817" characterOffsetEnd="823" governor="t249" pos="NN" OldId="r0010_11_t_12"/>
+        <token id="t226" word="at" lemma="at" deprel="PREP" characterOffsetBegin="824" characterOffsetEnd="826" governor="t266" pos="IN" OldId="r0010_11_t_13"/>
+        <token id="t204" word="the" lemma="the" deprel="DET" characterOffsetBegin="827" characterOffsetEnd="830" governor="t193" pos="DT" OldId="r0010_11_t_14"/>
+        <token id="t219" word="auspicious" lemma="auspicious" deprel="AMOD" sense="sen32" characterOffsetBegin="831" characterOffsetEnd="841" governor="t193" pos="JJ" OldId="r0010_11_t_15"/>
+        <token id="t193" word="time" lemma="time" deprel="POBJ" sense="sen52" characterOffsetBegin="842" characterOffsetEnd="846" governor="t226" pos="NN" OldId="r0010_11_t_16"/>
+        <token id="t167" word="." lemma="." deprel="PUNCT" characterOffsetBegin="846" characterOffsetEnd="847" governor="t108" pos="." OldId="r0010_11_t_17"/>
+      </sentence>
+      <sentence id="s12">
+        <token id="t179" word="Place" lemma="place" sense="sen48" characterOffsetBegin="849" characterOffsetEnd="854" pos="VB" OldId="r0010_12_t_0">
+          <frame idref="f30"/>
+        </token>
+        <token id="t161" word="a" lemma="a" deprel="DET" characterOffsetBegin="855" characterOffsetEnd="856" governor="t182" pos="DT" OldId="r0010_12_t_1"/>
+        <token id="t169" word="grinding" lemma="grind" deprel="AMOD" sense="sen46" characterOffsetBegin="857" characterOffsetEnd="865" governor="t182" pos="VBG" OldId="r0010_12_t_2">
+          <frame idref="f31"/>
+        </token>
+        <token id="t182" word="stone" lemma="stone" deprel="DOBJ" sense="sen50" characterOffsetBegin="866" characterOffsetEnd="871" governor="t179" pos="NN" OldId="r0010_12_t_3"/>
+        <token id="t160" word="." lemma="." deprel="PUNCT" characterOffsetBegin="871" characterOffsetEnd="872" governor="t179" pos="." OldId="r0010_12_t_4"/>
+      </sentence>
+      <sentence id="s13">
+        <token id="t208" word="Offer" lemma="offer" sense="sen57" characterOffsetBegin="874" characterOffsetEnd="879" pos="VB" OldId="r0010_13_t_0">
+          <frame idref="f32"/>
+        </token>
+        <token id="t216" word="a" lemma="a" deprel="DET" characterOffsetBegin="880" characterOffsetEnd="881" governor="t199" pos="DT" OldId="r0010_13_t_1"/>
+        <token id="t199" word="lamp" lemma="lamp" deprel="DOBJ" sense="sen54" characterOffsetBegin="882" characterOffsetEnd="886" governor="t208" pos="NN" OldId="r0010_13_t_2"/>
+        <token id="t243" word="with" lemma="with" deprel="PREP" characterOffsetBegin="887" characterOffsetEnd="891" governor="t199" pos="IN" OldId="r0010_13_t_3"/>
+        <token id="t228" word="six" lemma="six" deprel="NUM" characterOffsetBegin="892" characterOffsetEnd="895" governor="t235" pos="CD" OldId="r0010_13_t_4">
+          <frame idref="f33"/>
+        </token>
+        <token id="t235" word="wicks" lemma="wick" deprel="POBJ" sense="sen65" characterOffsetBegin="896" characterOffsetEnd="901" governor="t243" pos="NNS" OldId="r0010_13_t_5"/>
+        <token id="t281" word="to" lemma="to" deprel="PREP" characterOffsetBegin="902" characterOffsetEnd="904" governor="t208" pos="TO" OldId="r0010_13_t_6"/>
+        <token id="t268" word="the" lemma="the" deprel="DET" characterOffsetBegin="905" characterOffsetEnd="908" governor="t42" pos="DT" OldId="r0010_13_t_7"/>
+        <token id="t275" word="Ṣaṣṭhī" lemma="ṣaṣṭhī" deprel="AMOD" characterOffsetBegin="909" characterOffsetEnd="915" governor="t42" pos="JJ" OldId="r0010_13_t_8"/>
+        <token id="t42" word="goddess" lemma="goddess" deprel="POBJ" sense="sen12" characterOffsetBegin="916" characterOffsetEnd="923" governor="t281" pos="NN" OldId="r0010_13_t_9"/>
+        <token id="t15" word="." lemma="." deprel="PUNCT" characterOffsetBegin="923" characterOffsetEnd="924" governor="t208" pos="." OldId="r0010_13_t_10"/>
+      </sentence>
+      <sentence id="s14">
+        <token id="t4" word="Offer" lemma="offer" sense="sen1" characterOffsetBegin="926" characterOffsetEnd="931" pos="VB" OldId="r0010_14_t_0">
+          <frame idref="f34"/>
+        </token>
+        <token id="t71" word="fragrant" lemma="fragrant" deprel="AMOD" sense="sen6" characterOffsetBegin="932" characterOffsetEnd="940" governor="t54" pos="JJ" OldId="r0010_14_t_1"/>
+        <token id="t54" word="materials" lemma="material" deprel="DOBJ" sense="sen15" characterOffsetBegin="941" characterOffsetEnd="950" governor="t4" pos="NNS" OldId="r0010_14_t_2">
+          <frame idref="f35"/>
+        </token>
+        <token id="t52" word="etc." lemma="etc." deprel="DEP" characterOffsetBegin="951" characterOffsetEnd="955" governor="t4" pos="FW" OldId="r0010_14_t_3"/>
+      </sentence>
+      <sentence id="s15">
+        <token id="t109" word="Recitation" lemma="recitation" deprel="DEP" sense="sen31" characterOffsetBegin="957" characterOffsetEnd="967" governor="t271" pos="NN" OldId="r0010_15_t_0">
+          <frame idref="f36"/>
+        </token>
+        <token id="t91" word="and" lemma="and" deprel="CC" characterOffsetBegin="968" characterOffsetEnd="971" governor="t109" pos="CC" OldId="r0010_15_t_1"/>
+        <token id="t83" word="the" lemma="the" deprel="DET" characterOffsetBegin="972" characterOffsetEnd="975" governor="t129" pos="DT" OldId="r0010_15_t_2"/>
+        <token id="t141" word="following" lemma="following" deprel="AMOD" sense="sen40" characterOffsetBegin="976" characterOffsetEnd="985" governor="t129" pos="JJ" OldId="r0010_15_t_3"/>
+        <token id="t129" word="prayer" lemma="prayer" deprel="CONJ" sense="sen38" characterOffsetBegin="986" characterOffsetEnd="992" governor="t109" pos="NN" OldId="r0010_15_t_4">
+          <frame idref="f37"/>
+        </token>
+        <token id="t114" word=":" lemma=":" deprel="PUNCT" characterOffsetBegin="992" characterOffsetEnd="993" governor="t109" pos=":" OldId="r0010_15_t_5"/>
+        <token id="t162" word="&quot;" lemma="&quot;" deprel="DEP" characterOffsetBegin="994" characterOffsetEnd="995" governor="t109" pos="&quot;" OldId="r0010_15_t_6"/>
+        <token id="t165" word="Śivā" lemma="Śivā" deprel="NN" characterOffsetBegin="995" characterOffsetEnd="999" governor="t271" pos="NNP" OldId="r0010_15_t_7"/>
+        <token id="t187" word="," lemma="," deprel="PUNCT" characterOffsetBegin="999" characterOffsetEnd="1000" governor="t271" pos="," OldId="r0010_15_t_8"/>
+        <token id="t194" word="Sambhūti" lemma="Sambhūti" deprel="NN" characterOffsetBegin="1001" characterOffsetEnd="1009" governor="t271" pos="NNP" OldId="r0010_15_t_9"/>
+        <token id="t205" word="," lemma="," deprel="PUNCT" characterOffsetBegin="1009" characterOffsetEnd="1010" governor="t271" pos="," OldId="r0010_15_t_10"/>
+        <token id="t214" word="Prīti" lemma="Prīti" deprel="NN" characterOffsetBegin="1011" characterOffsetEnd="1016" governor="t271" pos="NNP" OldId="r0010_15_t_11"/>
+        <token id="t225" word="," lemma="," deprel="PUNCT" characterOffsetBegin="1016" characterOffsetEnd="1017" governor="t271" pos="," OldId="r0010_15_t_12"/>
+        <token id="t231" word="Saṃtati" lemma="Saṃtati" deprel="NN" characterOffsetBegin="1018" characterOffsetEnd="1025" governor="t271" pos="NNP" OldId="r0010_15_t_13"/>
+        <token id="t261" word="," lemma="," deprel="PUNCT" characterOffsetBegin="1025" characterOffsetEnd="1026" governor="t271" pos="," OldId="r0010_15_t_14"/>
+        <token id="t271" word="Anusūyā" lemma="Anusūyā" deprel="PUNCT" characterOffsetBegin="1027" characterOffsetEnd="1034" governor="t135" pos="NNP" OldId="r0010_15_t_15"/>
+        <token id="t285" word="and" lemma="and" deprel="CC" characterOffsetBegin="1035" characterOffsetEnd="1038" governor="t271" pos="CC" OldId="r0010_15_t_16"/>
+        <token id="t297" word="Kṣemā" lemma="Kṣemā" deprel="CONJ" characterOffsetBegin="1039" characterOffsetEnd="1044" governor="t271" pos="NNP" OldId="r0010_15_t_17"/>
+        <token id="t2" word="–" lemma="–" deprel="PUNCT" characterOffsetBegin="1045" characterOffsetEnd="1046" governor="t271" pos="-" OldId="r0010_15_t_18"/>
+        <token id="t33" word="these" lemma="these" deprel="DET" characterOffsetBegin="1047" characterOffsetEnd="1052" governor="t31" pos="DT" OldId="r0010_15_t_19"/>
+        <token id="t31" word="six" lemma="six" deprel="NSUBJ" characterOffsetBegin="1053" characterOffsetEnd="1056" governor="t73" pos="CD" OldId="r0010_15_t_20">
+          <frame idref="f38"/>
+        </token>
+        <token id="t44" word="are" lemma="be" deprel="COP" sense="sen13" characterOffsetBegin="1057" characterOffsetEnd="1060" governor="t73" pos="VBP" OldId="r0010_15_t_21"/>
+        <token id="t77" word="the" lemma="the" deprel="DET" characterOffsetBegin="1061" characterOffsetEnd="1064" governor="t73" pos="DT" OldId="r0010_15_t_22"/>
+        <token id="t73" word="names" lemma="name" deprel="DEP" sense="sen20" characterOffsetBegin="1065" characterOffsetEnd="1070" governor="t271" pos="NNS" OldId="r0010_15_t_23"/>
+        <token id="t88" word="of" lemma="of" deprel="PREP" characterOffsetBegin="1071" characterOffsetEnd="1073" governor="t73" pos="IN" OldId="r0010_15_t_24"/>
+        <token id="t107" word="the" lemma="the" deprel="DET" characterOffsetBegin="1074" characterOffsetEnd="1077" governor="t122" pos="DT" OldId="r0010_15_t_25"/>
+        <token id="t101" word="Ṣaṣṭhī" lemma="ṣaṣṭhī" deprel="NN" characterOffsetBegin="1078" characterOffsetEnd="1084" governor="t122" pos="NN" OldId="r0010_15_t_26"/>
+        <token id="t122" word="goddess" lemma="goddess" deprel="POBJ" sense="sen12" characterOffsetBegin="1085" characterOffsetEnd="1092" governor="t88" pos="NN" OldId="r0010_15_t_27"/>
+        <token id="t143" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1092" characterOffsetEnd="1093" governor="t271" pos="." OldId="r0010_15_t_28"/>
+        <token id="t135" word="&quot;" lemma="&quot;" characterOffsetBegin="1093" characterOffsetEnd="1094" pos="&quot;" OldId="r0010_15_t_29"/>
+      </sentence>
+      <sentence id="s16">
+        <token id="t217" word="Offer" lemma="offer" sense="sen1" characterOffsetBegin="1096" characterOffsetEnd="1101" pos="VB" OldId="r0010_16_t_0">
+          <frame idref="f39"/>
+        </token>
+        <token id="t189" word="fragrant" lemma="fragrant" deprel="AMOD" sense="sen6" characterOffsetBegin="1102" characterOffsetEnd="1110" governor="t172" pos="JJ" OldId="r0010_16_t_1"/>
+        <token id="t172" word="materials" lemma="material" deprel="DOBJ" sense="sen15" characterOffsetBegin="1111" characterOffsetEnd="1120" governor="t217" pos="NNS" OldId="r0010_16_t_2">
+          <frame idref="f40"/>
+        </token>
+        <token id="t183" word="etc." lemma="etc." deprel="DEP" characterOffsetBegin="1121" characterOffsetEnd="1125" governor="t217" pos="FW" OldId="r0010_16_t_3"/>
+      </sentence>
+      <sentence id="s17">
+        <token id="t151" word="Give" lemma="give" sense="sen44" characterOffsetBegin="1127" characterOffsetEnd="1131" pos="VB" OldId="r0010_17_t_0">
+          <frame idref="f41"/>
+        </token>
+        <token id="t286" word="flower" lemma="flower" deprel="DOBJ" sense="sen10" characterOffsetBegin="1132" characterOffsetEnd="1138" governor="t151" pos="NN" OldId="r0010_17_t_1"/>
+        <token id="t301" word="during" lemma="during" deprel="PREP" characterOffsetBegin="1139" characterOffsetEnd="1145" governor="t151" pos="IN" OldId="r0010_17_t_2"/>
+        <token id="t270" word="the" lemma="the" deprel="DET" characterOffsetBegin="1146" characterOffsetEnd="1149" governor="t245" pos="DT" OldId="r0010_17_t_3"/>
+        <token id="t245" word="recitation" lemma="recitation" deprel="POBJ" sense="sen68" characterOffsetBegin="1150" characterOffsetEnd="1160" governor="t301" pos="NN" OldId="r0010_17_t_4">
+          <frame idref="f42"/>
+        </token>
+        <token id="t260" word="of" lemma="of" deprel="PREP" characterOffsetBegin="1161" characterOffsetEnd="1163" governor="t245" pos="IN" OldId="r0010_17_t_5"/>
+        <token id="t232" word="the" lemma="the" deprel="DET" characterOffsetBegin="1164" characterOffsetEnd="1167" governor="t43" pos="DT" OldId="r0010_17_t_6"/>
+        <token id="t43" word="śāntikamantra" lemma="śāntikamantra" deprel="POBJ" characterOffsetBegin="1168" characterOffsetEnd="1181" governor="t260" pos="FW" OldId="r0010_17_t_8"/>
+        <token id="t48" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1181" characterOffsetEnd="1182" governor="t151" pos="." OldId="r0010_17_t_9"/>
+      </sentence>
+      <sentence id="s18">
+        <token id="t36" word="Make" lemma="make" sense="sen9" characterOffsetBegin="1184" characterOffsetEnd="1188" pos="VB" OldId="r0010_18_t_0">
+          <frame idref="f43"/>
+        </token>
+        <token id="t21" word="the" lemma="the" deprel="DET" characterOffsetBegin="1189" characterOffsetEnd="1192" governor="t145" pos="DT" OldId="r0010_18_t_1"/>
+        <token id="t7" word="ritual" lemma="ritual" deprel="NN" sense="sen2" characterOffsetBegin="1193" characterOffsetEnd="1199" governor="t145" pos="NN" OldId="r0010_18_t_2">
+          <frame idref="f44"/>
+        </token>
+        <token id="t145" word="decision" lemma="decision" deprel="DOBJ" sense="sen41" characterOffsetBegin="1200" characterOffsetEnd="1208" governor="t36" pos="NN" OldId="r0010_18_t_3">
+          <frame idref="f45"/>
+        </token>
+        <token id="t139" word="for" lemma="for" deprel="PREP" characterOffsetBegin="1209" characterOffsetEnd="1212" governor="t145" pos="IN" OldId="r0010_18_t_4"/>
+        <token id="t120" word="food" lemma="food" deprel="POBJ" sense="sen35" characterOffsetBegin="1213" characterOffsetEnd="1217" governor="t139" pos="NN" OldId="r0010_18_t_5">
+          <frame idref="f46"/>
+        </token>
+        <token id="t112" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1217" characterOffsetEnd="1218" governor="t36" pos="." OldId="r0010_18_t_6"/>
+      </sentence>
+      <sentence id="s19">
+        <token id="t51" word="dakṣiṇā" lemma="dakṣiṇā" deprel="NSUBJPASS" characterOffsetBegin="1220" characterOffsetEnd="1227" governor="t221" pos="FW" OldId="r0010_19_t_1">
+          <frame idref="f47"/>
+        </token>
+        <token id="t188" word="should" lemma="should" deprel="AUX" characterOffsetBegin="1228" characterOffsetEnd="1234" governor="t221" pos="MD" OldId="r0010_19_t_2"/>
+        <token id="t196" word="be" lemma="be" deprel="AUXPASS" sense="sen13" characterOffsetBegin="1235" characterOffsetEnd="1237" governor="t221" pos="VB" OldId="r0010_19_t_3"/>
+        <token id="t221" word="given" lemma="give" sense="sen61" characterOffsetBegin="1238" characterOffsetEnd="1243" pos="VBN" OldId="r0010_19_t_4">
+          <frame idref="f48"/>
+        </token>
+        <token id="t153" word="to" lemma="to" deprel="PREP" characterOffsetBegin="1244" characterOffsetEnd="1246" governor="t221" pos="IN" OldId="r0010_19_t_5"/>
+        <token id="t170" word="the" lemma="the" deprel="DET" characterOffsetBegin="1247" characterOffsetEnd="1250" governor="t185" pos="DT" OldId="r0010_19_t_6"/>
+        <token id="t185" word="gods" lemma="god" deprel="POBJ" sense="sen3" characterOffsetBegin="1251" characterOffsetEnd="1255" governor="t153" pos="NNS" OldId="r0010_19_t_7"/>
+        <token id="t274" word="and" lemma="and" deprel="CC" characterOffsetBegin="1256" characterOffsetEnd="1259" governor="t185" pos="CC" OldId="r0010_19_t_8"/>
+        <token id="t282" word="priest" lemma="priest" deprel="CONJ" sense="sen76" characterOffsetBegin="1260" characterOffsetEnd="1266" governor="t185" pos="NN" OldId="r0010_19_t_9"/>
+        <token id="t303" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1266" characterOffsetEnd="1267" governor="t221" pos="." OldId="r0010_19_t_10"/>
+      </sentence>
+      <sentence id="s20">
+        <token id="t230" word="Auspicious" lemma="auspicious" deprel="AMOD" sense="sen32" characterOffsetBegin="1269" characterOffsetEnd="1279" governor="t239" pos="JJ" OldId="r0010_20_t_0"/>
+        <token id="t239" word="recitations" lemma="recitation" sense="sen31" characterOffsetBegin="1280" characterOffsetEnd="1291" pos="NNS" OldId="r0010_20_t_1">
+          <frame idref="f49"/>
+        </token>
+        <token id="t258" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1291" characterOffsetEnd="1292" governor="t239" pos="." OldId="r0010_20_t_2"/>
+      </sentence>
+      <sentence id="s21">
+        <token id="t56" word="Blessings" lemma="blessing" sense="sen16" characterOffsetBegin="1294" characterOffsetEnd="1303" pos="NNS" OldId="r0010_21_t_0">
+          <frame idref="f50"/>
+        </token>
+        <token id="t78" word="from" lemma="from" deprel="PREP" characterOffsetBegin="1304" characterOffsetEnd="1308" governor="t56" pos="IN" OldId="r0010_21_t_1"/>
+        <token id="t72" word="the" lemma="the" deprel="DET" characterOffsetBegin="1309" characterOffsetEnd="1312" governor="t11" pos="DT" OldId="r0010_21_t_2"/>
+        <token id="t11" word="gods" lemma="god" deprel="POBJ" sense="sen3" characterOffsetBegin="1313" characterOffsetEnd="1317" governor="t78" pos="NNS" OldId="r0010_21_t_3"/>
+        <token id="t40" word="in" lemma="in" deprel="PREP" characterOffsetBegin="1318" characterOffsetEnd="1320" governor="t11" pos="IN" OldId="r0010_21_t_4"/>
+        <token id="t28" word="the" lemma="the" deprel="DET" characterOffsetBegin="1321" characterOffsetEnd="1324" governor="t118" pos="DT" OldId="r0010_21_t_5"/>
+        <token id="t118" word="form" lemma="form" deprel="POBJ" sense="sen34" characterOffsetBegin="1325" characterOffsetEnd="1329" governor="t40" pos="NN" OldId="r0010_21_t_6"/>
+        <token id="t149" word="of" lemma="of" deprel="PREP" characterOffsetBegin="1330" characterOffsetEnd="1332" governor="t118" pos="IN" OldId="r0010_21_t_7"/>
+        <token id="t58" word="prasāda" lemma="prasāda" deprel="POBJ" characterOffsetBegin="1333" characterOffsetEnd="1340" governor="t149" pos="FW" OldId="r0010_21_t_9">
+          <frame idref="f51"/>
+        </token>
+        <token id="t111" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1340" characterOffsetEnd="1341" governor="t56" pos="." OldId="r0010_21_t_10"/>
+      </sentence>
+      <sentence id="s22">
+        <token id="t253" word="Release" lemma="release" sense="sen71" characterOffsetBegin="1343" characterOffsetEnd="1350" pos="VB" OldId="r0010_22_t_0"/>
+        <token id="t246" word="the" lemma="the" deprel="DET" characterOffsetBegin="1351" characterOffsetEnd="1354" governor="t237" pos="DT" OldId="r0010_22_t_1"/>
+        <token id="t237" word="deities" lemma="deity" deprel="DOBJ" sense="sen3" characterOffsetBegin="1355" characterOffsetEnd="1362" governor="t253" pos="NNS" OldId="r0010_22_t_2"/>
+        <token id="t296" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1362" characterOffsetEnd="1363" governor="t253" pos="." OldId="r0010_22_t_3"/>
+      </sentence>
+      <sentence id="s23">
+        <token id="t284" word="Send" lemma="send" sense="sen74" characterOffsetBegin="1365" characterOffsetEnd="1369" pos="VBZ" OldId="r0010_23_t_0">
+          <frame idref="f52"/>
+        </token>
+        <token id="t265" word="a" lemma="a" deprel="DET" characterOffsetBegin="1370" characterOffsetEnd="1371" governor="t184" pos="DT" OldId="r0010_23_t_1"/>
+        <token id="t184" word="share" lemma="share" deprel="DOBJ" sense="sen51" characterOffsetBegin="1372" characterOffsetEnd="1377" governor="t284" pos="NN" OldId="r0010_23_t_2"/>
+        <token id="t166" word="of" lemma="of" deprel="PREP" characterOffsetBegin="1378" characterOffsetEnd="1380" governor="t184" pos="IN" OldId="r0010_23_t_3"/>
+        <token id="t155" word="the" lemma="the" deprel="DET" characterOffsetBegin="1381" characterOffsetEnd="1384" governor="t55" pos="DT" OldId="r0010_23_t_4"/>
+        <token id="t55" word="bali" lemma="bali" deprel="POBJ" characterOffsetBegin="1385" characterOffsetEnd="1389" governor="t166" pos="FW" OldId="r0010_23_t_5">
+          <frame idref="f53"/>
+        </token>
+        <token id="t207" word="to" lemma="to" deprel="PREP" characterOffsetBegin="1390" characterOffsetEnd="1392" governor="t284" pos="TO" OldId="r0010_23_t_6"/>
+        <token id="t192" word="the" lemma="the" deprel="DET" characterOffsetBegin="1393" characterOffsetEnd="1396" governor="t62" pos="DT" OldId="r0010_23_t_7"/>
+        <token id="t62" word="pikhālākhu" lemma="pikhālākhu" deprel="POBJ" characterOffsetBegin="1397" characterOffsetEnd="1407" governor="t207" pos="FW" OldId="r0010_23_t_9">
+          <frame idref="f54"/>
+        </token>
+        <token id="t93" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1407" characterOffsetEnd="1408" governor="t284" pos="." OldId="r0010_23_t_10"/>
+      </sentence>
+      <sentence id="s24">
+        <token id="t140" word="Ritual" lemma="ritual" deprel="NN" sense="sen2" characterOffsetBegin="1410" characterOffsetEnd="1416" governor="t147" pos="NN" OldId="r0010_24_t_0">
+          <frame idref="f55"/>
+        </token>
+        <token id="t147" word="washing" lemma="washing" sense="sen42" characterOffsetBegin="1417" characterOffsetEnd="1424" pos="NN" OldId="r0010_24_t_1"/>
+        <token id="t125" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1424" characterOffsetEnd="1425" governor="t147" pos="." OldId="r0010_24_t_2"/>
+      </sentence>
+      <sentence id="s25">
+        <token id="t24" word="Fragrant" lemma="fragrant" deprel="AMOD" sense="sen6" characterOffsetBegin="1427" characterOffsetEnd="1435" governor="t35" pos="JJ" OldId="r0010_25_t_0"/>
+        <token id="t35" word="materials" lemma="material" deprel="DEP" sense="sen8" characterOffsetBegin="1436" characterOffsetEnd="1445" governor="t19" pos="NNS" OldId="r0010_25_t_1">
+          <frame idref="f56"/>
+        </token>
+        <token id="t19" word="etc" lemma="etc" characterOffsetBegin="1446" characterOffsetEnd="1449" pos="FW" OldId="r0010_25_t_2"/>
+        <token id="t67" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1449" characterOffsetEnd="1450" governor="t19" pos="." OldId="r0010_25_t_3"/>
+      </sentence>
+      <sentence id="s26">
+        <token id="t49" word="Blessings" lemma="blessing" characterOffsetBegin="1452" characterOffsetEnd="1461" pos="NNS" OldId="r0010_26_t_0">
+          <frame idref="f57"/>
+        </token>
+        <token id="t63" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1461" characterOffsetEnd="1462" governor="t49" pos="." OldId="r0010_26_t_1"/>
+      </sentence>
+      <sentence id="s27">
+        <token id="t236" word="Speak" lemma="speak" sense="sen66" characterOffsetBegin="1464" characterOffsetEnd="1469" pos="VB" OldId="r0010_27_t_0">
+          <frame idref="f58"/>
+        </token>
+        <token id="t254" word="a" lemma="a" deprel="DET" characterOffsetBegin="1470" characterOffsetEnd="1471" governor="t295" pos="DT" OldId="r0010_27_t_1"/>
+        <token id="t247" word="few" lemma="few" deprel="AMOD" sense="sen69" characterOffsetBegin="1472" characterOffsetEnd="1475" governor="t295" pos="JJ" OldId="r0010_27_t_2"/>
+        <token id="t277" word="pleasing" lemma="pleasing" deprel="AMOD" sense="sen75" characterOffsetBegin="1476" characterOffsetEnd="1484" governor="t295" pos="JJ" OldId="r0010_27_t_3"/>
+        <token id="t295" word="words" lemma="word" deprel="DOBJ" sense="sen77" characterOffsetBegin="1485" characterOffsetEnd="1490" governor="t236" pos="NNS" OldId="r0010_27_t_4"/>
+        <token id="t290" word="to" lemma="to" deprel="PREP" characterOffsetBegin="1491" characterOffsetEnd="1493" governor="t236" pos="TO" OldId="r0010_27_t_5"/>
+        <token id="t157" word="the" lemma="the" deprel="DET" characterOffsetBegin="1494" characterOffsetEnd="1497" governor="t168" pos="DT" OldId="r0010_27_t_6"/>
+        <token id="t180" word="newborn" lemma="newborn" deprel="AMOD" sense="sen49" characterOffsetBegin="1498" characterOffsetEnd="1505" governor="t168" pos="JJ" OldId="r0010_27_t_7"/>
+        <token id="t168" word="child" lemma="child" deprel="POBJ" sense="sen4" characterOffsetBegin="1506" characterOffsetEnd="1511" governor="t290" pos="NN" OldId="r0010_27_t_8"/>
+        <token id="t190" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1511" characterOffsetEnd="1512" governor="t236" pos="." OldId="r0010_27_t_9"/>
+      </sentence>
+      <sentence id="s28">
+        <token id="t220" word="Here" lemma="here" deprel="ADVMOD" sense="sen24" characterOffsetBegin="1514" characterOffsetEnd="1518" governor="t206" pos="RB" OldId="r0010_28_t_0">
+          <frame idref="f59"/>
+        </token>
+        <token id="t206" word="end" lemma="end" sense="sen56" characterOffsetBegin="1519" characterOffsetEnd="1522" pos="VBP" OldId="r0010_28_t_1"/>
+        <token id="t94" word="the" lemma="the" deprel="DET" characterOffsetBegin="1523" characterOffsetEnd="1526" governor="t100" pos="DT" OldId="r0010_28_t_2"/>
+        <token id="t100" word="rules" lemma="rule" deprel="DOBJ" sense="sen26" characterOffsetBegin="1527" characterOffsetEnd="1532" governor="t206" pos="NNS" OldId="r0010_28_t_3">
+          <frame idref="f60"/>
+        </token>
+        <token id="t110" word="for" lemma="for" deprel="PREP" characterOffsetBegin="1533" characterOffsetEnd="1536" governor="t100" pos="IN" OldId="r0010_28_t_4"/>
+        <token id="t126" word="the" lemma="the" deprel="DET" characterOffsetBegin="1537" characterOffsetEnd="1540" governor="t148" pos="DT" OldId="r0010_28_t_5"/>
+        <token id="t138" word="night" lemma="night" deprel="NN" sense="sen5" characterOffsetBegin="1541" characterOffsetEnd="1546" governor="t148" pos="NN" OldId="r0010_28_t_6">
+          <frame idref="f61"/>
+        </token>
+        <token id="t148" word="vigil" lemma="vigil" deprel="POBJ" sense="sen11" characterOffsetBegin="1547" characterOffsetEnd="1552" governor="t110" pos="NN" OldId="r0010_28_t_7"/>
+        <token id="t16" word="for" lemma="for" deprel="PREP" characterOffsetBegin="1553" characterOffsetEnd="1556" governor="t148" pos="IN" OldId="r0010_28_t_8"/>
+        <token id="t20" word="the" lemma="the" deprel="DET" characterOffsetBegin="1557" characterOffsetEnd="1560" governor="t66" pos="DT" OldId="r0010_28_t_9"/>
+        <token id="t47" word="goddess" lemma="goddess" deprel="NN" sense="sen12" characterOffsetBegin="1561" characterOffsetEnd="1568" governor="t66" pos="NN" OldId="r0010_28_t_10"/>
+        <token id="t66" word="Ṣaṣṭhī" lemma="ṣaṣṭhī" deprel="POBJ" characterOffsetBegin="1569" characterOffsetEnd="1575" governor="t16" pos="NN" OldId="r0010_28_t_11"/>
+        <token id="t68" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1575" characterOffsetEnd="1576" governor="t206" pos="." OldId="r0010_28_t_12"/>
+      </sentence>
+      <sentence id="s29">
+        <token id="t300" word="Hail" lemma="Hail" characterOffsetBegin="1578" characterOffsetEnd="1582" pos="NNP" OldId="r0010_29_t_0"/>
+        <token id="t294" word="." lemma="." deprel="PUNCT" characterOffsetBegin="1582" characterOffsetEnd="1583" governor="t300" pos="." OldId="r0010_29_t_1"/>
+      </sentence>
+    </sentences>
+    <coreference>
+      <entity id="e18">
+        <mention id="m39">
+          <token idref="t56"/>
+        </mention>
+        <mention id="m45">
+          <token idref="t49"/>
+        </mention>
+      </entity>
+      <entity id="e17">
+        <mention id="m38">
+          <token idref="t170"/>
+          <token idref="t185"/>
+          <fe idref="fe40"/>
+        </mention>
+        <mention id="m40">
+          <token idref="t72"/>
+          <token idref="t11"/>
+          <fe idref="fe41"/>
+        </mention>
+      </entity>
+      <entity id="e16">
+        <mention id="m29">
+          <token idref="t109"/>
+        </mention>
+        <mention id="m34">
+          <token idref="t270"/>
+          <token idref="t245"/>
+        </mention>
+      </entity>
+      <entity id="e15">
+        <mention id="m28">
+          <token idref="t71"/>
+          <token idref="t54"/>
+          <fe idref="fe30"/>
+        </mention>
+        <mention id="m32">
+          <token idref="t189"/>
+          <token idref="t172"/>
+          <fe idref="fe34"/>
+        </mention>
+      </entity>
+      <entity id="e14">
+        <mention id="m26">
+          <token idref="t268"/>
+          <token idref="t275"/>
+          <token idref="t42"/>
+          <fe idref="fe29"/>
+        </mention>
+        <mention id="m30">
+          <token idref="t107"/>
+          <token idref="t101"/>
+          <token idref="t122"/>
+        </mention>
+      </entity>
+      <entity id="e13">
+        <mention id="m24">
+          <token idref="t252"/>
+        </mention>
+        <mention id="m27">
+          <token idref="t275"/>
+        </mention>
+        <mention id="m31">
+          <token idref="t101"/>
+        </mention>
+      </entity>
+      <entity id="e12">
+        <mention id="m18">
+          <token idref="t34"/>
+          <token idref="t22"/>
+          <fe idref="fe23"/>
+        </mention>
+        <mention id="m19">
+          <token idref="t291"/>
+          <token idref="t26"/>
+          <fe idref="fe23"/>
+        </mention>
+        <mention id="m20">
+          <token idref="t248"/>
+          <token idref="t32"/>
+        </mention>
+        <mention id="m21">
+          <token idref="t156"/>
+          <token idref="t37"/>
+        </mention>
+        <mention id="m22">
+          <token idref="t144"/>
+          <token idref="t38"/>
+        </mention>
+      </entity>
+      <entity id="e11">
+        <mention id="m17">
+          <token idref="t39"/>
+          <fe idref="fe22"/>
+        </mention>
+        <mention id="m33">
+          <token idref="t286"/>
+          <fe idref="fe35"/>
+        </mention>
+      </entity>
+      <entity id="e9">
+        <mention id="m10">
+          <token idref="t59"/>
+          <token idref="t14"/>
+          <fe idref="fe10"/>
+          <fe idref="fe12"/>
+        </mention>
+        <mention id="m43">
+          <token idref="t192"/>
+          <token idref="t62"/>
+          <fe idref="fe43"/>
+          <fe idref="fe45"/>
+        </mention>
+      </entity>
+      <entity id="e10">
+        <mention id="m13">
+          <token idref="t87"/>
+          <token idref="t113"/>
+          <token idref="t127"/>
+        </mention>
+        <mention id="m25">
+          <token idref="t204"/>
+          <token idref="t219"/>
+          <token idref="t193"/>
+          <fe idref="fe26"/>
+        </mention>
+      </entity>
+      <entity id="e8">
+        <mention id="m9">
+          <token idref="t242"/>
+          <token idref="t6"/>
+        </mention>
+        <mention id="m42">
+          <token idref="t155"/>
+          <token idref="t55"/>
+        </mention>
+      </entity>
+      <entity id="e7">
+        <mention id="m8">
+          <token idref="t287"/>
+          <token idref="t238"/>
+          <fe idref="fe11"/>
+          <fe idref="fe9"/>
+        </mention>
+        <mention id="m41">
+          <token idref="t265"/>
+          <token idref="t184"/>
+          <fe idref="fe44"/>
+          <fe idref="fe42"/>
+        </mention>
+      </entity>
+      <entity id="e6">
+        <mention id="m6">
+          <token idref="t25"/>
+          <token idref="t115"/>
+          <fe idref="fe3"/>
+          <fe idref="fe5"/>
+        </mention>
+        <mention id="m7">
+          <token idref="t3"/>
+          <fe idref="fe8"/>
+        </mention>
+        <mention id="m11">
+          <token idref="t131"/>
+          <fe idref="fe13"/>
+        </mention>
+        <mention id="m35">
+          <token idref="t7"/>
+          <fe idref="fe37"/>
+        </mention>
+        <mention id="m36">
+          <token idref="t51"/>
+          <fe idref="fe39"/>
+        </mention>
+        <mention id="m44">
+          <token idref="t140"/>
+        </mention>
+      </entity>
+      <entity id="e5">
+        <mention id="m5">
+          <token idref="t158"/>
+          <token idref="t218"/>
+          <fe idref="fe0"/>
+        </mention>
+        <mention id="m12">
+          <token idref="t298"/>
+          <token idref="t283"/>
+        </mention>
+        <mention id="m14">
+          <token idref="t61"/>
+          <token idref="t45"/>
+          <fe idref="fe15"/>
+        </mention>
+        <mention id="m15">
+          <token idref="t240"/>
+        </mention>
+        <mention id="m16">
+          <token idref="t280"/>
+          <token idref="t302"/>
+          <fe idref="fe16"/>
+          <fe idref="fe18"/>
+        </mention>
+        <mention id="m23">
+          <token idref="t27"/>
+          <token idref="t17"/>
+          <fe idref="fe24"/>
+        </mention>
+        <mention id="m37">
+          <token idref="t170"/>
+          <token idref="t185"/>
+          <token idref="t274"/>
+          <token idref="t282"/>
+          <fe idref="fe40"/>
+        </mention>
+        <mention id="m46">
+          <token idref="t157"/>
+          <token idref="t180"/>
+          <token idref="t168"/>
+        </mention>
+      </entity>
+      <entity id="e3">
+        <mention id="m3">
+          <token idref="t75"/>
+          <token idref="t80"/>
+          <token idref="t53"/>
+        </mention>
+        <mention id="m50">
+          <token idref="t20"/>
+          <token idref="t47"/>
+          <token idref="t66"/>
+        </mention>
+      </entity>
+      <entity id="e4">
+        <mention id="m4">
+          <token idref="t80"/>
+        </mention>
+        <mention id="m51">
+          <token idref="t47"/>
+        </mention>
+      </entity>
+      <entity id="e1">
+        <mention id="m1">
+          <token idref="t292"/>
+          <token idref="t23"/>
+          <token idref="t41"/>
+        </mention>
+        <mention id="m48">
+          <token idref="t126"/>
+          <token idref="t138"/>
+          <token idref="t148"/>
+          <fe idref="fe49"/>
+        </mention>
+      </entity>
+      <entity id="e2">
+        <mention id="m2">
+          <token idref="t23"/>
+        </mention>
+        <mention id="m49">
+          <token idref="t138"/>
+        </mention>
+      </entity>
+      <entity id="e0">
+        <mention id="m0">
+          <token idref="t255"/>
+          <token idref="t278"/>
+        </mention>
+        <mention id="m47">
+          <token idref="t94"/>
+          <token idref="t100"/>
+          <fe idref="fe48"/>
+        </mention>
+      </entity>
+      <singletons/>
+    </coreference>
+    <frames>
+      <frame id="f0" OldId="semafor_0" name="Cause_fluidic_motion">
+        <token idref="t278"/>
+      </frame>
+      <frame id="f1" OldId="semafor_1" name="People_by_religion">
+        <token idref="t23"/>
+      </frame>
+      <frame id="f2" OldId="semafor_2" name="Cause_fluidic_motion">
+        <token idref="t133"/>
+      </frame>
+      <frame id="f3" OldId="semafor_3" name="Grant_permission">
+        <token idref="t163"/>
+      </frame>
+      <frame id="f4" OldId="semafor_4" name="Taking">
+        <token idref="t198"/>
+        <frame_element id="fe0" name="Agent">
+          <head idref="t218"/>
+          <token idref="t218"/>
+          <token idref="t158"/>
+          <mention idref="m5"/>
+        </frame_element>
+        <frame_element id="fe1" name="Theme">
+          <head idref="t250"/>
+          <token idref="t195"/>
+          <token idref="t250"/>
+        </frame_element>
+      </frame>
+      <frame id="f5" OldId="semafor_5" name="Placing">
+        <token idref="t5"/>
+        <frame_element id="fe2" name="Goal">
+          <head idref="t13"/>
+          <token idref="t13"/>
+        </frame_element>
+        <frame_element id="fe3" name="Theme">
+          <head idref="t115"/>
+          <token idref="t115"/>
+          <token idref="t25"/>
+          <mention idref="m6"/>
+        </frame_element>
+      </frame>
+      <frame id="f6" OldId="semafor_6" name="Placing">
+        <token idref="t115"/>
+        <frame_element id="fe4" name="Goal">
+          <head idref="t13"/>
+          <token idref="t13"/>
+        </frame_element>
+        <frame_element id="fe5" name="Theme">
+          <head idref="t115"/>
+          <token idref="t115"/>
+          <token idref="t25"/>
+          <mention idref="m6"/>
+        </frame_element>
+      </frame>
+      <frame id="f7" OldId="semafor_7" name="People_by_religion">
+        <token idref="t97"/>
+      </frame>
+      <frame id="f8" OldId="semafor_8" name="Placing">
+        <token idref="t104"/>
+        <frame_element id="fe8" name="Theme">
+          <head idref="t3"/>
+          <token idref="t3"/>
+          <token idref="t202"/>
+          <mention idref="m7"/>
+        </frame_element>
+        <frame_element id="fe6" name="Goal">
+          <head idref="t13"/>
+          <token idref="t13"/>
+        </frame_element>
+        <frame_element id="fe7" name="Time">
+          <head idref="t97"/>
+          <token idref="t97"/>
+        </frame_element>
+      </frame>
+      <frame id="f9" OldId="semafor_9" name="People_by_religion">
+        <token idref="t3"/>
+      </frame>
+      <frame id="f10" OldId="semafor_10" name="Cause_fluidic_motion">
+        <token idref="t175"/>
+      </frame>
+      <frame id="f11" OldId="semafor_11" name="Sending">
+        <token idref="t267"/>
+        <frame_element id="fe9" name="Theme">
+          <head idref="t238"/>
+          <token idref="t287"/>
+          <token idref="t238"/>
+          <mention idref="m8"/>
+        </frame_element>
+        <frame_element id="fe10" name="Goal">
+          <head idref="t50"/>
+          <token idref="t14"/>
+          <token idref="t59"/>
+          <token idref="t50"/>
+          <mention idref="m10"/>
+        </frame_element>
+      </frame>
+      <frame id="f12" OldId="semafor_12" name="Offering">
+        <token idref="t6"/>
+        <frame_element id="fe12" name="Potential_recipient">
+          <head idref="t14"/>
+          <token idref="t14"/>
+          <token idref="t59"/>
+          <mention idref="m10"/>
+        </frame_element>
+        <frame_element id="fe11" name="Theme">
+          <head idref="t238"/>
+          <token idref="t287"/>
+          <token idref="t238"/>
+          <token idref="t256"/>
+          <mention idref="m8"/>
+        </frame_element>
+      </frame>
+      <frame id="f13" OldId="semafor_13" name="People_by_religion">
+        <token idref="t14"/>
+      </frame>
+      <frame id="f14" OldId="semafor_14" name="Giving">
+        <token idref="t136"/>
+        <frame_element id="fe13" name="Theme">
+          <head idref="t105"/>
+          <token idref="t116"/>
+          <token idref="t105"/>
+          <token idref="t131"/>
+          <mention idref="m11"/>
+        </frame_element>
+      </frame>
+      <frame id="f15" OldId="semafor_15" name="People_by_religion">
+        <token idref="t131"/>
+      </frame>
+      <frame id="f16" OldId="semafor_16" name="Rite">
+        <token idref="t211"/>
+      </frame>
+      <frame id="f17" OldId="semafor_17" name="People_by_religion">
+        <token idref="t244"/>
+      </frame>
+      <frame id="f18" OldId="semafor_18" name="Giving">
+        <token idref="t146"/>
+        <frame_element id="fe14" name="Theme">
+          <head idref="t0"/>
+          <token idref="t8"/>
+          <token idref="t0"/>
+        </frame_element>
+        <frame_element id="fe15" name="Recipient">
+          <head idref="t45"/>
+          <token idref="t45"/>
+          <token idref="t61"/>
+          <mention idref="m14"/>
+        </frame_element>
+      </frame>
+      <frame id="f19" OldId="semafor_19" name="Cause_fluidic_motion">
+        <token idref="t45"/>
+      </frame>
+      <frame id="f20" OldId="semafor_20" name="Placing">
+        <token idref="t269"/>
+        <frame_element id="fe16" name="Theme">
+          <head idref="t302"/>
+          <token idref="t280"/>
+          <token idref="t302"/>
+          <mention idref="m16"/>
+        </frame_element>
+        <frame_element id="fe17" name="Goal">
+          <head idref="t152"/>
+          <token idref="t176"/>
+          <token idref="t152"/>
+          <token idref="t173"/>
+        </frame_element>
+      </frame>
+      <frame id="f21" OldId="semafor_21" name="Manipulation">
+        <token idref="t203"/>
+        <frame_element id="fe20" name="Entity">
+          <head idref="t212"/>
+          <token idref="t212"/>
+          <token idref="t209"/>
+        </frame_element>
+        <frame_element id="fe18" name="Agent">
+          <head idref="t302"/>
+          <token idref="t280"/>
+          <token idref="t302"/>
+          <mention idref="m16"/>
+        </frame_element>
+        <frame_element id="fe19" name="Place">
+          <head idref="t152"/>
+          <token idref="t176"/>
+          <token idref="t152"/>
+          <token idref="t173"/>
+        </frame_element>
+      </frame>
+      <frame id="f22" OldId="semafor_22" name="Placing">
+        <token idref="t90"/>
+        <frame_element id="fe22" name="Theme">
+          <head idref="t29"/>
+          <token idref="t130"/>
+          <token idref="t9"/>
+          <token idref="t79"/>
+          <token idref="t76"/>
+          <mention idref="m17"/>
+        </frame_element>
+        <frame_element id="fe21" name="Goal">
+          <head idref="t86"/>
+          <token idref="t86"/>
+        </frame_element>
+      </frame>
+      <frame id="f23" OldId="semafor_23" name="People_by_religion">
+        <token idref="t79"/>
+      </frame>
+      <frame id="f24" OldId="semafor_24" name="People_by_religion">
+        <token idref="t177"/>
+      </frame>
+      <frame id="f25" OldId="semafor_25" name="Text_creation">
+        <token idref="t210"/>
+      </frame>
+      <frame id="f26" OldId="semafor_26" name="Text_creation">
+        <token idref="t200"/>
+      </frame>
+      <frame id="f27" OldId="semafor_27" name="Text_creation">
+        <token idref="t106"/>
+        <frame_element id="fe23" name="Text">
+          <head idref="t18"/>
+          <token idref="t64"/>
+          <token idref="t1"/>
+          <token idref="t34"/>
+          <token idref="t22"/>
+          <token idref="t264"/>
+          <token idref="t291"/>
+          <token idref="t26"/>
+          <token idref="t223"/>
+          <token idref="t32"/>
+          <token idref="t248"/>
+          <token idref="t191"/>
+          <token idref="t201"/>
+          <token idref="t215"/>
+          <token idref="t37"/>
+          <token idref="t156"/>
+          <token idref="t186"/>
+          <token idref="t144"/>
+          <token idref="t38"/>
+          <mention idref="m18"/>
+          <mention idref="m19"/>
+        </frame_element>
+      </frame>
+      <frame id="f28" OldId="semafor_28" name="Placing">
+        <token idref="t57"/>
+        <frame_element id="fe24" name="Theme">
+          <head idref="t17"/>
+          <token idref="t27"/>
+          <token idref="t17"/>
+          <mention idref="m23"/>
+        </frame_element>
+        <frame_element id="fe25" name="Goal">
+          <head idref="t293"/>
+          <token idref="t293"/>
+          <token idref="t266"/>
+          <token idref="t299"/>
+          <token idref="t252"/>
+          <token idref="t249"/>
+          <token idref="t226"/>
+        </frame_element>
+      </frame>
+      <frame id="f29" OldId="semafor_29" name="Rite">
+        <token idref="t266"/>
+        <frame_element id="fe26" name="Time">
+          <head idref="t226"/>
+          <token idref="t204"/>
+          <token idref="t226"/>
+          <token idref="t193"/>
+          <token idref="t219"/>
+          <mention idref="m25"/>
+        </frame_element>
+      </frame>
+      <frame id="f30" OldId="semafor_30" name="Placing">
+        <token idref="t179"/>
+        <frame_element id="fe27" name="Theme">
+          <head idref="t182"/>
+          <token idref="t161"/>
+          <token idref="t169"/>
+          <token idref="t182"/>
+        </frame_element>
+      </frame>
+      <frame id="f31" OldId="semafor_31" name="Grinding">
+        <token idref="t169"/>
+      </frame>
+      <frame id="f32" OldId="semafor_32" name="Offering">
+        <token idref="t208"/>
+        <frame_element id="fe28" name="Theme">
+          <head idref="t199"/>
+          <token idref="t199"/>
+          <token idref="t216"/>
+          <token idref="t243"/>
+          <token idref="t228"/>
+          <token idref="t235"/>
+        </frame_element>
+        <frame_element id="fe29" name="Potential_recipient">
+          <head idref="t281"/>
+          <token idref="t281"/>
+          <token idref="t275"/>
+          <token idref="t268"/>
+          <token idref="t42"/>
+          <mention idref="m26"/>
+        </frame_element>
+      </frame>
+      <frame id="f33" OldId="semafor_33" name="People_by_religion">
+        <token idref="t228"/>
+      </frame>
+      <frame id="f34" OldId="semafor_34" name="Offering">
+        <token idref="t4"/>
+        <frame_element id="fe30" name="Theme">
+          <head idref="t54"/>
+          <token idref="t54"/>
+          <token idref="t71"/>
+          <mention idref="m28"/>
+        </frame_element>
+      </frame>
+      <frame id="f35" OldId="semafor_35" name="Cause_fluidic_motion">
+        <token idref="t54"/>
+      </frame>
+      <frame id="f36" OldId="semafor_36" name="Text_creation">
+        <token idref="t109"/>
+        <frame_element id="fe31" name="Text">
+          <head idref="t129"/>
+          <token idref="t83"/>
+          <token idref="t129"/>
+          <token idref="t141"/>
+        </frame_element>
+      </frame>
+      <frame id="f37" OldId="semafor_37" name="Text_creation">
+        <token idref="t129"/>
+        <frame_element id="fe32" name="Text">
+          <head idref="t129"/>
+          <token idref="t83"/>
+          <token idref="t129"/>
+          <token idref="t141"/>
+        </frame_element>
+      </frame>
+      <frame id="f38" OldId="semafor_38" name="Placing">
+        <token idref="t31"/>
+        <frame_element id="fe33" name="Theme">
+          <head idref="t73"/>
+          <token idref="t33"/>
+          <token idref="t31"/>
+          <token idref="t44"/>
+          <token idref="t77"/>
+          <token idref="t73"/>
+        </frame_element>
+      </frame>
+      <frame id="f39" OldId="semafor_39" name="Offering">
+        <token idref="t217"/>
+        <frame_element id="fe34" name="Theme">
+          <head idref="t172"/>
+          <token idref="t189"/>
+          <token idref="t172"/>
+          <mention idref="m32"/>
+        </frame_element>
+      </frame>
+      <frame id="f40" OldId="semafor_40" name="Cause_fluidic_motion">
+        <token idref="t172"/>
+      </frame>
+      <frame id="f41" OldId="semafor_41" name="Giving">
+        <token idref="t151"/>
+        <frame_element id="fe35" name="Theme">
+          <head idref="t286"/>
+          <token idref="t286"/>
+          <mention idref="m33"/>
+        </frame_element>
+      </frame>
+      <frame id="f42" OldId="semafor_42" name="Text_creation">
+        <token idref="t245"/>
+        <frame_element id="fe36" name="Text">
+          <head idref="t43"/>
+          <token idref="t43"/>
+          <token idref="t232"/>
+        </frame_element>
+      </frame>
+      <frame id="f43" OldId="semafor_43" name="Giving">
+        <token idref="t36"/>
+        <frame_element id="fe37" name="Theme">
+          <head idref="t145"/>
+          <token idref="t21"/>
+          <token idref="t145"/>
+          <token idref="t7"/>
+          <mention idref="m35"/>
+        </frame_element>
+      </frame>
+      <frame id="f44" OldId="semafor_44" name="People_by_religion">
+        <token idref="t7"/>
+      </frame>
+      <frame id="f45" OldId="semafor_45" name="Deciding">
+        <token idref="t145"/>
+        <frame_element id="fe38" name="Decision">
+          <head idref="t139"/>
+          <token idref="t120"/>
+          <token idref="t139"/>
+        </frame_element>
+      </frame>
+      <frame id="f46" OldId="semafor_46" name="People_by_religion">
+        <token idref="t120"/>
+      </frame>
+      <frame id="f47" OldId="semafor_47" name="People_by_religion">
+        <token idref="t51"/>
+      </frame>
+      <frame id="f48" OldId="semafor_48" name="Giving">
+        <token idref="t221"/>
+        <frame_element id="fe39" name="Theme">
+          <head idref="t51"/>
+          <token idref="t51"/>
+          <mention idref="m36"/>
+        </frame_element>
+        <frame_element id="fe40" name="Recipient">
+          <head idref="t185"/>
+          <token idref="t282"/>
+          <token idref="t274"/>
+          <token idref="t170"/>
+          <token idref="t185"/>
+          <mention idref="m37"/>
+          <mention idref="m38"/>
+        </frame_element>
+      </frame>
+      <frame id="f49" OldId="semafor_49" name="Text_creation">
+        <token idref="t239"/>
+      </frame>
+      <frame id="f50" OldId="semafor_50" name="Text_creation">
+        <token idref="t56"/>
+        <frame_element id="fe41" name="Text">
+          <head idref="t11"/>
+          <token idref="t11"/>
+          <token idref="t72"/>
+          <mention idref="m40"/>
+        </frame_element>
+      </frame>
+      <frame id="f51" OldId="semafor_51" name="Cause_fluidic_motion">
+        <token idref="t58"/>
+      </frame>
+      <frame id="f52" OldId="semafor_52" name="Sending">
+        <token idref="t284"/>
+        <frame_element id="fe42" name="Theme">
+          <head idref="t184"/>
+          <token idref="t265"/>
+          <token idref="t184"/>
+          <mention idref="m41"/>
+        </frame_element>
+        <frame_element id="fe43" name="Goal">
+          <head idref="t207"/>
+          <token idref="t207"/>
+          <token idref="t192"/>
+          <token idref="t62"/>
+          <mention idref="m43"/>
+        </frame_element>
+      </frame>
+      <frame id="f53" OldId="semafor_53" name="Offering">
+        <token idref="t55"/>
+        <frame_element id="fe44" name="Theme">
+          <head idref="t184"/>
+          <token idref="t265"/>
+          <token idref="t184"/>
+          <token idref="t166"/>
+          <mention idref="m41"/>
+        </frame_element>
+        <frame_element id="fe45" name="Potential_recipient">
+          <head idref="t62"/>
+          <token idref="t62"/>
+          <token idref="t192"/>
+          <mention idref="m43"/>
+        </frame_element>
+      </frame>
+      <frame id="f54" OldId="semafor_54" name="People_by_religion">
+        <token idref="t62"/>
+      </frame>
+      <frame id="f55" OldId="semafor_55" name="People_by_religion">
+        <token idref="t140"/>
+      </frame>
+      <frame id="f56" OldId="semafor_56" name="Placing">
+        <token idref="t35"/>
+        <frame_element id="fe46" name="Theme">
+          <head idref="t24"/>
+          <token idref="t24"/>
+        </frame_element>
+      </frame>
+      <frame id="f57" OldId="semafor_57" name="Rite">
+        <token idref="t49"/>
+      </frame>
+      <frame id="f58" OldId="semafor_58" name="Text_creation">
+        <token idref="t236"/>
+        <frame_element id="fe47" name="Text">
+          <head idref="t295"/>
+          <token idref="t295"/>
+          <token idref="t254"/>
+          <token idref="t277"/>
+          <token idref="t247"/>
+        </frame_element>
+      </frame>
+      <frame id="f59" OldId="semafor_59" name="People_by_religion">
+        <token idref="t220"/>
+      </frame>
+      <frame id="f60" OldId="semafor_60" name="Placing">
+        <token idref="t100"/>
+        <frame_element id="fe48" name="Theme">
+          <head idref="t100"/>
+          <token idref="t100"/>
+          <token idref="t94"/>
+          <mention idref="m47"/>
+        </frame_element>
+        <frame_element id="fe49" name="Purpose">
+          <head idref="t110"/>
+          <token idref="t110"/>
+          <token idref="t16"/>
+          <mention idref="m48"/>
+        </frame_element>
+      </frame>
+      <frame id="f61" OldId="semafor_61" name="People_by_religion">
+        <token idref="t138"/>
+      </frame>
+      <order type="temporal"/>
+    </frames>
+    <chunks>
+      <chunk id="c7" category="PP" sentence="s0">
+        <token idref="t124"/>
+        <token idref="t121"/>
+      </chunk>
+      <chunk id="c6" category="NP" sentence="s0">
+        <token idref="t133"/>
+        <token idref="t95"/>
+        <token idref="t89"/>
+      </chunk>
+      <chunk id="c5" category="PP" sentence="s0">
+        <token idref="t133"/>
+        <token idref="t102"/>
+        <token idref="t95"/>
+        <token idref="t89"/>
+      </chunk>
+      <chunk id="c4" category="NP" sentence="s0">
+        <token idref="t53"/>
+        <token idref="t75"/>
+        <token idref="t80"/>
+      </chunk>
+      <chunk id="c3" category="PP" sentence="s0">
+        <token idref="t53"/>
+        <token idref="t12"/>
+        <token idref="t75"/>
+        <token idref="t80"/>
+      </chunk>
+      <chunk id="c2" category="NP" sentence="s0">
+        <token idref="t23"/>
+        <token idref="t292"/>
+        <token idref="t41"/>
+      </chunk>
+      <chunk id="c1" category="PP" sentence="s0">
+        <token idref="t23"/>
+        <token idref="t263"/>
+        <token idref="t292"/>
+        <token idref="t41"/>
+      </chunk>
+      <chunk id="c0" category="NP" sentence="s0">
+        <token idref="t255"/>
+        <token idref="t278"/>
+      </chunk>
+      <chunk id="c8" category="NP" sentence="s0">
+        <token idref="t124"/>
+      </chunk>
+      <chunk id="c10" category="NP" sentence="s1">
+        <token idref="t218"/>
+        <token idref="t158"/>
+      </chunk>
+      <chunk id="c12" category="NP" sentence="s1">
+        <token idref="t195"/>
+        <token idref="t250"/>
+      </chunk>
+      <chunk id="c11" category="VP" sentence="s1">
+        <token idref="t198"/>
+      </chunk>
+      <chunk id="c9" category="VP" sentence="s1">
+        <token idref="t163"/>
+      </chunk>
+      <chunk id="c18" category="VP" sentence="s2">
+        <token idref="t128"/>
+        <token idref="t142"/>
+      </chunk>
+      <chunk id="c17" category="NP" sentence="s2">
+        <token idref="t115"/>
+        <token idref="t25"/>
+      </chunk>
+      <chunk id="c19" category="NP" sentence="s2">
+        <token idref="t3"/>
+        <token idref="t202"/>
+      </chunk>
+      <chunk id="c14" category="VP" sentence="s2">
+        <token idref="t262"/>
+        <token idref="t279"/>
+      </chunk>
+      <chunk id="c13" category="NP" sentence="s2">
+        <token idref="t288"/>
+      </chunk>
+      <chunk id="c16" category="VP" sentence="s2">
+        <token idref="t5"/>
+      </chunk>
+      <chunk id="c15" category="NP" sentence="s2">
+        <token idref="t70"/>
+      </chunk>
+      <chunk id="c20" category="VP" sentence="s2">
+        <token idref="t175"/>
+        <token idref="t154"/>
+        <token idref="t164"/>
+      </chunk>
+      <chunk id="c26" category="NP" sentence="s3">
+        <token idref="t14"/>
+        <token idref="t59"/>
+      </chunk>
+      <chunk id="c25" category="PP" sentence="s3">
+        <token idref="t14"/>
+        <token idref="t59"/>
+        <token idref="t50"/>
+      </chunk>
+      <chunk id="c24" category="NP" sentence="s3">
+        <token idref="t242"/>
+        <token idref="t6"/>
+      </chunk>
+      <chunk id="c23" category="PP" sentence="s3">
+        <token idref="t242"/>
+        <token idref="t256"/>
+        <token idref="t6"/>
+      </chunk>
+      <chunk id="c22" category="NP" sentence="s3">
+        <token idref="t287"/>
+        <token idref="t238"/>
+      </chunk>
+      <chunk id="c21" category="VP" sentence="s3">
+        <token idref="t267"/>
+      </chunk>
+      <chunk id="c29" category="PP" sentence="s4">
+        <token idref="t84"/>
+      </chunk>
+      <chunk id="c28" category="NP" sentence="s4">
+        <token idref="t116"/>
+        <token idref="t105"/>
+        <token idref="t131"/>
+      </chunk>
+      <chunk id="c27" category="VP" sentence="s4">
+        <token idref="t136"/>
+      </chunk>
+      <chunk id="c30" category="NP" sentence="s4">
+        <token idref="t211"/>
+        <token idref="t98"/>
+      </chunk>
+      <chunk id="c32" category="NP" sentence="s4">
+        <token idref="t181"/>
+      </chunk>
+      <chunk id="c31" category="PP" sentence="s4">
+        <token idref="t197"/>
+        <token idref="t181"/>
+      </chunk>
+      <chunk id="c36" category="NP" sentence="s5">
+        <token idref="t251"/>
+        <token idref="t244"/>
+        <token idref="t234"/>
+      </chunk>
+      <chunk id="c35" category="PP" sentence="s5">
+        <token idref="t276"/>
+      </chunk>
+      <chunk id="c38" category="NP" sentence="s5">
+        <token idref="t127"/>
+        <token idref="t87"/>
+        <token idref="t113"/>
+      </chunk>
+      <chunk id="c37" category="PP" sentence="s5">
+        <token idref="t92"/>
+        <token idref="t127"/>
+        <token idref="t87"/>
+        <token idref="t113"/>
+      </chunk>
+      <chunk id="c34" category="NP" sentence="s5">
+        <token idref="t283"/>
+        <token idref="t298"/>
+      </chunk>
+      <chunk id="c33" category="PP" sentence="s5">
+        <token idref="t159"/>
+      </chunk>
+      <chunk id="c39" category="VP" sentence="s6">
+        <token idref="t146"/>
+      </chunk>
+      <chunk id="c41" category="PP" sentence="s6">
+        <token idref="t45"/>
+        <token idref="t61"/>
+        <token idref="t30"/>
+      </chunk>
+      <chunk id="c40" category="NP" sentence="s6">
+        <token idref="t8"/>
+        <token idref="t0"/>
+      </chunk>
+      <chunk id="c44" category="NP" sentence="s6">
+        <token idref="t240"/>
+      </chunk>
+      <chunk id="c43" category="VP" sentence="s6">
+        <token idref="t227"/>
+        <token idref="t74"/>
+      </chunk>
+      <chunk id="c42" category="NP" sentence="s6">
+        <token idref="t45"/>
+        <token idref="t61"/>
+      </chunk>
+      <chunk id="c49" category="VP" sentence="s7">
+        <token idref="t203"/>
+      </chunk>
+      <chunk id="c48" category="NP" sentence="s7">
+        <token idref="t176"/>
+        <token idref="t173"/>
+      </chunk>
+      <chunk id="c47" category="PP" sentence="s7">
+        <token idref="t176"/>
+        <token idref="t152"/>
+        <token idref="t173"/>
+      </chunk>
+      <chunk id="c46" category="NP" sentence="s7">
+        <token idref="t280"/>
+        <token idref="t302"/>
+      </chunk>
+      <chunk id="c50" category="NP" sentence="s7">
+        <token idref="t212"/>
+        <token idref="t209"/>
+      </chunk>
+      <chunk id="c45" category="VP" sentence="s7">
+        <token idref="t269"/>
+      </chunk>
+      <chunk id="c53" category="NP" sentence="s8">
+        <token idref="t29"/>
+        <token idref="t39"/>
+        <token idref="t130"/>
+      </chunk>
+      <chunk id="c54" category="NP" sentence="s8">
+        <token idref="t79"/>
+        <token idref="t76"/>
+      </chunk>
+      <chunk id="c55" category="VP" sentence="s8">
+        <token idref="t60"/>
+      </chunk>
+      <chunk id="c56" category="PP" sentence="s8">
+        <token idref="t241"/>
+        <token idref="t229"/>
+        <token idref="t259"/>
+      </chunk>
+      <chunk id="c60" category="NP" sentence="s8">
+        <token idref="t177"/>
+      </chunk>
+      <chunk id="c51" category="VP" sentence="s8">
+        <token idref="t86"/>
+      </chunk>
+      <chunk id="c61" category="NP" sentence="s8">
+        <token idref="t213"/>
+        <token idref="t210"/>
+        <token idref="t200"/>
+      </chunk>
+      <chunk id="c52" category="VP" sentence="s8">
+        <token idref="t134"/>
+      </chunk>
+      <chunk id="c57" category="NP" sentence="s8">
+        <token idref="t229"/>
+        <token idref="t259"/>
+      </chunk>
+      <chunk id="c58" category="PP" sentence="s8">
+        <token idref="t304"/>
+      </chunk>
+      <chunk id="c59" category="NP" sentence="s8">
+        <token idref="t272"/>
+      </chunk>
+      <chunk id="c62" category="VP" sentence="s9">
+        <token idref="t117"/>
+      </chunk>
+      <chunk id="c63" category="NP" sentence="s9">
+        <token idref="t137"/>
+        <token idref="t96"/>
+      </chunk>
+      <chunk id="c71" category="NP" sentence="s10">
+        <token idref="t144"/>
+        <token idref="t38"/>
+      </chunk>
+      <chunk id="c66" category="NP" sentence="s10">
+        <token idref="t34"/>
+        <token idref="t22"/>
+      </chunk>
+      <chunk id="c67" category="NP" sentence="s10">
+        <token idref="t291"/>
+        <token idref="t26"/>
+      </chunk>
+      <chunk id="c64" category="VP" sentence="s10">
+        <token idref="t106"/>
+      </chunk>
+      <chunk id="c65" category="NP" sentence="s10">
+        <token idref="t18"/>
+        <token idref="t64"/>
+      </chunk>
+      <chunk id="c70" category="NP" sentence="s10">
+        <token idref="t37"/>
+        <token idref="t156"/>
+      </chunk>
+      <chunk id="c68" category="NP" sentence="s10">
+        <token idref="t32"/>
+        <token idref="t248"/>
+      </chunk>
+      <chunk id="c69" category="NP" sentence="s10">
+        <token idref="t201"/>
+      </chunk>
+      <chunk id="c72" category="VP" sentence="s11">
+        <token idref="t108"/>
+      </chunk>
+      <chunk id="c82" category="NP" sentence="s11">
+        <token idref="t204"/>
+        <token idref="t193"/>
+        <token idref="t219"/>
+      </chunk>
+      <chunk id="c73" category="PP" sentence="s11">
+        <token idref="t99"/>
+      </chunk>
+      <chunk id="c74" category="NP" sentence="s11">
+        <token idref="t57"/>
+        <token idref="t69"/>
+        <token idref="t85"/>
+      </chunk>
+      <chunk id="c75" category="PP" sentence="s11">
+        <token idref="t46"/>
+      </chunk>
+      <chunk id="c76" category="NP" sentence="s11">
+        <token idref="t27"/>
+        <token idref="t17"/>
+      </chunk>
+      <chunk id="c77" category="PP" sentence="s11">
+        <token idref="t293"/>
+      </chunk>
+      <chunk id="c78" category="NP" sentence="s11">
+        <token idref="t266"/>
+        <token idref="t299"/>
+      </chunk>
+      <chunk id="c79" category="PP" sentence="s11">
+        <token idref="t252"/>
+        <token idref="t249"/>
+      </chunk>
+      <chunk id="c81" category="PP" sentence="s11">
+        <token idref="t204"/>
+        <token idref="t226"/>
+        <token idref="t193"/>
+        <token idref="t219"/>
+      </chunk>
+      <chunk id="c80" category="NP" sentence="s11">
+        <token idref="t252"/>
+      </chunk>
+      <chunk id="c84" category="NP" sentence="s12">
+        <token idref="t161"/>
+        <token idref="t169"/>
+        <token idref="t182"/>
+      </chunk>
+      <chunk id="c83" category="VP" sentence="s12">
+        <token idref="t179"/>
+      </chunk>
+      <chunk id="c85" category="VP" sentence="s13">
+        <token idref="t208"/>
+      </chunk>
+      <chunk id="c88" category="NP" sentence="s13">
+        <token idref="t228"/>
+        <token idref="t235"/>
+      </chunk>
+      <chunk id="c89" category="PP" sentence="s13">
+        <token idref="t281"/>
+        <token idref="t275"/>
+        <token idref="t268"/>
+        <token idref="t42"/>
+      </chunk>
+      <chunk id="c86" category="NP" sentence="s13">
+        <token idref="t199"/>
+        <token idref="t216"/>
+      </chunk>
+      <chunk id="c90" category="NP" sentence="s13">
+        <token idref="t275"/>
+        <token idref="t268"/>
+        <token idref="t42"/>
+      </chunk>
+      <chunk id="c87" category="PP" sentence="s13">
+        <token idref="t243"/>
+      </chunk>
+      <chunk id="c91" category="VP" sentence="s14">
+        <token idref="t4"/>
+      </chunk>
+      <chunk id="c92" category="NP" sentence="s14">
+        <token idref="t54"/>
+        <token idref="t71"/>
+      </chunk>
+      <chunk id="c101" category="VP" sentence="s15">
+        <token idref="t2"/>
+      </chunk>
+      <chunk id="c102" category="NP" sentence="s15">
+        <token idref="t33"/>
+        <token idref="t31"/>
+      </chunk>
+      <chunk id="c100" category="NP" sentence="s15">
+        <token idref="t297"/>
+      </chunk>
+      <chunk id="c105" category="PP" sentence="s15">
+        <token idref="t101"/>
+        <token idref="t107"/>
+        <token idref="t122"/>
+        <token idref="t88"/>
+      </chunk>
+      <chunk id="c106" category="NP" sentence="s15">
+        <token idref="t101"/>
+        <token idref="t107"/>
+        <token idref="t122"/>
+      </chunk>
+      <chunk id="c103" category="VP" sentence="s15">
+        <token idref="t44"/>
+      </chunk>
+      <chunk id="c104" category="NP" sentence="s15">
+        <token idref="t77"/>
+        <token idref="t73"/>
+      </chunk>
+      <chunk id="c96" category="NP" sentence="s15">
+        <token idref="t194"/>
+      </chunk>
+      <chunk id="c95" category="NP" sentence="s15">
+        <token idref="t165"/>
+      </chunk>
+      <chunk id="c94" category="NP" sentence="s15">
+        <token idref="t83"/>
+        <token idref="t129"/>
+        <token idref="t141"/>
+      </chunk>
+      <chunk id="c93" category="NP" sentence="s15">
+        <token idref="t109"/>
+      </chunk>
+      <chunk id="c99" category="NP" sentence="s15">
+        <token idref="t271"/>
+      </chunk>
+      <chunk id="c98" category="NP" sentence="s15">
+        <token idref="t231"/>
+      </chunk>
+      <chunk id="c97" category="NP" sentence="s15">
+        <token idref="t214"/>
+      </chunk>
+      <chunk id="c107" category="VP" sentence="s16">
+        <token idref="t217"/>
+      </chunk>
+      <chunk id="c108" category="NP" sentence="s16">
+        <token idref="t189"/>
+        <token idref="t172"/>
+      </chunk>
+      <chunk id="c110" category="NP" sentence="s17">
+        <token idref="t286"/>
+      </chunk>
+      <chunk id="c111" category="PP" sentence="s17">
+        <token idref="t301"/>
+      </chunk>
+      <chunk id="c112" category="NP" sentence="s17">
+        <token idref="t245"/>
+        <token idref="t270"/>
+      </chunk>
+      <chunk id="c113" category="PP" sentence="s17">
+        <token idref="t43"/>
+        <token idref="t232"/>
+        <token idref="t260"/>
+      </chunk>
+      <chunk id="c114" category="NP" sentence="s17">
+        <token idref="t43"/>
+        <token idref="t232"/>
+      </chunk>
+      <chunk id="c109" category="VP" sentence="s17">
+        <token idref="t151"/>
+      </chunk>
+      <chunk id="c115" category="VP" sentence="s18">
+        <token idref="t36"/>
+      </chunk>
+      <chunk id="c116" category="NP" sentence="s18">
+        <token idref="t21"/>
+        <token idref="t145"/>
+        <token idref="t7"/>
+      </chunk>
+      <chunk id="c117" category="PP" sentence="s18">
+        <token idref="t120"/>
+        <token idref="t139"/>
+      </chunk>
+      <chunk id="c118" category="NP" sentence="s18">
+        <token idref="t120"/>
+      </chunk>
+      <chunk id="c121" category="PP" sentence="s19">
+        <token idref="t282"/>
+        <token idref="t274"/>
+        <token idref="t153"/>
+        <token idref="t170"/>
+        <token idref="t185"/>
+      </chunk>
+      <chunk id="c122" category="NP" sentence="s19">
+        <token idref="t282"/>
+        <token idref="t274"/>
+        <token idref="t170"/>
+        <token idref="t185"/>
+      </chunk>
+      <chunk id="c119" category="NP" sentence="s19">
+        <token idref="t51"/>
+      </chunk>
+      <chunk id="c120" category="VP" sentence="s19">
+        <token idref="t196"/>
+        <token idref="t188"/>
+        <token idref="t221"/>
+      </chunk>
+      <chunk id="c123" category="NP" sentence="s20">
+        <token idref="t239"/>
+        <token idref="t230"/>
+      </chunk>
+      <chunk id="c127" category="PP" sentence="s21">
+        <token idref="t40"/>
+      </chunk>
+      <chunk id="c128" category="NP" sentence="s21">
+        <token idref="t118"/>
+        <token idref="t28"/>
+      </chunk>
+      <chunk id="c125" category="PP" sentence="s21">
+        <token idref="t78"/>
+      </chunk>
+      <chunk id="c126" category="NP" sentence="s21">
+        <token idref="t11"/>
+        <token idref="t72"/>
+      </chunk>
+      <chunk id="c124" category="NP" sentence="s21">
+        <token idref="t56"/>
+      </chunk>
+      <chunk id="c130" category="NP" sentence="s21">
+        <token idref="t58"/>
+      </chunk>
+      <chunk id="c129" category="PP" sentence="s21">
+        <token idref="t58"/>
+        <token idref="t149"/>
+      </chunk>
+      <chunk id="c132" category="NP" sentence="s22">
+        <token idref="t246"/>
+        <token idref="t237"/>
+      </chunk>
+      <chunk id="c131" category="VP" sentence="s22">
+        <token idref="t253"/>
+      </chunk>
+      <chunk id="c136" category="NP" sentence="s23">
+        <token idref="t155"/>
+        <token idref="t55"/>
+      </chunk>
+      <chunk id="c137" category="PP" sentence="s23">
+        <token idref="t207"/>
+        <token idref="t192"/>
+        <token idref="t62"/>
+      </chunk>
+      <chunk id="c138" category="NP" sentence="s23">
+        <token idref="t62"/>
+        <token idref="t192"/>
+      </chunk>
+      <chunk id="c133" category="VP" sentence="s23">
+        <token idref="t284"/>
+      </chunk>
+      <chunk id="c134" category="NP" sentence="s23">
+        <token idref="t265"/>
+        <token idref="t184"/>
+      </chunk>
+      <chunk id="c135" category="PP" sentence="s23">
+        <token idref="t166"/>
+        <token idref="t155"/>
+        <token idref="t55"/>
+      </chunk>
+      <chunk id="c139" category="NP" sentence="s24">
+        <token idref="t147"/>
+        <token idref="t140"/>
+      </chunk>
+      <chunk id="c140" category="NP" sentence="s25">
+        <token idref="t24"/>
+        <token idref="t35"/>
+        <token idref="t19"/>
+      </chunk>
+      <chunk id="c141" category="NP" sentence="s26">
+        <token idref="t49"/>
+      </chunk>
+      <chunk id="c145" category="NP" sentence="s27">
+        <token idref="t168"/>
+        <token idref="t180"/>
+        <token idref="t157"/>
+      </chunk>
+      <chunk id="c144" category="PP" sentence="s27">
+        <token idref="t168"/>
+        <token idref="t180"/>
+        <token idref="t290"/>
+        <token idref="t157"/>
+      </chunk>
+      <chunk id="c142" category="VP" sentence="s27">
+        <token idref="t236"/>
+      </chunk>
+      <chunk id="c143" category="NP" sentence="s27">
+        <token idref="t295"/>
+        <token idref="t254"/>
+        <token idref="t277"/>
+        <token idref="t247"/>
+      </chunk>
+      <chunk id="c150" category="PP" sentence="s28">
+        <token idref="t20"/>
+        <token idref="t47"/>
+        <token idref="t16"/>
+        <token idref="t66"/>
+      </chunk>
+      <chunk id="c151" category="NP" sentence="s28">
+        <token idref="t20"/>
+        <token idref="t47"/>
+        <token idref="t66"/>
+      </chunk>
+      <chunk id="c146" category="VP" sentence="s28">
+        <token idref="t206"/>
+      </chunk>
+      <chunk id="c149" category="NP" sentence="s28">
+        <token idref="t126"/>
+        <token idref="t138"/>
+        <token idref="t148"/>
+      </chunk>
+      <chunk id="c148" category="PP" sentence="s28">
+        <token idref="t126"/>
+        <token idref="t138"/>
+        <token idref="t110"/>
+        <token idref="t148"/>
+      </chunk>
+      <chunk id="c147" category="NP" sentence="s28">
+        <token idref="t100"/>
+        <token idref="t94"/>
+      </chunk>
+      <chunk id="c152" category="NP" sentence="s29">
+        <token idref="t300"/>
+      </chunk>
+    </chunks>
+    <sections/>
+    <senses>
+      <sense id="sen10" wordnet="10924920-n"/>
+      <sense id="sen59" wordnet="4204657-n"/>
+      <sense id="sen50" wordnet="4159270-n"/>
+      <sense id="sen13" wordnet="2526983-v"/>
+      <sense id="sen14" wordnet="9620847-n"/>
+      <sense id="sen11" wordnet="828429-n"/>
+      <sense id="sen12" wordnet="8933957-n"/>
+      <sense id="sen54" wordnet="3500372-n"/>
+      <sense id="sen53" wordnet="2145020-v"/>
+      <sense id="sen52" wordnet="23548-n"/>
+      <sense id="sen51" wordnet="738055-n"/>
+      <sense id="sen58" wordnet="4141259-n"/>
+      <sense id="sen57" wordnet="2535621-v"/>
+      <sense id="sen56" wordnet="341640-v"/>
+      <sense id="sen55" wordnet="1116229-v"/>
+      <sense id="sen48" wordnet="1452069-v"/>
+      <sense id="sen49" wordnet="1590677-a"/>
+      <sense id="sen60" wordnet="10733600-n"/>
+      <sense id="sen61" wordnet="858050-v"/>
+      <sense id="sen64" wordnet="5340739-n"/>
+      <sense id="sen65" wordnet="4404142-n"/>
+      <sense id="sen62" wordnet="49968-r"/>
+      <sense id="sen63" wordnet="870936-v"/>
+      <sense id="sen68" wordnet="6791479-n"/>
+      <sense id="sen69" wordnet="1501497-a"/>
+      <sense id="sen66" wordnet="910961-v"/>
+      <sense id="sen67" wordnet="373636-a"/>
+      <sense id="sen41" wordnet="153642-n"/>
+      <sense id="sen40" wordnet="133306-a"/>
+      <sense id="sen43" wordnet="14070493-n"/>
+      <sense id="sen42" wordnet="243549-n"/>
+      <sense id="sen45" wordnet="2145386-v"/>
+      <sense id="sen44" wordnet="1667189-v"/>
+      <sense id="sen47" wordnet="3104617-n"/>
+      <sense id="sen46" wordnet="320747-v"/>
+      <sense id="sen37" wordnet="14265546-n"/>
+      <sense id="sen38" wordnet="6055988-n"/>
+      <sense id="sen39" wordnet="71830-v"/>
+      <sense id="sen70" wordnet="2710112-n"/>
+      <sense id="sen71" wordnet="102093-v"/>
+      <sense id="sen72" wordnet="2353970-v"/>
+      <sense id="sen73" wordnet="5282670-n"/>
+      <sense id="sen74" wordnet="941023-v"/>
+      <sense id="sen75" wordnet="952111-a"/>
+      <sense id="sen76" wordnet="9789775-n"/>
+      <sense id="sen77" wordnet="6700283-n"/>
+      <sense id="sen78" wordnet="6026-n"/>
+      <sense id="sen36" wordnet="98966-n"/>
+      <sense id="sen35" wordnet="18827-n"/>
+      <sense id="sen34" wordnet="5907188-n"/>
+      <sense id="sen33" wordnet="1727348-v"/>
+      <sense id="sen32" wordnet="180614-a"/>
+      <sense id="sen31" wordnet="841011-n"/>
+      <sense id="sen30" wordnet="1726447-v"/>
+      <sense id="sen3" wordnet="8904620-n"/>
+      <sense id="sen2" wordnet="971086-n"/>
+      <sense id="sen1" wordnet="2232229-v"/>
+      <sense id="sen0" wordnet="5247839-n"/>
+      <sense id="sen28" wordnet="245620-n"/>
+      <sense id="sen29" wordnet="914118-v"/>
+      <sense id="sen26" wordnet="6242196-n"/>
+      <sense id="sen27" wordnet="337587-v"/>
+      <sense id="sen9" wordnet="115695-v"/>
+      <sense id="sen8" wordnet="3189674-n"/>
+      <sense id="sen7" wordnet="2704225-n"/>
+      <sense id="sen6" wordnet="1010002-a"/>
+      <sense id="sen5" wordnet="14307923-n"/>
+      <sense id="sen4" wordnet="9285271-n"/>
+      <sense id="sen23" wordnet="2166354-v"/>
+      <sense id="sen22" wordnet="968308-n"/>
+      <sense id="sen25" wordnet="2127669-a"/>
+      <sense id="sen24" wordnet="109747-r"/>
+      <sense id="sen21" wordnet="969068-n"/>
+      <sense id="sen20" wordnet="5943480-n"/>
+      <sense id="sen19" wordnet="12768553-n"/>
+      <sense id="sen15" wordnet="9635066-n"/>
+      <sense id="sen16" wordnet="1147617-n"/>
+      <sense id="sen17" wordnet="7995813-n"/>
+      <sense id="sen18" wordnet="2190301-v"/>
+    </senses>
+    <mantras>
+      <mantra id="mantra0">
+        <token idref="t22"/>
+      </mantra>
+      <mantra id="mantra1">
+        <token idref="t26"/>
+      </mantra>
+      <mantra id="mantra2">
+        <token idref="t32"/>
+      </mantra>
+      <mantra id="mantra3">
+        <token idref="t37"/>
+      </mantra>
+      <mantra id="mantra4">
+        <token idref="t38"/>
+      </mantra>
+    </mantras>
+  </document>
+</root>

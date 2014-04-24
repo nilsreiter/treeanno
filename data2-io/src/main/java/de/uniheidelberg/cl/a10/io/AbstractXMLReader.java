@@ -38,6 +38,15 @@ public abstract class AbstractXMLReader<T> extends AbstractReader<T> {
 
 	protected abstract T read(final Element rootElement) throws IOException;
 
+	/**
+	 * This is for an easier transition from dom4j to xom. On the long run, this
+	 * should be removed.
+	 * 
+	 * @param start
+	 * @param names
+	 * @return
+	 */
+	@Deprecated
 	protected Iterable<Element> getElements(Element start, String... names) {
 		Elements elements = start.getChildElements(names[0]);
 		if (names.length > 1) {

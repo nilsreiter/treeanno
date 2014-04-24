@@ -1,8 +1,12 @@
 package de.uniheidelberg.cl.a10.data2.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import de.uniheidelberg.cl.a10.data2.Token;
 
 public class TestDataStructures {
 
@@ -92,5 +96,12 @@ public class TestDataStructures {
 		// different tokens, same ritual
 		assertEquals(m1.equals(m4), false);
 
+	}
+
+	@Test
+	public void testTypes() {
+		Token token = new Token_impl("", "");
+		assertTrue(Token.class.isAssignableFrom(token.getClass()));
+		assertFalse(token.getClass().isAssignableFrom(Token.class));
 	}
 }

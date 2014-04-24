@@ -45,6 +45,7 @@
   	<module>clustering-api</module>
   	<module>clustering-core</module>
   	<module>util</module>
+  	<module>de.nilsreiter.event</module>
   </modules>
   <dependencies>
   	<dependency>

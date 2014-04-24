@@ -5,13 +5,23 @@
     <artifactId>a10</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  
-   
-  
+  <groupId>de.nilsreiter.event</groupId>
+  <artifactId>de.nilsreiter.event</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>de.nilsreiter</groupId>
   		<artifactId>data2-api</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>data2-io</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>data2-core</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
@@ -21,5 +31,4 @@
   		<scope>test</scope>
   	</dependency>
   </dependencies>
-  <artifactId>data2-core</artifactId>
 </project>

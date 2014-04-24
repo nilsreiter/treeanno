@@ -29,5 +29,11 @@ public class XMLConstants {
 	public static final String PARTITION = "partition";
 	public static final String FULL = "full";
 	public static final String PARTIAL = "partial";
+	public static final String ARGUMENT = "argument";
+	public static final String EVENT = "event";
+	public static final String ANCHOR = "anchor";
+	public static final String ROLE = "role";
+	public static final String TARGET = "target";
+	public static final String EVENTS = "events";
 
 }

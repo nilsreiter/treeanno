@@ -1,13 +1,18 @@
 package de.uniheidelberg.cl.a10.data2.io;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeSet;
 
 import nu.xom.Element;
 import nu.xom.Elements;
+import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
+import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.impl.Chunk_impl;
 import de.uniheidelberg.cl.a10.data2.impl.Document_impl;
 import de.uniheidelberg.cl.a10.data2.impl.Entity_impl;
+import de.uniheidelberg.cl.a10.data2.impl.Event_impl;
 import de.uniheidelberg.cl.a10.data2.impl.FrameElm_impl;
 import de.uniheidelberg.cl.a10.data2.impl.Frame_impl;
 import de.uniheidelberg.cl.a10.data2.impl.Mantra_impl;
@@ -340,9 +345,41 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 		this.extractChunks(doc_elm);
 		this.extractSections(doc_elm);
 		this.extractMantras(doc_elm);
+		this.extractEvents(doc_elm);
 		this.setOriginalText(doc_elm);
 		return this.ritDoc;
 
 	}
 
+	private void extractEvents(Element doc_elm) {
+		Element eventsElement = doc_elm
+				.getFirstChildElement(XMLConstants.EVENTS);
+		if (eventsElement == null)
+			return;
+		Elements eventElements = eventsElement
+				.getChildElements(XMLConstants.EVENT);
+		for (int i = 0; i < eventElements.size(); i++) {
+			Element eventElement = eventElements.get(i);
+			String anchorId = eventElement.getFirstChildElement(
+					XMLConstants.ANCHOR).getAttributeValue(XMLConstants.IDREF);
+			Event event = new Event_impl(
+					eventElement.getAttributeValue(XMLConstants.ID),
+					(AnnotationObjectInDocument) this.ritDoc.getById(anchorId));
+			for (Element argElement : getElements(eventElement,
+					XMLConstants.ARGUMENT)) {
+				List<AnnotationObjectInDocument> fillers = new LinkedList<AnnotationObjectInDocument>();
+				for (Element fElement : getElements(argElement,
+						XMLConstants.TARGET)) {
+					String fId = fElement.getAttributeValue(XMLConstants.IDREF);
+					fillers.add((AnnotationObjectInDocument) ritDoc
+							.getById(fId));
+				}
+				event.putArgument(
+						argElement.getAttributeValue(XMLConstants.ROLE),
+						fillers);
+			}
+			this.ritDoc.addEvent(event);
+		}
+
+	}
 }
