@@ -5,7 +5,7 @@ import java.util.Set;
 import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
 import de.uniheidelberg.cl.a10.data2.Frame;
 
-public class FrameEvent_impl extends Event_impl {
+public class FrameEvent_impl extends FrameTokenEvent_impl {
 
 	Frame frame = null;
 

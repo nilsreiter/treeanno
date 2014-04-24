@@ -12,7 +12,7 @@ import nu.xom.ValidityException;
 import org.kohsuke.args4j.Option;
 
 import de.uniheidelberg.cl.a10.Main;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.AlignmentFactory;
@@ -84,9 +84,9 @@ public class EvaluationMain extends Main {
 			final Document silverDoc) throws IOException {
 		ModelReader mr = new ModelReader(new DataReader(),
 				this.settings.dataDirectory);
-		SEHiddenMarkovModel_impl<Event> bmm = mr
+		SEHiddenMarkovModel_impl<FrameTokenEvent> bmm = mr
 				.readHiddenMarkovModel(silverDoc);
-		AlignmentFactory<Event> alignmentFactory = new AlignmentFactory<Event>();
+		AlignmentFactory<FrameTokenEvent> alignmentFactory = new AlignmentFactory<FrameTokenEvent>();
 
 		SingleResult ss = this.evaluateAlignment(goldDocument, alignmentFactory
 				.getTokenAlignmentFromHMM(bmm), bmm.getTrainingConfiguration()

@@ -16,10 +16,10 @@ import org.xml.sax.SAXException;
 
 import de.uniheidelberg.cl.a10.Main;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.FrameElement;
-import de.uniheidelberg.cl.a10.data2.impl.Event_impl;
+import de.uniheidelberg.cl.a10.data2.impl.FrameTokenEvent_impl;
 import de.uniheidelberg.cl.a10.data2.io.DataReader;
 import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
@@ -35,17 +35,17 @@ public class Inspector extends Main {
 
 	SimilarityConfiguration sConf = new SimilarityConfiguration();
 
-	SimilarityFunction<Event> sf_wordnet;
+	SimilarityFunction<FrameTokenEvent> sf_wordnet;
 
-	SimilarityFunction<Event> sf_verbnet;
+	SimilarityFunction<FrameTokenEvent> sf_verbnet;
 
-	SimilarityFunction<Event> sf_framenet;
+	SimilarityFunction<FrameTokenEvent> sf_framenet;
 
-	SimilarityFunction<Event> sf_arg;
+	SimilarityFunction<FrameTokenEvent> sf_arg;
 
-	SimilarityFunction<Event> sf_distance;
+	SimilarityFunction<FrameTokenEvent> sf_distance;
 
-	SimilarityFunction<Event> sf_combined;
+	SimilarityFunction<FrameTokenEvent> sf_combined;
 
 	enum Action {
 		sim, exit, help, info, settings, set
@@ -62,8 +62,8 @@ public class Inspector extends Main {
 		insp.run();
 	}
 
-	protected String getSimilarityString(final SimilarityFunction<Event> sf,
-			final Event f1, final Event f2) {
+	protected String getSimilarityString(final SimilarityFunction<FrameTokenEvent> sf,
+			final FrameTokenEvent f1, final FrameTokenEvent f2) {
 		try {
 			return sf.toString() + "(" + f1.getId() + "," + f2.getId() + ") = "
 					+ sf.sim(f1, f2) + "\n";
@@ -75,7 +75,7 @@ public class Inspector extends Main {
 	protected void initSimilarityFunctions() throws InstantiationException,
 			IllegalAccessException, FileNotFoundException, SecurityException,
 			ClassNotFoundException {
-		SimilarityFunctionFactory<Event> factory = new SimilarityFunctionFactory<Event>();
+		SimilarityFunctionFactory<FrameTokenEvent> factory = new SimilarityFunctionFactory<FrameTokenEvent>();
 		System.out.println("Initialising similarity functions ... ");
 
 		System.out.println("   WordNetSimilarity");
@@ -191,8 +191,8 @@ public class Inspector extends Main {
 	}
 
 	protected void sim(final String input0, final String input1) {
-		Event f1 = this.getFrameForInput(rdoc[0], input0);
-		Event f2 = this.getFrameForInput(rdoc[1], input1);
+		FrameTokenEvent f1 = this.getFrameForInput(rdoc[0], input0);
+		FrameTokenEvent f2 = this.getFrameForInput(rdoc[1], input1);
 		if (f1 == null) {
 			System.out.println("Frame with input " + input0 + " not found.");
 		} else if (f2 == null) {
@@ -213,11 +213,11 @@ public class Inspector extends Main {
 		}
 	}
 
-	protected Event getFrameForInput(final Document rd, final String input) {
+	protected FrameTokenEvent getFrameForInput(final Document rd, final String input) {
 		if (input.startsWith("f")) {
-			return Event_impl.getEvent((rd.getFrameById(input)));
+			return FrameTokenEvent_impl.getEvent((rd.getFrameById(input)));
 		} else if (input.matches("[0-9]+")) {
-			return Event_impl.getEvent(rd.getFrames().get(
+			return FrameTokenEvent_impl.getEvent(rd.getFrames().get(
 					Integer.valueOf(input)));
 		}
 		return null;

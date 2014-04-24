@@ -2,7 +2,7 @@ package de.uniheidelberg.cl.a10.patterns.mroth.impl;
 
 import java.io.FileNotFoundException;
 
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.mroth.MRSystem;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
@@ -11,7 +11,7 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunctionFactory;
 
 public class MRSystemFactory {
 
-	public static <T extends Event> MRSystem<T> getInstance(
+	public static <T extends FrameTokenEvent> MRSystem<T> getInstance(
 			final SimilarityConfiguration sConf) throws FileNotFoundException,
 			SecurityException, InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
@@ -22,7 +22,7 @@ public class MRSystemFactory {
 		return mrs;
 	}
 
-	public static <T extends Event> MRSystem<T> getInstance(
+	public static <T extends FrameTokenEvent> MRSystem<T> getInstance(
 			final SimilarityFunction<T> fun, final double threshold) {
 		MRSystem_impl<T> mrs = new MRSystem_impl<T>();
 		mrs.setSimilarityFunction(fun);

@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.util.concurrent.Semaphore;
 
 import de.uniheidelberg.cl.a10.RedirectIO;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.mroth.measures.beans.NomBank;
 import edu.mit.jwi.item.POS;
 import edu.sussex.nlp.jws.JWS;
 
-public class WordNetSimilarity extends AbstractSimilarityFunction<Event>
-		implements SimilarityFunction<Event> {
+public class WordNetSimilarity extends AbstractSimilarityFunction<FrameTokenEvent>
+		implements SimilarityFunction<FrameTokenEvent> {
 	public static final long serialVersionUID = 2l;
 	static JWS ws = null;
 	static NomBank nb = null;
@@ -34,7 +34,7 @@ public class WordNetSimilarity extends AbstractSimilarityFunction<Event>
 	}
 
 	@Override
-	public Probability sim(final Event arg0, final Event arg1) {
+	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1) {
 		if (positivePreCheck(arg0, arg1))
 			return Probability.ONE;
 		if (negativePreCheck(arg0, arg1))
@@ -49,7 +49,7 @@ public class WordNetSimilarity extends AbstractSimilarityFunction<Event>
 		return p;
 	}
 
-	public double msim(final Event n1, final Event n2) {
+	public double msim(final FrameTokenEvent n1, final FrameTokenEvent n2) {
 		char pos1 = n1.getTarget().getPartOfSpeech().charAt(0);
 		char pos2 = n2.getTarget().getPartOfSpeech().charAt(0);
 		String p1 = null;

@@ -10,7 +10,7 @@ import org.kohsuke.args4j.Option;
 import org.xml.sax.SAXException;
 
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.main.MainWithInputDocuments;
 import de.uniheidelberg.cl.a10.patterns.data.EventChainExtractor;
 
@@ -19,14 +19,14 @@ public abstract class MainWithInputSequences extends MainWithInputDocuments {
 	@Option(name = "--extraction", usage = "Controls the pre-filtering of frames into events")
 	protected EventChainExtractor.Extraction extraction = EventChainExtractor.Extraction.ANNOTATEDFRAMES;
 
-	List<List<Event>> sequences = null;
+	List<List<FrameTokenEvent>> sequences = null;
 
 	EventChainExtractor eventChainExtractor;
 
-	public List<List<Event>> getSequences()
+	public List<List<FrameTokenEvent>> getSequences()
 			throws ParserConfigurationException, SAXException, IOException {
 		if (sequences == null) {
-			sequences = new LinkedList<List<Event>>();
+			sequences = new LinkedList<List<FrameTokenEvent>>();
 			eventChainExtractor = EventChainExtractor
 					.getEventChainExtractor(extraction);
 			for (Document rd : this.getDocuments()) {

@@ -2,13 +2,13 @@ package de.uniheidelberg.cl.a10.patterns.similarity;
 
 import java.io.File;
 
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.mroth.measures.beans.NomBank;
 import de.uniheidelberg.cl.mroth.measures.beans.SemLink;
 
-public class VerbNetSimilarity extends AbstractSimilarityFunction<Event>
-		implements SimilarityFunction<Event> {
+public class VerbNetSimilarity extends AbstractSimilarityFunction<FrameTokenEvent>
+		implements SimilarityFunction<FrameTokenEvent> {
 	public static final long serialVersionUID = 2l;
 
 	SemLink sl;
@@ -24,7 +24,7 @@ public class VerbNetSimilarity extends AbstractSimilarityFunction<Event>
 	}
 
 	@Override
-	public Probability sim(final Event arg0, final Event arg1) {
+	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1) {
 		Probability p = this.getFromHistory(arg0, arg1);
 		if (p != null)
 			return p;
@@ -40,7 +40,7 @@ public class VerbNetSimilarity extends AbstractSimilarityFunction<Event>
 		return p;
 	}
 
-	protected double msim(Event n1, Event n2) {
+	protected double msim(FrameTokenEvent n1, FrameTokenEvent n2) {
 		char pos1 = n1.getTarget().getPartOfSpeech().charAt(0);
 		char pos2 = n2.getTarget().getPartOfSpeech().charAt(0);
 		String p1 = null;

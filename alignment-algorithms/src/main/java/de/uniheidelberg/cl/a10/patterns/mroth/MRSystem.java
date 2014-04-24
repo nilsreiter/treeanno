@@ -3,13 +3,13 @@ package de.uniheidelberg.cl.a10.patterns.mroth;
 import java.util.List;
 import java.util.logging.Logger;
 
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
-public interface MRSystem<T extends Event> {
+public interface MRSystem<T extends FrameTokenEvent> {
 
 	/**
 	 * Set sequence 1
