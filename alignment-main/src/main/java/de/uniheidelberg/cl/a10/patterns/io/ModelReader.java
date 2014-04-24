@@ -15,8 +15,8 @@ import nu.xom.Elements;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.Event;
-import de.uniheidelberg.cl.a10.data2.impl.Event_impl;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
+import de.uniheidelberg.cl.a10.data2.impl.FrameTokenEvent_impl;
 import de.uniheidelberg.cl.a10.data2.io.DataReader;
 import de.uniheidelberg.cl.a10.patterns.TrainingConfiguration;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
@@ -62,7 +62,7 @@ public class ModelReader {
 				new HashMap<String, Object>());
 	}
 
-	public SEHiddenMarkovModel_impl<Event> readHiddenMarkovModel(
+	public SEHiddenMarkovModel_impl<FrameTokenEvent> readHiddenMarkovModel(
 			final InputStream is) throws IOException, ValidityException,
 			ParsingException {
 		Builder xBuilder = new Builder();
@@ -71,7 +71,7 @@ public class ModelReader {
 		return this.readHiddenMarkovModel(doc);
 	}
 
-	public SEHiddenMarkovModel_impl<Event> readHiddenMarkovModel(
+	public SEHiddenMarkovModel_impl<FrameTokenEvent> readHiddenMarkovModel(
 			final nu.xom.Document doc) throws IOException {
 		return this.readHiddenMarkovModel(doc.getRootElement(),
 				new HashMap<String, Object>());
@@ -89,10 +89,10 @@ public class ModelReader {
 		return prop;
 	}
 
-	protected SEHiddenMarkovModel_impl<Event> readHiddenMarkovModel(
+	protected SEHiddenMarkovModel_impl<FrameTokenEvent> readHiddenMarkovModel(
 			final Element hmmElement, final Map<String, Object> idMap)
 			throws FileNotFoundException, IOException {
-		SEHiddenMarkovModel_impl<Event> hmm = new SEHiddenMarkovModel_impl<Event>();
+		SEHiddenMarkovModel_impl<FrameTokenEvent> hmm = new SEHiddenMarkovModel_impl<FrameTokenEvent>();
 
 		// reading of properties
 		if (hmmElement.getFirstChildElement("properties") != null) {
@@ -144,11 +144,11 @@ public class ModelReader {
 			String id = eventElement.getAttributeValue("id");
 			String frameId = eventElement.getAttributeValue("frame");
 			String source = eventElement.getAttributeValue("source");
-			Event frame = null;
+			FrameTokenEvent frame = null;
 			if (source != null) {
 				// TODO: This breaks if we want to model other events than
 				// frames, but for now it's ok.
-				frame = Event_impl.getEvent(this.ritualDocumentMap.get(source)
+				frame = FrameTokenEvent_impl.getEvent(this.ritualDocumentMap.get(source)
 						.getById(frameId));
 				hmm.getEvents().add(frame);
 			}
@@ -178,7 +178,7 @@ public class ModelReader {
 
 			Integer state = (Integer) idMap.get(probElement
 					.getAttributeValue("from"));
-			Event_impl frame = (Event_impl) idMap.get(probElement
+			FrameTokenEvent_impl frame = (FrameTokenEvent_impl) idMap.get(probElement
 					.getAttributeValue("to"));
 			Probability p = Probability.fromProbability(Double
 					.parseDouble(probElement.getAttributeValue("p")));

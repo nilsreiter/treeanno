@@ -13,15 +13,15 @@ import java.util.Map;
 import java.util.Set;
 
 import de.uniheidelberg.cl.a10.Util;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.FrameElement;
 import de.uniheidelberg.cl.a10.data2.Mention;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 
-public class ArgumentTextSimilarity extends AbstractSimilarityFunction<Event>
-		implements SimilarityFunction<Event> {
+public class ArgumentTextSimilarity extends AbstractSimilarityFunction<FrameTokenEvent>
+		implements SimilarityFunction<FrameTokenEvent> {
 	public static final long serialVersionUID = 3l;
 
 	boolean debug = false;
@@ -77,7 +77,7 @@ public class ArgumentTextSimilarity extends AbstractSimilarityFunction<Event>
 	}
 
 	@Override
-	public Probability sim(final Event arg0, final Event arg1)
+	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1)
 			throws IncompatibleException {
 		if (this.config == null)
 			throw new UnconfiguredException();

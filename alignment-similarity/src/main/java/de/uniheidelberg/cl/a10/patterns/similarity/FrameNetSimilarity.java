@@ -13,7 +13,7 @@ import de.saar.coli.salsa.reiter.framenet.FrameNet;
 import de.saar.coli.salsa.reiter.framenet.FrameNetRelation;
 import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.saar.coli.salsa.reiter.framenet.FrameRelation;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraDistance;
 import edu.uci.ics.jung.algorithms.shortestpath.Distance;
@@ -26,7 +26,7 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
  * @author reiter
  * 
  */
-public class FrameNetSimilarity extends AbstractSimilarityFunction<Event> {
+public class FrameNetSimilarity extends AbstractSimilarityFunction<FrameTokenEvent> {
 	public static final long serialVersionUID = 2l;
 
 	FrameNet frameNet = null;
@@ -117,15 +117,15 @@ public class FrameNetSimilarity extends AbstractSimilarityFunction<Event> {
 	}
 
 	@Override
-	public Probability sim(final Event arg0, final Event arg1)
+	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1)
 			throws IncompatibleException {
 
 		Probability p = this.getFromHistory(arg0, arg1);
 		if (p != null)
 			return p;
 
-		if (arg0.source() == Event.Source.Frame
-				&& arg1.source() == Event.Source.Frame) {
+		if (arg0.source() == FrameTokenEvent.Source.Frame
+				&& arg1.source() == FrameTokenEvent.Source.Frame) {
 			String n1 = arg0.getFrame().getFrameName();
 			String n2 = arg1.getFrame().getFrameName();
 			p = sim(n1, n2);

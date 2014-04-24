@@ -9,7 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.kohsuke.args4j.Option;
 import org.xml.sax.SAXException;
 
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
 import de.uniheidelberg.cl.a10.patterns.baseline.Baseline;
@@ -45,15 +45,15 @@ public class BaselineMain extends MainWithInputSequences {
 			IOException, SecurityException, InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
 		EventTokenConverter etc = new EventTokenConverter();
-		BaselineFactory<Event> factory = new BaselineFactory<Event>();
-		Baseline<Event> baseline = factory.getBaseline(config.type);
+		BaselineFactory<FrameTokenEvent> factory = new BaselineFactory<FrameTokenEvent>();
+		Baseline<FrameTokenEvent> baseline = factory.getBaseline(config.type);
 		if (factory.isWeighted(config.type)) {
-			SimilarityFunctionFactory<Event> sfFactory = new SimilarityFunctionFactory<Event>();
-			((WeightedBaseline<Event>) baseline)
+			SimilarityFunctionFactory<FrameTokenEvent> sfFactory = new SimilarityFunctionFactory<FrameTokenEvent>();
+			((WeightedBaseline<FrameTokenEvent>) baseline)
 					.setSimilarityFunction(sfFactory
 							.getSimilarityFunction(config));
 		}
-		Alignment<Event> alignment = baseline.getAlignment(getSequences());
+		Alignment<FrameTokenEvent> alignment = baseline.getAlignment(getSequences());
 		OutputStream os = this.getOutputStreamForFileOption(config.output,
 				System.out);
 		AlignmentWriter aw = new AlignmentWriter(os);

@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 import de.saar.coli.salsa.reiter.framenet.FrameElementNotFoundException;
 import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.uniheidelberg.cl.a10.Main;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.patterns.io.ModelWriter;
 import de.uniheidelberg.cl.a10.patterns.models.impl.SEHiddenMarkovModel_impl;
 import de.uniheidelberg.cl.a10.patterns.train.BMMConfiguration;
@@ -46,12 +46,12 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 		asm.run();
 	}
 
-	public void writeModel(final SEHiddenMarkovModel_impl<Event> hmm)
+	public void writeModel(final SEHiddenMarkovModel_impl<FrameTokenEvent> hmm)
 			throws IOException {
 		if (this.model != null) {
 			OutputStream os = this.getOutputStreamForFileOption(this.model,
 					null);
-			ModelWriter<Event> mw = new ModelWriter<Event>(os);
+			ModelWriter<FrameTokenEvent> mw = new ModelWriter<FrameTokenEvent>(os);
 			try {
 				mw.write(hmm);
 				mw.close();
@@ -64,7 +64,7 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 				os.close();
 			}
 		} else {
-			ModelWriter<Event> mw = new ModelWriter<Event>(
+			ModelWriter<FrameTokenEvent> mw = new ModelWriter<FrameTokenEvent>(
 					this.getOutputStreamForFileOption(this.model, System.out));
 
 			try {
@@ -86,7 +86,7 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 			IllegalAccessException, ClassNotFoundException {
 		// System.err.println(bmmConf.getLineDescription());
 		try {
-			Collection<List<Event>> sequences;
+			Collection<List<FrameTokenEvent>> sequences;
 			sequences = this.getSequences();
 			runMerging(sequences);
 			return;
@@ -102,17 +102,17 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 		}
 	}
 
-	protected void runMerging(final Collection<List<Event>> sequences)
+	protected void runMerging(final Collection<List<FrameTokenEvent>> sequences)
 			throws FileNotFoundException, SecurityException,
 			InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
-		BMMFactory<Event> trainingFactory = new BMMFactory<Event>();
+		BMMFactory<FrameTokenEvent> trainingFactory = new BMMFactory<FrameTokenEvent>();
 
-		BayesianModelMerging<Event> bmm = trainingFactory.getTrainer(bmmConf);
+		BayesianModelMerging<FrameTokenEvent> bmm = trainingFactory.getTrainer(bmmConf);
 		// Settings
 		Level level = Level.parse(logLevel.toUpperCase());
 		bmm.setLogLevel(level);
-		SEHiddenMarkovModel_impl<Event> hmm;
+		SEHiddenMarkovModel_impl<FrameTokenEvent> hmm;
 
 		if (nomerging) {
 			hmm = bmm.init(sequences.iterator());

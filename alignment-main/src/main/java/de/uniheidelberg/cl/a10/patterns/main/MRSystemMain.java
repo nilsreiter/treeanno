@@ -12,7 +12,7 @@ import org.xml.sax.SAXException;
 import de.saar.coli.salsa.reiter.framenet.FrameElementNotFoundException;
 import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.uniheidelberg.cl.a10.Main;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
 import de.uniheidelberg.cl.a10.patterns.mroth.MRSystem;
@@ -39,13 +39,13 @@ public class MRSystemMain extends MainWithInputSequences {
 		return similarityConf.getWikiDescription();
 	}
 
-	protected Alignment<Event> align() throws ParserConfigurationException,
+	protected Alignment<FrameTokenEvent> align() throws ParserConfigurationException,
 			SAXException, IOException, SecurityException,
 			InstantiationException, IllegalAccessException,
 			ClassNotFoundException, IncompatibleException {
-		List<List<Event>> sequences;
+		List<List<FrameTokenEvent>> sequences;
 		sequences = this.getSequences();
-		MRSystem<Event> mrs = MRSystemFactory.getInstance(similarityConf);
+		MRSystem<FrameTokenEvent> mrs = MRSystemFactory.getInstance(similarityConf);
 		mrs.setLogger(logger);
 		mrs.setSequence1(sequences.get(0));
 		mrs.setSequence2(sequences.get(1));

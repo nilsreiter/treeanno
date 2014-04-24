@@ -1,12 +1,12 @@
 package de.uniheidelberg.cl.a10.data2.impl;
 
 import de.uniheidelberg.cl.a10.HasId;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.Token;
 
-public abstract class Event_impl extends AnnotationObjectInDocument_impl
-		implements Event {
+public abstract class FrameTokenEvent_impl extends AnnotationObjectInDocument_impl
+		implements FrameTokenEvent {
 
 	Token target = null;
 
@@ -16,7 +16,7 @@ public abstract class Event_impl extends AnnotationObjectInDocument_impl
 	 */
 	double position = -1.0;
 
-	public Event_impl(final String id, final Token target) {
+	public FrameTokenEvent_impl(final String id, final Token target) {
 		super(id);
 		this.target = target;
 	}
@@ -49,9 +49,9 @@ public abstract class Event_impl extends AnnotationObjectInDocument_impl
 		return target;
 	}
 
-	public static Event getEvent(final HasId a) {
-		if (a instanceof Event) {
-			return (Event) a;
+	public static FrameTokenEvent getEvent(final HasId a) {
+		if (a instanceof FrameTokenEvent) {
+			return (FrameTokenEvent) a;
 		}
 		if (a instanceof Frame) {
 			return new FrameEvent_impl((Frame) a);

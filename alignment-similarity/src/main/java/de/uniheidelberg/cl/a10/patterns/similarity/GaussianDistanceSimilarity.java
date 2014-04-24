@@ -3,7 +3,7 @@ package de.uniheidelberg.cl.a10.patterns.similarity;
 import org.apache.commons.math3.analysis.function.Gaussian;
 
 import de.uniheidelberg.cl.a10.Util;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 
 /**
@@ -13,7 +13,7 @@ import de.uniheidelberg.cl.a10.patterns.data.Probability;
  * 
  */
 public class GaussianDistanceSimilarity extends
-		AbstractSimilarityFunction<Event> {
+		AbstractSimilarityFunction<FrameTokenEvent> {
 
 	public static final long serialVersionUID = 5l;
 
@@ -35,7 +35,7 @@ public class GaussianDistanceSimilarity extends
 	}
 
 	@Override
-	public Probability sim(final Event arg0, final Event arg1) {
+	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1) {
 		/*
 		 * if (positivePreCheck(arg0, arg1)) return Probability.ONE; if
 		 * (negativePreCheck(arg0, arg1)) return Probability.NULL;

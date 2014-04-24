@@ -15,7 +15,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedSubgraph;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.AlignmentIdProvider;
 import de.uniheidelberg.cl.a10.data2.alignment.Link;
@@ -26,7 +26,7 @@ import de.uniheidelberg.cl.a10.patterns.mroth.MRSystem;
 import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
-public class MRSystem_impl<T extends Event> implements MRSystem<T> {
+public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 
 	List<T> sequence1;
 	List<T> sequence2;

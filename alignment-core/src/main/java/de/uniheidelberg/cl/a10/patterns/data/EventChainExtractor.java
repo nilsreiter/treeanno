@@ -8,7 +8,7 @@ import java.util.List;
 
 import de.uniheidelberg.cl.a10.TabFormat;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.Link;
@@ -38,9 +38,9 @@ public abstract class EventChainExtractor {
 		}
 	};
 
-	public abstract List<Event> getEventChain(final Document rd);
+	public abstract List<FrameTokenEvent> getEventChain(final Document rd);
 
-	public abstract Alignment<Event> getAlignmentDocument(
+	public abstract Alignment<FrameTokenEvent> getAlignmentDocument(
 			final Alignment<Frame> ad);
 }
 
@@ -59,8 +59,8 @@ class AnnotatedFrames extends EventChainExtractor {
 	}
 
 	@Override
-	public List<Event> getEventChain(final Document rd) {
-		List<Event> ret = new LinkedList<Event>();
+	public List<FrameTokenEvent> getEventChain(final Document rd) {
+		List<FrameTokenEvent> ret = new LinkedList<FrameTokenEvent>();
 		for (Frame f : rd.getFrames()) {
 			if (matrix.get(f.getFrameName(), f.getTarget().getLemma()))
 				ret.add(new FrameEvent_impl(f));
@@ -69,10 +69,10 @@ class AnnotatedFrames extends EventChainExtractor {
 	}
 
 	@Override
-	public Alignment<Event> getAlignmentDocument(final Alignment<Frame> ad) {
-		Alignment<Event> ret = new Alignment_impl<Event>(ad.getId());
+	public Alignment<FrameTokenEvent> getAlignmentDocument(final Alignment<Frame> ad) {
+		Alignment<FrameTokenEvent> ret = new Alignment_impl<FrameTokenEvent>(ad.getId());
 		for (Link<Frame> aa : ad.getAlignments()) {
-			HashSet<Event> events = new HashSet<Event>();
+			HashSet<FrameTokenEvent> events = new HashSet<FrameTokenEvent>();
 			for (Frame f : aa.getElements()) {
 				if (matrix.get(f.getFrameName(), f.getTarget().getLemma()))
 					events.add(new FrameEvent_impl(f));
@@ -88,8 +88,8 @@ class AnnotatedFrames extends EventChainExtractor {
 class AllFrames extends EventChainExtractor {
 
 	@Override
-	public List<Event> getEventChain(final Document rd) {
-		List<Event> ret = new LinkedList<Event>();
+	public List<FrameTokenEvent> getEventChain(final Document rd) {
+		List<FrameTokenEvent> ret = new LinkedList<FrameTokenEvent>();
 		for (Frame f : rd.getFrames()) {
 			ret.add(new FrameEvent_impl(f));
 		}
@@ -97,10 +97,10 @@ class AllFrames extends EventChainExtractor {
 	}
 
 	@Override
-	public Alignment<Event> getAlignmentDocument(final Alignment<Frame> ad) {
-		Alignment<Event> ret = new Alignment_impl<Event>(ad.getId());
+	public Alignment<FrameTokenEvent> getAlignmentDocument(final Alignment<Frame> ad) {
+		Alignment<FrameTokenEvent> ret = new Alignment_impl<FrameTokenEvent>(ad.getId());
 		for (Link<Frame> aa : ad.getAlignments()) {
-			HashSet<Event> events = new HashSet<Event>();
+			HashSet<FrameTokenEvent> events = new HashSet<FrameTokenEvent>();
 			for (Frame f : aa.getElements()) {
 				events.add(new FrameEvent_impl(f));
 			}

@@ -27,7 +27,7 @@ public enum Type {
 			return Chunk;
 		if (cl.isAssignableFrom(Document.class))
 			return Document;
-		if (Event.class.isAssignableFrom(cl))
+		if (FrameTokenEvent.class.isAssignableFrom(cl))
 			return Event;
 		return null;
 	}

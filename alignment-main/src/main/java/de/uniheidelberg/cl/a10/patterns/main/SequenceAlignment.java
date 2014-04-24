@@ -21,7 +21,7 @@ import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.uniheidelberg.cl.a10.Main;
 import de.uniheidelberg.cl.a10.NullOutputStream;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.AlignmentFactory;
@@ -51,9 +51,9 @@ public class SequenceAlignment extends MainWithInputSequences {
 	@Option(name = "--dotoutput", usage = "Output file for dot output")
 	File dotOutput = null;
 
-	Alignment<Event> doc = null;
+	Alignment<FrameTokenEvent> doc = null;
 
-	SimilarityFunction<Event> similarityFunction = null;
+	SimilarityFunction<FrameTokenEvent> similarityFunction = null;
 
 	SequenceAlignmentConfiguration saConfig = new SequenceAlignmentConfiguration();
 
@@ -69,41 +69,41 @@ public class SequenceAlignment extends MainWithInputSequences {
 		sa.run();
 	}
 
-	public PairwiseAlignment<Event> getAlignmentFromAlgorithm(
+	public PairwiseAlignment<FrameTokenEvent> getAlignmentFromAlgorithm(
 			final Document doc1, final Document doc2)
 			throws IncompatibleScoringSchemeException, SecurityException,
 			InstantiationException, IllegalAccessException,
 			ClassNotFoundException, ParserConfigurationException, SAXException,
 			IOException {
 
-		PairwiseAlignmentAlgorithm<Event> algo;
-		ScoringScheme<Event> scoringScheme = new AdvancedScoringScheme<Event>(
+		PairwiseAlignmentAlgorithm<FrameTokenEvent> algo;
+		ScoringScheme<FrameTokenEvent> scoringScheme = new AdvancedScoringScheme<FrameTokenEvent>(
 				Probability.fromProbability(this.saConfig.threshold),
 				this.getSimilarityFunction());
 		switch (this.saConfig.algorithm) {
 		case SmithWaterman:
-			algo = new SmithWaterman<Event>();
+			algo = new SmithWaterman<FrameTokenEvent>();
 			algo.setScoring(scoringScheme);
 			break;
 		case RecursiveSmithWaterman:
-			algo = new RecursiveSmithWaterman<Event>();
+			algo = new RecursiveSmithWaterman<FrameTokenEvent>();
 			algo.setScoring(scoringScheme);
 			break;
 		case NeedlemanWunsch:
-			algo = new NeedlemanWunsch<Event>(scoringScheme);
+			algo = new NeedlemanWunsch<FrameTokenEvent>(scoringScheme);
 			break;
 		default:
 		case DoubleNeedlemanWunsch:
-			algo = new DoubleNeedlemanWunsch<Event>(scoringScheme);
+			algo = new DoubleNeedlemanWunsch<FrameTokenEvent>(scoringScheme);
 			break;
 		}
 
-		Iterator<List<Event>> seqIter = getSequences().iterator();
-		List<Event> seq1 = seqIter.next();
-		List<Event> seq2 = seqIter.next();
+		Iterator<List<FrameTokenEvent>> seqIter = getSequences().iterator();
+		List<FrameTokenEvent> seq1 = seqIter.next();
+		List<FrameTokenEvent> seq2 = seqIter.next();
 
 		algo.setSequences(seq1, seq2);
-		PairwiseAlignment<Event> alignment = algo.computePairwiseAlignment();
+		PairwiseAlignment<FrameTokenEvent> alignment = algo.computePairwiseAlignment();
 		return alignment;
 	}
 
@@ -127,7 +127,7 @@ public class SequenceAlignment extends MainWithInputSequences {
 		d1 = dr.read(getArguments().get(0));
 		d2 = dr.read(getArguments().get(1));
 
-		PairwiseAlignment<Event> alignment = this.getAlignmentFromAlgorithm(d1,
+		PairwiseAlignment<FrameTokenEvent> alignment = this.getAlignmentFromAlgorithm(d1,
 				d2);
 		doc = AlignmentFactory.fromPairwiseAlignment(alignment, d1, d2);
 
@@ -164,13 +164,13 @@ public class SequenceAlignment extends MainWithInputSequences {
 		return b.toString();
 	}
 
-	public SimilarityFunction<Event> getSimilarityFunction()
+	public SimilarityFunction<FrameTokenEvent> getSimilarityFunction()
 			throws FileNotFoundException, SecurityException,
 			InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
 		if (this.similarityFunction == null) {
-			SimilarityFunctionFactory<Event> factory = new SimilarityFunctionFactory<Event>();
-			SimilarityFunction<Event> sf = factory
+			SimilarityFunctionFactory<FrameTokenEvent> factory = new SimilarityFunctionFactory<FrameTokenEvent>();
+			SimilarityFunction<FrameTokenEvent> sf = factory
 					.getSimilarityFunction(saConfig);
 
 			this.similarityFunction = sf;
