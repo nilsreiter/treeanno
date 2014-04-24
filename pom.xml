@@ -41,9 +41,10 @@
   	<module>de.saar.coli.salsa.reiter.framenet</module>
   	<module>alignment-main</module>
   	<module>alignment-eval</module>
-  	<module>alignment-alg-api</module>
-  	<module>alignment-alg-impl</module>
   	<module>alignment-algorithms</module>
+  	<module>clustering-api</module>
+  	<module>clustering-core</module>
+  	<module>util</module>
   </modules>
   <dependencies>
   	<dependency>
