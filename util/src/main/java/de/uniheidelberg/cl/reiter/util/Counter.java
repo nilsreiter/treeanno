@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.math3.util.Pair;
+
 public class Counter<K> extends HashMap<K, Integer> {
 
 	/**
@@ -47,7 +49,7 @@ public class Counter<K> extends HashMap<K, Integer> {
 		}
 	}
 
-	public BasicPair<Integer, Set<K>> getMax() {
+	public Pair<Integer, Set<K>> getMax() {
 		HashSet<K> set = new HashSet<K>();
 
 		int r = Integer.MIN_VALUE;
@@ -62,10 +64,10 @@ public class Counter<K> extends HashMap<K, Integer> {
 			}
 		}
 
-		return new BasicPair<Integer, Set<K>>(r, set);
+		return new Pair<Integer, Set<K>>(r, set);
 	}
 
-	public BasicPair<Integer, Set<K>> getMin() {
+	public Pair<Integer, Set<K>> getMin() {
 		HashSet<K> set = new HashSet<K>();
 
 		int r = Integer.MAX_VALUE;
@@ -80,15 +82,15 @@ public class Counter<K> extends HashMap<K, Integer> {
 			}
 		}
 
-		return new BasicPair<Integer, Set<K>>(r, set);
+		return new Pair<Integer, Set<K>>(r, set);
 	}
 
 	public int getHighestCount() {
-		return this.getMax().getElement1();
+		return this.getMax().getFirst();
 	}
 
 	public Set<K> getKeysWithMaxCount() {
-		return this.getMax().getElement2();
+		return this.getMax().getSecond();
 	}
 
 	@Override

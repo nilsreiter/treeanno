@@ -5,9 +5,9 @@
     <artifactId>a10</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>alignment-util</artifactId>
+  <artifactId>util</artifactId>
   <dependencies>
-  	<dependency>
+  	  	<dependency>
   		<groupId>org.apache.commons</groupId>
   		<artifactId>commons-math3</artifactId>
   		<version>3.2</version>
@@ -17,10 +17,6 @@
   		<artifactId>trove4j</artifactId>
   		<version>3.0.1</version>
   	</dependency>
-  	<dependency>
-  		<groupId>de.nilsreiter</groupId>
-  		<artifactId>util</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
+  	
   </dependencies>
 </project>
