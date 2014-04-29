@@ -12,4 +12,6 @@ public interface Event extends AnnotationObjectInDocument {
 	void putArgument(String key, List<? extends AnnotationObjectInDocument> args);
 
 	AnnotationObjectInDocument getAnchor();
+
+	String getEventClass();
 }

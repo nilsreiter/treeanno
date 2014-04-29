@@ -15,6 +15,8 @@ public class Event_impl extends AnnotationObjectInDocument_impl implements
 
 	Map<String, List<? extends AnnotationObjectInDocument>> arguments = new HashMap<String, List<? extends AnnotationObjectInDocument>>();;
 
+	String eventClass;
+
 	public Event_impl(String id, AnnotationObjectInDocument anc) {
 		super(id);
 		anchor = anc;
@@ -50,5 +52,14 @@ public class Event_impl extends AnnotationObjectInDocument_impl implements
 	@Override
 	public AnnotationObjectInDocument getAnchor() {
 		return anchor;
+	}
+
+	@Override
+	public String getEventClass() {
+		return eventClass;
+	}
+
+	public void setEventClass(String eventClass) {
+		this.eventClass = eventClass;
 	}
 }

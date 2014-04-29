@@ -18,7 +18,7 @@ public abstract class AbstractSimilarityFunction<T> implements
 
 	boolean configured = false;
 
-	SimilarityConfiguration config = null;
+	protected SimilarityConfiguration config = null;
 
 	public AbstractSimilarityFunction() {
 		history.setDefaultValue(null);
