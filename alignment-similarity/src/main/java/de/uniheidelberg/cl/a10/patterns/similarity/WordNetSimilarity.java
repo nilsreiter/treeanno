@@ -1,5 +1,6 @@
 package de.uniheidelberg.cl.a10.patterns.similarity;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
 
@@ -10,8 +11,9 @@ import de.uniheidelberg.cl.mroth.measures.beans.NomBank;
 import edu.mit.jwi.item.POS;
 import edu.sussex.nlp.jws.JWS;
 
-public class WordNetSimilarity extends AbstractSimilarityFunction<FrameTokenEvent>
-		implements SimilarityFunction<FrameTokenEvent> {
+public class WordNetSimilarity extends
+		AbstractSimilarityFunction<FrameTokenEvent> implements
+		SimilarityFunction<FrameTokenEvent> {
 	public static final long serialVersionUID = 2l;
 	static JWS ws = null;
 	static NomBank nb = null;
@@ -28,13 +30,14 @@ public class WordNetSimilarity extends AbstractSimilarityFunction<FrameTokenEven
 		if (ws == null)
 			ws = new JWS(System.getProperty("nr.JWS.WORDNET"), "3.0");
 		if (nb == null)
-			nb = new NomBank(System.getProperty("nr.NOMBANK"));
+			nb = new NomBank(new File(System.getProperty("nr.NOMBANK")));
 		RedirectIO.resetOUT();
 
 	}
 
 	@Override
-	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1) {
+	public Probability sim(final FrameTokenEvent arg0,
+			final FrameTokenEvent arg1) {
 		if (positivePreCheck(arg0, arg1))
 			return Probability.ONE;
 		if (negativePreCheck(arg0, arg1))

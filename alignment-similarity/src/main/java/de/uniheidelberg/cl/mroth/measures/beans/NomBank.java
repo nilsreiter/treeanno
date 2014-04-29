@@ -15,13 +15,7 @@ public class NomBank {
 
 	Map<String, String> nom2verb;
 
-	public static void main(final String[] args) {
-
-		new NomBank("nombank.1.0");
-
-	}
-
-	public NomBank(final String dir) {
+	public NomBank(final File dir) {
 
 		nom2verb = new HashMap<String, String>();
 

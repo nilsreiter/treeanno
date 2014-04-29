@@ -1,10 +1,14 @@
 package de.uniheidelberg.cl.a10.data2.io;
 
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collection;
 
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import de.uniheidelberg.cl.a10.data2.Document;
@@ -12,6 +16,8 @@ import de.uniheidelberg.cl.a10.data2.Entity;
 import de.uniheidelberg.cl.a10.data2.FrameElement;
 import de.uniheidelberg.cl.a10.data2.Mention;
 import de.uniheidelberg.cl.a10.data2.Token;
+
+;
 
 public class TestDataReader {
 
@@ -63,6 +69,15 @@ public class TestDataReader {
 		assertEquals(e.getId(), "ent_1");
 		assertEquals(e.getMentions().size(), 3);
 		assertEquals(e.getSense().getId(), "sense_3");
+		for (Token token : m.getTokens()) {
+			assertThat(token.getMentions(), hasItem(m));
+		}
+
+		for (Mention mention : text.getMentions()) {
+			for (Token token : mention.getTokens()) {
+				assertThat(token.getMentions(), hasItem(m));
+			}
+		}
 
 		// frame extraction
 		assertEquals(text.getFrames().size(), 1);
@@ -90,5 +105,18 @@ public class TestDataReader {
 		assertEquals(1, text.getEvents().get(0).getArguments().size());
 		assertEquals(5, text.getEvents().get(0).getArguments().get("Subject")
 				.size());
+
+		// links
+
+		assertSame(text.getMentionById("men_3"), text.getTokenById("t3")
+				.getMentions().iterator().next());
+
 	}
+
+	private void assertThat(Collection<? extends Mention> mentions,
+			Matcher<Iterable<? super Mention>> hasItem) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

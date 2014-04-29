@@ -1,6 +1,6 @@
 package de.uniheidelberg.cl.a10.patterns.models.benchmarking;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -12,8 +12,8 @@ import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import de.uniheidelberg.cl.a10.patterns.models.impl.MarkovModel_impl;
 
 public class BMarkovModel {
-	List<String> sequence1 = Arrays.asList();
-	List<String> sequence2 = Arrays.asList();
+	List<String> sequence1 = new ArrayList<String>();
+	List<String> sequence2 = new ArrayList<String>();
 	MarkovModel_impl<String> markovModel = new MarkovModel_impl<String>();
 	@Rule
 	public BenchmarkRule benchmarkRun = new BenchmarkRule();

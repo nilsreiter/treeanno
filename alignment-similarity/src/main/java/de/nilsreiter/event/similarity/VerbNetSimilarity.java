@@ -1,15 +1,18 @@
-package de.uniheidelberg.cl.a10.patterns.similarity;
+package de.nilsreiter.event.similarity;
 
 import java.io.File;
 
-import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
+import de.uniheidelberg.cl.a10.HasTarget;
+import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
+import de.uniheidelberg.cl.a10.patterns.similarity.AbstractSimilarityFunction;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import de.uniheidelberg.cl.mroth.measures.beans.NomBank;
 import de.uniheidelberg.cl.mroth.measures.beans.SemLink;
 
-public class VerbNetSimilarity extends
-		AbstractSimilarityFunction<FrameTokenEvent> implements
-		SimilarityFunction<FrameTokenEvent> {
+public class VerbNetSimilarity extends AbstractSimilarityFunction<Event>
+		implements SimilarityFunction<Event> {
 	public static final long serialVersionUID = 2l;
 
 	SemLink sl;
@@ -18,51 +21,44 @@ public class VerbNetSimilarity extends
 	// this is the sample mean measured over 2 mio. predicate pairs
 	static final double mean = 0.129240981405388;
 
-	public VerbNetSimilarity() {
-		nb = new NomBank(new File(System.getProperty("nr.NOMBANK")));
-		sl = new SemLink(System.getProperty("nr.SEMLINK") + File.separator
-				+ "vn-pb");
+	public VerbNetSimilarity(File nbPath, File slPath) {
+		nb = new NomBank(nbPath);
+		sl = new SemLink(new File(slPath, "vn-pb").getAbsolutePath());
 	}
 
 	@Override
-	public Probability sim(final FrameTokenEvent arg0,
-			final FrameTokenEvent arg1) {
-		Probability p = this.getFromHistory(arg0, arg1);
-		if (p != null)
-			return p;
+	public Probability sim(final Event arg0, final Event arg1) {
+		Probability p = Probability.NULL;
 		if (arg0.equals(arg1))
 			p = Probability.ONE;
 		else
 			p = Probability.fromProbability(this.msim(arg0, arg1));
-		System.err.println("sim(" + arg0.getFrame().getTarget().getLemma()
-				+ "," + arg1.getFrame().getTarget().getLemma() + ") = "
-				+ p.getProbability());
-		this.putInHistory(arg0, arg1, p);
-
 		return p;
 	}
 
-	protected double msim(FrameTokenEvent n1, FrameTokenEvent n2) {
-		char pos1 = n1.getTarget().getPartOfSpeech().charAt(0);
-		char pos2 = n2.getTarget().getPartOfSpeech().charAt(0);
+	protected double msim(Event n1, Event n2) {
+		Token target1 = ((HasTarget) n1.getAnchor()).getTarget();
+		Token target2 = ((HasTarget) n2.getAnchor()).getTarget();
+		char pos1 = target1.getPartOfSpeech().charAt(0);
+		char pos2 = target2.getPartOfSpeech().charAt(0);
 		String p1 = null;
 		String p2 = null;
 
 		// return 1.0 if both predicates are identical
-		if (n1.getTarget().getLemma().equals(n2.getTarget().getLemma())) {
+		if (target1.getLemma().equals(target2.getLemma())) {
 			return 1.0;
 		}
 
 		// retrieve source verb if predicates are nouns
 		if (pos1 == 'V')
-			p1 = n1.getTarget().getLemma();
+			p1 = target1.getLemma();
 		else if (pos1 == 'N') {
-			p1 = nb.getSourceVerb(n1.getTarget().getLemma());
+			p1 = nb.getSourceVerb(target1.getLemma());
 		}
 		if (pos2 == 'V')
-			p2 = n2.getTarget().getLemma();
+			p2 = target2.getLemma();
 		else if (pos2 == 'N') {
-			p2 = nb.getSourceVerb(n2.getTarget().getLemma());
+			p2 = nb.getSourceVerb(target2.getLemma());
 		}
 
 		// return mean similarity for all predicate pairs
