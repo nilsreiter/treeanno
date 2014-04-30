@@ -11,7 +11,7 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import de.uniheidelberg.cl.mroth.measures.beans.NomBank;
 import de.uniheidelberg.cl.mroth.measures.beans.SemLink;
 
-public class VerbNetSimilarity extends AbstractSimilarityFunction<Event>
+public class VerbNet extends AbstractSimilarityFunction<Event>
 		implements SimilarityFunction<Event> {
 	public static final long serialVersionUID = 2l;
 
@@ -21,7 +21,7 @@ public class VerbNetSimilarity extends AbstractSimilarityFunction<Event>
 	// this is the sample mean measured over 2 mio. predicate pairs
 	static final double mean = 0.129240981405388;
 
-	public VerbNetSimilarity(File nbPath, File slPath) {
+	public VerbNet(File nbPath, File slPath) {
 		nb = new NomBank(nbPath);
 		sl = new SemLink(new File(slPath, "vn-pb").getAbsolutePath());
 	}

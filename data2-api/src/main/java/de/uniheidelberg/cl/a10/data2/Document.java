@@ -72,4 +72,6 @@ public interface Document extends AnnotationObject, HasId {
 
 	void addEvent(Event ev);
 
+	Event getEventById(String id);
+
 }

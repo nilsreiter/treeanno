@@ -585,6 +585,18 @@ public class Document_impl extends AnnotationObject_impl implements
 			return this.getFrameById(id);
 		if (id.startsWith("t"))
 			return this.getTokenById(id);
+		if (id.startsWith("ev")) {
+			return this.getEventById(id);
+		}
+		return null;
+	}
+
+	@Override
+	public Event getEventById(String id) {
+		for (Event ev : this.getEvents()) {
+			if (ev.getId().equalsIgnoreCase(id))
+				return ev;
+		}
 		return null;
 	}
 

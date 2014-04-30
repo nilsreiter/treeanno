@@ -46,12 +46,9 @@
   	<module>clustering-core</module>
   	<module>util</module>
   	<module>de.nilsreiter.event</module>
+  	<module>util-main</module>
+  	<module>data2-main</module>
   </modules>
   <dependencies>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.11</version>
-  	</dependency>
   </dependencies>
 </project>
