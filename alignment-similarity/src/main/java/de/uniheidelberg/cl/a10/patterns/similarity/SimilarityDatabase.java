@@ -16,7 +16,7 @@ public class SimilarityDatabase extends Database {
 	public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS";
 	public static final String DROP_TABLE = "DROP TABLE";
 
-	public static final String TABLE_STRUCTURE = "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, type CHAR(5), id1 VARCHAR(10), id2 VARCHAR(10), sim DOUBLE";
+	public static final String TABLE_STRUCTURE = "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, type CHAR(5), id1 VARCHAR(15), id2 VARCHAR(15), sim DOUBLE";
 
 	PreparedStatement putStatement = null;
 	PreparedStatement getStatement = null;
@@ -32,7 +32,7 @@ public class SimilarityDatabase extends Database {
 		if (putStatement == null)
 			putStatement = this.getConnection().prepareStatement(
 					"INSERT INTO " + TABLE_NAME + " values (default,?,?,?,?)");
-		putStatement.setString(1, simType.getSimpleName());
+		putStatement.setString(1, simType.getSimpleName().substring(0, 4));
 		putStatement.setString(2, e1.getGlobalId());
 		putStatement.setString(3, e2.getGlobalId());
 		putStatement.setDouble(4, similarity);

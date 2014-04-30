@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.kohsuke.args4j.Option;
 
+import de.nilsreiter.event.similarity.Null;
 import de.nilsreiter.event.similarity.WordNet;
 import de.nilsreiter.util.db.DatabaseConfiguration;
 import de.uniheidelberg.cl.a10.data2.Document;
@@ -27,8 +28,16 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
  */
 public class CalculateSimilarities extends MainWithInputDocuments {
 
-	@Option(name = "--measure")
-	String measure = "";
+	static enum Measure {
+		WN, FN, GD, AT, VN
+	}
+
+	@Option(name = "--measure", usage = "The similarity measure to use")
+	Measure measure = Measure.WN;
+
+	@Option(name = "--droptable", usage = "Drop the table before")
+	boolean droptable = false;
+
 	SimilarityFunction<Event> function = null;
 	SimilarityDatabase database = null;
 
@@ -43,17 +52,23 @@ public class CalculateSimilarities extends MainWithInputDocuments {
 		try {
 			database = new SimilarityDatabase(
 					DatabaseConfiguration.getDefaultConfiguration());
+			if (droptable)
+				database.dropTable();
 			database.initTable();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
-		if (measure.equalsIgnoreCase(WordNet.class.getName())) {
+		switch (measure) {
+		case WN:
 			WordNet wns = new WordNet(new File(getConfiguration().getString(
 					"paths.wnhome")), new File(getConfiguration().getString(
 					"paths.nombank")));
 
 			function = wns;
+			break;
+		default:
+			function = new Null();
 		}
 	}
 

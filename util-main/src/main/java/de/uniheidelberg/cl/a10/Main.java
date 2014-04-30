@@ -188,7 +188,9 @@ public abstract class Main {
 	}
 
 	private URL getDefaultConfigFile() {
-		return getClass().getResource("/default-configuration.ini");
+		URL url = Main.class
+				.getResource("/resources/default-configuration.ini");
+		return url;
 	}
 
 	public static String join(final String[] array, final String delimiter,
