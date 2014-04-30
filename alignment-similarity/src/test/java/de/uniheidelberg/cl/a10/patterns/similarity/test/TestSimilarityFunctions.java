@@ -41,9 +41,12 @@ public class TestSimilarityFunctions {
 			ParserConfigurationException, SAXException, IOException {
 		// Main.initProperties();
 		DataReader dr = new DataReader();
-		rd = dr.read(new File("data2/gold/r0003.xml"));
-		rds[0] = dr.read(new File("data2/gold/r0009.xml"));
-		rds[1] = dr.read(new File("data2/gold/r0016.xml"));
+		rd = dr.read(new File(this.getClass().getResource("/r0003.xml")
+				.getFile()));
+		rds[0] = dr.read(new File(this.getClass().getResource("/r0009.xml")
+				.getFile()));
+		rds[1] = dr.read(new File(this.getClass().getResource("/r0016.xml")
+				.getFile()));
 
 		sConf = new SimilarityConfiguration();
 		sConf.sf_arg_idf = true;

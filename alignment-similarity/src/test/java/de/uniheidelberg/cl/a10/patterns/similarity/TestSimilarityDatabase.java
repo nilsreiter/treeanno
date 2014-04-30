@@ -34,8 +34,7 @@ public class TestSimilarityDatabase {
 		SimilarityDatabase sd = new SimilarityDatabase(
 				DatabaseConfiguration.getDefaultConfiguration());
 		sd.initTable();
-		sd.putSimilarity((Class<? extends SimilarityFunction<?>>) Null.class,
-				events[0], events[1], 0.5);
+		sd.putSimilarity(Null.class, events[0], events[1], 0.5);
 	}
 
 }

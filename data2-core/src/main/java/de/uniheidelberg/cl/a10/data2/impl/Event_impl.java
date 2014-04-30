@@ -62,4 +62,5 @@ public class Event_impl extends AnnotationObjectInDocument_impl implements
 	public void setEventClass(String eventClass) {
 		this.eventClass = eventClass;
 	}
+
 }

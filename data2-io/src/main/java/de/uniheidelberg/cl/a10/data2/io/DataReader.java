@@ -7,7 +7,6 @@ import java.util.TreeSet;
 import nu.xom.Element;
 import nu.xom.Elements;
 import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
-import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.impl.Chunk_impl;
 import de.uniheidelberg.cl.a10.data2.impl.Document_impl;
@@ -362,7 +361,7 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 			Element eventElement = eventElements.get(i);
 			String anchorId = eventElement.getFirstChildElement(
 					XMLConstants.ANCHOR).getAttributeValue(XMLConstants.IDREF);
-			Event event = new Event_impl(
+			Event_impl event = new Event_impl(
 					eventElement.getAttributeValue(XMLConstants.ID),
 					(AnnotationObjectInDocument) this.ritDoc.getById(anchorId));
 			for (Element argElement : getElements(eventElement,
@@ -378,6 +377,9 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 						argElement.getAttributeValue(XMLConstants.ROLE),
 						fillers);
 			}
+			event.setRitualDocument(ritDoc);
+			event.setEventClass(eventElement
+					.getAttributeValue(XMLConstants.CLASS));
 			this.ritDoc.addEvent(event);
 		}
 

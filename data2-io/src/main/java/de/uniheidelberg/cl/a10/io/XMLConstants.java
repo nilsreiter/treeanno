@@ -35,5 +35,6 @@ public class XMLConstants {
 	public static final String ROLE = "role";
 	public static final String TARGET = "target";
 	public static final String EVENTS = "events";
+	public static final String CLASS = "eventclass";
 
 }

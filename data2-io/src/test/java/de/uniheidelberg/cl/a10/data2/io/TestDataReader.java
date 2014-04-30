@@ -2,6 +2,7 @@ package de.uniheidelberg.cl.a10.data2.io;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import org.junit.Test;
 
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Entity;
+import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.FrameElement;
 import de.uniheidelberg.cl.a10.data2.Mention;
 import de.uniheidelberg.cl.a10.data2.Token;
@@ -100,11 +102,12 @@ public class TestDataReader {
 		assertEquals("t2", text.getMantras().get(1).getTokens().get(0).getId());
 
 		// events
+		Event ev0 = text.getEvents().get(0);
 		assertEquals(1, text.getEvents().size());
-		assertEquals("t6", text.getEvents().get(0).getAnchor().getId());
-		assertEquals(1, text.getEvents().get(0).getArguments().size());
-		assertEquals(5, text.getEvents().get(0).getArguments().get("Subject")
-				.size());
+		assertEquals("t6", ev0.getAnchor().getId());
+		assertEquals(1, ev0.getArguments().size());
+		assertEquals(5, ev0.getArguments().get("Subject").size());
+		assertNotNull(ev0.getEventClass());
 
 		// links
 

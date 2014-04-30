@@ -24,6 +24,7 @@ import de.uniheidelberg.cl.a10.patterns.data.EventChainExtractor;
  * @author reiter
  * 
  */
+@Deprecated
 public abstract class MainWithIOAndInputSequences extends
 		MainWithInputDocuments {
 	@Option(name = "--extraction", usage = "Controls the pre-filtering of frames into events")

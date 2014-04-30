@@ -2,7 +2,6 @@ package de.nilsreiter.event.impl.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,6 +36,8 @@ public class TestFrameEventFactory {
 
 	FrameElm_impl[] fe;
 
+	Document document;
+
 	EventFactory factory;
 
 	@Before
@@ -44,6 +45,7 @@ public class TestFrameEventFactory {
 		fe = new FrameElm_impl[2];
 		fe[0] = mock(FrameElm_impl.class);
 		fe[1] = mock(FrameElm_impl.class);
+		document = mock(Document.class);
 
 		when(fe[0].getName()).thenReturn("Agent");
 		when(fe[1].getName()).thenReturn("Patient");
@@ -55,6 +57,7 @@ public class TestFrameEventFactory {
 
 		frame.addFrameElm(fe[0]);
 		frame.addFrameElm(fe[1]);
+		frame.setRitualDocument(document);
 
 		factory = new FrameEventFactory();
 
@@ -73,7 +76,7 @@ public class TestFrameEventFactory {
 		assertNotNull(event.getId());
 		assertNotNull(event.getArguments());
 		assertSame(frame, event.getAnchor());
-		assertNull(event.getRitualDocument());
+		assertSame(frame.getRitualDocument(), event.getRitualDocument());
 
 		// Testing arguments
 		assertEquals(2, event.getArguments().size());

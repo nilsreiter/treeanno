@@ -284,6 +284,8 @@ public class DataWriter extends
 	protected Element getElement(Event event) {
 		Element element = new Element(XMLConstants.EVENT);
 		element.addAttribute(new Attribute(XMLConstants.ID, event.getId()));
+		element.addAttribute(new Attribute(XMLConstants.CLASS, event
+				.getEventClass()));
 		element.appendChild(getRefElement(XMLConstants.ANCHOR,
 				event.getAnchor()));
 		for (String argKey : event.getArguments().keySet()) {

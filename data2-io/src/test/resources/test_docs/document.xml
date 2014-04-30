@@ -125,7 +125,7 @@
     	<mantra id="mantra2">
     		<token idref="t2"></token></mantra></mantras>
     <events>
-    	<event>
+    	<event class="testevent" id="ev0">
     		<anchor idref="t6">
     			</anchor><argument role="Subject">
     				<target idref="t1"></target><target idref="t2"></target><target idref="t3"></target><target idref="t4"></target><target idref="t5"></target></argument></event></events></document>

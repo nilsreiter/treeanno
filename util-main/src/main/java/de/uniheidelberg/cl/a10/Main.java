@@ -11,13 +11,19 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.configuration.CompositeConfiguration;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.HierarchicalINIConfiguration;
 import org.kohsuke.args4j.ClassParser;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -32,10 +38,12 @@ import org.kohsuke.args4j.Option;
  */
 public abstract class Main {
 
+	@Deprecated
 	public enum Corpus {
 		Rituals, Fables, FablesSieve
 	}
 
+	@Deprecated
 	@Option(name = "--corpus", aliases = { "-c" }, usage = "Selects the corpus to use.")
 	protected Corpus corpus = Corpus.Rituals;
 
@@ -45,12 +53,19 @@ public abstract class Main {
 	@Option(name = "--loglevel", usage = "Sets the logging level", aliases = { "-l" })
 	protected String logLevel = "WARNING";
 
+	@Option(name = "--config")
+	protected File configFile = new File("configuration.ini");
+
 	protected Logger logger = Logger.getAnonymousLogger();
 
+	@Deprecated
 	public static final String defaultRitualDataDirectory = "data2/silver";
+	@Deprecated
 	public static final String defaultFableDataDirectory = "data/atu/data2";
 
 	protected String commandLine = null;
+
+	Configuration configuration;
 
 	public File getDataDirectory() {
 		switch (corpus) {
@@ -161,6 +176,19 @@ public abstract class Main {
 			System.exit(0);
 		}
 		this.logger.setLevel(Level.parse(logLevel));
+
+		try {
+			this.configuration = new CompositeConfiguration(Arrays.asList(
+					new HierarchicalINIConfiguration(this.configFile),
+					new HierarchicalINIConfiguration(getDefaultConfigFile())));
+		} catch (ConfigurationException e) {
+			this.logger.severe(e.getLocalizedMessage());
+		}
+
+	}
+
+	private URL getDefaultConfigFile() {
+		return getClass().getResource("/default-configuration.ini");
 	}
 
 	public static String join(final String[] array, final String delimiter,
@@ -266,5 +294,9 @@ public abstract class Main {
 
 	public Main() {
 
+	}
+
+	public Configuration getConfiguration() {
+		return configuration;
 	}
 }

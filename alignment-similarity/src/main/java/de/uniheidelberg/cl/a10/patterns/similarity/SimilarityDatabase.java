@@ -13,7 +13,7 @@ public class SimilarityDatabase extends Database {
 
 	private static final String TABLE_NAME = "similarities";
 
-	public static final String CREATE_TABLE = "CREATE TABLE";
+	public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS";
 	public static final String DROP_TABLE = "DROP TABLE";
 
 	public static final String TABLE_STRUCTURE = "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, type CHAR(5), id1 VARCHAR(10), id2 VARCHAR(10), sim DOUBLE";
@@ -26,7 +26,7 @@ public class SimilarityDatabase extends Database {
 		super(dbc);
 	}
 
-	public void putSimilarity(Class<? extends SimilarityFunction<?>> simType,
+	public void putSimilarity(Class<? extends SimilarityFunction> simType,
 			HasGlobalId e1, HasGlobalId e2, double similarity)
 			throws SQLException {
 		if (putStatement == null)
@@ -41,7 +41,8 @@ public class SimilarityDatabase extends Database {
 
 	}
 
-	public double getSimilarity(Class<? extends SimilarityFunction<?>> simType,
+	public double getSimilarity(
+			Class<? extends SimilarityFunction<? extends Object>> simType,
 			HasGlobalId e1, HasGlobalId e2) throws SQLException {
 		if (getStatement == null)
 			getStatement = this.getConnection().prepareStatement(

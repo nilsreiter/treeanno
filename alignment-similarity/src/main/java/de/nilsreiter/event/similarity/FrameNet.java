@@ -9,13 +9,11 @@ import java.util.Set;
 import de.saar.coli.salsa.reiter.framenet.DatabaseReader;
 import de.saar.coli.salsa.reiter.framenet.FNDatabaseReader15;
 import de.saar.coli.salsa.reiter.framenet.Frame;
-import de.saar.coli.salsa.reiter.framenet.FrameNet;
 import de.saar.coli.salsa.reiter.framenet.FrameNetRelation;
 import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.saar.coli.salsa.reiter.framenet.FrameRelation;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraDistance;
@@ -23,9 +21,9 @@ import edu.uci.ics.jung.algorithms.shortestpath.Distance;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 
-public class FrameNetSimilarity implements SimilarityFunction<Event> {
+public class FrameNet implements SimilarityFunction<Event> {
 
-	FrameNet frameNet = null;
+	de.saar.coli.salsa.reiter.framenet.FrameNet frameNet = null;
 
 	transient Graph<Frame, FrameRelation> graph = null;
 
@@ -41,16 +39,16 @@ public class FrameNetSimilarity implements SimilarityFunction<Event> {
 	 */
 	Set<String> relations = null;
 
-	public FrameNetSimilarity(final File fnhome) throws FileNotFoundException,
+	public FrameNet(final File fnhome) throws FileNotFoundException,
 			SecurityException {
-		this.frameNet = new FrameNet();
+		this.frameNet = new de.saar.coli.salsa.reiter.framenet.FrameNet();
 		this.fnhome = fnhome;
 		this.frameNet.readData(new FNDatabaseReader15(fnhome, false));
 	}
 
-	public FrameNetSimilarity(final File fnhome, final String... relations)
+	public FrameNet(final File fnhome, final String... relations)
 			throws FileNotFoundException, SecurityException {
-		this.frameNet = new FrameNet();
+		this.frameNet = new de.saar.coli.salsa.reiter.framenet.FrameNet();
 		DatabaseReader dr = new FNDatabaseReader15(fnhome, false);
 		frameNet.readData(dr);
 		this.fnhome = fnhome;
@@ -59,7 +57,7 @@ public class FrameNetSimilarity implements SimilarityFunction<Event> {
 	}
 
 	@Override
-	public Probability sim(Event arg0, Event arg1) throws IncompatibleException {
+	public Probability sim(Event arg0, Event arg1) {
 		Probability p = Probability.NULL;
 		if (arg0.equals(arg1))
 			return Probability.ONE;
@@ -95,7 +93,7 @@ public class FrameNetSimilarity implements SimilarityFunction<Event> {
 	}
 
 	protected UndirectedSparseMultigraph<Frame, FrameRelation> getFrameNetGraph(
-			final FrameNet frameNet) {
+			final de.saar.coli.salsa.reiter.framenet.FrameNet frameNet) {
 		UndirectedSparseMultigraph<Frame, FrameRelation> graph = new UndirectedSparseMultigraph<Frame, FrameRelation>();
 
 		for (Frame frame : frameNet.getFrames()) {

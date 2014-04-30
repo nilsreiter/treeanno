@@ -9,7 +9,9 @@ import de.uniheidelberg.cl.a10.data2.impl.Event_impl;
 
 public class FrameEventFactory implements EventFactory {
 
-	static int idCounter = 0;
+	int idCounter = 0;
+
+	private static FrameEventFactory staticObject = null;
 
 	@Override
 	public Event makeEvent(AnnotationObjectInDocument anchor) {
@@ -20,19 +22,14 @@ public class FrameEventFactory implements EventFactory {
 		for (FrameElement fe : frame.getFrameElms()) {
 			event.putArgument(fe.getName(), fe.getTokens());
 		}
-
+		event.setRitualDocument(anchor.getRitualDocument());
 		return event;
 	}
 
 	public static Event event(AnnotationObjectInDocument anchor) {
-		Event_impl event = new Event_impl("ev" + idCounter++, anchor);
-
-		Frame frame = (Frame) anchor;
-		event.setEventClass(frame.getFrameName());
-		for (FrameElement fe : frame.getFrameElms()) {
-			event.putArgument(fe.getName(), fe.getTokens());
+		if (staticObject == null) {
+			staticObject = new FrameEventFactory();
 		}
-
-		return event;
+		return staticObject.makeEvent(anchor);
 	}
 }
