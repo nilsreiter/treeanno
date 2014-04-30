@@ -14,9 +14,8 @@ import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.Levenshtein;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
-public class ArgumentText implements SimilarityFunction<Event> {
+public class ArgumentText implements DBSimilarityFunction {
 	public static final long serialVersionUID = 3l;
 
 	boolean debug = false;
@@ -123,4 +122,5 @@ public class ArgumentText implements SimilarityFunction<Event> {
 	public void setIncludeCoref(boolean includeCoref) {
 		this.includeCoref = includeCoref;
 	}
+
 }

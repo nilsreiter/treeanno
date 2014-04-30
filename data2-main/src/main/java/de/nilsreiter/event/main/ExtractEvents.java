@@ -6,6 +6,7 @@ import org.kohsuke.args4j.Option;
 
 import de.nilsreiter.event.GlobalEventDetection;
 import de.nilsreiter.event.impl.AllFramesEventDetection;
+import de.nilsreiter.event.impl.AnnotatedFramesEventDetection;
 import de.nilsreiter.event.impl.BasicEventDetection;
 import de.nilsreiter.event.impl.FrameEventFactory;
 import de.uniheidelberg.cl.a10.MainWithIO;
@@ -16,10 +17,10 @@ import de.uniheidelberg.cl.a10.data2.io.DataWriter;
 public class ExtractEvents extends MainWithIO {
 
 	enum DetectionStyle {
-		AllFrames
+		AllFrames, AnnotatedFrames
 	}
 
-	@Option(name = "--style")
+	@Option(name = "--style", usage = "The extraction style")
 	DetectionStyle style = DetectionStyle.AllFrames;
 
 	private void run() throws IOException {
@@ -28,6 +29,10 @@ public class ExtractEvents extends MainWithIO {
 
 		GlobalEventDetection ged;
 		switch (style) {
+		case AnnotatedFrames:
+			ged = new BasicEventDetection(new AnnotatedFramesEventDetection(),
+					new FrameEventFactory());
+			break;
 		case AllFrames:
 		default:
 			ged = new BasicEventDetection(new AllFramesEventDetection(),
