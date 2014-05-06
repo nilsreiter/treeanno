@@ -13,18 +13,16 @@ public class Cluster_impl<D> extends HashSet<D> implements ICluster<D> {
 
 	private static final long serialVersionUID = 1L;
 
-	public Cluster_impl() {
-		super();
-	}
-
-	public Cluster_impl(final D element) {
-		super();
-		this.add(element);
-	}
-
 	public Cluster_impl(final Collection<D> element) {
 		super();
 		this.addAll(element);
+	}
+
+	public Cluster_impl(D... elements) {
+		super();
+		for (int i = 0; i < elements.length; i++) {
+			this.add(elements[i]);
+		}
 	}
 
 	@Override
