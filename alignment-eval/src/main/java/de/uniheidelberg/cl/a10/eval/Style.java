@@ -28,8 +28,16 @@ public enum Style {
 	/**
 	 * Evaluation using RAND index as precision. Recall and F-score are zero.
 	 */
+	@Deprecated
 	RAND,
 
 	/** Evaluation style as discussed in colloquium */
-	REITER, BLANC, ALL, ADJUSTED_RAND
+	REITER,
+
+	BLANC,
+
+	ALL,
+
+	@Deprecated
+	ADJUSTED_RAND
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.kohsuke.args4j.Option;
 
+import de.nilsreiter.event.similarity.FrameNet;
 import de.nilsreiter.event.similarity.Null;
 import de.nilsreiter.event.similarity.WordNet;
 import de.nilsreiter.util.db.DatabaseConfiguration;
@@ -66,6 +67,11 @@ public class CalculateSimilarities extends MainWithInputDocuments {
 					"paths.nombank")));
 
 			function = wns;
+			break;
+		case FN:
+			FrameNet fns = new FrameNet(new File(getConfiguration().getString(
+					"paths.fnhome")));
+			function = fns;
 			break;
 		default:
 			function = new Null();

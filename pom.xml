@@ -48,6 +48,9 @@
   	<module>de.nilsreiter.event</module>
   	<module>util-main</module>
   	<module>data2-main</module>
+
+  	<module>edu.cuny.qc.speech</module>
+  	<module>clustering-eval</module>
   </modules>
   <dependencies>
   </dependencies>
