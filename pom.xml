@@ -51,6 +51,7 @@
 
   	<module>edu.cuny.qc.speech</module>
   	<module>clustering-eval</module>
+  	<module>clustering-main</module>
   </modules>
   <dependencies>
   </dependencies>
