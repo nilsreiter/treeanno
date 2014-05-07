@@ -32,4 +32,8 @@ public class PartitionListReader extends
 		return partitionList;
 	}
 
+	public static boolean isDocument(nu.xom.Document doc) {
+		return doc.getRootElement().getLocalName()
+				.equalsIgnoreCase("partitionlist");
+	}
 }

@@ -18,7 +18,7 @@ import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.io.TokenAlignmentReader;
 import de.uniheidelberg.cl.a10.eval.AlignmentEvaluation;
-import de.uniheidelberg.cl.a10.eval.EvaluationSettings;
+import de.uniheidelberg.cl.a10.eval.AlignmentEvaluationSettings;
 import de.uniheidelberg.cl.a10.eval.SingleResult;
 import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.Operation;
@@ -31,7 +31,7 @@ public class MRSystemTuning extends MainWithInputSequences {
 	@Option(name = "--of", usage = "Output format.")
 	Output.Style outputStyle = Output.Style.WIKI;
 
-	EvaluationSettings settings = new EvaluationSettings();
+	AlignmentEvaluationSettings settings = new AlignmentEvaluationSettings();
 
 	AlignmentEvaluation<Token> evaluation;
 

@@ -8,8 +8,8 @@ import java.util.List;
 
 import de.uniheidelberg.cl.a10.TabFormat;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.Link;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
@@ -17,6 +17,7 @@ import de.uniheidelberg.cl.a10.data2.impl.FrameEvent_impl;
 import de.uniheidelberg.cl.a10.patterns.data.matrix.MapMatrix;
 import de.uniheidelberg.cl.a10.patterns.data.matrix.Matrix;
 
+@Deprecated
 public abstract class EventChainExtractor {
 
 	public enum Extraction {
@@ -69,8 +70,10 @@ class AnnotatedFrames extends EventChainExtractor {
 	}
 
 	@Override
-	public Alignment<FrameTokenEvent> getAlignmentDocument(final Alignment<Frame> ad) {
-		Alignment<FrameTokenEvent> ret = new Alignment_impl<FrameTokenEvent>(ad.getId());
+	public Alignment<FrameTokenEvent> getAlignmentDocument(
+			final Alignment<Frame> ad) {
+		Alignment<FrameTokenEvent> ret = new Alignment_impl<FrameTokenEvent>(
+				ad.getId());
 		for (Link<Frame> aa : ad.getAlignments()) {
 			HashSet<FrameTokenEvent> events = new HashSet<FrameTokenEvent>();
 			for (Frame f : aa.getElements()) {
@@ -97,8 +100,10 @@ class AllFrames extends EventChainExtractor {
 	}
 
 	@Override
-	public Alignment<FrameTokenEvent> getAlignmentDocument(final Alignment<Frame> ad) {
-		Alignment<FrameTokenEvent> ret = new Alignment_impl<FrameTokenEvent>(ad.getId());
+	public Alignment<FrameTokenEvent> getAlignmentDocument(
+			final Alignment<Frame> ad) {
+		Alignment<FrameTokenEvent> ret = new Alignment_impl<FrameTokenEvent>(
+				ad.getId());
 		for (Link<Frame> aa : ad.getAlignments()) {
 			HashSet<FrameTokenEvent> events = new HashSet<FrameTokenEvent>();
 			for (Frame f : aa.getElements()) {

@@ -131,4 +131,9 @@ public class PartitionReader extends
 	public void setReadFullPartition(final boolean readFullPartition) {
 		this.readFullPartition = readFullPartition;
 	}
+
+	public static boolean isDocument(nu.xom.Document doc) {
+		return doc.getRootElement().getLocalName()
+				.equalsIgnoreCase("partition");
+	}
 }

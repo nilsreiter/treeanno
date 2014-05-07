@@ -81,4 +81,5 @@ public abstract class AbstractXMLReader<T> extends AbstractReader<T> {
 			};
 		}
 	}
+
 }

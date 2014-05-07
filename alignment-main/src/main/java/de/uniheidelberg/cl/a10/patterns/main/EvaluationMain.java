@@ -19,7 +19,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.AlignmentFactory;
 import de.uniheidelberg.cl.a10.data2.alignment.io.TokenAlignmentReader;
 import de.uniheidelberg.cl.a10.data2.io.DataReader;
 import de.uniheidelberg.cl.a10.eval.AlignmentEvaluation;
-import de.uniheidelberg.cl.a10.eval.EvaluationSettings;
+import de.uniheidelberg.cl.a10.eval.AlignmentEvaluationSettings;
 import de.uniheidelberg.cl.a10.eval.SingleResult;
 import de.uniheidelberg.cl.a10.patterns.io.ModelReader;
 import de.uniheidelberg.cl.a10.patterns.models.impl.SEHiddenMarkovModel_impl;
@@ -28,7 +28,7 @@ public class EvaluationMain extends Main {
 	static final String BMM_ERROR_MESSAGE = "We can no longer evaluate this data"
 			+ " format. Exiting.";
 
-	EvaluationSettings settings = new EvaluationSettings();
+	AlignmentEvaluationSettings settings = new AlignmentEvaluationSettings();
 
 	@Option(name = "--silver", usage = "The system output. If not set, the system output will be"
 			+ " read from STDIN. If the filename ends with .bmm, we"
