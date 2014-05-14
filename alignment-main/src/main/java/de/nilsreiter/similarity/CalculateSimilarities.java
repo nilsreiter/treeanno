@@ -36,11 +36,11 @@ public class CalculateSimilarities extends MainWithInputDocuments {
 	@Option(name = "--measure", usage = "The similarity measure to use")
 	Measure measure = Measure.WN;
 
-	@Option(name = "--droptable", usage = "Drop the table before")
-	boolean droptable = false;
+	@Option(name = "--init", usage = "Re-initialize the database, deleting everything")
+	boolean rinit = false;
 
 	SimilarityFunction<Event> function = null;
-	SimilarityDatabase database = null;
+	SimilarityDatabase<Event> database = null;
 
 	public static void main(String[] args) throws IOException, SQLException {
 		CalculateSimilarities cs = new CalculateSimilarities();
@@ -51,11 +51,10 @@ public class CalculateSimilarities extends MainWithInputDocuments {
 
 	protected void init() throws SQLException, IOException {
 		try {
-			database = new SimilarityDatabase(
+			database = new SimilarityDatabase<Event>(
 					DatabaseConfiguration.getDefaultConfiguration());
-			if (droptable)
-				database.dropTable();
-			database.initTable();
+			if (rinit)
+				database.rebuild();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
