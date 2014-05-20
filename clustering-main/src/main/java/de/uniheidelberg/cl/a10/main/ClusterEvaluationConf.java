@@ -25,7 +25,7 @@ public class ClusterEvaluationConf extends EvaluationSettings {
 	@Option(name = "--restrict", usage = "Restricts the evaluation to specified gold cluster")
 	String clusterId = null;
 
-	@Option(name = "--style")
+	@Option(name = "--style", usage = "The evaluation measure to use")
 	ClusterEvaluationStyle style = ClusterEvaluationStyle.Rand2;
 
 }

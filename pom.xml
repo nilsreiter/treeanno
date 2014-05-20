@@ -52,6 +52,7 @@
   	<module>edu.cuny.qc.speech</module>
   	<module>clustering-eval</module>
   	<module>clustering-main</module>
+  	<module>de.pado.sigf</module>
   </modules>
   <dependencies>
   </dependencies>
