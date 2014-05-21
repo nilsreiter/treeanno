@@ -1,6 +1,7 @@
 package de.uniheidelberg.cl.a10.eval;
 
 public enum ClusterEvaluationStyle {
+	@Deprecated
 	Rand,
 
 	@Deprecated

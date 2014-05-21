@@ -12,6 +12,7 @@ import de.uniheidelberg.cl.a10.eval.SingleResult;
 import de.uniheidelberg.cl.a10.patterns.data.matrix.MapMatrix;
 import de.uniheidelberg.cl.a10.patterns.data.matrix.Matrix;
 
+@Deprecated
 public class Rand_impl<T> implements Rand<T> {
 
 	String rId = null;

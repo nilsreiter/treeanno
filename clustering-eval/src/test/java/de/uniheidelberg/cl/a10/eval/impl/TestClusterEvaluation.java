@@ -20,6 +20,7 @@ public class TestClusterEvaluation {
 
 	ClusterEvaluation<Object> eval;
 
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() {
 		int numberOfItems = 10;
@@ -74,7 +75,9 @@ public class TestClusterEvaluation {
 	public void testVI() {
 		eval = ClusterEvaluationFactory
 				.getClusterEvaluation(ClusterEvaluationStyle.VI);
-		assertEquals(0.242424, eval.evaluate(gold, silver[0]), 1e-5);
+		assertEquals(1.25163, eval.evaluate(gold, silver[0]), 1e-5);
+		assertEquals(0.0, eval.evaluate(gold, silver[1]), 1e-5);
+		assertEquals(1.0, eval.evaluate(gold, silver[2]), 1e-5);
 
 	}
 
@@ -83,10 +86,9 @@ public class TestClusterEvaluation {
 		eval = ClusterEvaluationFactory
 				.getClusterEvaluation(ClusterEvaluationStyle.NVI);
 
+		assertEquals(1.25162, eval.evaluate(gold, silver[0]), 1e-5);
 		assertEquals(0.0, eval.evaluate(gold, silver[1]), 1e-5);
 		assertEquals(1.0, eval.evaluate(gold, silver[2]), 1e-5);
-
-		assertEquals(1.25162, eval.evaluate(gold, silver[0]), 1e-5);
 
 	}
 }

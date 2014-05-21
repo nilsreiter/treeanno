@@ -21,6 +21,7 @@ import de.uniheidelberg.cl.a10.patterns.data.matrix.Matrix;
  * 
  * @param <T>
  */
+@Deprecated
 public class AdjustedRand_impl<T> extends Rand_impl<T> implements Rand<T> {
 
 	Matrix<ICluster<T>, ICluster<T>, Integer> contingency = new MapMatrix<ICluster<T>, ICluster<T>, Integer>();
