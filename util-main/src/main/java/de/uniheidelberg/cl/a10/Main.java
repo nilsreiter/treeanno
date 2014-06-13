@@ -44,7 +44,7 @@ public abstract class Main {
 	}
 
 	@Deprecated
-	@Option(name = "--corpus", aliases = { "-c" }, usage = "Selects the corpus to use.")
+	@Option(name = "--corpus", aliases = { "-c" }, usage = "Selects the corpus to use. Deprecated.")
 	protected Corpus corpus = Corpus.Rituals;
 
 	@Option(name = "--help", usage = "Prints this usage screen", aliases = { "-h" })
