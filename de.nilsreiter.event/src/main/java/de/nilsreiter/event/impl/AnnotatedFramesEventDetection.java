@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import de.nilsreiter.event.LocalEventDetector;
-import de.uniheidelberg.cl.a10.TabFormat;
+import de.nilsreiter.util.TabFormat;
 import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.patterns.data.matrix.MapMatrix;
