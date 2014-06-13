@@ -1,4 +1,4 @@
-package de.uniheidelberg.cl.a10.patterns.similarity;
+package de.nilsreiter.event.similarity.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -11,9 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.nilsreiter.event.similarity.Random;
+import de.nilsreiter.event.similarity.SimilarityDatabase;
 import de.nilsreiter.util.db.DatabaseConfiguration;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Token;
+import de.uniheidelberg.cl.a10.patterns.similarity.Null;
 
 public class TestSimilarityDatabase {
 
@@ -35,10 +37,8 @@ public class TestSimilarityDatabase {
 			when(events[i].getId()).thenReturn(String.valueOf(i));
 			when(events[i].getRitualDocument()).thenReturn(documents[i % 2]);
 		}
-		SimilarityDatabase.TBL_DOCUMENTS = "documents_test";
-		SimilarityDatabase.TBL_SIMILARITIES = "similarities_test";
 		sd = new SimilarityDatabase<Token>(
-				DatabaseConfiguration.getDefaultConfiguration());
+				DatabaseConfiguration.getDefaultConfiguration(), "test");
 
 	}
 

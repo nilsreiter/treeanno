@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.uniheidelberg.cl.a10.TabFormat;
+import de.nilsreiter.util.TabFormat;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
