@@ -19,19 +19,36 @@ public class WordNet implements SimilarityFunction<Event> {
 	JWS ws = null;
 	NomBank nb = null;
 
+	File wnPath = null;
+	File nbPath = null;
+
 	Semaphore sem1 = new Semaphore(1, true);
 	// sample mean measured over 2 mio. predicate pairs
 	public final static double mean = 0.238271558127602;
+
+	int counter = 0;
+
+	static final int reinitAfter = 1000000;
 
 	public WordNet(File wnPath, File nbPath) throws IOException {
 		// JWS is the WordNet API that I use
 		// IIRC, you can get it here:
 		// http://www.sussex.ac.uk/Users/drh21/
 		// RedirectIO.redirectOUT();
-		ws = new JWS(wnPath.getAbsolutePath(), "3.0");
-		nb = new NomBank(nbPath);
+
 		// RedirectIO.resetOUT();
 
+		this.wnPath = wnPath;
+		this.nbPath = nbPath;
+
+		this.init();
+	}
+
+	protected void init() throws IOException {
+		if (ws != null)
+			ws.getDictionary().close();
+		ws = new JWS(wnPath.getAbsolutePath(), "3.0");
+		nb = new NomBank(nbPath);
 	}
 
 	@Override
@@ -45,6 +62,15 @@ public class WordNet implements SimilarityFunction<Event> {
 	}
 
 	public double msim(final Event n1, final Event n2) {
+		if (counter % reinitAfter == 0) {
+			try {
+				this.init();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		Token token1 = ((HasTarget) n1.getAnchor()).getTarget();
 		Token token2 = ((HasTarget) n2.getAnchor()).getTarget();
 
