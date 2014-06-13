@@ -11,16 +11,15 @@ import de.uniheidelberg.cl.a10.patterns.data.PMath;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityDatabase;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class SimilarityFunctionFactory {
 
 	Map<String, Class<? extends SimilarityFunction<Event>>> functions;
 
-	SimilarityDatabase simDB = null;
+	SimilarityDatabase<Event> simDB = null;
 
-	public SimilarityFunctionFactory(SimilarityDatabase db) {
+	public SimilarityFunctionFactory(SimilarityDatabase<Event> db) {
 		simDB = db;
 		functions = new HashMap<String, Class<? extends SimilarityFunction<Event>>>();
 		functions.put("FN", FrameNet.class);
@@ -34,14 +33,12 @@ public class SimilarityFunctionFactory {
 	public SimilarityFunction<Event> getSimilarityFunction(
 			final SimilarityConfiguration simConf) {
 		final List<Class<? extends SimilarityFunction<Event>>> l = new LinkedList<Class<? extends SimilarityFunction<Event>>>();
+		final List<Double> weights = new LinkedList<Double>();
 		for (int i = 0; i < simConf.similarityFunctions.size(); i++) {
-			if (simConf.weights.size() > i) {
-				for (int j = 0; j < Integer.valueOf(simConf.weights.get(i)); i++) {
-					l.add(functions.get(simConf.similarityFunctions.get(i)));
-				}
-			} else {
-				l.add(functions.get(simConf.similarityFunctions.get(i)));
-			}
+			weights.add(Double.valueOf(simConf.weights.get(i)));
+
+			l.add(functions.get(simConf.similarityFunctions.get(i)));
+
 		}
 		return new SimilarityFunction<Event>() {
 
@@ -56,15 +53,13 @@ public class SimilarityFunctionFactory {
 					}
 					switch (simConf.combination) {
 					case GEO:
-						return PMath.geometricMean(lp);
-
+						return PMath.geometricMean(lp, weights);
 					case HARM:
-						return PMath.harmonicMean(lp);
-
 					case MULT:
-						return PMath.multiply(lp);
+						throw new UnsupportedOperationException();
 					case AVG:
 					default:
+						// TODO: This is currently not weighted!
 						return PMath.arithmeticMean(lp);
 
 					}

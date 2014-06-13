@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
 
 import de.saar.coli.salsa.reiter.framenet.DatabaseReader;
 import de.saar.coli.salsa.reiter.framenet.FNDatabaseReader15;
@@ -57,19 +58,26 @@ public class FrameNet implements SimilarityFunction<Event> {
 	}
 
 	@Override
-	public Probability sim(Event arg0, Event arg1) {
+	public synchronized Probability sim(Event arg0, Event arg1) {
+		Semaphore sem = new Semaphore(1);
 		Probability p = Probability.NULL;
 		if (arg0.equals(arg1))
 			return Probability.ONE;
 		try {
 			Frame f1 = frameNet.getFrame(arg0.getEventClass());
 			Frame f2 = frameNet.getFrame(arg1.getEventClass());
-			Number n = getDistance().getDistance(f1, f2);
+			Distance<Frame> d = getDistance();
+			sem.acquire();
+			Number n = d.getDistance(f1, f2);
+			sem.release();
 			if (n != null)
 				p = Probability.fromProbability(1.0 / (n.doubleValue() + 1.0));
 
 		} catch (FrameNotFoundException e) {
 			p = Probability.NULL;
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return p;
 	}

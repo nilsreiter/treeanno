@@ -1,4 +1,4 @@
-package de.uniheidelberg.cl.a10.patterns.similarity;
+package de.nilsreiter.event.similarity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,11 +10,17 @@ import de.nilsreiter.util.db.DatabaseConfiguration;
 import de.uniheidelberg.cl.a10.HasId;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class SimilarityDatabase<T extends HasId & HasDocument> extends Database {
 
-	public static String TBL_SIMILARITIES = "similarities";
-	public static String TBL_DOCUMENTS = "documents";
+	public static final String BASE_TBL_SIMILARITIES = "similarities";
+	public static final String BASE_TBL_DOCUMENTS = "documents";
+
+	public static final char separator = '_';
+
+	private final String table_similarities;
+	private final String table_documents;
 
 	private static String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS";
 	private static String DROP_TABLE = "DROP TABLE IF EXISTS";
@@ -34,21 +40,23 @@ public class SimilarityDatabase<T extends HasId & HasDocument> extends Database 
 			+ "),"
 			+ " id2 VARCHAR(" + eventIdMaxLength + ")," + " sim DOUBLE";
 	private static String TBL_STRUCT_DOCUMENTS = "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
-			+ "document VARCHAR(" + documentIdMaxLength + ")";
+			+ "document VARCHAR(" + documentIdMaxLength + ") UNIQUE KEY";
 	private static String CREATE_INDEX = "CREATE INDEX";
 	private static String INDEX_APP = "_index";
 
 	PreparedStatement putStatement = null;
 	PreparedStatement getStatement = null;
 
-	public SimilarityDatabase(DatabaseConfiguration dbc) throws SQLException,
-			ClassNotFoundException {
+	public SimilarityDatabase(DatabaseConfiguration dbc, String identifier)
+			throws SQLException, ClassNotFoundException {
 		super(dbc);
+		table_similarities = identifier + separator + BASE_TBL_SIMILARITIES;
+		table_documents = identifier + separator + BASE_TBL_DOCUMENTS;
 	}
 
 	protected int getDocument(Document doc) throws SQLException {
 		StringBuilder b = new StringBuilder();
-		b.append("SELECT id FROM ").append(TBL_DOCUMENTS)
+		b.append("SELECT id FROM ").append(table_documents)
 				.append(" WHERE document = ?;");
 		PreparedStatement stmt = this.getConnection().prepareStatement(
 				b.toString());
@@ -62,9 +70,10 @@ public class SimilarityDatabase<T extends HasId & HasDocument> extends Database 
 
 	}
 
-	private void registerDocument(Document doc) throws SQLException {
+	synchronized private void registerDocument(Document doc)
+			throws SQLException {
 		StringBuilder b = new StringBuilder();
-		b.append("INSERT INTO ").append(TBL_DOCUMENTS)
+		b.append("INSERT IGNORE INTO ").append(table_documents)
 				.append(" VALUES (default,?);");
 		PreparedStatement statement = this.getConnection().prepareStatement(
 				b.toString());
@@ -76,7 +85,7 @@ public class SimilarityDatabase<T extends HasId & HasDocument> extends Database 
 			T e1, T e2, double similarity) throws SQLException {
 		if (putStatement == null)
 			putStatement = this.getConnection().prepareStatement(
-					"INSERT INTO " + TBL_SIMILARITIES
+					"INSERT INTO " + table_similarities
 							+ " values (default,?,?,?,?,?,?)");
 		putStatement.setString(1,
 				simType.getSimpleName().substring(0, typeNameMaxLength));
@@ -96,15 +105,15 @@ public class SimilarityDatabase<T extends HasId & HasDocument> extends Database 
 			StringBuilder b = new StringBuilder();
 
 			b.append("SELECT sim FROM ")
-					.append(TBL_SIMILARITIES)
+					.append(table_similarities)
 					.append(" INNER JOIN ")
-					.append(TBL_DOCUMENTS)
+					.append(table_documents)
 					.append(" AS doc1 ON ")
-					.append(TBL_SIMILARITIES)
+					.append(table_similarities)
 					.append(".document1=doc1.id INNER JOIN ")
-					.append(TBL_DOCUMENTS)
+					.append(table_documents)
 					.append(" AS doc2 ON ")
-					.append(TBL_SIMILARITIES)
+					.append(table_similarities)
 					.append(".document2=doc2.id WHERE type=? AND doc1.document=? AND doc2.document=?")
 					.append(" AND id1=? AND id2=?;");
 			getStatement = this.getConnection().prepareStatement(b.toString());
@@ -121,8 +130,8 @@ public class SimilarityDatabase<T extends HasId & HasDocument> extends Database 
 	}
 
 	public void rebuild() throws SQLException {
-		this.dropTable(TBL_DOCUMENTS);
-		this.dropTable(TBL_SIMILARITIES);
+		this.dropTable(table_documents);
+		this.dropTable(table_similarities);
 		this.initDocumentsTable();
 		this.initSimilaritiesTable();
 	}
@@ -130,7 +139,7 @@ public class SimilarityDatabase<T extends HasId & HasDocument> extends Database 
 	public void initSimilaritiesTable() throws SQLException {
 		StringBuilder b = new StringBuilder();
 
-		b.append(CREATE_TABLE).append(' ').append(TBL_SIMILARITIES)
+		b.append(CREATE_TABLE).append(' ').append(table_similarities)
 				.append(" (").append(TBL_STRUCT_SIMILARITIES).append(")");
 
 		Statement stmt = getStatement();
@@ -138,8 +147,8 @@ public class SimilarityDatabase<T extends HasId & HasDocument> extends Database 
 		stmt.close();
 
 		b = new StringBuilder();
-		b.append(CREATE_INDEX).append(' ').append(TBL_SIMILARITIES)
-				.append(INDEX_APP).append(" ON ").append(TBL_SIMILARITIES)
+		b.append(CREATE_INDEX).append(' ').append(table_similarities)
+				.append(INDEX_APP).append(" ON ").append(table_similarities)
 				.append(" (type, document1, document2, id1, id2);");
 
 		stmt = getStatement();
@@ -151,9 +160,18 @@ public class SimilarityDatabase<T extends HasId & HasDocument> extends Database 
 	public void initDocumentsTable() throws SQLException {
 		StringBuilder b = new StringBuilder();
 		b.append(CREATE_TABLE).append(' ');
-		b.append(TBL_DOCUMENTS).append(" (");
+		b.append(table_documents).append(" (");
 		b.append(TBL_STRUCT_DOCUMENTS).append(");");
 
+		Statement stmt = getStatement();
+		stmt.execute(b.toString());
+		stmt.close();
+	}
+
+	public void dropType(String type) throws SQLException {
+		StringBuilder b = new StringBuilder();
+		b.append("DELETE FROM ").append(table_similarities);
+		b.append(" WHERE type='").append(type).append("';");
 		Statement stmt = getStatement();
 		stmt.execute(b.toString());
 		stmt.close();
