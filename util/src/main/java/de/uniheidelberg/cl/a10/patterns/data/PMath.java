@@ -9,6 +9,8 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.apache.commons.math3.util.FastMath;
 import org.nevec.rjm.BigDecimalMath;
 
+import de.nilsreiter.util.WeightedGeometricMean;
+
 /**
  * This class is a collection of mathematical operations over Probability
  * values.
@@ -85,6 +87,32 @@ public class PMath {
 
 		SummaryStatistics ss = PMath.getSummaryStatistics(ps);
 		return Probability.fromProbability(ss.getGeometricMean());
+	}
+
+	/**
+	 * Calculates the geometric mean over Probability values.
+	 * 
+	 * @param ps
+	 * @return
+	 */
+	public static Probability geometricMean(final List<Probability> ps,
+			List<Double> weights) {
+		if (ps.size() == 0)
+			return Probability.NULL;
+
+		double[] values = new double[ps.size()];
+		double[] w = new double[ps.size()];
+		for (int i = 0; i < ps.size(); i++) {
+			values[i] = ps.get(i).getProbability();
+			if (weights.size() >= i)
+				w[i] = weights.get(i);
+			else
+				w[i] = 1.0;
+		}
+
+		WeightedGeometricMean wgm = new WeightedGeometricMean();
+		return Probability.fromProbability(wgm.evaluate(values, 0,
+				values.length, w));
 	}
 
 	/**
