@@ -1,4 +1,4 @@
-package de.uniheidelberg.cl.a10;
+package de.nilsreiter.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -104,7 +104,7 @@ public class TabFormat implements Iterable<TabFormat.Line> {
 	}
 
 	@Override
-	public Iterator<de.uniheidelberg.cl.a10.TabFormat.Line> iterator() {
+	public Iterator<de.nilsreiter.util.TabFormat.Line> iterator() {
 		return this.getLines().iterator();
 	}
 
