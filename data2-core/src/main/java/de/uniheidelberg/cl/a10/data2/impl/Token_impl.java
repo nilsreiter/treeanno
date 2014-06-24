@@ -22,7 +22,7 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 	/**
 	 * The token surface
 	 */
-	final String surface;
+	final char[] surface;
 
 	/**
 	 * The sense of the token
@@ -82,7 +82,7 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 
 	public Token_impl(final String id, final String surface) {
 		super(id);
-		this.surface = surface;
+		this.surface = surface.toCharArray();
 		this.init();
 	}
 
@@ -123,7 +123,7 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 		super(id);
 		this.begin = startCharPos;
 		this.end = endCharPos;
-		this.surface = surface;
+		this.surface = surface.toCharArray();
 		this.partOfSpeech = posTag;
 		this.sense = sense;
 		this.dependencyRelation = deprel;
@@ -241,7 +241,7 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 	 *            the dependencyRelation to set
 	 */
 	public void setDependencyRelation(final String dependencyRelation) {
-		this.dependencyRelation = dependencyRelation;
+		this.dependencyRelation = dependencyRelation.intern();
 	}
 
 	/*
@@ -259,7 +259,7 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 	 *            the partOfSpeech to set
 	 */
 	public void setPartOfSpeech(final String partOfSpeech) {
-		this.partOfSpeech = partOfSpeech;
+		this.partOfSpeech = partOfSpeech.intern();
 	}
 
 	/*
@@ -269,7 +269,7 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 	 */
 	@Override
 	public String getSurface() {
-		return surface;
+		return new String(surface);
 	}
 
 	/**

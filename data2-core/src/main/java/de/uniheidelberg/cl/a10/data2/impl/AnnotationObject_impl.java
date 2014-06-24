@@ -69,6 +69,7 @@ public abstract class AnnotationObject_impl implements HasId, AnnotationObject {
 	}
 
 	@Override
+	@Deprecated
 	public Type getType() {
 		return Type.getType(this.getClass());
 	}

@@ -92,7 +92,7 @@ public class Document_impl extends AnnotationObject_impl implements
 
 	transient List<Event> listOfEvents = null;
 
-	private String originalText;
+	private char[] originalText;
 
 	private String documentTitle = null;
 
@@ -466,7 +466,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	 */
 	@Override
 	public String getOriginalText() {
-		return originalText;
+		return new String(originalText);
 	}
 
 	/**
@@ -474,7 +474,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	 *            the originalText to set
 	 */
 	public void setOriginalText(final String originalText) {
-		this.originalText = originalText;
+		this.originalText = originalText.toCharArray();
 	}
 
 	public void addAllEntities(final Collection<Entity_impl> entities) {
