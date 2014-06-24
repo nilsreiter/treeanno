@@ -53,7 +53,7 @@ public abstract class Main {
 	@Option(name = "--loglevel", usage = "Sets the logging level", aliases = { "-l" })
 	protected String logLevel = "WARNING";
 
-	@Option(name = "--config")
+	@Option(name = "--config", usage = "Configuration file. Default: configuration.ini")
 	protected File configFile = new File("configuration.ini");
 
 	protected Logger logger = Logger.getAnonymousLogger();
@@ -188,8 +188,7 @@ public abstract class Main {
 	}
 
 	private URL getDefaultConfigFile() {
-		URL url = Main.class
-				.getResource("/resources/default-configuration.ini");
+		URL url = Main.class.getResource("/default-configuration.ini");
 		return url;
 	}
 
