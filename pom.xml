@@ -53,6 +53,7 @@
   	<module>clustering-eval</module>
   	<module>clustering-main</module>
   	<module>de.pado.sigf</module>
+  	<module>de.nilsreiter.web</module>
   </modules>
   <dependencies>
   </dependencies>
