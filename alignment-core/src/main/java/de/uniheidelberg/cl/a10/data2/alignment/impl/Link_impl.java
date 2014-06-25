@@ -312,8 +312,7 @@ public class Link_impl<T extends HasDocument> implements Link<T> {
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 }
