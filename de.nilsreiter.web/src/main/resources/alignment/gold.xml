@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<nalignment>
+  <document id="r0003"/>
+  <document id="r0009"/>
+  <alignment id="alx33">
+  	<part doc="r0003" frame="ev0" />
+  </alignment>
+  </nalignment>

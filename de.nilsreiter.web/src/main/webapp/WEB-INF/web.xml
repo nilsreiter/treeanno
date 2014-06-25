@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <display-name>de.nilsreiter.web</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <servlet-name>LoadDocument</servlet-name>
+    <servlet-class>de.nilsreiter.web.DocumentLoader</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ViewAlignment</servlet-name>
+    <servlet-class>de.nilsreiter.web.AlignmentLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoadDocument</servlet-name>
+    <url-pattern>/view-document.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewAlignment</servlet-name>
+    <url-pattern>/view-alignment.do</url-pattern>
+  </servlet-mapping>
+</web-app>

@@ -1,0 +1,55 @@
+div.originaltext {
+	width:50%;
+} 
+
+div.content {
+	position:absolute;
+	top:40px;
+}
+
+div.box {
+	border:thin solid black;
+	float:left;
+	padding:5px;
+	margin:2px;
+}
+
+.highlightFrame {
+	background-color:green;
+}
+.highlightEvent {
+	background-color:red;
+}
+
+body {
+	margin:0;
+	padding:0;
+}
+
+.menu {
+	width:100%;
+	margin:0;
+	padding:0;
+	border-bottom:thin solid black;
+	height:40px;
+	top:0px;
+	position:absolute;
+}
+
+.menu ul {
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+
+.menu ul li {
+	float:left;
+	background-color:#CCC;
+	padding:10px;
+	border:thin solid black;
+}
+
+.menu ul li a {
+	text-decoration:none;
+	color:black;
+}
