@@ -7,13 +7,12 @@ import java.util.HashSet;
 
 import nu.xom.Element;
 import de.uniheidelberg.cl.a10.api.DataStreamProvider;
-import de.uniheidelberg.cl.a10.data2.Token;
+import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.AlignmentIdProvider;
 import de.uniheidelberg.cl.a10.data2.alignment.Link;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.AlignmentIdProvider_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
-import de.uniheidelberg.cl.a10.data2.io.DataReader;
 import de.uniheidelberg.cl.a10.io.AbstractLinkedXMLReader;
 import de.uniheidelberg.cl.a10.io.XMLConstants;
 
@@ -25,27 +24,22 @@ import de.uniheidelberg.cl.a10.io.XMLConstants;
  * 
  */
 
-public class TokenAlignmentReader extends
-		AbstractLinkedXMLReader<Alignment<Token>> {
+public class EventAlignmentReader extends
+		AbstractLinkedXMLReader<Alignment<Event>> {
 
-	public TokenAlignmentReader(DataStreamProvider dsProvider) {
+	public EventAlignmentReader(DataStreamProvider dsProvider) {
 		super(dsProvider);
 	}
 
-	public TokenAlignmentReader(final File dDirectory) {
+	public EventAlignmentReader(final File dDirectory) {
 		super(dDirectory);
 	}
 
-	@Deprecated
-	public TokenAlignmentReader(final DataReader dr, final File dDirectory) {
-		super(dr, dDirectory);
-	}
-
 	@Override
-	protected Alignment<Token> read(final Element rootElement)
+	protected Alignment<Event> read(final Element rootElement)
 			throws IOException {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
-		Alignment<Token> ad = new Alignment_impl<Token>(
+		Alignment<Event> ad = new Alignment_impl<Event>(
 				rootElement.getAttributeValue("id"));
 
 		for (Element documentElement : getElements(rootElement, "document")) {
@@ -58,11 +52,11 @@ public class TokenAlignmentReader extends
 				id = alignmentElement.getAttributeValue("id");
 			else
 				id = idp.getNextAlignmentId();
-			Collection<Token> aligned = new HashSet<Token>();
+			Collection<Event> aligned = new HashSet<Event>();
 			for (Element partElement : getElements(alignmentElement, "part")) {
 				String docId = partElement.getAttributeValue("doc");
 				String frameId = partElement.getAttributeValue("frame");
-				Token token = (Token) this.getRitualDocument(docId).getById(
+				Event token = (Event) this.getRitualDocument(docId).getById(
 						frameId);
 				if (token == null) {
 					System.err.println("Token " + frameId + " not found in "
@@ -70,7 +64,7 @@ public class TokenAlignmentReader extends
 				}
 				aligned.add(token);
 			}
-			Link<Token> l = ad.addAlignment(id, aligned);
+			Link<Event> l = ad.addAlignment(id, aligned);
 			if (alignmentElement.getAttribute(XMLConstants.SCORE) != null)
 				l.setScore(Double.valueOf(alignmentElement
 						.getAttributeValue(XMLConstants.SCORE)));
