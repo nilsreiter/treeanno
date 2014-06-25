@@ -6,10 +6,22 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.uniheidelberg.cl.a10.api.DataStreamProvider;
 import de.uniheidelberg.cl.a10.data2.io.DataReader;
 
 public abstract class AbstractLinkedXMLReader<T> extends AbstractXMLReader<T> {
 
+	DataStreamProvider dsProvider;
+
+	DataReader dr = null;
+
+	@Deprecated
+	List<File> ritualDocumentsDirectories = new LinkedList<File>();
+
+	@Deprecated
+	boolean searchSubDirectories = true;
+
+	@Deprecated
 	public AbstractLinkedXMLReader(final DataReader dr,
 			final File ritualDocumentsDirectory) {
 		super();
@@ -17,60 +29,21 @@ public abstract class AbstractLinkedXMLReader<T> extends AbstractXMLReader<T> {
 		this.ritualDocumentsDirectories.add(ritualDocumentsDirectory);
 	}
 
-	DataReader dr = null;
+	public AbstractLinkedXMLReader(DataStreamProvider dsProvider) {
+		super();
+		this.dr = new DataReader();
+		this.dsProvider = dsProvider;
 
-	List<File> ritualDocumentsDirectories = new LinkedList<File>();
-
-	boolean searchSubDirectories = true;
+	}
 
 	public AbstractLinkedXMLReader(final File dDirectory) {
 		dr = new DataReader();
-		ritualDocumentsDirectories.add(dDirectory);
+		dsProvider = new DirectoryBasedDataStreamProvider(dDirectory, true);
 	}
 
 	protected de.uniheidelberg.cl.a10.data2.Document getRitualDocument(
 			final String id) throws FileNotFoundException, IOException {
-		return dr.read(this.searchFileForRitualDocument(id + ".xml"));
-	}
-
-	protected File searchFileForRitualDocument(final String name)
-			throws FileNotFoundException {
-		if (this.searchSubDirectories) {
-			for (File dir : this.ritualDocumentsDirectories) {
-				try {
-					return this.searchFileForRitualDocument(dir, name);
-				} catch (FileNotFoundException e) {
-					// silently catching
-				}
-			}
-		} else {
-			for (File dir : this.ritualDocumentsDirectories) {
-				File f = new File(dir, name);
-				if (f.exists())
-					return f;
-			}
-		}
-		throw new FileNotFoundException(name);
-	}
-
-	protected File searchFileForRitualDocument(final File directory,
-			final String name) throws FileNotFoundException {
-		if (new File(directory, name).exists())
-			return new File(directory, name);
-		else
-			for (File f : directory.listFiles()) {
-				if (f.isDirectory())
-					try {
-						return this.searchFileForRitualDocument(f, name);
-					} catch (FileNotFoundException e) {
-						// silently catching
-					}
-			}
-		throw new FileNotFoundException(name);
-	}
-
-	public void addDocumentsDirectory(final File directory) {
-		this.ritualDocumentsDirectories.add(directory);
+		return dr.read(this.dsProvider.findStreamFor(id));
 	}
 
 }
