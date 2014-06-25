@@ -46,16 +46,16 @@ public class TokenAlignmentReader extends
 			throws IOException {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		Alignment<Token> ad = new Alignment_impl<Token>(
-				rootElement.getAttributeValue("id"));
+				rootElement.getAttributeValue(XMLConstants.ID));
 
 		for (Element documentElement : getElements(rootElement, "document")) {
-			String id = documentElement.getAttributeValue("id");
+			String id = documentElement.getAttributeValue(XMLConstants.ID);
 			ad.getDocuments().add(this.getRitualDocument(id));
 		}
 		for (Element alignmentElement : getElements(rootElement, "alignment")) {
 			String id;
 			if (alignmentElement.getAttribute(XMLConstants.ID) != null)
-				id = alignmentElement.getAttributeValue("id");
+				id = alignmentElement.getAttributeValue(XMLConstants.ID);
 			else
 				id = idp.getNextAlignmentId();
 			Collection<Token> aligned = new HashSet<Token>();
