@@ -5,6 +5,7 @@ import de.nilsreiter.event.GlobalEventDetection;
 import de.nilsreiter.event.LocalEventDetector;
 import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
 import de.uniheidelberg.cl.a10.data2.Document;
+import de.uniheidelberg.cl.a10.data2.HasTokens;
 
 public class BasicEventDetection implements GlobalEventDetection {
 
@@ -24,7 +25,7 @@ public class BasicEventDetection implements GlobalEventDetection {
 		for (AnnotationObjectInDocument aoi : document
 				.getAnnotations(localEventDetector.typeRestrictor())) {
 			if (localEventDetector.isEvent(aoi)) {
-				document.addEvent(eventFactory.makeEvent(aoi));
+				document.addEvent(eventFactory.makeEvent((HasTokens) aoi));
 			}
 		}
 	}

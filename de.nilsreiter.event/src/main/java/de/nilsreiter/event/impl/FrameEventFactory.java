@@ -1,10 +1,10 @@
 package de.nilsreiter.event.impl;
 
 import de.nilsreiter.event.EventFactory;
-import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.FrameElement;
+import de.uniheidelberg.cl.a10.data2.HasTokens;
 import de.uniheidelberg.cl.a10.data2.impl.Event_impl;
 
 public class FrameEventFactory implements EventFactory {
@@ -14,7 +14,7 @@ public class FrameEventFactory implements EventFactory {
 	private static FrameEventFactory staticObject = null;
 
 	@Override
-	public Event makeEvent(AnnotationObjectInDocument anchor) {
+	public Event makeEvent(HasTokens anchor) {
 		Event_impl event = new Event_impl("ev" + idCounter++, anchor);
 
 		Frame frame = (Frame) anchor;
@@ -26,7 +26,7 @@ public class FrameEventFactory implements EventFactory {
 		return event;
 	}
 
-	public static Event event(AnnotationObjectInDocument anchor) {
+	public static Event event(HasTokens anchor) {
 		if (staticObject == null) {
 			staticObject = new FrameEventFactory();
 		}

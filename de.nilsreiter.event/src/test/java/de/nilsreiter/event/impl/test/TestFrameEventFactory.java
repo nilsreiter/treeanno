@@ -23,6 +23,7 @@ import de.nilsreiter.event.impl.BasicEventDetection;
 import de.nilsreiter.event.impl.FrameEventFactory;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.HasTokens;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.impl.Event_impl;
 import de.uniheidelberg.cl.a10.data2.impl.FrameElm_impl;
@@ -87,7 +88,7 @@ public class TestFrameEventFactory {
 
 	@Test
 	public void testEvents() {
-		Token token = mock(Token.class);
+		HasTokens token = mock(HasTokens.class);
 		Event_impl event = new Event_impl("ev0", token);
 		event.putArgument("Subject", Arrays.asList(token));
 
