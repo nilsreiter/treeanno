@@ -1,0 +1,64 @@
+span.token {
+	color:#999; 
+	font-size:small;
+}
+
+span.event {
+	color:#000;
+	font-size:medium;
+	position:relative;
+}
+
+.stWordNet {
+	background-color:rgb(255,0,0);
+}
+
+.stFrameNet {
+	background-color:rgb(0,255,0);
+}
+
+
+div.typechooser {
+	display:none;
+	font-size:small;
+	position:absolute;
+	top:15px;
+	left:0;
+	border:thin solid #AAA;
+	z-index:100;
+	width:100px;
+	border-radius:3px;
+	background-color:rgba(255,255,255,0.9);	
+}
+
+
+label.checkbox input[type="checkbox"] {display:none;}
+label.checkbox span {
+    display:inline-block;
+    border:2px solid #BBB;
+    border-radius:10px;
+    width:10px;
+    height:10px;
+    vertical-align:middle;
+    margin:3px;
+    background:#EEE;
+    cursor:pointer;
+}
+label.checkbox :checked + span {
+    background:#333;
+}
+
+span.event:hover div.typechooser {
+	display:block;
+}
+
+div.typechooser:hover {
+	display:block;
+}
+
+div.sourcemarker{
+	width:15px;
+	height:15px;
+	border-radius:7px;
+	display:inline-block;
+}

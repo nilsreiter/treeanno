@@ -12,12 +12,92 @@
     <servlet-name>ViewAlignment</servlet-name>
     <servlet-class>de.nilsreiter.web.AlignmentLoader</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>ViewEventSimilaritiesDocument</servlet-name>
+    <servlet-class>de.nilsreiter.web.EventSimilarityLoaderDocument</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ViewEventSimilaritiesDocumentSet</servlet-name>
+    <servlet-class>de.nilsreiter.web.EventSimilarityLoaderDocumentSet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ViewEventScores</servlet-name>
+    <servlet-class>de.nilsreiter.web.EventScoreLoader</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>LoadDocument</servlet-name>
-    <url-pattern>/view-document.do</url-pattern>
+    <url-pattern>/view-document</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ViewAlignment</servlet-name>
-    <url-pattern>/view-alignment.do</url-pattern>
+    <url-pattern>/view-alignment</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewEventSimilaritiesDocument</servlet-name>
+    <url-pattern>/view-event-similarities-document</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewEventSimilaritiesDocumentSet</servlet-name>
+    <url-pattern>/view-event-similarities-documentset</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewEventScores</servlet-name>
+    <url-pattern>/view-event-scores</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>SelectDocument</servlet-name>
+  	<url-pattern>/select-document</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>SelectDocumentSet</servlet-name>
+  	<url-pattern>/select-document-set</url-pattern>
+  </servlet-mapping>
+  <context-param>
+    <param-name>dbhost</param-name>
+    <param-value>waitahapinguin</param-value>
+  </context-param>
+  <context-param>
+    <param-name>dbname</param-name>
+    <param-value>reiter</param-value>
+  </context-param>
+  <context-param>
+    <param-name>dbuser</param-name>
+    <param-value>reiterns</param-value>
+  </context-param>
+  <context-param>
+    <param-name>dbpassword</param-name>
+    <param-value>bybNoaKni</param-value>
+  </context-param>
+  <context-param>
+    <param-name>dbport</param-name>
+    <param-value>3306</param-value>
+  </context-param>
+  <context-param>
+    <param-name>dbidentifier</param-name>
+    <param-value>rituals</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>development</param-name>
+  	<param-value>true</param-value>
+  </context-param>
+  <listener>
+    <listener-class>de.nilsreiter.web.AppContextListener</listener-class>
+  </listener>
+  <servlet>
+    <display-name>GetEventScores</display-name>
+    <servlet-name>GetEventScores</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.GetEventScores</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetEventScores</servlet-name>
+    <url-pattern>/rpc/get-event-scores</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>SelectDocument</servlet-name>
+  	<jsp-file>/document/select.jsp</jsp-file>
+  </servlet>
+  <servlet>
+  	<servlet-name>SelectDocumentSet</servlet-name>
+  	<jsp-file>/documentset/select.jsp</jsp-file>
+  </servlet>
 </web-app>
