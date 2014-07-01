@@ -125,8 +125,9 @@ public class SimilarityDatabase<T extends HasId & HasDocument> extends Database 
 		getStatement.setString(4, e1.getId());
 		getStatement.setString(5, e2.getId());
 		ResultSet rs = getStatement.executeQuery();
-		rs.first();
-		return rs.getDouble(1);
+		if (rs.first())
+			return rs.getDouble(1);
+		return 0.0;
 	}
 
 	public void rebuild() throws SQLException {
