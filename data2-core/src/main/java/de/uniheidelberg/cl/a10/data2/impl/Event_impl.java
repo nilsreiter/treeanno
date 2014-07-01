@@ -1,23 +1,26 @@
 package de.uniheidelberg.cl.a10.data2.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
 import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.HasTokens;
+import de.uniheidelberg.cl.a10.data2.Token;
 
 public class Event_impl extends AnnotationObjectInDocument_impl implements
 		Event {
 
-	AnnotationObjectInDocument anchor;
+	HasTokens anchor;
 
 	Map<String, List<? extends AnnotationObjectInDocument>> arguments = new HashMap<String, List<? extends AnnotationObjectInDocument>>();;
 
 	String eventClass;
 
-	public Event_impl(String id, AnnotationObjectInDocument anc) {
+	public Event_impl(String id, HasTokens anc) {
 		super(id);
 		anchor = anc;
 	}
@@ -61,6 +64,36 @@ public class Event_impl extends AnnotationObjectInDocument_impl implements
 
 	public void setEventClass(String eventClass) {
 		this.eventClass = eventClass;
+	}
+
+	@Override
+	public List<Token> getTokens() {
+		return anchor.getTokens();
+	}
+
+	@Override
+	public Token lastToken() {
+		return anchor.lastToken();
+	}
+
+	@Override
+	public Token firstToken() {
+		return anchor.firstToken();
+	}
+
+	@Override
+	public List<Token> getTokensBetween(int end, int begin) {
+		return anchor.getTokensBetween(end, begin);
+	}
+
+	@Override
+	public int numberOfTokens() {
+		return anchor.numberOfTokens();
+	}
+
+	@Override
+	public Iterator<Token> iterator() {
+		return anchor.iterator();
 	}
 
 }
