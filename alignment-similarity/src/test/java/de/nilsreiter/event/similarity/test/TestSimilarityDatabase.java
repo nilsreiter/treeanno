@@ -37,8 +37,10 @@ public class TestSimilarityDatabase {
 			when(events[i].getId()).thenReturn(String.valueOf(i));
 			when(events[i].getRitualDocument()).thenReturn(documents[i % 2]);
 		}
+		DatabaseConfiguration dbConf = DatabaseConfiguration.getDefaultConfiguration();
+		// dbConf.setHost("localhost");
 		sd = new SimilarityDatabase<Token>(
-				DatabaseConfiguration.getDefaultConfiguration(), "test");
+				dbConf, "test");
 
 	}
 
