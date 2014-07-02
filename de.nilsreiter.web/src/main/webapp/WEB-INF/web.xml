@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <display-name>de.nilsreiter.web</display-name>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>/document/select.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
     <servlet-name>LoadDocument</servlet-name>
@@ -45,12 +45,12 @@
     <url-pattern>/view-event-scores</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>SelectDocument</servlet-name>
-  	<url-pattern>/select-document</url-pattern>
+    <servlet-name>SelectDocument</servlet-name>
+    <url-pattern>/select-document</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>SelectDocumentSet</servlet-name>
-  	<url-pattern>/select-document-set</url-pattern>
+    <servlet-name>SelectDocumentSet</servlet-name>
+    <url-pattern>/select-document-set</url-pattern>
   </servlet-mapping>
   <context-param>
     <param-name>dbhost</param-name>
@@ -77,8 +77,8 @@
     <param-value>rituals</param-value>
   </context-param>
   <context-param>
-  	<param-name>development</param-name>
-  	<param-value>true</param-value>
+    <param-name>development</param-name>
+    <param-value>false</param-value>
   </context-param>
   <listener>
     <listener-class>de.nilsreiter.web.AppContextListener</listener-class>
@@ -93,11 +93,21 @@
     <url-pattern>/rpc/get-event-scores</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>SelectDocument</servlet-name>
-  	<jsp-file>/document/select.jsp</jsp-file>
+    <servlet-name>SelectDocument</servlet-name>
+    <jsp-file>/document/select.jsp</jsp-file>
   </servlet>
   <servlet>
-  	<servlet-name>SelectDocumentSet</servlet-name>
-  	<jsp-file>/documentset/select.jsp</jsp-file>
+    <servlet-name>SelectDocumentSet</servlet-name>
+    <jsp-file>/documentset/select.jsp</jsp-file>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>GetEventSimilarities</display-name>
+    <servlet-name>GetEventSimilarities</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.GetEventSimilarities</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetEventSimilarities</servlet-name>
+    <url-pattern>/rpc/get-event-similarities</url-pattern>
+  </servlet-mapping>
 </web-app>

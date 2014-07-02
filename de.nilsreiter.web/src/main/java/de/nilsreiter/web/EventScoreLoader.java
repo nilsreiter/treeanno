@@ -33,8 +33,17 @@ public class EventScoreLoader extends AbstractServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+
+		if (request.getParameter("doc") == null) {
+			request.setAttribute("target", "view-event-scores");
+			RequestDispatcher view = request
+					.getRequestDispatcher("documentset/select.jsp");
+			view.forward(request, response);
+			return;
+		}
+
 		Alignment<Event> alignment = alignmentReader.read(docMan
-				.findStreamFor("/alignment/gold"));
+				.findStreamFor(request.getParameter("doc")));
 		StringBuilder alignmentIds = new StringBuilder();
 		for (Link<Event> link : alignment.getAlignments()) {
 			alignmentIds.append(link.getId());
@@ -85,11 +94,12 @@ public class EventScoreLoader extends AbstractServlet {
 		graphString.append("});");
 		request.setAttribute("graph", graphString.toString());
 
+		request.setAttribute("doc", alignment.getId());
 		request.setAttribute("alignment", alignment);
 		request.setAttribute("documents", alignment.getDocuments());
 
 		RequestDispatcher view = request
-				.getRequestDispatcher("event-scores.jsp");
+				.getRequestDispatcher("documentset/event-scores.jsp");
 		view.forward(request, response);
 	}
 }

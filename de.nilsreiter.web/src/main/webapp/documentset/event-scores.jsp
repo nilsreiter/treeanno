@@ -14,11 +14,15 @@
 
 </head>
 <body>
+<div class="level1">
+<%@ include file="../menu/area.jsp" %>
+
+<div class="content level2">
 <jsp:include page="menu.jsp">
-	<jsp:param value="active" name="class_event_scores"/>
+	<jsp:param value="event-scores" name="active"/>
 </jsp:include>
 
-<div class="content">
+<div class="content level3">
 	<div id="chart_container"></div>
 <script>
 jQuery.getJSON('rpc/get-event-scores?doc=${doc}&scale', function (data) { 
@@ -49,6 +53,8 @@ jQuery.getJSON('rpc/get-event-scores?doc=${doc}&scale', function (data) {
 });
 
 </script>
+</div>
+</div>
 </div>
 </body>
 </html>

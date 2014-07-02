@@ -33,14 +33,15 @@ public class GetEventScores extends AbstractServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String docId = "alignment/gold";
+		if (request.getParameter("doc") == null) {
+			response.getWriter().print("");
+			return;
+
+		}
 		boolean scale = request.getParameter("scale") != null;
 
-		if (request.getParameter("doc") != null) {
-			docId = request.getParameter("doc");
-		}
 		Alignment<Event> alignment = alignmentReader.read(docMan
-				.findStreamFor(docId));
+				.findStreamFor(request.getParameter("doc")));
 
 		// make or retrieve scores
 		Random random = new Random();

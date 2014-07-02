@@ -27,12 +27,13 @@
 <div class="menu">
 	<%@ include file="../controls.html" %>
 </div>
+<div id="loading"></div>
 
 <div id="alignmentcontent" class="content level4" >
 <c:forEach var="i" begin="0" end="${arity-1}" >
 	<div class="alignmenttext">
 	<h1>${documents[i].id}</h1>
-	<jsp:include page="../document-box-similarities.jsp">
+	<jsp:include page="document-box-similarities.jsp">
 		<jsp:param value="${i}" name="i"/>
 	</jsp:include>
 	</div>
@@ -42,5 +43,32 @@
 </div>
 
 </div>
+<script>
+jQuery.getJSON('rpc/get-event-similarities?doctype=alignment&doc=${doc}', function (data) { 
+	for(var tokId in data) {
+		for (var type in data[tokId]) {
+			//alert("#"+tokId+" div.typechooser label."+type+ " input");
+			//alert(type);
+			$("#"+tokId+" div.typechooser label."+type+ " input").bind("click", {'type':type,'data':data[tokId][type], 'tokId':tokId},  function (event) {
+				var type = event.data.type;
+				var tokId = event.data.tokId;
+				$("span.st"+type+" > span").unwrap();
+				$("div#sm"+type).remove();
+				if ($("#"+tokId+" div.typechooser label."+type+ " input").prop("checked")) {
+					for (var oTok in event.data.data) {
+						$("#"+oTok).wrap("<span class=\"st"+type+"\" style=\"background-color:rgba("+colors[type]+","+event.data.data[oTok]+")\"></span>");
+					}
+					$("#"+tokId).prepend("<div id=\"sm"+type+"\" class=\"sourcemarker\" style=\"background-color:rgb("+colors[type]+");\"></div>");
+					$("#sm"+type).bind("click", {type:type,tokId:tokId}, function(event) { 
+						$("#"+event.data.tokId+" div.typechooser label."+event.data.type+ " input").click();
+					});
+				}
+			});
+		}
+	}
+});
+	
+</script>
+
 </body>
 </html>

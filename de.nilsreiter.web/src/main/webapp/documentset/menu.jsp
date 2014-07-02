@@ -21,7 +21,14 @@
 			<li><a href="view-event-similarities-documentset?doc=${param.doc}">Event Similarities</a></li>
 		</c:otherwise>
 	</c:choose>
-	<li class="${param.class_event_scores}"><a href="view-event-scores">Event Scores</a></li>
+	<c:choose>
+		<c:when test="${param.active =='event-scores' }">
+			<li class="active">Event Scores</li>
+		</c:when>
+		<c:otherwise>
+			<li><a href="view-event-scores?doc=${param.doc}">Event Scores</a></li>		
+		</c:otherwise>
+	</c:choose>
 </ul>
 </div>
 <div style="clear:both;"></div>
