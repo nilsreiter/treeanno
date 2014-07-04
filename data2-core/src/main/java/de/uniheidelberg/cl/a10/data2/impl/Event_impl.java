@@ -1,6 +1,7 @@
 package de.uniheidelberg.cl.a10.data2.impl;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class Event_impl extends AnnotationObjectInDocument_impl implements
 
 	HasTokens anchor;
 
-	Map<String, List<? extends AnnotationObjectInDocument>> arguments = new HashMap<String, List<? extends AnnotationObjectInDocument>>();;
+	Map<String, List<? extends HasTokens>> arguments = new HashMap<String, List<? extends HasTokens>>();;
 
 	String eventClass;
 
@@ -32,23 +33,26 @@ public class Event_impl extends AnnotationObjectInDocument_impl implements
 
 	@Override
 	public Set<AnnotationObjectInDocument> getRelated() {
-		return null;
+		HashSet<AnnotationObjectInDocument> related = new HashSet<AnnotationObjectInDocument>();
+		related.add(getAnchor());
+		for (List<? extends HasTokens> ht : arguments.values()) {
+			related.add((AnnotationObjectInDocument) ht);
+		}
+		return related;
 	}
 
 	@Override
-	public Map<String, List<? extends AnnotationObjectInDocument>> getArguments() {
+	public Map<String, List<? extends HasTokens>> getArguments() {
 		return arguments;
 	}
 
 	@Override
-	public void setArguments(
-			Map<String, List<? extends AnnotationObjectInDocument>> arguments) {
+	public void setArguments(Map<String, List<? extends HasTokens>> arguments) {
 		this.arguments = arguments;
 	}
 
 	@Override
-	public void putArgument(String key,
-			List<? extends AnnotationObjectInDocument> args) {
+	public void putArgument(String key, List<? extends HasTokens> args) {
 		this.arguments.put(key, args);
 	}
 

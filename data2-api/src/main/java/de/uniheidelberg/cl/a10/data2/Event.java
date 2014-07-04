@@ -4,12 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface Event extends AnnotationObjectInDocument, HasTokens {
-	Map<String, List<? extends AnnotationObjectInDocument>> getArguments();
+	Map<String, List<? extends HasTokens>> getArguments();
 
-	void setArguments(
-			Map<String, List<? extends AnnotationObjectInDocument>> arguments);
+	void setArguments(Map<String, List<? extends HasTokens>> arguments);
 
-	void putArgument(String key, List<? extends AnnotationObjectInDocument> args);
+	void putArgument(String key, List<? extends HasTokens> args);
 
 	AnnotationObjectInDocument getAnchor();
 
