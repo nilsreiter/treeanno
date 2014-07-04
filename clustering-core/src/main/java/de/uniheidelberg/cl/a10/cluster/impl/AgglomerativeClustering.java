@@ -99,7 +99,6 @@ public class AgglomerativeClustering<D> extends AbstractClustering<D> {
 		try {
 			return this.initClustering().internalCluster(documents);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
