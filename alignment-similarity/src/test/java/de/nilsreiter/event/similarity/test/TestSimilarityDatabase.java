@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.nilsreiter.event.similarity.Random;
-import de.nilsreiter.event.similarity.SimilarityDatabase;
+import de.nilsreiter.event.similarity.impl.SimilarityDatabase_impl;
 import de.nilsreiter.util.db.DatabaseConfiguration;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Token;
@@ -21,7 +21,7 @@ public class TestSimilarityDatabase {
 
 	Token[] events;
 	Document[] documents;
-	SimilarityDatabase<Token> sd;
+	SimilarityDatabase_impl<Token> sd;
 
 	@Before
 	public void setUp() throws Exception {
@@ -39,7 +39,7 @@ public class TestSimilarityDatabase {
 		}
 		DatabaseConfiguration dbConf = DatabaseConfiguration.getDefaultConfiguration();
 		// dbConf.setHost("localhost");
-		sd = new SimilarityDatabase<Token>(
+		sd = new SimilarityDatabase_impl<Token>(
 				dbConf, "test");
 
 	}

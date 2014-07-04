@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import de.nilsreiter.event.similarity.impl.SimilarityDatabase_impl;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.patterns.data.PMath;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
@@ -17,9 +18,9 @@ public class SimilarityFunctionFactory {
 
 	Map<String, Class<? extends SimilarityFunction<Event>>> functions;
 
-	SimilarityDatabase<Event> simDB = null;
+	SimilarityDatabase_impl<Event> simDB = null;
 
-	public SimilarityFunctionFactory(SimilarityDatabase<Event> db) {
+	public SimilarityFunctionFactory(SimilarityDatabase_impl<Event> db) {
 		simDB = db;
 		functions = new HashMap<String, Class<? extends SimilarityFunction<Event>>>();
 		functions.put("FN", FrameNet.class);
