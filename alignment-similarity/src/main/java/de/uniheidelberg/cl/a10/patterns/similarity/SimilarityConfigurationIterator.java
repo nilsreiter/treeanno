@@ -103,10 +103,8 @@ public class SimilarityConfigurationIterator implements
 			try {
 				field.set(current, iter.next());
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			SimilarityConfiguration r = null;
