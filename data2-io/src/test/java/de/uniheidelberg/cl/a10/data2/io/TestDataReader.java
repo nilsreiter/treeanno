@@ -118,8 +118,7 @@ public class TestDataReader {
 
 	private void assertThat(Collection<? extends Mention> mentions,
 			Matcher<Iterable<? super Mention>> hasItem) {
-		// TODO Auto-generated method stub
-
+		// TODO This doesn't to anything? Find correct method
 	}
 
 }
