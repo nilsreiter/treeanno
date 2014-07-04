@@ -8,7 +8,7 @@
 <LINK href="css/style.css" rel="stylesheet" type="text/css" />
 <LINK href="css/event-scores.css" rel="stylesheet" type="text/css" />
 <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="js/highcharts.js" type="text/javascript"></script>
 <script src="js/scripts.js" type="text/javascript"></script>
 
 

@@ -73,9 +73,6 @@ public abstract class AbstractEventSimilarityLoader extends HttpServlet {
 		List<Class<? extends SimilarityFunction<Event>>> similarityTypes = Arrays
 				.asList(WordNet.class, FrameNet.class);
 
-		boolean devel = this.getServletContext().getAttribute("devel")
-				.equals("true");
-
 		List<Document> documents = this.getDocuments(request);
 
 		request.setAttribute("map", docMan.getClassesForTokens(documents));

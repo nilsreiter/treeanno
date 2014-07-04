@@ -31,12 +31,17 @@
 </div>
 
 <div id="documentsetpicker" class="dialog picker">
-	<h1>Select Document Set</h1>
+	<h1>Create Document Set</h1>
+	<form action="create-documentset" method="POST">
+	<p>Set name: <input type="text" name="setname"/></p>
 	<ul class="filelist">
-	<c:forEach var="documentName" items="${docman.alignmentDocuments}">
-		<li>${documentName}</li>
+	<c:forEach var="documentName" items="${docman.documents}">
+		<li><input type="checkbox" name="doc${documentName}"/>${documentName}</li>
 	</c:forEach>
 	</ul>
+	<p style="text-align:right;"><button style="width:50%;">Create &amp; Open</button></p>
+	</form>
+	
 </div>
 
 </div>

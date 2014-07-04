@@ -24,12 +24,16 @@
 <div class="menu">
 	<%@ include file="../controls.html" %>
 </div>
+<div id="loading">
+	<img src="gfx/loading1.gif"/>
+</div>
+
 
 <div class="content level4">
 <c:forEach var="i" begin="0" end="${arity-1}" >
 	<div class="originaltext">
 	
-	<jsp:include page="document-box-similarities.jsp">
+	<jsp:include page="../common/document-box-similarities.jsp">
 		<jsp:param value="${i}" name="i"/>
 	</jsp:include>
 	</div>
@@ -40,6 +44,8 @@
 </div>
 </div>
 <script>
+jQuery(".content.level4").css("display", "none");
+
 jQuery.getJSON('rpc/get-event-similarities?doctype=document&doc=${doc}', function (data) { 
 	for(var tokId in data) {
 		for (var type in data[tokId]) {
@@ -61,6 +67,8 @@ jQuery.getJSON('rpc/get-event-similarities?doctype=document&doc=${doc}', functio
 				}
 			});
 		}
+		$("#loading").css("display", "none");
+		jQuery(".content.level4").css("display", "block");
 	}
 });
 	

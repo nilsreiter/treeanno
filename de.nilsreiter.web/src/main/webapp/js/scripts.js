@@ -1,40 +1,8 @@
-var alignments = 0;
 
 var colors = new Object();
 colors["WordNet"] = "255,0,0";
 colors["FrameNet"] = "0,255,0";
 
-function toggleAlignments() {
-    var context=document.getElementById("canvas").getContext('2d');
-
-	if (alignments == 0) {
-		var canvasContainer = document.getElementById("alignmentcontent");
-
-		var myCanvas = document.getElementById("canvas");
-		myCanvas.style.width = canvasContainer.offsetWidth+"px";
-		myCanvas.style.height = canvasContainer.offsetHeight+"px";
-		// You must set this otherwise the canvas will be streethed to fit the container
-		myCanvas.width=canvasContainer.offsetWidth;
-		myCanvas.height=canvasContainer.offsetHeight;
-		var alIds = $(canvasContainer).data("alignmentIds").trim().split(' ');
-		for (var i = 0; i <= alIds.length; i++) {
-			connect(alIds[i]);
-		}
-    	alignments = 1;
-    } else {
-
-    	// Store the current transformation matrix
-    	context.save();
-
-    	// Use the identity matrix while clearing the canvas
-    	context.setTransform(1, 0, 0, 1, 0, 0);
-    	context.clearRect(0, 0, canvas.width, canvas.height);
-
-    	// Restore the transform
-    	context.restore();
-    	alignments = 0;
-    }
-}
 
 function connect(id) {
 	connect(id, "black");

@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import de.nilsreiter.event.similarity.FrameNet;
 import de.nilsreiter.event.similarity.SimilarityDatabase;
 import de.nilsreiter.event.similarity.WordNet;
+import de.nilsreiter.event.similarity.impl.SimilarityDatabase_impl;
 import de.nilsreiter.web.AbstractServlet;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
@@ -72,8 +73,6 @@ public class GetEventSimilarities extends AbstractServlet {
 		List<Class<? extends SimilarityFunction<Event>>> similarityTypes = Arrays
 				.asList(WordNet.class, FrameNet.class);
 
-		boolean devel = this.getServletContext().getAttribute("devel")
-				.equals("true");
 		Collection<? extends Document> documents;
 		if (request.getParameter("doctype").equals("alignment")) {
 			documents = alignmentReader.read(
@@ -84,7 +83,6 @@ public class GetEventSimilarities extends AbstractServlet {
 					.findStreamFor(request.getParameter("doc"))));
 		}
 
-		Random random = new Random();
 		// Create a map for similarities
 
 		JSONObject json = new JSONObject();
@@ -98,13 +96,8 @@ public class GetEventSimilarities extends AbstractServlet {
 						for (Event token2 : document2.getEvents()) {
 							if (token1 != token2)
 								try {
-									double similarity;
-									if (!devel) {
-										similarity = database.getSimilarity(
+									double similarity = database.getSimilarity(
 												type, token1, token2);
-									} else {
-										similarity = random.nextDouble();
-									}
 									typeObject.put(token2.firstToken()
 											.getGlobalId(), similarity);
 								} catch (SQLException e) {

@@ -54,7 +54,7 @@
   </servlet-mapping>
   <context-param>
     <param-name>dbhost</param-name>
-    <param-value>waitahapinguin</param-value>
+    <param-value>localhost</param-value>
   </context-param>
   <context-param>
     <param-name>dbname</param-name>
@@ -78,7 +78,7 @@
   </context-param>
   <context-param>
     <param-name>development</param-name>
-    <param-value>false</param-value>
+    <param-value>true</param-value>
   </context-param>
   <listener>
     <listener-class>de.nilsreiter.web.AppContextListener</listener-class>
@@ -109,5 +109,42 @@
   <servlet-mapping>
     <servlet-name>GetEventSimilarities</servlet-name>
     <url-pattern>/rpc/get-event-similarities</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <servlet-name>GetAlignments</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.GetAlignments</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetAlignments</servlet-name>
+    <url-pattern>/rpc/get-alignments</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CreateDocumentSet</display-name>
+    <servlet-name>CreateDocumentSet</servlet-name>
+    <servlet-class>de.nilsreiter.web.CreateDocumentSet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateDocumentSet</servlet-name>
+    <url-pattern>/create-documentset</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ViewEventSequence</servlet-name>
+    <servlet-class>de.nilsreiter.web.EventSequenceLoader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewEventSequence</servlet-name>
+    <url-pattern>/view-event-sequence</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>GetEvents</display-name>
+    <servlet-name>GetEvents</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.GetEvents</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetEvents</servlet-name>
+    <url-pattern>/get-events</url-pattern>
   </servlet-mapping>
 </web-app>

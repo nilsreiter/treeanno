@@ -77,7 +77,6 @@ public class GetEventScores extends AbstractServlet {
 			}
 			json.append("series", serie);
 		}
-
 		response.getWriter().print(json.toString());
 	}
 }

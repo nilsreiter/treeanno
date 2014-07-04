@@ -1,6 +1,7 @@
 package de.nilsreiter.web;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,45 +12,41 @@ import javax.servlet.http.HttpServletResponse;
 import de.nilsreiter.web.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
-import de.uniheidelberg.cl.a10.data2.alignment.io.EventAlignmentReader;
+import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
+import de.uniheidelberg.cl.a10.data2.io.DataReader;
 
 /**
- * Servlet implementation class AlignmentLoader
+ * Servlet implementation class CreateDocumentSet
  */
-public class AlignmentLoader extends AbstractServlet {
+public class CreateDocumentSet extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
 
-	EventAlignmentReader alignmentReader;
-
-	public AlignmentLoader() {
-		super();
-	}
-
-	@Override
-	public void init() {
-		super.init();
-		alignmentReader = new EventAlignmentReader(docMan);
-
-	}
-
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
+	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("doc") == null) {
-			RequestDispatcher view = request
-					.getRequestDispatcher("documentset/select.jsp");
-			view.forward(request, response);
-			return;
+
+		Alignment<Event> alignment = new Alignment_impl<Event>(
+				request.getParameter("setname"));
+
+		DataReader dr = new DataReader();
+		Enumeration<String> pEnum = request.getParameterNames();
+		while (pEnum.hasMoreElements()) {
+			String pName = pEnum.nextElement();
+			if (pName.startsWith("doc")) {
+				alignment.getDocuments().add(
+						dr.read(docMan.findStreamFor(pName.substring(3))));
+			}
 		}
-		Alignment<Event> alignment = alignmentReader.read(docMan
-				.findStreamFor(request.getParameter("doc")));
+
+		// TODO: Saving needs to happen here, then maybe redirect?
 
 		request.setAttribute("location",
 				new Location("Rituals", Area.Alignment));
+
 		request.setAttribute("alignment", alignment);
 		request.setAttribute("documents", alignment.getDocuments());
 		request.setAttribute("map", docMan.getClassesForTokens(alignment));

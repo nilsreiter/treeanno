@@ -14,7 +14,7 @@
 
 <div class="content level4">
 		<div class="originaltext">
-		<jsp:include page="../document-box.jsp">
+		<jsp:include page="../common/document-box.jsp">
 			<jsp:param value="0" name="i"/>
 		</jsp:include>
 		</div>
