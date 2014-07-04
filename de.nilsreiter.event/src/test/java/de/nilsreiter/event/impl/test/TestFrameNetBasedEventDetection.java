@@ -23,7 +23,7 @@ import de.uniheidelberg.cl.a10.data2.io.DataReader;
 
 public class TestFrameNetBasedEventDetection {
 
-	public static String fnPath = "/home/users0/reiterns/local/framenet-1.5";
+	public static String fnPath = "/Users/reiterns/Documents/Resources/framenet-1.5";
 
 	Document text;
 	BasicEventDetection bed;
