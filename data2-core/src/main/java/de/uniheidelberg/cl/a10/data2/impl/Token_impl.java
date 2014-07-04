@@ -1,7 +1,10 @@
 package de.uniheidelberg.cl.a10.data2.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -437,5 +440,50 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 	@Override
 	public void setId(final String id) {
 		this.id = id;
+	}
+
+	@Override
+	public List<Token> getTokens() {
+		return Arrays.asList((Token) this);
+	}
+
+	@Override
+	public Token lastToken() {
+		return this;
+	}
+
+	@Override
+	public Token firstToken() {
+		return this;
+	}
+
+	@Override
+	public List<Token> getTokensBetween(int end, int begin) {
+		if (begin <= this.begin && end >= this.end)
+			return Arrays.asList((Token) this);
+		return new ArrayList<Token>();
+	}
+
+	@Override
+	public int numberOfTokens() {
+		return 1;
+	}
+
+	@Override
+	public Iterator<Token> iterator() {
+		return new Iterator<Token>() {
+			boolean ret = false;
+
+			@Override
+			public boolean hasNext() {
+				return (!ret && (ret = true));
+			}
+
+			@Override
+			public Token next() {
+				return Token_impl.this;
+			}
+
+		};
 	}
 }
