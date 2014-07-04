@@ -6,7 +6,7 @@ import java.util.List;
 import de.uniheidelberg.cl.a10.HasGlobalId;
 
 public interface Token extends AnnotationObjectInDocument, Comparable<Token>,
-		HasOldId, HasGlobalId {
+		HasOldId, HasGlobalId, HasTokens {
 
 	/**
 	 * The sense
