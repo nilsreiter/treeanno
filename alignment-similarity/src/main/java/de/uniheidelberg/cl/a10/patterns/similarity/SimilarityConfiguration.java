@@ -72,7 +72,6 @@ public class SimilarityConfiguration implements TrainingConfiguration,
 
 	@Override
 	public String getInfoDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
