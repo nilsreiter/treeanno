@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>Event</name>
+  <description/>
+  <version>0.1</version>
+  <vendor>Nils Reiter</vendor>
+  <types>
+  	<typeDescription>
+      <name>de.nilsreiter.pipeline.uima.event.type.Event</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+      	<featureDescription>
+      		<name>arguments</name>
+         	<description/>
+         	<rangeTypeName>uima.cas.FSArray</rangeTypeName>
+         	<elementType>de.nilsreiter.pipeline.uima.event.type.Role</elementType>
+      	</featureDescription>
+      	<featureDescription>
+      		<name>name</name>
+         	<description/>
+         	<rangeTypeName>uima.cas.String</rangeTypeName>
+      	</featureDescription>
+      <featureDescription>
+          <name>Anchor</name>
+          <description/>
+          <rangeTypeName>uima.tcas.Annotation</rangeTypeName>
+        </featureDescription>
+      </features>
+      </typeDescription>
+    <typeDescription>
+      <name>de.nilsreiter.pipeline.uima.event.type.Role</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+      	<featureDescription>
+      		<name>name</name>
+         	<description/>
+          	<rangeTypeName>uima.cas.String</rangeTypeName>
+      	</featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>

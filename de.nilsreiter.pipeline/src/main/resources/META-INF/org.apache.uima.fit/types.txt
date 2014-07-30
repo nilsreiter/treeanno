@@ -1,0 +1,2 @@
+classpath*:de/nilsreiter/pipeline/uima/event/Event.xml
+classpath*:de/nilsreiter/pipeline/uima/ocr/types.xml
