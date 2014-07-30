@@ -26,7 +26,8 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
  * @author reiter
  * 
  */
-public class FrameNetSimilarity extends AbstractSimilarityFunction<FrameTokenEvent> {
+public class FrameNetSimilarity extends
+AbstractSimilarityFunction<FrameTokenEvent> {
 	public static final long serialVersionUID = 2l;
 
 	FrameNet frameNet = null;
@@ -94,14 +95,12 @@ public class FrameNetSimilarity extends AbstractSimilarityFunction<FrameTokenEve
 			Frame f2 = frameNet.getFrame(frameName2);
 			Number n = getDistance().getDistance(f1, f2);
 			return n;
-		} catch (FrameNotFoundException e) {
-		}
+		} catch (FrameNotFoundException e) {}
 		return Integer.MAX_VALUE;
 	}
 
 	public Probability sim(final String frameName1, final String frameName2) {
-		if (frameName1.equalsIgnoreCase(frameName2))
-			return Probability.ONE;
+		if (frameName1.equalsIgnoreCase(frameName2)) return Probability.ONE;
 		Probability p = Probability.NULL;
 		try {
 			Frame f1 = frameNet.getFrame(frameName1);
@@ -117,12 +116,11 @@ public class FrameNetSimilarity extends AbstractSimilarityFunction<FrameTokenEve
 	}
 
 	@Override
-	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1)
-			throws IncompatibleException {
+	public Probability sim(final FrameTokenEvent arg0,
+			final FrameTokenEvent arg1) throws SimilarityCalculationException {
 
 		Probability p = this.getFromHistory(arg0, arg1);
-		if (p != null)
-			return p;
+		if (p != null) return p;
 
 		if (arg0.source() == FrameTokenEvent.Source.Frame
 				&& arg1.source() == FrameTokenEvent.Source.Frame) {
@@ -133,13 +131,14 @@ public class FrameNetSimilarity extends AbstractSimilarityFunction<FrameTokenEve
 
 			return p;
 		}
-		throw new IncompatibleException();
+		throw new SimilarityCalculationException();
 
 	}
 
-	protected UndirectedSparseMultigraph<Frame, FrameRelation> getFrameNetGraph(
-			final FrameNet frameNet) {
-		UndirectedSparseMultigraph<Frame, FrameRelation> graph = new UndirectedSparseMultigraph<Frame, FrameRelation>();
+	protected UndirectedSparseMultigraph<Frame, FrameRelation>
+	getFrameNetGraph(final FrameNet frameNet) {
+		UndirectedSparseMultigraph<Frame, FrameRelation> graph =
+				new UndirectedSparseMultigraph<Frame, FrameRelation>();
 
 		for (Frame frame : frameNet.getFrames()) {
 			graph.addVertex(frame);

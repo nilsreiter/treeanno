@@ -8,7 +8,7 @@ import java.util.Map;
 import de.uniheidelberg.cl.a10.patterns.data.PMath;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.models.impl.HiddenMarkovModel_impl;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 /**
@@ -68,7 +68,7 @@ public class GeometricDistribution<T> implements Prior<T>, Serializable {
 		return PMath.divide(
 				PMath.multiply(this.getModelProbability(hmm),
 						this.k(hmm, state1, state2)),
-				PMath.multiply(k1, k2, p.complement()));
+						PMath.multiply(k1, k2, p.complement()));
 
 	}
 
@@ -83,15 +83,14 @@ public class GeometricDistribution<T> implements Prior<T>, Serializable {
 		Probability prod = Probability.ONE;
 		for (Integer state : hmm.getMM().getStates()) {
 			Probability k = k(hmm, state);
-			if (k == Probability.NULL)
-				return Probability.NULL;
+			if (k == Probability.NULL) return Probability.NULL;
 			prod = PMath.multiply(prod, k);
 		}
 		Probability p_inv = p.complement();
 		// System.err.println("p_inv = " + p_inv);
 		int n = (hmm.getNumberOfStates() - 1);
-		Probability d_opp = Probability.fromLogProbability(p_inv
-				.getLogProbability() * n);
+		Probability d_opp =
+				Probability.fromLogProbability(p_inv.getLogProbability() * n);
 		// System.err.println("d_opp = " + d_opp);
 		Probability d = PMath.multiply(prod, p, d_opp);
 		this.history.put(hmm.hashCode(), d);
@@ -115,12 +114,11 @@ public class GeometricDistribution<T> implements Prior<T>, Serializable {
 	}
 
 	protected Probability sim(final T state1, final T state2) {
-		if (state1 == null || state2 == null)
-			return Probability.NULL;
+		if (state1 == null || state2 == null) return Probability.NULL;
 		Probability p;
 		try {
 			p = this.sim.sim(state1, state2);
-		} catch (IncompatibleException e) {
+		} catch (SimilarityCalculationException e) {
 			return Probability.NULL;
 		}
 		return p;
@@ -129,8 +127,7 @@ public class GeometricDistribution<T> implements Prior<T>, Serializable {
 	@Override
 	public boolean isCandidate(final HiddenMarkovModel_impl<T> hmm,
 			final Integer s1, final Integer s2) {
-		if (s1 == s2)
-			return true;
+		if (s1 == s2) return true;
 		Probability p = Probability.ONE;
 		for (T event1 : hmm.getEventsForState(s1)) {
 			for (T event2 : hmm.getEventsForState(s2)) {
@@ -165,8 +162,8 @@ public class GeometricDistribution<T> implements Prior<T>, Serializable {
 	public Probability getModelProbabilityBasedOnSize(final int n) {
 		Probability p_inv = p.complement();
 
-		Probability d_opp = Probability.fromLogProbability(p_inv
-				.getLogProbability() * n);
+		Probability d_opp =
+				Probability.fromLogProbability(p_inv.getLogProbability() * n);
 		return PMath.multiply(p, d_opp);
 	}
 }

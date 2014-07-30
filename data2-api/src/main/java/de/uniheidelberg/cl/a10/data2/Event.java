@@ -10,6 +10,7 @@ public interface Event extends AnnotationObjectInDocument, HasTokens {
 
 	void putArgument(String key, List<? extends HasTokens> args);
 
+	@Deprecated
 	AnnotationObjectInDocument getAnchor();
 
 	String getEventClass();

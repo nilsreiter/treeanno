@@ -36,7 +36,7 @@ public class TestIO {
 		tempdir.delete();
 		tempdir.mkdir();
 
-		URL url = this.getClass().getResource("/test_docs/r0010.xml");
+		URL url = this.getClass().getResource("/r0010.xml");
 		r0010 = new File(url.getFile());
 	}
 
@@ -98,8 +98,9 @@ public class TestIO {
 	public void testIO() throws ParserConfigurationException, SAXException,
 			IOException {
 		Document rd = new DataReader().read(r0010);
-		DataWriter xw = new DataWriter(new FileOutputStream(new File(tempdir,
-				"tmp.xml")));
+		DataWriter xw =
+				new DataWriter(new FileOutputStream(
+						new File(tempdir, "tmp.xml")));
 		xw.write(rd);
 		xw.close();
 
@@ -115,8 +116,6 @@ public class TestIO {
 		assertEquals(rd.getMentions().size(), rd2.getMentions().size());
 		assertEquals(rd.getEntities().size(), rd2.getEntities().size());
 		assertEquals(rd.getFrames().size(), rd2.getFrames().size());
-		assertEquals(rd.getFramesInTemporalOrdering().size(), rd2
-				.getFramesInTemporalOrdering().size());
 		assertEquals(rd.getFrameElms().size(), rd2.getFrameElms().size());
 
 		// sentences

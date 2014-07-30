@@ -6,11 +6,10 @@ import de.uniheidelberg.cl.a10.data2.HasDocument;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.Link;
 import de.uniheidelberg.cl.a10.patterns.baseline.WeightedHarmonic;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class WeightedHarmonic_impl<T extends HasDocument> extends
-		Harmonic_impl<T> implements WeightedHarmonic<T> {
+Harmonic_impl<T> implements WeightedHarmonic<T> {
 
 	SimilarityFunction<T> similarity = null;
 
@@ -38,7 +37,7 @@ public class WeightedHarmonic_impl<T extends HasDocument> extends
 					try {
 						d += similarity.sim(obj1, obj2).getProbability();
 						n++;
-					} catch (IncompatibleException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}

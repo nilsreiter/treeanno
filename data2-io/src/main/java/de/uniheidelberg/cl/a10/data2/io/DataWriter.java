@@ -21,16 +21,19 @@ import de.uniheidelberg.cl.a10.io.AbstractXMLWriter;
 import de.uniheidelberg.cl.a10.io.XMLConstants;
 
 public class DataWriter extends
-		AbstractXMLWriter<de.uniheidelberg.cl.a10.data2.Document> {
+AbstractXMLWriter<de.uniheidelberg.cl.a10.data2.Document> {
+
+	private static final String NAMESPACE =
+			"http://www.nilsreiter.de/xmlns/Document";
 
 	public DataWriter(OutputStream os) {
 		super(os);
 	}
 
 	protected Element getElement(final Token token) {
-		Element tokenElement = new Element("token");
+		Element tokenElement = new Element("token", NAMESPACE);
 		tokenElement
-				.addAttribute(new Attribute(XMLConstants.ID, token.getId()));
+		.addAttribute(new Attribute(XMLConstants.ID, token.getId()));
 		tokenElement.addAttribute(new Attribute(XMLConstants.WORD, token
 				.getSurface()));
 		tokenElement.addAttribute(new Attribute(XMLConstants.LEMMA, token
@@ -38,7 +41,7 @@ public class DataWriter extends
 		if (token.getDependencyRelation() != null)
 			tokenElement.addAttribute(new Attribute(
 					XMLConstants.DEPENDENCYRELATION, token
-							.getDependencyRelation()));
+					.getDependencyRelation()));
 		if (token.getSense() != null) {
 			tokenElement.addAttribute(new Attribute(XMLConstants.SENSE, token
 					.getSense().getId()));
@@ -55,7 +58,7 @@ public class DataWriter extends
 		if (token.getDependencyRelation() != null)
 			tokenElement.addAttribute(new Attribute(
 					XMLConstants.DEPENDENCYRELATION, token
-							.getDependencyRelation()));
+					.getDependencyRelation()));
 		for (Frame frame : token.getFrames()) {
 			tokenElement.appendChild(this.getRefElement("frame", frame));
 		}
@@ -68,7 +71,7 @@ public class DataWriter extends
 	}
 
 	protected Element getElement(final Sentence sentence) {
-		Element sentenceElement = new Element("sentence");
+		Element sentenceElement = new Element("sentence", NAMESPACE);
 		sentenceElement.addAttribute(new Attribute("id", sentence.getId()));
 		for (Token token : sentence) {
 			sentenceElement.appendChild(this.getElement(token));
@@ -78,13 +81,13 @@ public class DataWriter extends
 
 	protected Element getRefElement(final String name,
 			final AnnotationObject dObj) {
-		Element element = new Element(name);
+		Element element = new Element(name, NAMESPACE);
 		element.addAttribute(new Attribute(XMLConstants.IDREF, dObj.getId()));
 		return element;
 	}
 
 	protected Element getElement(final Mention mention) {
-		Element mentionElement = new Element("mention");
+		Element mentionElement = new Element("mention", NAMESPACE);
 		mentionElement.addAttribute(new Attribute(XMLConstants.ID, mention
 				.getId()));
 
@@ -102,10 +105,10 @@ public class DataWriter extends
 	}
 
 	protected Element getElement(final Entity entity) {
-		Element entityElement = new Element("entity");
+		Element entityElement = new Element("entity", NAMESPACE);
 
 		if (entity.getSense() != null) {
-			Element senseRef = new Element("sense");
+			Element senseRef = new Element("sense", NAMESPACE);
 			senseRef.addAttribute(new Attribute(XMLConstants.IDREF, entity
 					.getSense().getId()));
 			entityElement.appendChild(senseRef);
@@ -120,7 +123,7 @@ public class DataWriter extends
 	}
 
 	protected Element getElement(final Mantra mantra) {
-		Element element = new Element("mantra");
+		Element element = new Element("mantra", NAMESPACE);
 		element.addAttribute(new Attribute(XMLConstants.ID, mantra.getId()));
 		if (mantra.firstToken() != null)
 			element.appendChild(this.getRefElement("token", mantra.firstToken()));
@@ -128,7 +131,7 @@ public class DataWriter extends
 	}
 
 	protected Element getElement(final FrameElement fe) {
-		Element element = new Element("frame_element");
+		Element element = new Element("frame_element", NAMESPACE);
 		element.addAttribute(new Attribute(XMLConstants.ID, fe.getId()));
 		element.addAttribute(new Attribute("name", fe.getName()));
 		if (fe.getHead() != null)
@@ -148,7 +151,7 @@ public class DataWriter extends
 	}
 
 	protected Element getElement(final Frame frame) {
-		Element element = new Element("frame");
+		Element element = new Element("frame", NAMESPACE);
 		element.addAttribute(new Attribute(XMLConstants.ID, frame.getId()));
 		if (frame.getOldId() != null)
 			element.addAttribute(new Attribute(XMLConstants.OLDID, frame
@@ -165,7 +168,7 @@ public class DataWriter extends
 	}
 
 	protected Element getElement(final Section section) {
-		Element element = new Element("section");
+		Element element = new Element("section", NAMESPACE);
 		element.addAttribute(new Attribute(XMLConstants.ID, section.getId()));
 
 		for (Sentence sentence : section) {
@@ -176,18 +179,19 @@ public class DataWriter extends
 	}
 
 	@Override
-	public Element getElement(final de.uniheidelberg.cl.a10.data2.Document text) {
+	public Element
+			getElement(final de.uniheidelberg.cl.a10.data2.Document text) {
 
-		Element rootElement = new Element("root");
-		// rootElement.add(Namespace
-		// .get("http://www.cl.uni-heidelberg.de/~reiter/RitualDocument"));
+		Element rootElement = new Element("root", NAMESPACE);
 
-		Element textElement = new Element("document");
+		Element textElement = new Element("document", NAMESPACE);
 
-		Element origElement = new Element("originaltext");
+		Element origElement = new Element("originaltext", NAMESPACE);
 		origElement.appendChild(text.getOriginalText());
 
 		textElement.addAttribute(new Attribute(XMLConstants.ID, text.getId()));
+		textElement.addAttribute(new Attribute(XMLConstants.CORPUS, text
+				.getCorpusName()));
 		textElement.appendChild(origElement);
 
 		if (text.getTitle() != null) {
@@ -198,17 +202,17 @@ public class DataWriter extends
 		rootElement.appendChild(textElement);
 
 		// Sentences
-		Element sentencesElement = new Element("sentences");
+		Element sentencesElement = new Element("sentences", NAMESPACE);
 		for (Sentence sentence : text.getSentences()) {
 			sentencesElement.appendChild(this.getElement(sentence));
 		}
 
 		// Coreference
-		Element corefElement = new Element("coreference");
+		Element corefElement = new Element("coreference", NAMESPACE);
 		for (Entity entity : text.getEntities()) {
 			corefElement.appendChild(this.getElement(entity));
 		}
-		Element singletonElements = new Element("singletons");
+		Element singletonElements = new Element("singletons", NAMESPACE);
 		for (Mention mention : text.getMentions()) {
 			if (mention.getEntity() == null) {
 				singletonElements.appendChild(this.getElement(mention));
@@ -217,11 +221,11 @@ public class DataWriter extends
 		corefElement.appendChild(singletonElements);
 
 		// Frames + Semantic Roles
-		Element framesElement = new Element("frames");
+		Element framesElement = new Element("frames", NAMESPACE);
 		for (Frame frame : text.getFrames()) {
 			framesElement.appendChild(this.getElement(frame));
 		}
-		Element frameOrderingTemporal = new Element("order");
+		Element frameOrderingTemporal = new Element("order", NAMESPACE);
 		frameOrderingTemporal.addAttribute(new Attribute("type", "temporal"));
 		for (Frame frame : text.getFramesInTemporalOrdering()) {
 			frameOrderingTemporal.appendChild(this
@@ -237,7 +241,7 @@ public class DataWriter extends
 		framesElement.appendChild(frameOrderingTemporal);
 
 		// Chunks
-		Element chunksElement = new Element("chunks");
+		Element chunksElement = new Element("chunks", NAMESPACE);
 		for (Sentence sentence : text.getSentences()) {
 			for (Chunk chunk : sentence.getChunks()) {
 				chunksElement.appendChild(this.getElement(chunk));
@@ -245,25 +249,25 @@ public class DataWriter extends
 		}
 
 		// Sections
-		Element sectionsElement = new Element("sections");
+		Element sectionsElement = new Element("sections", NAMESPACE);
 		for (Section section : text.getSections()) {
 			sectionsElement.appendChild(this.getElement(section));
 		}
 
 		// Senses
-		Element sensesElement = new Element("senses");
+		Element sensesElement = new Element("senses", NAMESPACE);
 		for (Sense sense : text.getSenses()) {
 			sensesElement.appendChild(this.getElement(sense));
 		}
 
 		// Mantras
-		Element mantrasElement = new Element("mantras");
+		Element mantrasElement = new Element("mantras", NAMESPACE);
 		for (Mantra mantra : text.getMantras()) {
 			mantrasElement.appendChild(this.getElement(mantra));
 		}
 
 		// Events
-		Element eventsElement = new Element("events");
+		Element eventsElement = new Element("events", NAMESPACE);
 		for (Event event : text.getEvents()) {
 			eventsElement.appendChild(this.getElement(event));
 
@@ -282,14 +286,19 @@ public class DataWriter extends
 	}
 
 	protected Element getElement(Event event) {
-		Element element = new Element(XMLConstants.EVENT);
+		Element element = new Element(XMLConstants.EVENT, NAMESPACE);
 		element.addAttribute(new Attribute(XMLConstants.ID, event.getId()));
 		element.addAttribute(new Attribute(XMLConstants.CLASS, event
 				.getEventClass()));
-		element.appendChild(getRefElement(XMLConstants.ANCHOR,
-				event.getAnchor()));
+		if (event.getAnchor() != null)
+			element.appendChild(getRefElement(XMLConstants.ANCHOR,
+					event.getAnchor()));
+		else
+			for (Token token : event) {
+				element.appendChild(getRefElement(XMLConstants.ANCHOR, token));
+			}
 		for (String argKey : event.getArguments().keySet()) {
-			Element argElement = new Element(XMLConstants.ARGUMENT);
+			Element argElement = new Element(XMLConstants.ARGUMENT, NAMESPACE);
 			argElement.addAttribute(new Attribute(XMLConstants.ROLE, argKey));
 			for (AnnotationObjectInDocument aoi : event.getArguments().get(
 					argKey)) {
@@ -301,7 +310,7 @@ public class DataWriter extends
 	}
 
 	protected Element getElement(final Sense sense) {
-		Element element = new Element("sense");
+		Element element = new Element("sense", NAMESPACE);
 		element.addAttribute(new Attribute(XMLConstants.ID, sense.getId()));
 		element.addAttribute(new Attribute(XMLConstants.WORDNETID, sense
 				.getWordNetId()));
@@ -309,7 +318,7 @@ public class DataWriter extends
 	}
 
 	protected Element getElement(final Chunk chunk) {
-		Element element = new Element("chunk");
+		Element element = new Element("chunk", NAMESPACE);
 		element.addAttribute(new Attribute(XMLConstants.ID, chunk.getId()));
 		element.addAttribute(new Attribute(XMLConstants.CATEGORY, chunk
 				.getCategory()));

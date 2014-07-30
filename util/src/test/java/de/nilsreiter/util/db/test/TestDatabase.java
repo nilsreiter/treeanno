@@ -8,8 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.nilsreiter.util.db.Database;
 import de.nilsreiter.util.db.DatabaseConfiguration;
+import de.nilsreiter.util.db.impl.DatabaseDBConfiguration_impl;
 
 public class TestDatabase {
 
@@ -23,7 +23,7 @@ public class TestDatabase {
 
 	@Test
 	public void testConstruction() throws ClassNotFoundException, SQLException {
-		Database db = new Database(
+		DatabaseDBConfiguration_impl db = new DatabaseDBConfiguration_impl(
 				DatabaseConfiguration.getDefaultConfiguration());
 		assertNotNull(db);
 	}

@@ -10,18 +10,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.nilsreiter.event.similarity.Null;
 import de.nilsreiter.event.similarity.Random;
 import de.nilsreiter.event.similarity.impl.SimilarityDatabase_impl;
 import de.nilsreiter.util.db.DatabaseConfiguration;
+import de.nilsreiter.util.db.impl.DatabaseDBConfiguration_impl;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.Token;
-import de.uniheidelberg.cl.a10.patterns.similarity.Null;
+import de.uniheidelberg.cl.a10.data2.Event;
 
 public class TestSimilarityDatabase {
 
-	Token[] events;
+	Event[] events;
 	Document[] documents;
-	SimilarityDatabase_impl<Token> sd;
+	SimilarityDatabase_impl<Event> sd;
 
 	@Before
 	public void setUp() throws Exception {
@@ -31,22 +32,24 @@ public class TestSimilarityDatabase {
 			when(documents[i].getId()).thenReturn("doc" + i);
 		}
 
-		events = new Token[10];
+		events = new Event[10];
 		for (int i = 0; i < 10; i++) {
-			events[i] = mock(Token.class);
+			events[i] = mock(Event.class);
 			when(events[i].getId()).thenReturn(String.valueOf(i));
 			when(events[i].getRitualDocument()).thenReturn(documents[i % 2]);
 		}
-		DatabaseConfiguration dbConf = DatabaseConfiguration.getDefaultConfiguration();
-		// dbConf.setHost("localhost");
-		sd = new SimilarityDatabase_impl<Token>(
-				dbConf, "test");
+		DatabaseConfiguration dbConf =
+				DatabaseConfiguration.getDefaultConfiguration();
+		dbConf.setPrefix("test");
+		sd =
+				new SimilarityDatabase_impl<Event>(new DatabaseDBConfiguration_impl(
+						dbConf));
 
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		sd.getConnection().close();
+		sd.getDatabase().getConnection().close();
 	}
 
 	@Test

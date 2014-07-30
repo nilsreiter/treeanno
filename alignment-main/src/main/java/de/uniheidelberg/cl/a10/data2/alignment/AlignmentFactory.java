@@ -12,7 +12,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.impl.AlignmentIdProvider_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.FullAlignment_impl;
 import de.uniheidelberg.cl.a10.patterns.models.impl.HiddenMarkovModel_impl;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class AlignmentFactory<T extends HasTarget & HasDocument> {
@@ -32,10 +32,9 @@ public class AlignmentFactory<T extends HasTarget & HasDocument> {
 					targets.add(f.getTarget());
 					events.add(f);
 				}
-				Link<Token> link = doc.addAlignment(idp.getNextAlignmentId(),
-						targets);
-				if (similarity != null)
-					link.setScore(getSimilarity(events));
+				Link<Token> link =
+						doc.addAlignment(idp.getNextAlignmentId(), targets);
+				if (similarity != null) link.setScore(getSimilarity(events));
 			}
 		}
 
@@ -55,7 +54,8 @@ public class AlignmentFactory<T extends HasTarget & HasDocument> {
 
 	}
 
-	public Alignment<T> getAlignmentFromHMM(final HiddenMarkovModel_impl<T> hmm) {
+	public Alignment<T>
+			getAlignmentFromHMM(final HiddenMarkovModel_impl<T> hmm) {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		FullAlignment<T> doc = new FullAlignment_impl<T>(null);
 
@@ -82,7 +82,7 @@ public class AlignmentFactory<T extends HasTarget & HasDocument> {
 					try {
 						d += similarity.sim(elem1, elem2).getProbability();
 						n++;
-					} catch (IncompatibleException e) {
+					} catch (SimilarityCalculationException e) {
 						e.printStackTrace();
 					}
 				}
@@ -100,9 +100,12 @@ public class AlignmentFactory<T extends HasTarget & HasDocument> {
 		this.similarity = similarity;
 	}
 
-	public static <T extends HasDocument> Alignment<T> fromPairwiseAlignment(
-			final de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment<T> pa,
-			final Document text1, final Document text2) {
+	public static
+			<T extends HasDocument>
+			Alignment<T>
+			fromPairwiseAlignment(
+					final de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment<T> pa,
+					final Document text1, final Document text2) {
 		Alignment<T> document = new Alignment_impl<T>("");
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		document.getDocuments().add(text1);
@@ -113,10 +116,8 @@ public class AlignmentFactory<T extends HasTarget & HasDocument> {
 			T f2 = pa.getGappedSequence2().get(i);
 
 			Set<T> aligned = new HashSet<T>();
-			if (f1 != null)
-				aligned.add(f1);
-			if (f2 != null)
-				aligned.add(f2);
+			if (f1 != null) aligned.add(f1);
+			if (f2 != null) aligned.add(f2);
 			document.addAlignment(idp.getNextAlignmentId(), aligned).setScore(
 					pa.getScoreTagLine().get(i).getScore());
 		}

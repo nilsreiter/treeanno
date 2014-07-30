@@ -13,15 +13,16 @@ import java.util.Map;
 import java.util.Set;
 
 import de.uniheidelberg.cl.a10.Util;
-import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.FrameElement;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Mention;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 
-public class ArgumentTextSimilarity extends AbstractSimilarityFunction<FrameTokenEvent>
-		implements SimilarityFunction<FrameTokenEvent> {
+public class ArgumentTextSimilarity extends
+AbstractSimilarityFunction<FrameTokenEvent> implements
+SimilarityFunction<FrameTokenEvent> {
 	public static final long serialVersionUID = 3l;
 
 	boolean debug = false;
@@ -57,8 +58,7 @@ public class ArgumentTextSimilarity extends AbstractSimilarityFunction<FrameToke
 			size1 += this.idf(w1);
 			for (String w2 : bagOfWords2) {
 				if (llimit == Double.MAX_VALUE) {
-					if (w1.equals(w2))
-						retval += this.idf(w1);
+					if (w1.equals(w2)) retval += this.idf(w1);
 				} else {
 					if (Levenshtein.distance(w1, w2).getProbability() > llimit) {
 						retval += this.idf(w1);
@@ -69,27 +69,21 @@ public class ArgumentTextSimilarity extends AbstractSimilarityFunction<FrameToke
 		for (String w2 : bagOfWords2)
 			size2 += this.idf(w2);
 
-		if (size1 != 0 || size2 != 0)
-			retval /= (size1 + size2);
+		if (size1 != 0 || size2 != 0) retval /= (size1 + size2);
 
 		return Probability.fromProbability(Util.scale(0.0, 0.5, 0.0, 1.0,
 				retval));
 	}
 
 	@Override
-	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1)
-			throws IncompatibleException {
-		if (this.config == null)
-			throw new UnconfiguredException();
-		if (positivePreCheck(arg0, arg1))
-			return Probability.ONE;
-		if (negativePreCheck(arg0, arg1))
-			return Probability.NULL;
-		if (arg0.equals(arg1))
-			return Probability.ONE;
+	public Probability sim(final FrameTokenEvent arg0,
+			final FrameTokenEvent arg1) {
+		if (this.config == null) throw new UnconfiguredException();
+		if (positivePreCheck(arg0, arg1)) return Probability.ONE;
+		if (negativePreCheck(arg0, arg1)) return Probability.NULL;
+		if (arg0.equals(arg1)) return Probability.ONE;
 		Probability p = this.getFromHistory(arg0, arg1);
-		if (p != null)
-			return p;
+		if (p != null) return p;
 
 		Set<String> bagOfWords1 = this.getBagOfWords(arg0.getFrame());
 		Set<String> bagOfWords2 = this.getBagOfWords(arg1.getFrame());
@@ -126,7 +120,8 @@ public class ArgumentTextSimilarity extends AbstractSimilarityFunction<FrameToke
 	}
 
 	@Override
-	public void readConfiguration(final SimilarityConfiguration tc) {
+	public void readConfiguration(final Object obj) {
+		SimilarityConfiguration tc = (SimilarityConfiguration) obj;
 		super.readConfiguration(tc);
 		this.idfMap = null;
 		if (tc.sf_arg_idf) {
@@ -146,8 +141,8 @@ public class ArgumentTextSimilarity extends AbstractSimilarityFunction<FrameToke
 		int docs = 0;
 
 		// init reader
-		BufferedReader br = new BufferedReader(new FileReader(
-				new File(filename)));
+		BufferedReader br =
+				new BufferedReader(new FileReader(new File(filename)));
 		String line;
 		List<String> words = new LinkedList<String>();
 
@@ -160,8 +155,7 @@ public class ArgumentTextSimilarity extends AbstractSimilarityFunction<FrameToke
 				if (words.size() > 1) {
 					// increase document counter for each word
 					for (String w : words) {
-						if (!retval.containsKey(w))
-							retval.put(w, 0.0);
+						if (!retval.containsKey(w)) retval.put(w, 0.0);
 						retval.put(w, retval.get(w) + 1.0);
 					}
 				}
@@ -173,8 +167,7 @@ public class ArgumentTextSimilarity extends AbstractSimilarityFunction<FrameToke
 				// word form is in the 2nd column in CoNLL format
 				String w = line.split("\t")[1];
 				// only add a word type once per document
-				if (!words.contains(w))
-					words.add(w);
+				if (!words.contains(w)) words.add(w);
 			}
 		}
 		br.close();
@@ -182,8 +175,7 @@ public class ArgumentTextSimilarity extends AbstractSimilarityFunction<FrameToke
 		if (words.size() > 1) {
 			// same as before
 			for (String w : words) {
-				if (!retval.containsKey(w))
-					retval.put(w, 0.0);
+				if (!retval.containsKey(w)) retval.put(w, 0.0);
 				retval.put(w, retval.get(w) + 1.0);
 			}
 			docs++;

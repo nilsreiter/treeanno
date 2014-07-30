@@ -42,7 +42,8 @@ public abstract class AbstractLinkedXMLReader<T> extends AbstractXMLReader<T> {
 	}
 
 	protected de.uniheidelberg.cl.a10.data2.Document getRitualDocument(
-			final String id) throws FileNotFoundException, IOException {
+			final String id) throws FileNotFoundException, IOException,
+			DocumentNotFoundException {
 		return dr.read(this.dsProvider.findStreamFor(id));
 	}
 

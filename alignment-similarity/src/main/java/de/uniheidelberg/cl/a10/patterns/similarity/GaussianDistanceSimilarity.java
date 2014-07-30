@@ -13,7 +13,7 @@ import de.uniheidelberg.cl.a10.patterns.data.Probability;
  * 
  */
 public class GaussianDistanceSimilarity extends
-		AbstractSimilarityFunction<FrameTokenEvent> {
+AbstractSimilarityFunction<FrameTokenEvent> {
 
 	public static final long serialVersionUID = 5l;
 
@@ -35,14 +35,14 @@ public class GaussianDistanceSimilarity extends
 	}
 
 	@Override
-	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1) {
+	public Probability sim(final FrameTokenEvent arg0,
+			final FrameTokenEvent arg1) {
 		/*
 		 * if (positivePreCheck(arg0, arg1)) return Probability.ONE; if
 		 * (negativePreCheck(arg0, arg1)) return Probability.NULL;
 		 */
 		Probability p = this.getFromHistory(arg0, arg1);
-		if (p != null)
-			return p;
+		if (p != null) return p;
 
 		double rpos0 = arg0.position();
 		double rpos1 = arg1.position();
@@ -57,18 +57,20 @@ public class GaussianDistanceSimilarity extends
 	public Probability getProbability(final double relativeDistance) {
 		double pp = gauss.value(relativeDistance);
 
-		Probability p = Probability.fromProbability(Util.scale(0,
-				gauss.value(0.0), 0, 1.0, pp));
+		Probability p =
+				Probability.fromProbability(Util.scale(0, gauss.value(0.0), 0,
+						1.0, pp));
 
 		return p;
 
 	}
 
 	@Override
-	public void readConfiguration(final SimilarityConfiguration conf) {
-		if (conf.sf_gaussiandistance_var != this.sigma) {
-			this.sigma = conf.sf_gaussiandistance_var;
-			gauss = new Gaussian(0.0, conf.sf_gaussiandistance_var);
+	public void readConfiguration(final Object conf) {
+		SimilarityConfiguration tc = (SimilarityConfiguration) conf;
+		if (tc.sf_gaussiandistance_var != this.sigma) {
+			this.sigma = tc.sf_gaussiandistance_var;
+			gauss = new Gaussian(0.0, tc.sf_gaussiandistance_var);
 		}
 
 	}
@@ -92,8 +94,7 @@ public class GaussianDistanceSimilarity extends
 	 *            the variance to set
 	 */
 	public void setVariance(final double variance) {
-		if (variance != this.sigma)
-			gauss = new Gaussian(0.0, variance);
+		if (variance != this.sigma) gauss = new Gaussian(0.0, variance);
 		this.sigma = variance;
 	}
 }

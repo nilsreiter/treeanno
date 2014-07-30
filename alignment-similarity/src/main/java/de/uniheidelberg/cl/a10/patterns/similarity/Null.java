@@ -17,7 +17,6 @@ public class Null<T> implements SimilarityFunction<T> {
 	}
 
 	@Override
-	public void readConfiguration(final SimilarityConfiguration tc) {
-	}
+	public void readConfiguration(final Object tc) {}
 
 }

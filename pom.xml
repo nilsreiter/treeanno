@@ -54,6 +54,8 @@
   	<module>clustering-main</module>
   	<module>de.pado.sigf</module>
   	<module>de.nilsreiter.web</module>
+  	<module>de.nilsreiter.pipeline</module>
+  	<module>de.nilsreiter.lm</module>
   </modules>
   <dependencies>
   </dependencies>

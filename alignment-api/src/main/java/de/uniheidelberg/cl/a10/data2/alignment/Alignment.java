@@ -3,9 +3,10 @@ package de.uniheidelberg.cl.a10.data2.alignment;
 import java.util.Collection;
 
 import de.uniheidelberg.cl.a10.HasId;
+import de.uniheidelberg.cl.a10.HasTitle;
 import de.uniheidelberg.cl.a10.data2.Document;
 
-public interface Alignment<T> extends HasId {
+public interface Alignment<T> extends HasId, HasTitle {
 	Collection<? extends Link<T>> getAlignments();
 
 	Collection<Document> getDocuments();

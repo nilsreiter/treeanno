@@ -5,4 +5,8 @@ import java.io.InputStream;
 
 public interface DataStreamProvider {
 	public InputStream findStreamFor(String objectName) throws IOException;
+
+	public InputStream findStreamFor(String objectName, String type)
+			throws IOException;
+
 }

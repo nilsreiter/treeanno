@@ -13,8 +13,7 @@ public class RandomSimilarity<T> extends AbstractSimilarityFunction<T> {
 	}
 
 	@Override
-	public Probability sim(final T arg0, final T arg1)
-			throws IncompatibleException {
+	public Probability sim(final T arg0, final T arg1) {
 
 		return Probability.fromProbability(random.nextDouble());
 	}

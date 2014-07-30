@@ -21,7 +21,8 @@ public class TestCountingMapMatrix {
 
 	@Test
 	public void testMatrix() throws Exception {
-		IterableMatrix<String, String, Integer> matrix = new CountingMapMatrix<String, String, Integer>();
+		IterableMatrix<String, String, Integer> matrix =
+				new CountingMapMatrix<String, String, Integer>();
 		matrix.put("f", "g", 6);
 		matrix.put("a", "b", 1);
 		matrix.put("g", "h", 7);
@@ -31,8 +32,8 @@ public class TestCountingMapMatrix {
 		matrix.put("c", "d", 3);
 		matrix.put("e", "f", 5);
 
-		Iterator<Pair<String, String>> iterator = matrix.getNavigableSet()
-				.iterator();
+		Iterator<Pair<String, String>> iterator =
+				matrix.getNavigableSet().iterator();
 
 		assertEquals("a", iterator.next().getKey());
 		assertEquals("b", iterator.next().getKey());
@@ -47,13 +48,14 @@ public class TestCountingMapMatrix {
 
 	@Test
 	public void testMatrix2() throws Exception {
-		IterableMatrix<String, String, Integer> matrix = new CountingMapMatrix<String, String, Integer>();
-		matrix.put("a", "b", 2);
+		IterableMatrix<String, String, Integer> matrix =
+				new CountingMapMatrix<String, String, Integer>();
+		matrix.put("a", "b", 3);
 		matrix.put("a", "c", 2);
 		matrix.put("b", "c", 1);
 
-		Iterator<Pair<String, String>> iterator = matrix.getNavigableSet()
-				.iterator();
+		Iterator<Pair<String, String>> iterator =
+				matrix.getNavigableSet().iterator();
 		Pair<String, String> pair;
 		pair = iterator.next();
 		assertEquals("b", pair.getKey());

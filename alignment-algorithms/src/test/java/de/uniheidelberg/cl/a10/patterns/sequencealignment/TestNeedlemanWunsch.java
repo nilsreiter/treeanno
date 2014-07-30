@@ -12,16 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.AdvancedScoringScheme;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.AlignmentType;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.BasicScoringScheme;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.DoubleNeedlemanWunsch;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.IndividualAlignment;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.NeedlemanWunsch;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignmentAlgorithm;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.ScoringScheme;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class TestNeedlemanWunsch {
@@ -37,13 +27,14 @@ public class TestNeedlemanWunsch {
 
 	@Test
 	public void testComputePairwiseAlignment() {
-		ScoringScheme<String> scheme = new BasicScoringScheme<String>(2, -1, -1);
-		PairwiseAlignmentAlgorithm<String> algo = new NeedlemanWunsch<String>(
-				scheme);
+		ScoringScheme<String> scheme =
+				new BasicScoringScheme<String>(2, -1, -1);
+		PairwiseAlignmentAlgorithm<String> algo =
+				new NeedlemanWunsch<String>(scheme);
 		algo.setSequences(sequence1, sequence2);
 		try {
-			PairwiseAlignment<String> alignment = algo
-					.computePairwiseAlignment();
+			PairwiseAlignment<String> alignment =
+					algo.computePairwiseAlignment();
 			List<IndividualAlignment> at = alignment.getScoreTagLine();
 			assertEquals(4, alignment.getScoreTagLine().size());
 			assertEquals(AlignmentType.Full, at.get(0).getAlignmentType());
@@ -54,35 +45,34 @@ public class TestNeedlemanWunsch {
 			fail("This should not happen.");
 		}
 
-		scheme = new AdvancedScoringScheme<String>(
-				Probability.fromProbability(0.5),
-				new SimilarityFunction<String>() {
+		scheme =
+				new AdvancedScoringScheme<String>(
+						Probability.fromProbability(0.5),
+						new SimilarityFunction<String>() {
 
-					@Override
-					public Probability sim(final String arg0, final String arg1) {
-						if (arg0 == "C" && arg1 == "D")
-							return Probability.fromProbability(0.6);
-						if (arg0.equals(arg1))
-							return Probability.ONE;
-						return Probability.NULL;
-					}
+							@Override
+							public Probability sim(final String arg0,
+									final String arg1) {
+								if (arg0 == "C" && arg1 == "D")
+									return Probability.fromProbability(0.6);
+								if (arg0.equals(arg1)) return Probability.ONE;
+								return Probability.NULL;
+							}
 
-					@Override
-					public String toString() {
-						return "";
-					}
+							@Override
+							public String toString() {
+								return "";
+							}
 
-					@Override
-					public void readConfiguration(
-							final SimilarityConfiguration tc) {
-					}
+							@Override
+							public void readConfiguration(final Object tc) {}
 
-				});
+						});
 		algo = new DoubleNeedlemanWunsch<String>(scheme);
 		algo.setSequences(sequence1, sequence2);
 		try {
-			PairwiseAlignment<String> alignment = algo
-					.computePairwiseAlignment();
+			PairwiseAlignment<String> alignment =
+					algo.computePairwiseAlignment();
 			List<IndividualAlignment> at = alignment.getScoreTagLine();
 			assertEquals(4, alignment.getScoreTagLine().size());
 			assertEquals(AlignmentType.Full, at.get(0).getAlignmentType());

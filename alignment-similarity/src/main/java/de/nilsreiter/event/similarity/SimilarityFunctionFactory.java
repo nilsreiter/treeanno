@@ -2,15 +2,20 @@ package de.nilsreiter.event.similarity;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+
+import org.apache.commons.configuration.Configuration;
 
 import de.nilsreiter.event.similarity.impl.SimilarityDatabase_impl;
+import de.nilsreiter.util.db.Database;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.patterns.data.PMath;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.data.matrix.Matrix;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
@@ -22,7 +27,8 @@ public class SimilarityFunctionFactory {
 
 	public SimilarityFunctionFactory(SimilarityDatabase_impl<Event> db) {
 		simDB = db;
-		functions = new HashMap<String, Class<? extends SimilarityFunction<Event>>>();
+		functions =
+				new HashMap<String, Class<? extends SimilarityFunction<Event>>>();
 		functions.put("FN", FrameNet.class);
 		functions.put("WN", WordNet.class);
 		functions.put("VN", VerbNet.class);
@@ -33,7 +39,8 @@ public class SimilarityFunctionFactory {
 
 	public SimilarityFunction<Event> getSimilarityFunction(
 			final SimilarityConfiguration simConf) {
-		final List<Class<? extends SimilarityFunction<Event>>> l = new LinkedList<Class<? extends SimilarityFunction<Event>>>();
+		final List<Class<? extends SimilarityFunction<Event>>> l =
+				new LinkedList<Class<? extends SimilarityFunction<Event>>>();
 		final List<Double> weights = new LinkedList<Double>();
 		for (int i = 0; i < simConf.similarityFunctions.size(); i++) {
 			weights.add(Double.valueOf(simConf.weights.get(i)));
@@ -44,8 +51,7 @@ public class SimilarityFunctionFactory {
 		return new SimilarityFunction<Event>() {
 
 			@Override
-			public Probability sim(Event arg0, Event arg1)
-					throws IncompatibleException {
+			public Probability sim(Event arg0, Event arg1) {
 				try {
 					List<Probability> lp = new LinkedList<Probability>();
 					for (Class<? extends SimilarityFunction<Event>> simFun : l) {
@@ -71,9 +77,102 @@ public class SimilarityFunctionFactory {
 			}
 
 			@Override
-			public void readConfiguration(SimilarityConfiguration tc) {
-			}
+			public void readConfiguration(Object tc) {}
 		};
 
 	}
+
+	public static EventSimilarityFunction getSimilarityFunction(
+			Database database, Configuration configuration) {
+		try {
+			final SimilarityDatabase<Event> simDB =
+					new SimilarityDatabase_impl<Event>(database);
+
+			Iterator<String> keyIter = configuration.getKeys("similarity");
+			Map<Class<? extends EventSimilarityFunction>, Double> weightMap =
+					new HashMap<Class<? extends EventSimilarityFunction>, Double>();
+
+			while (keyIter.hasNext()) {
+				String key = keyIter.next();
+				double weight = configuration.getDouble(key);
+
+				String className = key.substring(11);
+				Class<?> cl = Class.forName(className);
+				if (EventSimilarityFunction.class.isAssignableFrom(cl)) {
+					Class<? extends EventSimilarityFunction> simClass =
+							(Class<? extends EventSimilarityFunction>) cl;
+					weightMap.put(simClass, weight);
+				}
+			}
+
+			return new CachingSimilarityFunction(weightMap, simDB);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	};
+
+	static class CachingSimilarityFunction implements EventSimilarityFunction {
+		Map<Class<? extends EventSimilarityFunction>, Double> fWeightMap;
+		Logger logger = Logger.getAnonymousLogger();
+		SimilarityDatabase<Event> simDB;
+		Map<String, Matrix<Event, Event, Double>> cache = null;
+
+		public CachingSimilarityFunction(
+				Map<Class<? extends EventSimilarityFunction>, Double> weightMap,
+				SimilarityDatabase<Event> simDB) {
+			this.fWeightMap = weightMap;
+			this.simDB = simDB;
+		}
+
+		@Override
+		public Probability sim(Event arg0, Event arg1) {
+			double p = 0.0;
+			for (Class<? extends EventSimilarityFunction> func : fWeightMap
+					.keySet()) {
+				try {
+					double w = fWeightMap.get(func);
+					if (cache == null) {
+						cache =
+								simDB.getSimilarities(arg0.getRitualDocument(),
+										arg1.getRitualDocument());
+					}
+					double p0 =
+							cache.get(func.getSimpleName().substring(0, 4))
+							.get(arg0, arg1);
+					p = p + (w * p0);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			System.err.println("Retrieved similarity (" + arg0.getGlobalId()
+					+ "," + arg1.getGlobalId() + ")");
+
+			return Probability.fromProbability(p);
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder b = new StringBuilder();
+
+			for (Class<? extends EventSimilarityFunction> func : fWeightMap
+					.keySet()) {
+				double w = fWeightMap.get(func);
+				b.append(w).append('*').append(func.getSimpleName())
+				.append("+");
+
+			}
+			return b.deleteCharAt(b.length() - 1).toString();
+
+		}
+
+		@Override
+		public void readConfiguration(Object tc) {
+
+		}
+
+	}
+
 }

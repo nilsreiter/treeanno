@@ -17,7 +17,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
 import de.uniheidelberg.cl.a10.patterns.mroth.MRSystem;
 import de.uniheidelberg.cl.a10.patterns.mroth.impl.MRSystemFactory;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 
 public class MRSystemMain extends MainWithInputSequences {
@@ -39,13 +39,14 @@ public class MRSystemMain extends MainWithInputSequences {
 		return similarityConf.getWikiDescription();
 	}
 
-	protected Alignment<FrameTokenEvent> align() throws ParserConfigurationException,
-			SAXException, IOException, SecurityException,
-			InstantiationException, IllegalAccessException,
-			ClassNotFoundException, IncompatibleException {
+	protected Alignment<FrameTokenEvent> align()
+			throws ParserConfigurationException, SAXException, IOException,
+			SecurityException, InstantiationException, IllegalAccessException,
+			ClassNotFoundException, SimilarityCalculationException {
 		List<List<FrameTokenEvent>> sequences;
 		sequences = this.getSequences();
-		MRSystem<FrameTokenEvent> mrs = MRSystemFactory.getInstance(similarityConf);
+		MRSystem<FrameTokenEvent> mrs =
+				MRSystemFactory.getInstance(similarityConf);
 		mrs.setLogger(logger);
 		mrs.setSequence1(sequences.get(0));
 		mrs.setSequence2(sequences.get(1));
@@ -57,8 +58,9 @@ public class MRSystemMain extends MainWithInputSequences {
 
 		try {
 
-			AlignmentWriter dw = new AlignmentWriter(
-					this.getOutputStreamForFileOption(output, System.out));
+			AlignmentWriter dw =
+					new AlignmentWriter(this.getOutputStreamForFileOption(
+							output, System.out));
 			dw.write(new EventTokenConverter().convert(align()));
 			// dw.write(al);
 			dw.close();
@@ -72,7 +74,7 @@ public class MRSystemMain extends MainWithInputSequences {
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IncompatibleException e) {
+		} catch (SimilarityCalculationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

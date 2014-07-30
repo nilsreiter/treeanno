@@ -7,17 +7,22 @@ import java.util.List;
 
 import org.kohsuke.args4j.Option;
 
+import de.nilsreiter.event.similarity.ArgumentText;
+import de.nilsreiter.event.similarity.EventSimilarityFunction;
 import de.nilsreiter.event.similarity.FrameNet;
+import de.nilsreiter.event.similarity.GaussianDistanceSimilarity;
 import de.nilsreiter.event.similarity.Null;
 import de.nilsreiter.event.similarity.SimilarityDatabase;
+import de.nilsreiter.event.similarity.VerbNet;
 import de.nilsreiter.event.similarity.WordNet;
+import de.nilsreiter.event.similarity.impl.SimilarityDatabase_impl;
 import de.nilsreiter.util.db.DatabaseConfiguration;
+import de.nilsreiter.util.db.impl.DatabaseDBConfiguration_impl;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.main.MainWithInputDocuments;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 
 /**
  * This class is used to calculate similarities for all pairs of events across
@@ -38,13 +43,18 @@ public class CalculateSimilarities extends MainWithInputDocuments {
 	@Option(name = "--measure", usage = "The similarity measure to use")
 	Measure measure = Measure.WN;
 
-	@Option(name = "--init", usage = "Re-initialize the database, deleting everything")
+	@Option(name = "--init",
+			usage = "Re-initialize the database, deleting everything")
 	boolean rinit = false;
 
-	@Option(name = "--identifier", usage = "Sets an identifier for the database")
+	@Option(name = "--identifier",
+			usage = "Sets an identifier for the database")
 	String identifier = "";
 
-	SimilarityFunction<Event> function = null;
+	@Option(name = "--startWith", usage = "loop counter to start with")
+	int startWith = 0;
+
+	EventSimilarityFunction function = null;
 	SimilarityDatabase<Event> database = null;
 
 	public static void main(String[] args) throws IOException, SQLException {
@@ -56,26 +66,45 @@ public class CalculateSimilarities extends MainWithInputDocuments {
 
 	protected void init() throws SQLException, IOException {
 		try {
-			database = new SimilarityDatabase<Event>(
-					DatabaseConfiguration.getDefaultConfiguration(), identifier);
-			if (rinit)
-				database.rebuild();
+			database =
+					new SimilarityDatabase_impl<Event>(
+							new DatabaseDBConfiguration_impl(
+									DatabaseConfiguration
+											.getDefaultConfiguration()));
+			if (rinit) database.rebuild();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
 		switch (measure) {
 		case WN:
-			WordNet wns = new WordNet(new File(getConfiguration().getString(
-					"paths.wnhome")), new File(getConfiguration().getString(
-					"paths.nombank")));
+			WordNet wns =
+			new WordNet(new File(getConfiguration().getString(
+					"paths.wnhome")), new File(getConfiguration()
+							.getString("paths.nombank")));
 
 			function = wns;
 			break;
 		case FN:
-			FrameNet fns = new FrameNet(new File(getConfiguration().getString(
+			FrameNet fns =
+			new FrameNet(new File(getConfiguration().getString(
 					"paths.fnhome")));
 			function = fns;
+			break;
+		case VN:
+			VerbNet vns =
+			new VerbNet(new File(getConfiguration().getString(
+					"paths.nombank")), new File(getConfiguration()
+							.getString("paths.semlink")));
+			function = vns;
+			break;
+		case GD:
+			GaussianDistanceSimilarity gd = new GaussianDistanceSimilarity();
+			function = gd;
+			break;
+		case AT:
+			ArgumentText at = new ArgumentText();
+			function = at;
 			break;
 		default:
 			function = new Null();
@@ -85,26 +114,20 @@ public class CalculateSimilarities extends MainWithInputDocuments {
 	protected void runDocuments(Document d1, Document d2) throws SQLException {
 		for (Event event1 : d1.getEvents()) {
 			for (Event event2 : d2.getEvents()) {
-				// while (threadCounter > 100) {
-				// try {
-				// Thread.sleep(10);
-				// } catch (InterruptedException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
-				// }
 				new SimilarityThread(event1, event2, database).run();
 			}
 		}
+		logger.info("Finished documents " + d1.getId() + " and " + d2.getId());
 	}
 
-	private void run() throws IOException, SQLException {
+	protected void run() throws IOException, SQLException {
 		List<Document> docs = this.getDocuments();
-		for (int i = 0; i < docs.size(); i++) {
+		for (int i = startWith; i < docs.size(); i++) {
 			for (int j = i; j < docs.size(); j++) {
 				this.runDocuments(docs.get(i), docs.get(j));
 			}
 		}
+		database.finish();
 	}
 
 	class SimilarityThread implements Runnable {
@@ -122,20 +145,18 @@ public class CalculateSimilarities extends MainWithInputDocuments {
 
 		@Override
 		public void run() {
+
 			threadCounter++;
 			Probability p;
 			try {
 				p = function.sim(event1, event2);
 				database.putSimilarity(function.getClass(), event1, event2,
 						p.getProbability());
-			} catch (IncompatibleException e) {
-				// TODO Auto-generated catch block
+			} catch (SimilarityCalculationException e) {
 				e.printStackTrace();
 				threadCounter--;
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				threadCounter--;
 			}
 			threadCounter--;
 		}

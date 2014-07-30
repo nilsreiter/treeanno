@@ -7,6 +7,7 @@ import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public interface MRSystem<T extends FrameTokenEvent> {
@@ -31,7 +32,7 @@ public interface MRSystem<T extends FrameTokenEvent> {
 	 * @param sequence1
 	 * @throws IncompatibleException
 	 */
-	Alignment<T> getAlignment() throws IncompatibleException;
+	Alignment<T> getAlignment() throws SimilarityCalculationException;
 
 	SimilarityFunction<T> getSimilarityFunction();
 

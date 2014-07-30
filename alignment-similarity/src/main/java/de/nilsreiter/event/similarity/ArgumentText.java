@@ -11,11 +11,12 @@ import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.Mention;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.Levenshtein;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 
 public class ArgumentText implements DBSimilarityFunction {
+
+	public static final String PARAM_INCLUDE_COREF = "Include Coref";
+
 	public static final long serialVersionUID = 3l;
 
 	boolean debug = false;
@@ -49,8 +50,7 @@ public class ArgumentText implements DBSimilarityFunction {
 			size1 += this.idf(w1);
 			for (String w2 : bagOfWords2) {
 				if (llimit == Double.MAX_VALUE) {
-					if (w1.equals(w2))
-						retval += this.idf(w1);
+					if (w1.equals(w2)) retval += this.idf(w1);
 				} else {
 					if (Levenshtein.distance(w1, w2).getProbability() > llimit) {
 						retval += this.idf(w1);
@@ -61,19 +61,16 @@ public class ArgumentText implements DBSimilarityFunction {
 		for (String w2 : bagOfWords2)
 			size2 += this.idf(w2);
 
-		if (size1 != 0 || size2 != 0)
-			retval /= (size1 + size2);
+		if (size1 != 0 || size2 != 0) retval /= (size1 + size2);
 
 		return Probability.fromProbability(Util.scale(0.0, 0.5, 0.0, 1.0,
 				retval));
 	}
 
 	@Override
-	public Probability sim(final Event arg0, final Event arg1)
-			throws IncompatibleException {
+	public Probability sim(final Event arg0, final Event arg1) {
 		Probability p = Probability.NULL;
-		if (arg0.equals(arg1))
-			return Probability.ONE;
+		if (arg0.equals(arg1)) return Probability.ONE;
 
 		Set<String> bagOfWords1 = this.getBagOfWords(arg0);
 		Set<String> bagOfWords2 = this.getBagOfWords(arg1);
@@ -112,8 +109,7 @@ public class ArgumentText implements DBSimilarityFunction {
 	}
 
 	@Override
-	public void readConfiguration(final SimilarityConfiguration tc) {
-	}
+	public void readConfiguration(final Object tc) {}
 
 	public boolean isIncludeCoref() {
 		return includeCoref;

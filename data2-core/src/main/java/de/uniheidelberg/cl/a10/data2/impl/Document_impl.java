@@ -68,6 +68,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	/**
 	 * List of all frames in this document stored in their temporal ordering.
 	 */
+	@Deprecated
 	List<Frame_impl> frames_temporalOrdering;
 
 	/**
@@ -96,6 +97,8 @@ public class Document_impl extends AnnotationObject_impl implements
 
 	private String documentTitle = null;
 
+	String corpusName;
+
 	public Document_impl(final String id) {
 		super(id);
 		this.mapOfSenses = new HashMap<String, Sense_impl>();
@@ -123,22 +126,22 @@ public class Document_impl extends AnnotationObject_impl implements
 	}
 
 	protected void fixSentences() {
-		Sentence_impl[] sentence_array = mapOfSentences.values().toArray(
-				new Sentence_impl[0]);
+		Sentence_impl[] sentence_array =
+				mapOfSentences.values().toArray(new Sentence_impl[0]);
 		Arrays.sort(sentence_array);
 		this.listOfSentences = Arrays.asList(sentence_array);
 	}
 
 	protected void fixSections() {
-		Section_impl[] section_array = mapOfSections.values().toArray(
-				new Section_impl[0]);
+		Section_impl[] section_array =
+				mapOfSections.values().toArray(new Section_impl[0]);
 		Arrays.sort(section_array);
 		this.listOfSections = Arrays.asList(section_array);
 	}
 
 	protected void fixMantras() {
-		Mantra_impl[] mantra_array = mapOfMantras.values().toArray(
-				new Mantra_impl[0]);
+		Mantra_impl[] mantra_array =
+				mapOfMantras.values().toArray(new Mantra_impl[0]);
 		Arrays.sort(mantra_array);
 		this.listOfMantras = Arrays.asList(mantra_array);
 	}
@@ -176,8 +179,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	 */
 	@Override
 	public List<Token> getTokens() {
-		if (this.listOfTokens == null)
-			this.fixTokens();
+		if (this.listOfTokens == null) this.fixTokens();
 		return listOfTokens;
 	}
 
@@ -308,8 +310,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	 */
 	@Override
 	public List<Sentence_impl> getSentences() {
-		if (this.listOfSentences == null)
-			this.fixSentences();
+		if (this.listOfSentences == null) this.fixSentences();
 		return this.listOfSentences;
 	}
 
@@ -362,8 +363,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	 */
 	@Override
 	public List<Section_impl> getSections() {
-		if (this.listOfSections == null)
-			this.fixSections();
+		if (this.listOfSections == null) this.fixSections();
 		return this.listOfSections;
 	}
 
@@ -403,8 +403,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	 */
 	@Override
 	public List<Frame_impl> getFrames() {
-		if (this.listOfFrames == null)
-			this.fixFrames();
+		if (this.listOfFrames == null) this.fixFrames();
 		return this.listOfFrames;
 	}
 
@@ -443,6 +442,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	 * ()
 	 */
 	@Override
+	@Deprecated
 	public List<Frame_impl> getFramesInTemporalOrdering() {
 		return this.frames_temporalOrdering;
 	}
@@ -484,77 +484,6 @@ public class Document_impl extends AnnotationObject_impl implements
 
 	}
 
-	public void add(final AnnotationObjectInDocument_impl obj) {
-		switch (obj.getType()) {
-		case Token:
-			this.mapOfTokens.put(obj.getId(), (Token_impl) obj);
-			break;
-		case Sentence:
-			this.mapOfSentences.put(obj.getId(), (Sentence_impl) obj);
-			break;
-		case Section:
-			this.mapOfSections.put(obj.getId(), (Section_impl) obj);
-			break;
-		case Entity:
-			this.mapOfEntities.put(obj.getId(), (Entity_impl) obj);
-			break;
-		case Mention:
-			this.mapOfMentions.put(obj.getId(), (Mention_impl) obj);
-			break;
-		case Frame:
-			this.mapOfFrames.put(obj.getId(), (Frame_impl) obj);
-			break;
-		case FrameElm:
-			this.mapOfFrameElements.put(obj.getId(), (FrameElm_impl) obj);
-			break;
-		case Chunk:
-			this.mapOfChunks.put(obj.getId(), (Chunk) obj);
-			break;
-		case Mantra:
-			this.mapOfMantras.put(obj.getId(), (Mantra_impl) obj);
-			break;
-		default:
-			break;
-		}
-	}
-
-	public void remove(final AnnotationObjectInDocument obj) {
-		switch (obj.getType()) {
-		case Token:
-			this.mapOfTokens.remove(obj.getId());
-			break;
-		case Sentence:
-			this.mapOfSentences.remove(obj.getId());
-			break;
-		case Section:
-			this.mapOfSections.remove(obj.getId());
-			break;
-		case Entity:
-			this.mapOfEntities.remove(obj.getId());
-			break;
-		case Mention:
-			this.mapOfMentions.remove(obj.getId());
-			for (Entity_impl e : this.mapOfEntities.values()) {
-				e.remove(obj);
-			}
-			break;
-		case Frame:
-			this.mapOfFrames.remove(obj.getId());
-			break;
-		case FrameElm:
-			this.mapOfFrameElements.remove(obj.getId());
-			break;
-		case Chunk:
-			this.mapOfChunks.remove(obj.getId());
-			break;
-		case Mantra:
-			this.mapOfMantras.remove(obj.getId());
-			break;
-		default:
-			break;
-		}
-	}
-
 	public void addAllSenses(final Collection<Sense_impl> senses) {
 		for (Sense_impl s : senses) {
 			this.mapOfSenses.put(s.getId(), s);
@@ -568,8 +497,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	 */
 	@Override
 	public List<Mantra_impl> getMantras() {
-		if (this.listOfMantras == null)
-			this.fixMantras();
+		if (this.listOfMantras == null) this.fixMantras();
 		return this.listOfMantras;
 	}
 
@@ -581,21 +509,18 @@ public class Document_impl extends AnnotationObject_impl implements
 	 */
 	@Override
 	public HasId getById(final String id) {
-		if (id.startsWith("f"))
-			return this.getFrameById(id);
-		if (id.startsWith("t"))
-			return this.getTokenById(id);
-		if (id.startsWith("ev")) {
-			return this.getEventById(id);
-		}
-		return null;
+		HasId r = null;
+		r = this.getFrameById(id);
+		if (r == null) r = this.getTokenById(id);
+		if (r == null) r = this.getEventById(id);
+
+		return r;
 	}
 
 	@Override
 	public Event getEventById(String id) {
 		for (Event ev : this.getEvents()) {
-			if (ev.getId().equalsIgnoreCase(id))
-				return ev;
+			if (ev.getId().equalsIgnoreCase(id)) return ev;
 		}
 		return null;
 	}
@@ -630,11 +555,20 @@ public class Document_impl extends AnnotationObject_impl implements
 	 */
 	@Override
 	public List<AnnotationObjectInDocument> getAnnotations(Class<?> clazz) {
-		List<AnnotationObjectInDocument> ret = new LinkedList<AnnotationObjectInDocument>();
-		if (clazz.equals(Token.class))
-			ret.addAll(this.getTokens());
-		if (clazz.equals(Frame.class))
-			ret.addAll(this.getFrames());
+		List<AnnotationObjectInDocument> ret =
+				new LinkedList<AnnotationObjectInDocument>();
+		if (clazz.equals(Token.class)) ret.addAll(this.getTokens());
+		if (clazz.equals(Frame.class)) ret.addAll(this.getFrames());
 		return ret;
+	}
+
+	@Override
+	public String getCorpusName() {
+		return corpusName;
+	}
+
+	@Override
+	public void setCorpusName(String corpusName) {
+		this.corpusName = corpusName;
 	}
 }

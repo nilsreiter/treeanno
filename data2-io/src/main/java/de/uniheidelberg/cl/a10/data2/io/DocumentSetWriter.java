@@ -19,7 +19,10 @@ public class DocumentSetWriter extends AbstractXMLWriter<DocumentSet> {
 	public Element getElement(DocumentSet object) {
 		Element ret = new Element("docset");
 		ret.addAttribute(new Attribute(XMLConstants.ID, object.getId()));
-		for (Document doc : object) {
+		if (object.getTitle() != null)
+			ret.addAttribute(new Attribute(XMLConstants.TITLE, object
+					.getTitle()));
+		for (Document doc : object.getSet()) {
 			Element docElement = new Element("d");
 			docElement.appendChild(doc.getId());
 			ret.appendChild(docElement);

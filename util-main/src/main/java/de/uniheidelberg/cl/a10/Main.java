@@ -67,6 +67,7 @@ public abstract class Main {
 
 	Configuration configuration;
 
+	@Deprecated
 	public File getDataDirectory() {
 		switch (corpus) {
 		case Fables:
@@ -178,9 +179,11 @@ public abstract class Main {
 		this.logger.setLevel(Level.parse(logLevel));
 
 		try {
-			this.configuration = new CompositeConfiguration(Arrays.asList(
-					new HierarchicalINIConfiguration(this.configFile),
-					new HierarchicalINIConfiguration(getDefaultConfigFile())));
+			this.configuration =
+					new CompositeConfiguration(Arrays.asList(
+							new HierarchicalINIConfiguration(this.configFile),
+							new HierarchicalINIConfiguration(
+									getDefaultConfigFile())));
 		} catch (ConfigurationException e) {
 			this.logger.severe(e.getLocalizedMessage());
 		}
@@ -219,7 +222,8 @@ public abstract class Main {
 	 * 
 	 */
 	@Deprecated
-	public Writer getWriterForFileOption(final File file, final PrintStream out) {
+	public Writer
+	getWriterForFileOption(final File file, final PrintStream out) {
 		if (file == null) {
 			try {
 				return new OutputStreamWriter(out, "UTF-8");

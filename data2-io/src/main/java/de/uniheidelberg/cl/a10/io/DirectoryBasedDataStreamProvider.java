@@ -71,4 +71,10 @@ public class DirectoryBasedDataStreamProvider implements DataStreamProvider {
 		throw new FileNotFoundException(name);
 	}
 
+	@Override
+	public InputStream findStreamFor(String objectName, String type)
+			throws IOException {
+		return findStreamFor(objectName);
+	}
+
 }

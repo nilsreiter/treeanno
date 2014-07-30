@@ -15,15 +15,17 @@ import org.kohsuke.args4j.Option;
  */
 public abstract class MainWithIO extends Main {
 
-	@Option(name = "--input",
+	@Option(
+			name = "--input",
 			aliases = { "-i" },
-			usage = "The input file. If not set, System.in is used.")
-	File input = null;
+			usage = "The input file or directory. If not set, System.in is used.")
+	protected File input = null;
 
-	@Option(name = "--output",
-	// aliases = { "-o" },
-			usage = "The output file. If not set, System.out is used.")
-	File output = null;
+	@Option(
+			name = "--output",
+			// aliases = { "-o" },
+			usage = "The output file or directory. If not set, System.out is used.")
+	protected File output = null;
 
 	public InputStream getInputStream() {
 		try {

@@ -2,6 +2,7 @@ package de.uniheidelberg.cl.a10.data2.impl;
 
 import de.uniheidelberg.cl.a10.data2.Token;
 
+@Deprecated
 public class DependencyFrameElement_impl extends FrameElm_impl {
 
 	public DependencyFrameElement_impl(final Frame_impl frame, final Token token) {

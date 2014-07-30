@@ -1,124 +1,112 @@
 package de.nilsreiter.event.similarity.impl;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import de.nilsreiter.event.similarity.EventSimilarityFunction;
 import de.nilsreiter.event.similarity.SimilarityDatabase;
 import de.nilsreiter.util.db.Database;
-import de.nilsreiter.util.db.DatabaseConfiguration;
+import de.nilsreiter.util.db.SQLBuilder;
 import de.uniheidelberg.cl.a10.HasId;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
+import de.uniheidelberg.cl.a10.patterns.data.matrix.MapMatrix;
+import de.uniheidelberg.cl.a10.patterns.data.matrix.Matrix;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
-public class SimilarityDatabase_impl<T extends HasId & HasDocument> extends Database implements SimilarityDatabase<T> {
+public class SimilarityDatabase_impl<T extends HasId & HasDocument> implements
+SimilarityDatabase<T> {
+
+	private static final Logger logger = Logger
+			.getLogger(SimilarityDatabase.class.getName());
 
 	public static final String BASE_TBL_SIMILARITIES = "similarities";
-	public static final String BASE_TBL_DOCUMENTS = "documents";
-
-	public static final char separator = '_';
 
 	private final String table_similarities;
-	private final String table_documents;
-
-	private static String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS";
-	private static String DROP_TABLE = "DROP TABLE IF EXISTS";
 
 	public static int documentIdMaxLength = 20;
 	public static int eventIdMaxLength = 10;
 	public static int typeNameMaxLength = 4;
 
-	private static String TBL_STRUCT_SIMILARITIES = "id INT NOT NULL AUTO_INCREMENT KEY, "
-			+ "type CHAR("
-			+ typeNameMaxLength
-			+ "), "
-			+ "document1 INT, "
-			+ "document2 INT, "
-			+ "id1 VARCHAR("
-			+ eventIdMaxLength
-			+ "),"
-			+ " id2 VARCHAR(" + eventIdMaxLength + ")," + " sim DOUBLE";
-	private static String TBL_STRUCT_DOCUMENTS = "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
-			+ "document VARCHAR(" + documentIdMaxLength + ") UNIQUE KEY";
-	private static String CREATE_INDEX = "CREATE INDEX";
-	private static String INDEX_APP = "_index";
+	private static String TBL_STRUCT_SIMILARITIES =
+			"id INT NOT NULL AUTO_INCREMENT KEY, " + "type CHAR("
+					+ typeNameMaxLength + "), " + "document1 VARCHAR("
+					+ documentIdMaxLength + "), " + "document2 VARCHAR("
+					+ documentIdMaxLength + "), " + "id1 VARCHAR("
+					+ eventIdMaxLength + ")," + " id2 VARCHAR("
+					+ eventIdMaxLength + ")," + " sim DOUBLE";
 
 	PreparedStatement putStatement = null;
 	PreparedStatement getStatement = null;
 
-	public SimilarityDatabase_impl(DatabaseConfiguration dbc, String identifier)
-			throws SQLException, ClassNotFoundException {
-		super(dbc);
-		table_similarities = identifier + separator + BASE_TBL_SIMILARITIES;
-		table_documents = identifier + separator + BASE_TBL_DOCUMENTS;
+	int putCounter = 0;
+	int batchSize = 10000;
+
+	Database database;
+
+	public SimilarityDatabase_impl(Database db) throws SQLException,
+			ClassNotFoundException {
+		database = db;
+		table_similarities = BASE_TBL_SIMILARITIES;
 	}
 
-	protected int getDocument(Document doc) throws SQLException {
-		StringBuilder b = new StringBuilder();
-		b.append("SELECT id FROM ").append(table_documents)
-				.append(" WHERE document = ?;");
-		PreparedStatement stmt = this.getConnection().prepareStatement(
-				b.toString());
-		stmt.setString(1, doc.getId());
-		ResultSet rs = stmt.executeQuery();
-		if (rs.first()) {
-			return rs.getInt(1);
-		}
-		registerDocument(doc);
-		return getDocument(doc);
-
-	}
-
-	synchronized private void registerDocument(Document doc)
-			throws SQLException {
-		StringBuilder b = new StringBuilder();
-		b.append("INSERT IGNORE INTO ").append(table_documents)
-				.append(" VALUES (default,?);");
-		PreparedStatement statement = this.getConnection().prepareStatement(
-				b.toString());
-		statement.setString(1, doc.getId());
-		statement.executeUpdate();
-	}
-
-	public void putSimilarity(Class<? extends SimilarityFunction> simType,
-			T e1, T e2, double similarity) throws SQLException {
+	@Override
+	public synchronized void putSimilarity(
+			Class<? extends EventSimilarityFunction> simType, T e1, T e2,
+			double similarity) throws SQLException {
 		if (putStatement == null)
-			putStatement = this.getConnection().prepareStatement(
-					"INSERT INTO " + table_similarities
+			putStatement =
+			database.getConnection().prepareStatement(
+					"INSERT INTO "
+							+ database.getTableName(table_similarities)
 							+ " values (default,?,?,?,?,?,?)");
 		putStatement.setString(1,
 				simType.getSimpleName().substring(0, typeNameMaxLength));
-		putStatement.setInt(2, getDocument(e1.getRitualDocument()));
-		putStatement.setInt(3, getDocument(e2.getRitualDocument()));
+		putStatement.setString(2, e1.getRitualDocument().getId());
+		putStatement.setString(3, e2.getRitualDocument().getId());
 		putStatement.setString(4, e1.getId());
 		putStatement.setString(5, e2.getId());
 		putStatement.setDouble(6, similarity);
 
-		putStatement.executeUpdate();
+		putStatement.addBatch();
+
+		if (++putCounter % batchSize == 0) {
+			logger.log(Level.INFO, "Executing batch");
+			putStatement.executeBatch();
+		}
 
 	}
 
+	/**
+	 * Executes all batches, closes the connection
+	 * 
+	 * @throws SQLException
+	 */
 	@Override
-	public double getSimilarity(Class<? extends SimilarityFunction> simType,
+	public synchronized void finish() throws SQLException {
+		logger.log(Level.INFO, "Executing batch");
+		putStatement.executeBatch();
+		putStatement.close();
+	}
+
+	@Override
+	public double getSimilarity(Class<? extends SimilarityFunction<T>> simType,
 			T e1, T e2) throws SQLException {
 		if (getStatement == null) {
-			StringBuilder b = new StringBuilder();
+			SQLBuilder b = new SQLBuilder();
+			b.select("sim")
+			.from(database.getTableName(table_similarities))
+			.where("type=? AND document1=? AND document2=? AND id1=? AND id2=?");
 
-			b.append("SELECT sim FROM ")
-					.append(table_similarities)
-					.append(" INNER JOIN ")
-					.append(table_documents)
-					.append(" AS doc1 ON ")
-					.append(table_similarities)
-					.append(".document1=doc1.id INNER JOIN ")
-					.append(table_documents)
-					.append(" AS doc2 ON ")
-					.append(table_similarities)
-					.append(".document2=doc2.id WHERE type=? AND doc1.document=? AND doc2.document=?")
-					.append(" AND id1=? AND id2=?;");
-			getStatement = this.getConnection().prepareStatement(b.toString());
+			getStatement =
+					database.getConnection().prepareStatement(b.toString());
 		}
 		getStatement.setString(1,
 				simType.getSimpleName().substring(0, typeNameMaxLength));
@@ -129,65 +117,84 @@ public class SimilarityDatabase_impl<T extends HasId & HasDocument> extends Data
 		ResultSet rs = getStatement.executeQuery();
 		if (rs.first())
 			return rs.getDouble(1);
-		return 0.0;
+		else {
+			logger.warning("No entry found for " + simType + " (" + e1.getId()
+					+ " and " + e2.getId() + "). ");
+
+			return 0.0;
+		}
 	}
 
+	@Override
 	public void rebuild() throws SQLException {
-		this.dropTable(table_documents);
-		this.dropTable(table_similarities);
-		this.initDocumentsTable();
+		database.dropTable(table_similarities);
 		this.initSimilaritiesTable();
 	}
 
 	public void initSimilaritiesTable() throws SQLException {
-		StringBuilder b = new StringBuilder();
+		SQLBuilder b = new SQLBuilder();
+		b.create(database.getTableName(table_similarities)).struct(
+				TBL_STRUCT_SIMILARITIES);
 
-		b.append(CREATE_TABLE).append(' ').append(table_similarities)
-				.append(" (").append(TBL_STRUCT_SIMILARITIES).append(")");
-
-		Statement stmt = getStatement();
-		stmt.execute(b.toString());
-		stmt.close();
-
-		b = new StringBuilder();
-		b.append(CREATE_INDEX).append(' ').append(table_similarities)
-				.append(INDEX_APP).append(" ON ").append(table_similarities)
-				.append(" (type, document1, document2, id1, id2);");
-
-		stmt = getStatement();
+		Statement stmt = database.getStatement();
 		stmt.execute(b.toString());
 		stmt.close();
 
 	}
 
-	public void initDocumentsTable() throws SQLException {
-		StringBuilder b = new StringBuilder();
-		b.append(CREATE_TABLE).append(' ');
-		b.append(table_documents).append(" (");
-		b.append(TBL_STRUCT_DOCUMENTS).append(");");
-
-		Statement stmt = getStatement();
-		stmt.execute(b.toString());
-		stmt.close();
-	}
-
+	@Override
 	public void dropType(String type) throws SQLException {
 		StringBuilder b = new StringBuilder();
 		b.append("DELETE FROM ").append(table_similarities);
 		b.append(" WHERE type='").append(type).append("';");
-		Statement stmt = getStatement();
+		Statement stmt = database.getStatement();
 		stmt.execute(b.toString());
 		stmt.close();
 
 	}
 
-	public void dropTable(String tbl) throws SQLException {
-		StringBuilder b = new StringBuilder();
-		b.append(DROP_TABLE).append(" ");
-		b.append(tbl).append(';');
+	public Database getDatabase() {
+		return database;
+	}
 
-		Statement stmt = getStatement();
-		stmt.execute(b.toString());
+	public int getBatchSize() {
+		return batchSize;
+	}
+
+	public void setBatchSize(int batchSize) {
+		this.batchSize = batchSize;
+	}
+
+	@Override
+	public Map<String, Matrix<T, T, Double>> getSimilarities(Document doc1,
+			Document doc2) throws SQLException {
+		Connection conn = database.getConnection();
+		Statement stmt = conn.createStatement();
+		SQLBuilder b = new SQLBuilder();
+		b.select("*")
+				.from(table_similarities)
+				.where("document1='" + doc1.getId() + "' AND document2='"
+						+ doc2.getId() + "'");
+
+		ResultSet rs = stmt.executeQuery(b.toString());
+
+		Map<String, Matrix<T, T, Double>> matrixMap =
+				new HashMap<String, Matrix<T, T, Double>>();
+
+		while (rs.next()) {
+			String id1 = rs.getString("id1");
+			String id2 = rs.getString("id2");
+			String type = rs.getString(2);
+			double sim = rs.getDouble(7);
+
+			T aoi1 = (T) doc1.getById(id1);
+			T aoi2 = (T) doc2.getById(id2);
+			if (!matrixMap.containsKey(type))
+				matrixMap.put(type, new MapMatrix<T, T, Double>());
+			matrixMap.get(type).put(aoi1, aoi2, sim);
+		}
 		stmt.close();
+		conn.close();
+		return matrixMap;
 	}
 }

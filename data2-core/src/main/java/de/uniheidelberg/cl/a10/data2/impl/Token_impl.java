@@ -58,6 +58,7 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 	 * A temporary storage for a dependency-induced frame. See
 	 * {@link DependencyFrame_impl}.
 	 */
+	@Deprecated
 	DependencyFrame_impl dependencyFrame = null;
 
 	/**
@@ -86,10 +87,6 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 	public Token_impl(final String id, final String surface) {
 		super(id);
 		this.surface = surface.toCharArray();
-		this.init();
-	}
-
-	private void init() {
 	}
 
 	/**
@@ -118,6 +115,7 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 	 * @param endCharPosition
 	 *            position of last token character
 	 */
+	@Deprecated
 	public Token_impl(final String surface, final String id,
 			final String posTag, final Sense_impl sense, final String deprel,
 			final String lemma, final Token_impl governor,
@@ -132,7 +130,6 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 		this.dependencyRelation = deprel;
 		this.lemma = lemma;
 		this.governor = governor;
-		this.init();
 	}
 
 	/*
@@ -305,6 +302,7 @@ public class Token_impl extends AnnotationObjectInDocument_impl implements
 	 * @see de.uniheidelberg.cl.a10.data2.impl.Token#getDependencyFrame()
 	 */
 	@Override
+	@Deprecated
 	public DependencyFrame_impl getDependencyFrame() {
 		if (this.dependencyFrame == null) {
 			this.dependencyFrame = new DependencyFrame_impl(this);

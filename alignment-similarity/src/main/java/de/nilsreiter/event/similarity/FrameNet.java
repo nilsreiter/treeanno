@@ -15,14 +15,12 @@ import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.saar.coli.salsa.reiter.framenet.FrameRelation;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraDistance;
 import edu.uci.ics.jung.algorithms.shortestpath.Distance;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 
-public class FrameNet implements SimilarityFunction<Event> {
+public class FrameNet implements EventSimilarityFunction {
 
 	de.saar.coli.salsa.reiter.framenet.FrameNet frameNet = null;
 
@@ -61,8 +59,7 @@ public class FrameNet implements SimilarityFunction<Event> {
 	public synchronized Probability sim(Event arg0, Event arg1) {
 		Semaphore sem = new Semaphore(1);
 		Probability p = Probability.NULL;
-		if (arg0.equals(arg1))
-			return Probability.ONE;
+		if (arg0.equals(arg1)) return Probability.ONE;
 		try {
 			Frame f1 = frameNet.getFrame(arg0.getEventClass());
 			Frame f2 = frameNet.getFrame(arg1.getEventClass());
@@ -83,7 +80,7 @@ public class FrameNet implements SimilarityFunction<Event> {
 	}
 
 	@Override
-	public void readConfiguration(SimilarityConfiguration tc) {
+	public void readConfiguration(Object tc) {
 		// TODO Auto-generated method stub
 
 	}
@@ -100,9 +97,11 @@ public class FrameNet implements SimilarityFunction<Event> {
 		return distance;
 	}
 
-	protected UndirectedSparseMultigraph<Frame, FrameRelation> getFrameNetGraph(
+	protected UndirectedSparseMultigraph<Frame, FrameRelation>
+	getFrameNetGraph(
 			final de.saar.coli.salsa.reiter.framenet.FrameNet frameNet) {
-		UndirectedSparseMultigraph<Frame, FrameRelation> graph = new UndirectedSparseMultigraph<Frame, FrameRelation>();
+		UndirectedSparseMultigraph<Frame, FrameRelation> graph =
+				new UndirectedSparseMultigraph<Frame, FrameRelation>();
 
 		for (Frame frame : frameNet.getFrames()) {
 			graph.addVertex(frame);

@@ -23,8 +23,7 @@ public class TestDocumentSetReader {
 
 	@Test
 	public void test() throws IOException {
-		DocumentSet ds = dsr.read(streamProvider
-				.findStreamFor("test_docs/docset.xml"));
+		DocumentSet ds = dsr.read(streamProvider.findStreamFor("docset.xml"));
 		assertNotNull(ds);
 	}
 }

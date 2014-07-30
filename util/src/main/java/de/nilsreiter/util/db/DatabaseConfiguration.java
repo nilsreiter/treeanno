@@ -1,6 +1,25 @@
 package de.nilsreiter.util.db;
 
+import org.apache.commons.configuration.Configuration;
+
 public class DatabaseConfiguration {
+
+	String host;
+	String username;
+	String password;
+	String database;
+	int port = 3306;
+	String protocol = "mysql";
+	String prefix = "";
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
 	public DatabaseConfiguration(String host, String username, String password,
 			String database, String port, String protocol) {
 		super();
@@ -8,19 +27,24 @@ public class DatabaseConfiguration {
 		this.username = username;
 		this.password = password;
 		this.database = database;
-		this.port = port;
+		this.port = Integer.valueOf(port);
 		this.protocol = protocol;
 	}
 
-	String host;
-	String username;
-	String password;
-	String database;
-	String port = "3306";
-	String protocol = "mysql";
+	public DatabaseConfiguration(String host, String username, String password,
+			String database, int port, String protocol, String prefix) {
+		super();
+		this.host = host;
+		this.username = username;
+		this.password = password;
+		this.database = database;
+		this.port = port;
+		this.protocol = protocol;
+		this.prefix = prefix;
+	}
 
-	public DatabaseConfiguration(String host, String database, String username,
-			String password) {
+	public DatabaseConfiguration(String host, String username, String password,
+			String database) {
 		super();
 		this.host = host;
 		this.database = database;
@@ -54,11 +78,11 @@ public class DatabaseConfiguration {
 		this.database = database;
 	}
 
-	public String getPort() {
+	public int getPort() {
 		return port;
 	}
 
-	public void setPort(String port) {
+	public void setPort(int port) {
 		this.port = port;
 	}
 
@@ -89,5 +113,18 @@ public class DatabaseConfiguration {
 	public static DatabaseConfiguration getDefaultConfiguration() {
 		return new DatabaseConfiguration("waitahapinguin", "reiterns",
 				"bybNoaKni", "reiter", "3306", "mysql");
+	}
+
+	public static DatabaseConfiguration getLocalConfiguration() {
+		return new DatabaseConfiguration("localhost", "reiterns", "bybNoaKni",
+				"reiter", "3306", "mysql");
+	}
+
+	public static DatabaseConfiguration getDatabaseConfiguration(
+			Configuration config) {
+		return new DatabaseConfiguration(config.getString("database.host"),
+				config.getString("database.username"),
+				config.getString("database.password"),
+				config.getString("database.name"));
 	}
 }

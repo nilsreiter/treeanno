@@ -25,8 +25,9 @@ import de.uniheidelberg.cl.a10.io.XMLConstants;
  * 
  */
 
+@Deprecated
 public class TokenAlignmentReader extends
-		AbstractLinkedXMLReader<Alignment<Token>> {
+AbstractLinkedXMLReader<Alignment<Token>> {
 
 	public TokenAlignmentReader(DataStreamProvider dsProvider) {
 		super(dsProvider);
@@ -45,8 +46,9 @@ public class TokenAlignmentReader extends
 	protected Alignment<Token> read(final Element rootElement)
 			throws IOException {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
-		Alignment<Token> ad = new Alignment_impl<Token>(
-				rootElement.getAttributeValue(XMLConstants.ID));
+		Alignment<Token> ad =
+				new Alignment_impl<Token>(
+						rootElement.getAttributeValue(XMLConstants.ID));
 
 		for (Element documentElement : getElements(rootElement, "document")) {
 			String id = documentElement.getAttributeValue(XMLConstants.ID);
@@ -62,8 +64,8 @@ public class TokenAlignmentReader extends
 			for (Element partElement : getElements(alignmentElement, "part")) {
 				String docId = partElement.getAttributeValue("doc");
 				String frameId = partElement.getAttributeValue("frame");
-				Token token = (Token) this.getRitualDocument(docId).getById(
-						frameId);
+				Token token =
+						(Token) this.getRitualDocument(docId).getById(frameId);
 				if (token == null) {
 					System.err.println("Token " + frameId + " not found in "
 							+ docId + ".");
