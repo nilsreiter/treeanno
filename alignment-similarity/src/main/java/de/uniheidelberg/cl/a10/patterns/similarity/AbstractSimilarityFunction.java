@@ -8,7 +8,8 @@ import de.uniheidelberg.cl.a10.patterns.data.matrix.MapMatrix;
 public abstract class AbstractSimilarityFunction<T> implements
 		SimilarityFunction<T> {
 
-	MapMatrix<Integer, Integer, Probability> history = new MapMatrix<Integer, Integer, Probability>();
+	MapMatrix<Integer, Integer, Probability> history =
+			new MapMatrix<Integer, Integer, Probability>();
 
 	boolean saveHistory = false;
 
@@ -33,7 +34,8 @@ public abstract class AbstractSimilarityFunction<T> implements
 
 	}
 
-	protected void putInHistory(final T arg0, final T arg1, final Probability p) {
+	protected void
+	putInHistory(final T arg0, final T arg1, final Probability p) {
 		if (useHistory) {
 			this.history.put(arg0.hashCode(), arg1.hashCode(), p);
 			this.history.put(arg1.hashCode(), arg0.hashCode(), p);
@@ -52,8 +54,8 @@ public abstract class AbstractSimilarityFunction<T> implements
 	}
 
 	@Override
-	public void readConfiguration(final SimilarityConfiguration tc) {
-		this.config = tc;
+	public void readConfiguration(final Object tc) {
+		this.config = (SimilarityConfiguration) tc;
 
 	}
 

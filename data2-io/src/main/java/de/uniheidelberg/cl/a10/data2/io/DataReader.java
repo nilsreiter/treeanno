@@ -6,6 +6,8 @@ import java.util.TreeSet;
 
 import nu.xom.Element;
 import nu.xom.Elements;
+import de.uniheidelberg.cl.a10.HasId;
+import de.uniheidelberg.cl.a10.data2.Frame;
 import de.uniheidelberg.cl.a10.data2.HasTokens;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.impl.Chunk_impl;
@@ -32,24 +34,40 @@ import de.uniheidelberg.cl.a10.io.XMLConstants;
  */
 public class DataReader extends AbstractXMLReader<Document_impl> {
 
+	private final static String NAMESPACE =
+			"http://www.nilsreiter.de/xmlns/Document";
+
 	private Document_impl ritDoc = null;
+
+	String defaultCorpusName = "";
+
+	public String getDefaultCorpusName() {
+		return defaultCorpusName;
+	}
+
+	public void setDefaultCorpusName(String defaultCorpusName) {
+		this.defaultCorpusName = defaultCorpusName;
+	}
 
 	public DataReader() {
 
 	}
 
 	private void extractMantras(final Element doc_elm) {
-		if (doc_elm.getFirstChildElement("mantras") != null) {
-			Elements mantraElements = doc_elm.getFirstChildElement("mantras")
-					.getChildElements("mantra");
+		if (doc_elm.getFirstChildElement("mantras", NAMESPACE) != null) {
+			Elements mantraElements =
+					doc_elm.getFirstChildElement("mantras", NAMESPACE)
+							.getChildElements("mantra", NAMESPACE);
 			for (int i = 0; i < mantraElements.size(); i++) {
 				Element mantra_element = mantraElements.get(i);
-				if (mantra_element.getChildElements("token") != null) {
-					Mantra_impl mantra = new Mantra_impl(
-							mantra_element.getAttributeValue("id"),
-							this.ritDoc.getTokenById(mantra_element
-									.getChildElements("token").get(0)
-									.getAttributeValue("idref")));
+				if (mantra_element.getChildElements("token", NAMESPACE) != null) {
+					Mantra_impl mantra =
+							new Mantra_impl(
+									mantra_element.getAttributeValue("id"),
+									this.ritDoc.getTokenById(mantra_element
+											.getChildElements("token",
+													NAMESPACE).get(0)
+											.getAttributeValue("idref")));
 					this.ritDoc.addMantra(mantra);
 				}
 			}
@@ -71,10 +89,10 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 	private void setGovernors(final Element doc_elm) {
 		for (Element sent_elm : getElements(doc_elm, "sentences", "sentence")) {
 			for (Element tok_elm : getElements(sent_elm, "token")) {
-				if (tok_elm.getAttributeValue("governor") == null)
-					continue;
-				Token_impl governor = this.ritDoc.getTokenById(tok_elm
-						.getAttribute("governor").getValue());
+				if (tok_elm.getAttributeValue("governor") == null) continue;
+				Token_impl governor =
+						this.ritDoc.getTokenById(tok_elm.getAttribute(
+								"governor").getValue());
 				this.ritDoc.getTokenById(tok_elm.getAttributeValue("id"))
 						.setGovernor(governor);
 			}
@@ -85,8 +103,13 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 	 * Extracts all Senses from a dom4j tree
 	 */
 	private void extractSenses(final Element doc_elm) {
-		for (Element sense_elm : getElements(doc_elm, "senses", "sense")) {
-			Sense_impl sense = new Sense_impl(sense_elm.getAttributeValue("id"));
+		Elements senseElements =
+				doc_elm.getFirstChildElement("senses", NAMESPACE)
+						.getChildElements(XMLConstants.SENSE, NAMESPACE);
+		for (int i = 0; i < senseElements.size(); i++) {
+			Element sense_elm = senseElements.get(i);
+			Sense_impl sense =
+					new Sense_impl(sense_elm.getAttributeValue("id"));
 			this.ritDoc.addSense(sense);
 			if (sense_elm.getAttribute("wordnet") != null) {
 				sense.setWordNetId(sense_elm.getAttributeValue("wordnet"));
@@ -101,8 +124,8 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 	private void extractFrameElements(final Element doc_elm) {
 		for (Element frame_elm : getElements(doc_elm, "frames", "frame")) {
 			for (Element fe_elm : getElements(frame_elm, "frame_element")) {
-				FrameElm_impl fe = new FrameElm_impl(
-						fe_elm.getAttributeValue("id"));
+				FrameElm_impl fe =
+						new FrameElm_impl(fe_elm.getAttributeValue("id"));
 				this.ritDoc.addFrameElm(fe);
 				fe.setRitualDocument(ritDoc);
 				// add tokens to frame element
@@ -131,13 +154,14 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 	 *            A sentence element
 	 */
 	private void extractSentence(final Element sent_elm) {
-		Sentence_impl sent = new Sentence_impl(sent_elm.getAttributeValue("id"));
+		Sentence_impl sent =
+				new Sentence_impl(sent_elm.getAttributeValue("id"));
 		this.ritDoc.addSentence(sent);
 		sent.setRitualDocument(ritDoc);
 		for (Element tok_elm : getElements(sent_elm, "token")) {
-			Token_impl tok = new Token_impl(
-					tok_elm.getAttributeValue(XMLConstants.ID),
-					tok_elm.getAttributeValue(XMLConstants.WORD));
+			Token_impl tok =
+					new Token_impl(tok_elm.getAttributeValue(XMLConstants.ID),
+							tok_elm.getAttributeValue(XMLConstants.WORD));
 			this.ritDoc.addToken(tok);
 			sent.add(tok);
 			// add attributes
@@ -181,9 +205,9 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 	 */
 	private void extractEntity(final Element ent_elm) {
 		Entity_impl ent = new Entity_impl(ent_elm.getAttributeValue("id"));
-		if (ent_elm.getFirstChildElement("sense") != null) {
+		if (ent_elm.getFirstChildElement("sense", NAMESPACE) != null) {
 			ent.setSense(this.ritDoc.getSenseById(ent_elm.getFirstChildElement(
-					"sense").getAttributeValue("idref")));
+					"sense", NAMESPACE).getAttributeValue("idref")));
 		}
 		for (Element men_elm : getElements(ent_elm, "mention")) {
 			this.extractMention(men_elm, ent);
@@ -202,8 +226,9 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 		TreeSet<Token> toks = new TreeSet<Token>();
 		// add tokens to mention
 		for (Element tok_elm : getElements(men_elm, "token")) {
-			Token_impl token = this.ritDoc.getTokenById(tok_elm
-					.getAttributeValue("idref"));
+			Token_impl token =
+					this.ritDoc
+							.getTokenById(tok_elm.getAttributeValue("idref"));
 			toks.add(token);
 			token.addMention(men);
 		}
@@ -239,14 +264,15 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 		if (frame_elm.getAttribute("OldId") != null)
 			frame.setOldId(frame_elm.getAttributeValue("OldId"));
 		this.ritDoc.addFrame(frame);
-		Token_impl targetToken = this.ritDoc.getTokenById(frame_elm
-				.getFirstChildElement("token").getAttributeValue("idref"));
+		Token_impl targetToken =
+				this.ritDoc.getTokenById(frame_elm.getFirstChildElement(
+						"token", NAMESPACE).getAttributeValue("idref"));
 		targetToken.addFrame(frame);
 		frame.add(targetToken);
 		frame.setRitualDocument(ritDoc);
 		for (Element fe_elm : getElements(frame_elm, "frame_element")) {
-			FrameElm_impl fe = this.ritDoc.getFrameElmById(fe_elm
-					.getAttributeValue("id"));
+			FrameElm_impl fe =
+					this.ritDoc.getFrameElmById(fe_elm.getAttributeValue("id"));
 			frame.addFrameElm(fe);
 			fe.setName(fe_elm.getAttributeValue("name"));
 			fe.setFrame(frame);
@@ -288,7 +314,11 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 	 * @param doc_elm
 	 */
 	private void extractChunks(final Element doc_elm) {
-		for (Element ch_elm : getElements(doc_elm, "chunks", "chunk")) {
+		Elements chunkElements =
+				doc_elm.getFirstChildElement("chunks", NAMESPACE)
+						.getChildElements(XMLConstants.CHUNK, NAMESPACE);
+		for (int i = 0; i < chunkElements.size(); i++) {
+			Element ch_elm = chunkElements.get(i);
 			Chunk_impl chunk = new Chunk_impl(ch_elm.getAttributeValue("id"));
 			chunk.setCategory(ch_elm.getAttributeValue("category"));
 			chunk.setRitualDocument(ritDoc);
@@ -311,7 +341,8 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 
 	private void extractSections(final Element doc_elm) {
 		for (Element sec_elm : getElements(doc_elm, "sections", "section")) {
-			Section_impl sec = new Section_impl(sec_elm.getAttributeValue("id"));
+			Section_impl sec =
+					new Section_impl(sec_elm.getAttributeValue("id"));
 			for (Element sent_elm : getElements(sec_elm, "sentence")) {
 				sec.addSentence(this.ritDoc.getSentenceById(sent_elm
 						.getAttributeValue("idref")));
@@ -324,16 +355,23 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 	}
 
 	private void setOriginalText(final Element doc_elm) {
-		this.ritDoc.setOriginalText(doc_elm
-				.getFirstChildElement("originaltext").getValue());
+		this.ritDoc.setOriginalText(doc_elm.getFirstChildElement(
+				"originaltext", NAMESPACE).getValue());
 	}
 
 	@Override
 	protected Document_impl read(final Element root_elm) {
-		Element doc_elm = root_elm.getFirstChildElement("document");
+		Element doc_elm = root_elm.getFirstChildElement("document", NAMESPACE);
 		this.ritDoc = new Document_impl(doc_elm.getAttributeValue("id"));
 		if (doc_elm.getAttribute(XMLConstants.TITLE) != null)
 			this.ritDoc.setTitle(doc_elm.getAttributeValue(XMLConstants.TITLE));
+		else
+			this.ritDoc.setTitle(this.ritDoc.getId());
+		if (doc_elm.getAttribute(XMLConstants.CORPUS) != null)
+			this.ritDoc.setCorpusName(doc_elm
+					.getAttributeValue(XMLConstants.CORPUS));
+		else
+			this.ritDoc.setCorpusName(defaultCorpusName);
 		this.extractSenses(doc_elm);
 		this.extractSentences(doc_elm);
 		this.setGovernors(doc_elm);
@@ -351,19 +389,30 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 	}
 
 	private void extractEvents(Element doc_elm) {
-		Element eventsElement = doc_elm
-				.getFirstChildElement(XMLConstants.EVENTS);
-		if (eventsElement == null)
-			return;
-		Elements eventElements = eventsElement
-				.getChildElements(XMLConstants.EVENT);
+		Element eventsElement =
+				doc_elm.getFirstChildElement(XMLConstants.EVENTS, NAMESPACE);
+		if (eventsElement == null) return;
+		Elements eventElements =
+				eventsElement.getChildElements(XMLConstants.EVENT, NAMESPACE);
 		for (int i = 0; i < eventElements.size(); i++) {
 			Element eventElement = eventElements.get(i);
-			String anchorId = eventElement.getFirstChildElement(
-					XMLConstants.ANCHOR).getAttributeValue(XMLConstants.IDREF);
-			Event_impl event = new Event_impl(
-					eventElement.getAttributeValue(XMLConstants.ID),
-					(HasTokens) this.ritDoc.getById(anchorId));
+			Event_impl event =
+					new Event_impl(
+							eventElement.getAttributeValue(XMLConstants.ID));
+			Elements anchorElements =
+					eventElement.getChildElements(XMLConstants.ANCHOR,
+							NAMESPACE);
+			for (int j = 0; j < anchorElements.size(); j++) {
+				HasId id =
+						ritDoc.getById(anchorElements.get(j).getAttributeValue(
+								XMLConstants.IDREF));
+				if (id.getId().startsWith("f")) {
+					event.addAll(((Frame) id).getTokens());
+				} else {
+					event.add(this.ritDoc.getTokenById(anchorElements.get(j)
+							.getAttributeValue(XMLConstants.IDREF)));
+				}
+			}
 			for (Element argElement : getElements(eventElement,
 					XMLConstants.ARGUMENT)) {
 				List<HasTokens> fillers = new LinkedList<HasTokens>();
@@ -377,10 +426,21 @@ public class DataReader extends AbstractXMLReader<Document_impl> {
 						fillers);
 			}
 			event.setRitualDocument(ritDoc);
-			event.setEventClass(eventElement
-					.getAttributeValue(XMLConstants.CLASS));
+			String eventClass = null;
+			if (eventElement.getAttribute(XMLConstants.CLASS) != null) {
+				eventClass = eventElement.getAttributeValue(XMLConstants.CLASS);
+			} else if (eventElement.getAttribute("eventclass") != null) {
+				eventClass = eventElement.getAttributeValue("eventclass");
+			}
+			if (eventClass != null) event.setEventClass(eventClass);
+			event.setIndexOf(i);
 			this.ritDoc.addEvent(event);
 		}
 
+	}
+
+	@Override
+	protected String getNamespace() {
+		return NAMESPACE;
 	}
 }

@@ -24,8 +24,9 @@ import de.uniheidelberg.cl.a10.io.XMLConstants;
  * 
  */
 
+@Deprecated
 public class EventAlignmentReader extends
-		AbstractLinkedXMLReader<Alignment<Event>> {
+AbstractLinkedXMLReader<Alignment<Event>> {
 
 	public EventAlignmentReader(DataStreamProvider dsProvider) {
 		super(dsProvider);
@@ -39,8 +40,8 @@ public class EventAlignmentReader extends
 	protected Alignment<Event> read(final Element rootElement)
 			throws IOException {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
-		Alignment<Event> ad = new Alignment_impl<Event>(
-				rootElement.getAttributeValue("id"));
+		Alignment<Event> ad =
+				new Alignment_impl<Event>(rootElement.getAttributeValue("id"));
 
 		for (Element documentElement : getElements(rootElement, "document")) {
 			String id = documentElement.getAttributeValue("id");
@@ -56,8 +57,8 @@ public class EventAlignmentReader extends
 			for (Element partElement : getElements(alignmentElement, "part")) {
 				String docId = partElement.getAttributeValue("doc");
 				String frameId = partElement.getAttributeValue("frame");
-				Event token = (Event) this.getRitualDocument(docId).getById(
-						frameId);
+				Event token =
+						(Event) this.getRitualDocument(docId).getById(frameId);
 				if (token == null) {
 					System.err.println("Token " + frameId + " not found in "
 							+ docId + ".");

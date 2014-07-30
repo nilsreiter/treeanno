@@ -22,6 +22,8 @@ public class Alignment_impl<T extends HasDocument> implements Alignment<T> {
 
 	String id;
 
+	String title;
+
 	public Alignment_impl(final String id) {
 		this.id = id;
 		documents = new ArrayList<Document>();
@@ -58,8 +60,7 @@ public class Alignment_impl<T extends HasDocument> implements Alignment<T> {
 	@Override
 	public boolean together(final T obj1, final T obj2) {
 		for (Link<T> aa : this.getAlignmentForObject(obj1)) {
-			if (aa.getElements().contains(obj2))
-				return true;
+			if (aa.getElements().contains(obj2)) return true;
 		}
 		return false;
 	}
@@ -67,8 +68,7 @@ public class Alignment_impl<T extends HasDocument> implements Alignment<T> {
 	@Override
 	public Link<T> getLink(final T obj1, final T obj2) {
 		for (Link<T> aa : this.getAlignmentForObject(obj1)) {
-			if (aa.getElements().contains(obj2))
-				return aa;
+			if (aa.getElements().contains(obj2)) return aa;
 		}
 		return null;
 	}
@@ -80,8 +80,7 @@ public class Alignment_impl<T extends HasDocument> implements Alignment<T> {
 	@Override
 	public boolean contains(final Link<T> aa) {
 		for (Link<T> als : getAlignments()) {
-			if (als.containsAll(aa))
-				return true;
+			if (als.containsAll(aa)) return true;
 		}
 		return false;
 
@@ -162,8 +161,7 @@ public class Alignment_impl<T extends HasDocument> implements Alignment<T> {
 			for (T elem : elements) {
 				docs.add(elem.getRitualDocument());
 			}
-			if (docs.size() > 1)
-				ret.addAlignment(naa.getId(), elements);
+			if (docs.size() > 1) ret.addAlignment(naa.getId(), elements);
 		}
 		return ret;
 	}
@@ -171,8 +169,8 @@ public class Alignment_impl<T extends HasDocument> implements Alignment<T> {
 	@Override
 	public PairwiseAlignment_impl<T> getPairwiseAlignmentDocument(
 			final Document seq1, final Document seq2) {
-		PairwiseAlignment_impl<T> ret = new PairwiseAlignment_impl<T>(
-				this.getId());
+		PairwiseAlignment_impl<T> ret =
+				new PairwiseAlignment_impl<T>(this.getId());
 		ret.documents.add(seq1);
 		ret.documents.add(seq2);
 		for (Link<T> naa : this.getAlignments()) {
@@ -212,5 +210,15 @@ public class Alignment_impl<T extends HasDocument> implements Alignment<T> {
 	@Override
 	public Collection<? extends T> getObjects() {
 		return this.graph.getVertices();
+	}
+
+	@Override
+	public String getTitle() {
+		return title;
+	}
+
+	@Override
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

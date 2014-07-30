@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.RequestDispatcher;
@@ -13,17 +14,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+
 import org.json.JSONObject;
 
-import de.nilsreiter.event.similarity.FrameNet;
-import de.nilsreiter.event.similarity.SimilarityDatabase;
-import de.nilsreiter.event.similarity.WordNet;
+import de.nilsreiter.event.similarity.EventSimilarityFunction;
+import de.nilsreiter.event.similarity.SimilarityProvider;
 import de.nilsreiter.event.similarity.impl.SimilarityDatabase_impl;
 import de.nilsreiter.web.AbstractServlet;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
-import de.uniheidelberg.cl.a10.data2.alignment.io.EventAlignmentReader;
-import de.uniheidelberg.cl.a10.data2.io.DataReader;
+import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentReader;
+import de.uniheidelberg.cl.a10.data2.io.DBDataReader;
+import de.uniheidelberg.cl.a10.patterns.data.matrix.Matrix;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 /**
@@ -31,21 +35,26 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
  */
 public class GetEventSimilarities extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
-	EventAlignmentReader alignmentReader;
-	DataReader dataReader;
-	SimilarityDatabase<Event> database;
+	DBAlignmentReader<Event> alignmentReader;
+	DBDataReader dataReader;
+	SimilarityProvider<Event> database;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void init() {
+	public void init() throws ServletException {
 		super.init();
-		alignmentReader = new EventAlignmentReader(docMan);
-		dataReader = new DataReader();
+		try {
+			alignmentReader = docMan.getAlignmentReader();
+		} catch (SQLException e) {
+			throw new ServletException(e);
+		}
+		dataReader = docMan.getDataReader();
 
-		Object dbAttr = getServletContext().getAttribute("database");
+		Object dbAttr = getServletContext().getAttribute("simdatabase");
 		if (dbAttr != null)
-			database = (SimilarityDatabase<Event>) getServletContext()
-					.getAttribute("database");
+			database =
+			(SimilarityProvider<Event>) getServletContext()
+			.getAttribute("simdatabase");
 
 	}
 
@@ -70,45 +79,84 @@ public class GetEventSimilarities extends AbstractServlet {
 			return;
 		}
 
-		List<Class<? extends SimilarityFunction<Event>>> similarityTypes = Arrays
-				.asList(WordNet.class, FrameNet.class);
+		List<Class<? extends EventSimilarityFunction>> similarityTypes =
+				docMan.getSupportedFunctions();
 
-		Collection<? extends Document> documents;
-		if (request.getParameter("doctype").equals("alignment")) {
-			documents = alignmentReader.read(
-					docMan.findStreamFor(request.getParameter("doc")))
-					.getDocuments();
-		} else {
-			documents = Arrays.asList(dataReader.read(docMan
-					.findStreamFor(request.getParameter("doc"))));
+		Collection<? extends Document> documents = null;
+		try {
+			if (request.getParameter("doctype").equals("alignment")) {
+				documents =
+						alignmentReader.read((request.getParameter("doc")))
+						.getDocuments();
+			} else if (request.getParameter("doctype").equals("documentset")) {
+
+				documents =
+						docMan.getDocumentSetReader()
+								.read(request.getParameter("doc")).getSet();
+			} else {
+				documents =
+						Arrays.asList(dataReader.read((request
+								.getParameter("doc"))));
+			}
+		} catch (ValidityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParsingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		// Create a map for similarities
-
+		Random random = new Random();
 		JSONObject json = new JSONObject();
 		for (Document document1 : documents) {
-			for (Event token1 : document1.getEvents()) {
-				JSONObject tokenObject = new JSONObject();
-				for (Class<? extends SimilarityFunction<Event>> type : similarityTypes) {
-					// tokenObject.put("id", token1.getGlobalId());
-					JSONObject typeObject = new JSONObject();
-					for (Document document2 : documents) {
-						for (Event token2 : document2.getEvents()) {
-							if (token1 != token2)
-								try {
-									double similarity = database.getSimilarity(
-												type, token1, token2);
-									typeObject.put(token2.firstToken()
-											.getGlobalId(), similarity);
-								} catch (SQLException e) {
+			for (Document document2 : documents) {
+				Map<String, Matrix<Event, Event, Double>> sims;
+				try {
+					sims = database.getSimilarities(document1, document2);
+					for (Event token1 : document1.getEvents()) {
+						String id1 = token1.firstToken().getGlobalId();
+						if (json.optJSONObject(id1) == null)
+							json.put(id1, new JSONObject());
+						JSONObject tokenObject = json.getJSONObject(id1);
+						for (Class<? extends SimilarityFunction<Event>> type : similarityTypes) {
+							String typeId = type.getSimpleName();
+							String typeShortId =
+									typeId.substring(
+											0,
+											SimilarityDatabase_impl.typeNameMaxLength);
+							if (tokenObject.optJSONObject(typeId) == null)
+								tokenObject.put(typeId, new JSONObject());
+							JSONObject typeObject =
+									tokenObject.getJSONObject(typeId);
 
-								}
+							for (Event token2 : document2.getEvents()) {
+								if (token1 != token2)
+									try {
+										typeObject.put(
+												token2.firstToken()
+												.getGlobalId(),
+												sims.get(typeShortId).get(
+														token1, token2));
+									} catch (NullPointerException e) {
+										// this only for development!!
+										typeObject.put(token2.firstToken()
+												.getGlobalId(), random
+												.nextDouble());
+									}
+							}
+							// tokenObject.put(type.getSimpleName(),
+							// typeObject);
 						}
 					}
-					tokenObject.put(type.getSimpleName(), typeObject);
-
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				json.put(token1.firstToken().getGlobalId(), tokenObject);
+
 			}
 		}
 		response.setContentType("application/json");

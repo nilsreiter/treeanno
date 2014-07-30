@@ -18,7 +18,7 @@ import de.uniheidelberg.cl.a10.data2.impl.FrameEvent_impl;
 import de.uniheidelberg.cl.a10.data2.io.DataReader;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.FrameNetSimilarity;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 
 public class TestFrameNetSimilarity {
 	Document[] rds = new Document[3];
@@ -30,22 +30,24 @@ public class TestFrameNetSimilarity {
 		fnhome = new File("/home/users0/reiterns/local/framenet-1.5/");
 
 		DataReader dr = new DataReader();
-		rds[2] = dr.read(new File(this.getClass().getResource("/r0003.xml")
-				.getFile()));
-		rds[0] = dr.read(new File(this.getClass().getResource("/r0009.xml")
-				.getFile()));
-		rds[1] = dr.read(new File(this.getClass().getResource("/r0016.xml")
-				.getFile()));
+		rds[2] =
+				dr.read(new File(this.getClass().getResource("/r0003.xml")
+						.getFile()));
+		rds[0] =
+				dr.read(new File(this.getClass().getResource("/r0009.xml")
+						.getFile()));
+		rds[1] =
+				dr.read(new File(this.getClass().getResource("/r0016.xml")
+						.getFile()));
 
 	}
 
 	@After
-	public void tearDown() throws Exception {
-	}
+	public void tearDown() throws Exception {}
 
 	@Test
 	public void testFrameNetSimilarity() throws FileNotFoundException,
-			SecurityException, IncompatibleException {
+	SecurityException, SimilarityCalculationException {
 		assertNotNull(rds[2]);
 		FrameEvent_impl f1 = new FrameEvent_impl(rds[2].getFrames().get(0));
 		FrameEvent_impl f2 = new FrameEvent_impl(rds[2].getFrames().get(1));

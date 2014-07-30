@@ -2,7 +2,6 @@ package de.uniheidelberg.cl.a10.data2.impl;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,28 +11,44 @@ import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.HasTokens;
 import de.uniheidelberg.cl.a10.data2.Token;
 
-public class Event_impl extends AnnotationObjectInDocument_impl implements
-		Event {
+public class Event_impl extends HasTokens_impl implements Event {
 
+	@Deprecated
 	HasTokens anchor;
 
-	Map<String, List<? extends HasTokens>> arguments = new HashMap<String, List<? extends HasTokens>>();;
+	int indexOf;
+
+	Map<String, List<? extends HasTokens>> arguments =
+			new HashMap<String, List<? extends HasTokens>>();;
 
 	String eventClass;
 
+	@Deprecated
 	public Event_impl(String id, HasTokens anc) {
 		super(id);
 		anchor = anc;
 	}
 
-	@Override
+	public Event_impl(String id) {
+		super(id);
+	}
+
+	public Event_impl(String id, Token... tok) {
+		super(id);
+		for (Token token : tok) {
+			this.add(token);
+				}
+	}
+
+			@Override
 	public int indexOf() {
-		return anchor.indexOf();
+				return indexOf;
 	}
 
 	@Override
 	public Set<AnnotationObjectInDocument> getRelated() {
-		HashSet<AnnotationObjectInDocument> related = new HashSet<AnnotationObjectInDocument>();
+		HashSet<AnnotationObjectInDocument> related =
+				new HashSet<AnnotationObjectInDocument>();
 		related.add(getAnchor());
 		for (List<? extends HasTokens> ht : arguments.values()) {
 			related.add((AnnotationObjectInDocument) ht);
@@ -70,34 +85,8 @@ public class Event_impl extends AnnotationObjectInDocument_impl implements
 		this.eventClass = eventClass;
 	}
 
-	@Override
-	public List<Token> getTokens() {
-		return anchor.getTokens();
-	}
-
-	@Override
-	public Token lastToken() {
-		return anchor.lastToken();
-	}
-
-	@Override
-	public Token firstToken() {
-		return anchor.firstToken();
-	}
-
-	@Override
-	public List<Token> getTokensBetween(int end, int begin) {
-		return anchor.getTokensBetween(end, begin);
-	}
-
-	@Override
-	public int numberOfTokens() {
-		return anchor.numberOfTokens();
-	}
-
-	@Override
-	public Iterator<Token> iterator() {
-		return anchor.iterator();
+	public void setIndexOf(int indexOf) {
+		this.indexOf = indexOf;
 	}
 
 }

@@ -25,6 +25,7 @@ import de.uniheidelberg.cl.a10.patterns.similarity.GaussianDistanceSimilarity;
 import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.Levenshtein;
 import de.uniheidelberg.cl.a10.patterns.similarity.MantraSimilarity;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import de.uniheidelberg.cl.a10.patterns.similarity.UnconfiguredException;
@@ -41,12 +42,15 @@ public class TestSimilarityFunctions {
 			ParserConfigurationException, SAXException, IOException {
 		// Main.initProperties();
 		DataReader dr = new DataReader();
-		rd = dr.read(new File(this.getClass().getResource("/r0003.xml")
-				.getFile()));
-		rds[0] = dr.read(new File(this.getClass().getResource("/r0009.xml")
-				.getFile()));
-		rds[1] = dr.read(new File(this.getClass().getResource("/r0016.xml")
-				.getFile()));
+		rd =
+				dr.read(new File(this.getClass().getResource("/r0003.xml")
+						.getFile()));
+		rds[0] =
+				dr.read(new File(this.getClass().getResource("/r0009.xml")
+						.getFile()));
+		rds[1] =
+				dr.read(new File(this.getClass().getResource("/r0016.xml")
+						.getFile()));
 
 		sConf = new SimilarityConfiguration();
 		sConf.sf_arg_idf = true;
@@ -176,15 +180,14 @@ public class TestSimilarityFunctions {
 			for (de.saar.coli.salsa.reiter.framenet.Frame f2 : sf.getFrameNet()
 					.getFrames()) {
 				Number dist = sf.getDistance(f1.getName(), f2.getName());
-				if (dist != null)
-					maxDist = Math.max(maxDist, dist.intValue());
+				if (dist != null) maxDist = Math.max(maxDist, dist.intValue());
 			}
 		}
 		System.out.println(maxDist);
 	}
 
 	@Test
-	public void testVerbNetSimilarity() throws IncompatibleException {
+	public void testVerbNetSimilarity() throws SimilarityCalculationException {
 		assertNotNull(rd);
 		FrameEvent_impl f1 = new FrameEvent_impl(rd.getFrames().get(0));
 		FrameEvent_impl f2 = new FrameEvent_impl(rd.getFrames().get(1));
@@ -230,8 +233,8 @@ public class TestSimilarityFunctions {
 						new FrameEvent_impl(rd.getFrames().get(1)))
 						.getProbability(), 0.0001);
 
-		Probability minSim = sf.sim(
-				new FrameEvent_impl(rd.getFrames().get(
+		Probability minSim =
+				sf.sim(new FrameEvent_impl(rd.getFrames().get(
 						rd.getFrames().size() - 1)), new FrameEvent_impl(rd
 						.getFrames().get(0)));
 		assertEquals(4.080642E-6, minSim.getProbability(), 1E-8);
@@ -303,7 +306,7 @@ public class TestSimilarityFunctions {
 	}
 
 	@Test
-	public void testLevenshtein() throws IncompatibleException {
+	public void testLevenshtein() throws SimilarityCalculationException {
 		assertNotNull(rd);
 		SimilarityFunction<String> sf = new Levenshtein();
 		assertEquals(1.0, sf.sim("abcde", "abcde").getProbability(), 0.0);

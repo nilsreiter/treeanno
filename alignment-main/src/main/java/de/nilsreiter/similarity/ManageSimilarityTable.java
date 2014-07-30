@@ -8,7 +8,9 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 import de.nilsreiter.event.similarity.SimilarityDatabase;
+import de.nilsreiter.event.similarity.impl.SimilarityDatabase_impl;
 import de.nilsreiter.util.db.DatabaseConfiguration;
+import de.nilsreiter.util.db.impl.DatabaseDBConfiguration_impl;
 import de.uniheidelberg.cl.a10.Main;
 import de.uniheidelberg.cl.a10.data2.Event;
 
@@ -26,19 +28,21 @@ public class ManageSimilarityTable extends Main {
 
 	SimilarityDatabase<Event> database = null;
 
-	@Option(name = "--identifier", usage = "Sets an identifier for the database")
+	@Option(name = "--identifier",
+			usage = "Sets an identifier for the database")
 	String identifier;
 
 	public static void main(String[] args) throws ClassNotFoundException,
-			SQLException {
+	SQLException {
 		ManageSimilarityTable mst = new ManageSimilarityTable();
 		mst.processArguments(args);
 		mst.run();
 	}
 
 	private void run() throws ClassNotFoundException, SQLException {
-		database = new SimilarityDatabase<Event>(
-				DatabaseConfiguration.getDefaultConfiguration(), identifier);
+		database =
+				new SimilarityDatabase_impl<Event>(new DatabaseDBConfiguration_impl(
+						DatabaseConfiguration.getDefaultConfiguration()));
 		switch (action) {
 		case INIT:
 			database.rebuild();

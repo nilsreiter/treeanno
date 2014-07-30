@@ -6,7 +6,6 @@ import de.uniheidelberg.cl.a10.Util;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 /**
  * http://www.cl.uni-heidelberg.de/trac/rituals/wiki/DistanceSimilarity
@@ -14,7 +13,7 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
  * @author reiter
  * 
  */
-public class GaussianDistanceSimilarity implements SimilarityFunction<Event> {
+public class GaussianDistanceSimilarity implements EventSimilarityFunction {
 
 	public static final long serialVersionUID = 5l;
 
@@ -55,15 +54,17 @@ public class GaussianDistanceSimilarity implements SimilarityFunction<Event> {
 	public Probability getProbability(final double relativeDistance) {
 		double pp = gauss.value(relativeDistance);
 
-		Probability p = Probability.fromProbability(Util.scale(0,
-				gauss.value(0.0), 0, 1.0, pp));
+		Probability p =
+				Probability.fromProbability(Util.scale(0, gauss.value(0.0), 0,
+						1.0, pp));
 
 		return p;
 
 	}
 
 	@Override
-	public void readConfiguration(final SimilarityConfiguration conf) {
+	public void readConfiguration(final Object obj) {
+		SimilarityConfiguration conf = (SimilarityConfiguration) obj;
 		if (conf.sf_gaussiandistance_var != this.sigma) {
 			this.sigma = conf.sf_gaussiandistance_var;
 			gauss = new Gaussian(0.0, conf.sf_gaussiandistance_var);
@@ -90,8 +91,7 @@ public class GaussianDistanceSimilarity implements SimilarityFunction<Event> {
 	 *            the variance to set
 	 */
 	public void setVariance(final double variance) {
-		if (variance != this.sigma)
-			gauss = new Gaussian(0.0, variance);
+		if (variance != this.sigma) gauss = new Gaussian(0.0, variance);
 		this.sigma = variance;
 	}
 }

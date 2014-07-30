@@ -1,7 +1,6 @@
 package de.nilsreiter.web;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -10,20 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.nilsreiter.event.similarity.FrameNet;
-import de.nilsreiter.event.similarity.SimilarityDatabase;
-import de.nilsreiter.event.similarity.WordNet;
+import de.nilsreiter.event.similarity.EventSimilarityFunction;
+import de.nilsreiter.event.similarity.SimilarityProvider;
+import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
+import de.uniheidelberg.cl.a10.data2.io.DBDataReader;
 
 /**
  * Servlet implementation class EventSimilarityLoader
  */
-public abstract class AbstractEventSimilarityLoader extends HttpServlet {
+public abstract class AbstractEventSimilarityLoader extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
-	ServletDocumentManager docMan = new ServletDocumentManager();
-	SimilarityDatabase<Event> database;
+	SimilarityProvider<Event> database;
+	DBDataReader dataReader;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -36,8 +35,11 @@ public abstract class AbstractEventSimilarityLoader extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void init() throws ServletException {
-		database = (SimilarityDatabase<Event>) getServletContext()
-				.getAttribute("database");
+		super.init();
+		database =
+				(SimilarityProvider<Event>) getServletContext().getAttribute(
+						"simdatabase");
+		dataReader = docMan.getDataReader();
 	}
 
 	public abstract String getSelectorJSP();
@@ -56,8 +58,8 @@ public abstract class AbstractEventSimilarityLoader extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		if (request.getParameter("doc") == null) {
-			RequestDispatcher view = request.getRequestDispatcher(this
-					.getSelectorJSP());
+			RequestDispatcher view =
+					request.getRequestDispatcher(this.getSelectorJSP());
 			view.forward(request, response);
 			return;
 		}
@@ -70,8 +72,8 @@ public abstract class AbstractEventSimilarityLoader extends HttpServlet {
 			return;
 		}
 
-		List<Class<? extends SimilarityFunction<Event>>> similarityTypes = Arrays
-				.asList(WordNet.class, FrameNet.class);
+		List<Class<? extends EventSimilarityFunction>> similarityTypes =
+				docMan.getSupportedFunctions();
 
 		List<Document> documents = this.getDocuments(request);
 
@@ -79,13 +81,12 @@ public abstract class AbstractEventSimilarityLoader extends HttpServlet {
 		request.setAttribute("arity", documents.size());
 		request.setAttribute("documents", documents);
 		request.setAttribute("similarityTypes", similarityTypes);
-		request.setAttribute("location", getLocation());
 		request.setAttribute("doc", request.getParameter("doc"));
 
-		RequestDispatcher view = request.getRequestDispatcher(this
-				.getViewerJSP());
+		RequestDispatcher view =
+				request.getRequestDispatcher(this.getViewerJSP());
 		view.forward(request, response);
 	}
 
-	protected abstract Location getLocation();
+	protected abstract Area getArea();
 }

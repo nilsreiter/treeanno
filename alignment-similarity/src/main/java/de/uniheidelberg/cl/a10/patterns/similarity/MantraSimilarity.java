@@ -1,14 +1,15 @@
 package de.uniheidelberg.cl.a10.patterns.similarity;
 
-import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 
-public class MantraSimilarity extends AbstractSimilarityFunction<FrameTokenEvent> {
+public class MantraSimilarity extends
+		AbstractSimilarityFunction<FrameTokenEvent> {
 
 	@Override
-	public Probability sim(final FrameTokenEvent arg0, final FrameTokenEvent arg1)
-			throws IncompatibleException {
+	public Probability sim(final FrameTokenEvent arg0,
+			final FrameTokenEvent arg1) throws SimilarityCalculationException {
 		if (arg0.source() == FrameTokenEvent.Source.Frame
 				&& arg1.source() == FrameTokenEvent.Source.Frame) {
 			Frame f0 = arg0.getFrame();
@@ -27,6 +28,6 @@ public class MantraSimilarity extends AbstractSimilarityFunction<FrameTokenEvent
 				}
 			}
 		}
-		throw new IncompatibleException();
+		throw new SimilarityCalculationException();
 	}
 }

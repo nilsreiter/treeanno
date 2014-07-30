@@ -2,10 +2,14 @@ package de.nilsreiter.event.similarity;
 
 import java.sql.SQLException;
 
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
+public interface SimilarityDatabase<T> extends SimilarityProvider<T> {
 
-public interface SimilarityDatabase<T> {
+	void rebuild() throws SQLException;
 
-	double getSimilarity(Class<? extends SimilarityFunction> simType, T e1, T e2)
-			throws SQLException;
+	void dropType(String s) throws SQLException;
+
+	void putSimilarity(Class<? extends EventSimilarityFunction> class1,
+			T event1, T event2, double probability) throws SQLException;
+
+	void finish() throws SQLException;
 }

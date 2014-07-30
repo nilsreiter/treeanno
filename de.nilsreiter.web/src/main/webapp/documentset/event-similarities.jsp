@@ -1,6 +1,7 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" 
-		pageEncoding="UTF-8" session="false" import="java.util.*, de.uniheidelberg.cl.a10.data2.*"/>
+		pageEncoding="UTF-8" session="true" import="java.util.*, de.uniheidelberg.cl.a10.data2.*"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,19 +11,24 @@
 <LINK href="css/event-similarity.css" rel="stylesheet" type="text/css" />
 <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="js/scripts.js" type="text/javascript"></script>
+<script src="js/event-similarities.js" type="text/javascript"></script>
 <script src='js/jcanvas.min.js'></script>
+<script src="js/jquery-ui/jquery-ui.min.js"></script>
+<link href="js/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
 <div class="level1">
 <%@ include file="../menu/area.jsp" %>
 
 <div class="content level2">
-<jsp:include page="menu.jsp">
-	<jsp:param value="event-similarities" name="active"/>
-	<jsp:param value="${alignment.id}" name="payload" />
-</jsp:include>
+<%@ include file="../common/document-menu.jsp" %>
 
 <div class="content level3">
+<%@include file="../common/menu.jsp" %>
+
+
+<div class="content level4">
 
 <div class="menu">
 	<%@ include file="../controls.html" %>
@@ -31,9 +37,9 @@
 	<img src="gfx/loading1.gif"/>
 </div>
 
-<div id="alignmentcontent" class="content level4" >
+<div id="alignmentcontent" class="content level5" >
 <c:forEach var="i" begin="0" end="${arity-1}" >
-	<div class="alignmenttext">
+	<div class="alignmenttext surface">
 	<h1>${documents[i].id}</h1>
 	<jsp:include page="../common/document-box-similarities.jsp">
 		<jsp:param value="${i}" name="i"/>
@@ -43,11 +49,14 @@
 <div style="clear:left;"></div>
 
 </div>
-
+</div>
 </div>
 <script>
-jQuery(".content.level4").css("display", "none");
-jQuery.getJSON('rpc/get-event-similarities?doctype=alignment&doc=${doc}', function (data) { 
+init_controls("div.level4 > div.menu");
+
+jQuery(".content.level5").css("display", "none");
+
+jQuery.getJSON('rpc/get-event-similarities?doctype=documentset&doc=${doc}', function (data) { 
 	for(var tokId in data) {
 		for (var type in data[tokId]) {
 			$("#"+tokId+" div.typechooser label."+type+ " input").bind("click", {'type':type,'data':data[tokId][type], 'tokId':tokId},  function (event) {

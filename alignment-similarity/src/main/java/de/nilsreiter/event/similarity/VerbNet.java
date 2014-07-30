@@ -2,17 +2,13 @@ package de.nilsreiter.event.similarity;
 
 import java.io.File;
 
-import de.uniheidelberg.cl.a10.HasTarget;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
-import de.uniheidelberg.cl.a10.patterns.similarity.AbstractSimilarityFunction;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import de.uniheidelberg.cl.mroth.measures.beans.NomBank;
 import de.uniheidelberg.cl.mroth.measures.beans.SemLink;
 
-public class VerbNet extends AbstractSimilarityFunction<Event>
-		implements SimilarityFunction<Event> {
+public class VerbNet implements EventSimilarityFunction {
 	public static final long serialVersionUID = 2l;
 
 	SemLink sl;
@@ -37,8 +33,8 @@ public class VerbNet extends AbstractSimilarityFunction<Event>
 	}
 
 	protected double msim(Event n1, Event n2) {
-		Token target1 = ((HasTarget) n1.getAnchor()).getTarget();
-		Token target2 = ((HasTarget) n2.getAnchor()).getTarget();
+		Token target1 = n1.firstToken();
+		Token target2 = n2.firstToken();
 		char pos1 = target1.getPartOfSpeech().charAt(0);
 		char pos2 = target2.getPartOfSpeech().charAt(0);
 		String p1 = null;
@@ -89,12 +85,16 @@ public class VerbNet extends AbstractSimilarityFunction<Event>
 					return 1.0;
 				}
 				if (vnclasses1[i].substring(0, 2).equals(
-						vnclasses2[j].substring(0, 2)))
-					sim = 0.8;
+						vnclasses2[j].substring(0, 2))) sim = 0.8;
 			}
 		}
 
 		return sim;
 	}
 
+	@Override
+	public void readConfiguration(Object tc) {
+		// TODO Auto-generated method stub
+
+	}
 }

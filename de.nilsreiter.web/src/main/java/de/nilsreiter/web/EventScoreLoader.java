@@ -1,6 +1,7 @@
 package de.nilsreiter.web;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -10,11 +11,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.Link;
-import de.uniheidelberg.cl.a10.data2.alignment.io.EventAlignmentReader;
+import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentReader;
 
 /**
  * Servlet implementation class EventScoreLoader
@@ -22,12 +25,16 @@ import de.uniheidelberg.cl.a10.data2.alignment.io.EventAlignmentReader;
 public class EventScoreLoader extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
 
-	EventAlignmentReader alignmentReader;
+	DBAlignmentReader<Event> alignmentReader;
 
 	@Override
-	public void init() {
+	public void init() throws ServletException {
 		super.init();
-		alignmentReader = new EventAlignmentReader(docMan);
+		try {
+			alignmentReader = docMan.getAlignmentReader();
+		} catch (SQLException e) {
+			throw new ServletException(e);
+		}
 	}
 
 	@Override
@@ -36,70 +43,84 @@ public class EventScoreLoader extends AbstractServlet {
 
 		if (request.getParameter("doc") == null) {
 			request.setAttribute("target", "view-event-scores");
-			RequestDispatcher view = request
-					.getRequestDispatcher("documentset/select.jsp");
+			RequestDispatcher view =
+					request.getRequestDispatcher("alignment/select.jsp");
 			view.forward(request, response);
 			return;
 		}
 
-		Alignment<Event> alignment = alignmentReader.read(docMan
-				.findStreamFor(request.getParameter("doc")));
-		StringBuilder alignmentIds = new StringBuilder();
-		for (Link<Event> link : alignment.getAlignments()) {
-			alignmentIds.append(link.getId());
-			alignmentIds.append(' ');
-		}
-		Random random = new Random();
-		Map<Event, Double> scoreMap = new HashMap<Event, Double>();
-		for (Document document : alignment.getDocuments()) {
-			for (Event event : document.getEvents()) {
-				scoreMap.put(event, random.nextDouble());
+		Alignment<Event> alignment;
+		try {
+			alignment = alignmentReader.read((request.getParameter("doc")));
+
+			StringBuilder alignmentIds = new StringBuilder();
+			for (Link<Event> link : alignment.getAlignments()) {
+				alignmentIds.append(link.getId());
+				alignmentIds.append(' ');
 			}
-		}
+			Random random = new Random();
+			Map<Event, Double> scoreMap = new HashMap<Event, Double>();
+			for (Document document : alignment.getDocuments()) {
+				for (Event event : document.getEvents()) {
+					scoreMap.put(event, random.nextDouble());
+				}
+			}
 
-		// Create graph object and events map
-		StringBuilder eventsMapString = new StringBuilder();
-		eventsMapString.append("var events = new Object();");
+			// Create graph object and events map
+			StringBuilder eventsMapString = new StringBuilder();
+			eventsMapString.append("var events = new Object();");
 
-		StringBuilder graphString = new StringBuilder();
-		graphString.append("var graph = new Rickshaw.Graph({\n");
-		graphString.append("element: document.querySelector(\"#chart\"),\n");
-		graphString.append("\trenderer: 'line',\n");
-		// b.append("\twidth:500,\n");
-		graphString.append("\tseries: [");
-		for (Document document : alignment.getDocuments()) {
-			graphString.append("{");
-			graphString.append("\t\tdata: [ ");
-			for (int i = 0; i < document.getEvents().size(); i++) {
-				Event event = document.getEvents().get(i);
-
+			StringBuilder graphString = new StringBuilder();
+			graphString.append("var graph = new Rickshaw.Graph({\n");
+			graphString
+					.append("element: document.querySelector(\"#chart\"),\n");
+			graphString.append("\trenderer: 'line',\n");
+			// b.append("\twidth:500,\n");
+			graphString.append("\tseries: [");
+			for (Document document : alignment.getDocuments()) {
 				graphString.append("{");
-				graphString.append("x: ").append(i).append(",");
-				graphString.append("y: ").append(scoreMap.get(event))
-						.append(",");
-				graphString.append("id:'").append(event.getGlobalId())
-						.append("'");
+				graphString.append("\t\tdata: [ ");
+				for (int i = 0; i < document.getEvents().size(); i++) {
+					Event event = document.getEvents().get(i);
+
+					graphString.append("{");
+					graphString.append("x: ").append(i).append(",");
+					graphString.append("y: ").append(scoreMap.get(event))
+							.append(",");
+					graphString.append("id:'").append(event.getGlobalId())
+							.append("'");
+					graphString.append("},");
+
+					eventsMapString.append("events[")
+							.append(event.getGlobalId()).append("]");
+				}
+				graphString.append(" ],\n");
+				graphString.append("\t\tname:'").append(document.getId())
+						.append("',");
+				graphString.append("\t\tcolor: palette.color()\n");
 				graphString.append("},");
-
-				eventsMapString.append("events[").append(event.getGlobalId())
-						.append("]");
 			}
-			graphString.append(" ],\n");
-			graphString.append("\t\tname:'").append(document.getId())
-					.append("',");
-			graphString.append("\t\tcolor: palette.color()\n");
-			graphString.append("},");
+			graphString.append("]");
+			graphString.append("});");
+			request.setAttribute("graph", graphString.toString());
+
+			request.setAttribute("doc", alignment.getId());
+			request.setAttribute("alignment", alignment);
+			request.setAttribute("documents", alignment.getDocuments());
+
+			RequestDispatcher view =
+					request.getRequestDispatcher("alignment/event-scores.jsp");
+			view.forward(request, response);
+		} catch (ValidityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParsingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		graphString.append("]");
-		graphString.append("});");
-		request.setAttribute("graph", graphString.toString());
 
-		request.setAttribute("doc", alignment.getId());
-		request.setAttribute("alignment", alignment);
-		request.setAttribute("documents", alignment.getDocuments());
-
-		RequestDispatcher view = request
-				.getRequestDispatcher("documentset/event-scores.jsp");
-		view.forward(request, response);
 	}
 }

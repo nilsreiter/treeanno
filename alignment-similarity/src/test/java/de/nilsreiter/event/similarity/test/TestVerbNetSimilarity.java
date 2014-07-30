@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import de.nilsreiter.event.similarity.VerbNet;
 import de.uniheidelberg.cl.a10.data2.Event;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class TestVerbNetSimilarity extends TestBasics {
@@ -28,11 +28,10 @@ public class TestVerbNetSimilarity extends TestBasics {
 	}
 
 	@After
-	public void tearDown() throws Exception {
-	}
+	public void tearDown() throws Exception {}
 
 	@Test
-	public void testVerbNetSimilarity() throws IncompatibleException {
+	public void testVerbNetSimilarity() throws SimilarityCalculationException {
 		assertNotNull(rds[2]);
 
 		Event f1 = rds[2].getEvents().get(0);
@@ -47,7 +46,7 @@ public class TestVerbNetSimilarity extends TestBasics {
 		assertEquals(0.0, sf.sim(f1, f4).getProbability(), 0.0);
 		assertEquals(0.129240981405388,
 				sf.sim(rds[2].getEvents().get(11), rds[2].getEvents().get(15))
-						.getProbability(), 0.0001);
+				.getProbability(), 0.0001);
 
 	}
 

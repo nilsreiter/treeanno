@@ -6,7 +6,7 @@ import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.Token;
 
-public class JSONDocumentWriter extends JSONConverter<Document> {
+public class JSONDocumentWriter {
 	public JSONObject getJSON(Document d) {
 		JSONObject json = new JSONObject();
 		for (Token token : d.getTokens()) {
@@ -19,11 +19,7 @@ public class JSONDocumentWriter extends JSONConverter<Document> {
 	}
 
 	protected JSONObject getJSON(Token token) {
-		JSONObject json = new JSONObject();
-		json.put("id", token.getId());
-		json.put("globalid", token.getGlobalId());
-		json.put("surface", token.getSurface());
-		return json;
+		return JSONConversion.getToken(token);
 	}
 
 	protected JSONObject getJSON(Event event) {

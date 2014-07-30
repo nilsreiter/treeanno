@@ -11,7 +11,7 @@ import de.uniheidelberg.cl.a10.io.AbstractXMLWriter;
 import de.uniheidelberg.cl.a10.io.XMLConstants;
 
 public class AlignmentWriter extends
-		AbstractXMLWriter<Alignment<? extends AnnotationObjectInDocument>> {
+AbstractXMLWriter<Alignment<? extends AnnotationObjectInDocument>> {
 
 	public AlignmentWriter(final OutputStream os) {
 		super(os);
@@ -21,9 +21,13 @@ public class AlignmentWriter extends
 	public Element getElement(
 			final Alignment<? extends AnnotationObjectInDocument> a) {
 		Element rootElement = new Element("nalignment");
-		rootElement
-				.addAttribute(new Attribute("xmlns",
-						"http://www.cl.uni-heidelberg.de/~reiter/NAryAlignmentDocument"));
+		rootElement.addAttribute(new Attribute(XMLConstants.ID, a.getId()));
+		if (a.getTitle() != null)
+			rootElement.addAttribute(new Attribute(XMLConstants.TITLE, a
+					.getTitle()));
+		// rootElement
+		// .addAttribute(new Attribute("xmlns",
+		// "http://www.cl.uni-heidelberg.de/~reiter/NAryAlignmentDocument"));
 
 		for (de.uniheidelberg.cl.a10.data2.Document rd : a.getDocuments()) {
 			Element containerElement = new Element("document");

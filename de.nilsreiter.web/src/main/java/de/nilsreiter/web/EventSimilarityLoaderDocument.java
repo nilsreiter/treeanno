@@ -1,18 +1,19 @@
 package de.nilsreiter.web;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import de.nilsreiter.web.Location.Area;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.io.DataReader;
 
 public class EventSimilarityLoaderDocument extends
 		AbstractEventSimilarityLoader {
-	DataReader dataReader = new DataReader();
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,15 +31,25 @@ public class EventSimilarityLoaderDocument extends
 	public List<Document> getDocuments(HttpServletRequest request)
 			throws IOException {
 		List<Document> documents = new ArrayList<Document>();
-		documents.add(dataReader.read(docMan.findStreamFor(request
-				.getParameter("doc"))));
+		try {
+			documents.add(dataReader.read((request.getParameter("doc"))));
+		} catch (ValidityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParsingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return documents;
 	}
 
 	@Override
-	protected Location getLocation() {
-		return new Location("Rituals", Area.Document);
+	protected Area getArea() {
+		return Area.Document;
 	}
 
 }

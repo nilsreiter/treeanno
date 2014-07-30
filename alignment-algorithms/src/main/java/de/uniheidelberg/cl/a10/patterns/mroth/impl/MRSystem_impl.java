@@ -23,7 +23,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.impl.AlignmentIdProvider_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.mroth.MRSystem;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
@@ -60,7 +60,7 @@ public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 	}
 
 	@Override
-	public Alignment<T> getAlignment() throws IncompatibleException {
+	public Alignment<T> getAlignment() throws SimilarityCalculationException {
 		DirectedGraph<T, DefaultWeightedEdge> graph = this.getGraph();
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		Set<Set<T>> set = this.recurse(graph, 0);
@@ -74,10 +74,12 @@ public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 				T e2 = iter.next();
 				double score;
 				try {
-					score = this.similarityFunction.sim(e1, e2)
+					score =
+							this.similarityFunction.sim(e1, e2)
 							.getProbability();
 				} catch (NullPointerException e) {
-					score = this.similarityFunction.sim(e2, e1)
+					score =
+							this.similarityFunction.sim(e2, e1)
 							.getProbability();
 				}
 				if (!al.together(e1, e2)) {
@@ -109,8 +111,8 @@ public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 			}
 			return ret;
 		}
-		MinSourceSinkCut<T, DefaultWeightedEdge> mc = new MinSourceSinkCut<T, DefaultWeightedEdge>(
-				graph);
+		MinSourceSinkCut<T, DefaultWeightedEdge> mc =
+				new MinSourceSinkCut<T, DefaultWeightedEdge>(graph);
 		double w = Double.MAX_VALUE;
 		DefaultWeightedEdge minEdge = null;
 		for (DefaultWeightedEdge e : graph.edgeSet()) {
@@ -133,26 +135,30 @@ public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 				+ sourcePartition.size());
 
 		for (Set<T> component : this.getComponents(graph, sinkPartition)) {
-			DirectedGraph<T, DefaultWeightedEdge> subGraph = this
-					.createSubGraph(graph, component, level + 1);
+			DirectedGraph<T, DefaultWeightedEdge> subGraph =
+					this.createSubGraph(graph, component, level + 1);
 			ret.addAll(this.recurse(subGraph, level + 1));
 		}
 
 		for (Set<T> component : this.getComponents(graph, sourcePartition)) {
-			DirectedGraph<T, DefaultWeightedEdge> subGraph = this
-					.createSubGraph(graph, component, level + 1);
+			DirectedGraph<T, DefaultWeightedEdge> subGraph =
+					this.createSubGraph(graph, component, level + 1);
 			ret.addAll(this.recurse(subGraph, level + 1));
 		}
 		return ret;
 	}
 
 	@SuppressWarnings("unchecked")
-	protected List<Set<T>> getComponents(
-			final DirectedGraph<T, DefaultWeightedEdge> graph, final Set<T> part) {
-		DirectedWeightedSubgraph<T, DefaultWeightedEdge> subgraph = new DirectedWeightedSubgraph<T, DefaultWeightedEdge>(
-				(WeightedGraph<T, DefaultWeightedEdge>) graph, part, null);
-		StrongConnectivityInspector<T, DefaultWeightedEdge> source_ci = new StrongConnectivityInspector<T, DefaultWeightedEdge>(
-				subgraph);
+	protected List<Set<T>>
+	getComponents(final DirectedGraph<T, DefaultWeightedEdge> graph,
+			final Set<T> part) {
+		DirectedWeightedSubgraph<T, DefaultWeightedEdge> subgraph =
+				new DirectedWeightedSubgraph<T, DefaultWeightedEdge>(
+						(WeightedGraph<T, DefaultWeightedEdge>) graph, part,
+						null);
+		StrongConnectivityInspector<T, DefaultWeightedEdge> source_ci =
+				new StrongConnectivityInspector<T, DefaultWeightedEdge>(
+						subgraph);
 		return source_ci.stronglyConnectedSets();
 	}
 
@@ -160,9 +166,10 @@ public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 			final DirectedGraph<T, DefaultWeightedEdge> baseGraph,
 			final Set<T> vertices, final int level) {
 		@SuppressWarnings("unchecked")
-		DirectedWeightedSubgraph<T, DefaultWeightedEdge> subgraph = new DirectedWeightedSubgraph<T, DefaultWeightedEdge>(
-				(WeightedGraph<T, DefaultWeightedEdge>) baseGraph, vertices,
-				null);
+		DirectedWeightedSubgraph<T, DefaultWeightedEdge> subgraph =
+		new DirectedWeightedSubgraph<T, DefaultWeightedEdge>(
+				(WeightedGraph<T, DefaultWeightedEdge>) baseGraph,
+				vertices, null);
 
 		return subgraph;
 
@@ -182,9 +189,10 @@ public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 	}
 
 	public DirectedGraph<T, DefaultWeightedEdge> getGraph()
-			throws IncompatibleException {
-		SimpleDirectedWeightedGraph<T, DefaultWeightedEdge> graph = new SimpleDirectedWeightedGraph<T, DefaultWeightedEdge>(
-				DefaultWeightedEdge.class);
+			throws SimilarityCalculationException {
+		SimpleDirectedWeightedGraph<T, DefaultWeightedEdge> graph =
+				new SimpleDirectedWeightedGraph<T, DefaultWeightedEdge>(
+						DefaultWeightedEdge.class);
 		for (T e1 : this.getSequence1()) {
 			graph.addVertex(e1);
 

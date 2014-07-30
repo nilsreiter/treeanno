@@ -17,11 +17,10 @@ import de.uniheidelberg.cl.a10.patterns.data.ProbabilityDistribution;
 import de.uniheidelberg.cl.a10.patterns.data.matrix.MapMatrix;
 import de.uniheidelberg.cl.a10.patterns.models.ForwardAlgorithm;
 import de.uniheidelberg.cl.a10.patterns.models.HiddenMarkovModel;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
-		Serializable, HiddenMarkovModel<T> {
+Serializable, HiddenMarkovModel<T> {
 	private static final long serialVersionUID = 1L;
 
 	PreciseMarkovModel_impl<Integer> mm = null;
@@ -38,18 +37,21 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 		this.mm = new PreciseMarkovModel_impl<Integer>();
 		this.emissionProbabilities = new MapMatrix<Integer, T, Probability>();
 		this.emissionProbabilities.setDefaultValue(Probability.NULL);
-		this.history = new MapMatrix<Integer, Integer, ProbabilityDistribution<T>>();
+		this.history =
+				new MapMatrix<Integer, Integer, ProbabilityDistribution<T>>();
 		this.history.setDefaultValue(null);
 		this.state = 0;
 	}
 
 	public HiddenMarkovModel_impl(final HiddenMarkovModel_impl<T> hmm) {
 		this.mm = new PreciseMarkovModel_impl<Integer>(hmm.mm);
-		this.emissionProbabilities = new MapMatrix<Integer, T, Probability>(
-				hmm.emissionProbabilities);
+		this.emissionProbabilities =
+				new MapMatrix<Integer, T, Probability>(
+						hmm.emissionProbabilities);
 		this.state = hmm.state;
-		this.history = new MapMatrix<Integer, Integer, ProbabilityDistribution<T>>(
-				hmm.history);
+		this.history =
+				new MapMatrix<Integer, Integer, ProbabilityDistribution<T>>(
+						hmm.history);
 		this.history.setDefaultValue(null);
 	}
 
@@ -77,8 +79,7 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 
 	public Set<T> getEventsForState(final Integer state) {
 		Map<T, Probability> row = this.emissionProbabilities.getRow(state);
-		if (row != null)
-			return row.keySet();
+		if (row != null) return row.keySet();
 		return new HashSet<T>();
 	}
 
@@ -90,10 +91,12 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 				if (ev != null) {
 					Probability p2 = Probability.NULL;
 					try {
-						p2 = PMath.multiply(this.emissionProbabilities.get(
-								state, ev),
-								this.getEventSimilarity().sim(event, ev));
-					} catch (IncompatibleException e) {
+						p2 =
+								PMath.multiply(this.emissionProbabilities.get(
+										state, ev), this.getEventSimilarity()
+										.sim(event, ev));
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
 					p = PMath.add(p, p2);
@@ -165,33 +168,39 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 			int state1Index = stateSequence.indexOf(state1);
 			int state2Index = stateSequence.indexOf(state2);
 
-			Probability[] c = new Probability[] {
-					this.mergeEmissionProbabilities(state1, state2,
-							eventSequence.get(state1Index)),
-					this.mm.getConditionalProbability(state1,
-							stateSequence.get(state1Index + 1), state1, state2),
-					this.mm.getConditionalProbability(
-							stateSequence.get(state1Index - 1), state1, state1,
-							state2),
-					this.mergeEmissionProbabilities(state1, state2,
-							eventSequence.get(state2Index)),
-					this.mm.getConditionalProbability(state1,
-							stateSequence.get(state2Index + 1), state1, state2),
-					this.mm.getConditionalProbability(
-							stateSequence.get(state2Index - 1), state1, state1,
-							state2) };
+			Probability[] c =
+					new Probability[] {
+							this.mergeEmissionProbabilities(state1, state2,
+									eventSequence.get(state1Index)),
+							this.mm.getConditionalProbability(state1,
+									stateSequence.get(state1Index + 1), state1,
+									state2),
+							this.mm.getConditionalProbability(
+									stateSequence.get(state1Index - 1), state1,
+									state1, state2),
+							this.mergeEmissionProbabilities(state1, state2,
+									eventSequence.get(state2Index)),
+							this.mm.getConditionalProbability(state1,
+									stateSequence.get(state2Index + 1), state1,
+									state2),
+							this.mm.getConditionalProbability(
+									stateSequence.get(state2Index - 1), state1,
+									state1, state2) };
 
-			Probability[] d = new Probability[] {
-					this.getProbability(state1, eventSequence.get(state1Index)),
-					mm.getProbability(state1,
-							stateSequence.get(state1Index + 1)),
-					mm.getProbability(stateSequence.get(state1Index - 1),
-							state1),
-					this.getProbability(state2, eventSequence.get(state2Index)),
-					mm.getProbability(state2,
-							stateSequence.get(state2Index + 1)),
-					mm.getProbability(stateSequence.get(state2Index - 1),
-							state2) };
+			Probability[] d =
+					new Probability[] {
+							this.getProbability(state1,
+									eventSequence.get(state1Index)),
+							mm.getProbability(state1,
+									stateSequence.get(state1Index + 1)),
+							mm.getProbability(
+									stateSequence.get(state1Index - 1), state1),
+							this.getProbability(state2,
+									eventSequence.get(state2Index)),
+							mm.getProbability(state2,
+									stateSequence.get(state2Index + 1)),
+							mm.getProbability(
+									stateSequence.get(state2Index - 1), state2) };
 			p = PMath.multiply(p, c[0], c[1], c[2], c[3], c[4], c[5]);
 			return PMath.divide(p, PMath.multiply(d));
 
@@ -199,20 +208,24 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 				&& !stateSequence.contains(state2)) {
 			Integer s = state1;
 			int stateIndex = stateSequence.indexOf(s);
-			Probability e = this.mergeEmissionProbabilities(state1, state2,
-					eventSequence.get(stateIndex));
-			Probability t1 = this.mm.getConditionalProbability(s,
-					stateSequence.get(stateIndex + 1), state1, state2);
-			Probability t2 = this.mm.getConditionalProbability(
-					stateSequence.get(stateIndex - 1), s, state1, state2);
+			Probability e =
+					this.mergeEmissionProbabilities(state1, state2,
+							eventSequence.get(stateIndex));
+			Probability t1 =
+					this.mm.getConditionalProbability(s,
+							stateSequence.get(stateIndex + 1), state1, state2);
+			Probability t2 =
+					this.mm.getConditionalProbability(
+							stateSequence.get(stateIndex - 1), s, state1,
+							state2);
 			p = PMath.multiply(p, e, t1, t2);
 
-			Probability q1 = this.getProbability(s,
-					eventSequence.get(stateIndex));
-			Probability q2 = mm.getProbability(s,
-					stateSequence.get(stateIndex + 1));
-			Probability q3 = mm.getProbability(
-					stateSequence.get(stateIndex - 1), s);
+			Probability q1 =
+					this.getProbability(s, eventSequence.get(stateIndex));
+			Probability q2 =
+					mm.getProbability(s, stateSequence.get(stateIndex + 1));
+			Probability q3 =
+					mm.getProbability(stateSequence.get(stateIndex - 1), s);
 			Probability q = PMath.multiply(q1, q2, q3);
 
 			return PMath.divide(p, q);
@@ -221,20 +234,24 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 				&& stateSequence.contains(state2)) {
 			Integer s = state2;
 			int stateIndex = stateSequence.indexOf(s);
-			Probability e = this.mergeEmissionProbabilities(state1, state2,
-					eventSequence.get(stateIndex));
-			Probability t1 = this.mm.getConditionalProbability(s,
-					stateSequence.get(stateIndex + 1), state1, state2);
-			Probability t2 = this.mm.getConditionalProbability(
-					stateSequence.get(stateIndex - 1), s, state1, state2);
+			Probability e =
+					this.mergeEmissionProbabilities(state1, state2,
+							eventSequence.get(stateIndex));
+			Probability t1 =
+					this.mm.getConditionalProbability(s,
+							stateSequence.get(stateIndex + 1), state1, state2);
+			Probability t2 =
+					this.mm.getConditionalProbability(
+							stateSequence.get(stateIndex - 1), s, state1,
+							state2);
 			p = PMath.multiply(p, e, t1, t2);
 
-			Probability q1 = this.getProbability(s,
-					eventSequence.get(stateIndex));
-			Probability q2 = mm.getProbability(s,
-					stateSequence.get(stateIndex + 1));
-			Probability q3 = mm.getProbability(
-					stateSequence.get(stateIndex - 1), s);
+			Probability q1 =
+					this.getProbability(s, eventSequence.get(stateIndex));
+			Probability q2 =
+					mm.getProbability(s, stateSequence.get(stateIndex + 1));
+			Probability q3 =
+					mm.getProbability(stateSequence.get(stateIndex - 1), s);
 			Probability q = PMath.multiply(q1, q2, q3);
 
 			return PMath.divide(p, q);
@@ -257,25 +274,24 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 	public Probability p(final List<Integer> stateSequence,
 			final List<T> eventSequence) {
 
-		Probability d = PMath
-				.multiply(
+		Probability d =
+				PMath.multiply(
 						this.mm.getStartingProbabilities().get(
 								stateSequence.get(0)),
-						this.getProbability(stateSequence.get(0),
-								eventSequence.get(0)));
+								this.getProbability(stateSequence.get(0),
+										eventSequence.get(0)));
 		for (int i = 1; i < stateSequence.size(); i++) {
-			if (d == Probability.NULL)
-				return d;
-			d = PMath.multiply(
-					d,
-					mm.getTransitionProbabilities().get(
-							stateSequence.get(i - 1), stateSequence.get(i)),
-					this.getProbability(stateSequence.get(i),
-							eventSequence.get(i)));
+			if (d == Probability.NULL) return d;
+			d =
+					PMath.multiply(
+							d,
+							mm.getTransitionProbabilities().get(
+									stateSequence.get(i - 1),
+									stateSequence.get(i)), this.getProbability(
+									stateSequence.get(i), eventSequence.get(i)));
 		}
 		if (this.mm.getFinalStates().contains(
-				stateSequence.get(stateSequence.size() - 1)))
-			return d;
+				stateSequence.get(stateSequence.size() - 1))) return d;
 		return Probability.NULL;
 	}
 
@@ -311,7 +327,7 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 		StringBuilder b = new StringBuilder();
 		b.append(mm.toString());
 		b.append("Emission Probabilities: " + this.emissionProbabilities)
-				.append('\n');
+		.append('\n');
 		b.append("History").append('\n');
 		b.append(this.history).append('\n');
 		return b.toString();
@@ -346,7 +362,8 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 	 * @return
 	 * @see de.uniheidelberg.cl.a10.patterns.models.impl.MarkovModel_impl#getTransitionProbabilities()
 	 */
-	public MapMatrix<Integer, Integer, Probability> getTransitionProbabilities() {
+	public MapMatrix<Integer, Integer, Probability>
+			getTransitionProbabilities() {
 		return mm.getTransitionProbabilities();
 	}
 
@@ -354,8 +371,10 @@ public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
 	 * @param transitionProbabilities
 	 * @see de.uniheidelberg.cl.a10.patterns.models.impl.MarkovModel_impl#setTransitionProbabilities(de.uniheidelberg.cl.a10.patterns.data.matrix.DoubleMapMatrix)
 	 */
-	public void setTransitionProbabilities(
-			final MapMatrix<Integer, Integer, Probability> transitionProbabilities) {
+	public
+			void
+			setTransitionProbabilities(
+					final MapMatrix<Integer, Integer, Probability> transitionProbabilities) {
 		mm.setTransitionProbabilities(transitionProbabilities);
 	}
 

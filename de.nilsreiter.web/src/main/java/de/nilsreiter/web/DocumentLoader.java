@@ -10,18 +10,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.nilsreiter.web.Location.Area;
+import de.nilsreiter.web.beans.menu.Location;
+import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.io.DataReader;
+import de.uniheidelberg.cl.a10.data2.io.DBDataReader;
 
 public class DocumentLoader extends AbstractServlet {
 
-	DataReader dataReader;
+	DBDataReader dataReader;
 
 	public DocumentLoader() {
 		super();
-		dataReader = new DataReader();
 
+	}
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		dataReader = docMan.getDataReader();
 	}
 
 	/**
@@ -32,21 +38,22 @@ public class DocumentLoader extends AbstractServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		List<Document> documents = new ArrayList<Document>();
-		String docId = "r0003";
-		if (request.getParameter("doc") != null) {
-			docId = request.getParameter("doc");
-			Document document = dataReader.read(docMan.findStreamFor(docId));
-			documents = Arrays.asList(document);
-		}
 
-		request.setAttribute("location", new Location("Rituals", Area.Document));
+		Location location = getLocation(Area.Document, request);
+		location.setArea(Area.Document);
+		List<Document> documents = new ArrayList<Document>();
+
+		Document document = getDocument(request);
+
+		location.setCurrentObject(Area.Document, document.getId());
+		if (document != null) documents = Arrays.asList(document);
+
 		request.setAttribute("documents", documents);
 		request.setAttribute("map", docMan.getClassesForTokens(documents));
 		request.setAttribute("arity", documents.size());
 		request.setAttribute("docman", docMan);
-		RequestDispatcher view = request
-				.getRequestDispatcher("document/document.jsp");
+		RequestDispatcher view =
+				request.getRequestDispatcher("document/document.jsp");
 		view.forward(request, response);
 	}
 }

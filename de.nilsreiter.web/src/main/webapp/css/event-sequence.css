@@ -1,0 +1,39 @@
+.content .event {
+	border:thin solid #AAA;
+	border-radius:5px;
+	margin-left:100px;
+	margin-top:40px;
+	margin-bottom:40px;
+	margin-right:0;
+	min-width:10%;
+	max-width:80%;
+}
+
+.content .event .eventclass {
+	font-variant:small-caps;
+}
+
+
+table.event,div.event {
+	border:none;
+	margin:20px;
+	border-collapse: collapse;
+	overflow:scroll;
+}
+
+table.event tr:first-child {
+	border-bottom:thin solid black;
+}
+
+table.event tr td {
+	padding-right:15px;
+}
+
+.mentionhighlight {
+	background-color:blue;
+	fill:#AAC !important; 
+}
+
+rect.tokenbg {
+	fill:none;
+}

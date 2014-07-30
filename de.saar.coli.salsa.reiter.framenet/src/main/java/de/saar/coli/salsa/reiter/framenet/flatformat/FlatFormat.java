@@ -68,131 +68,138 @@ import de.saar.coli.salsa.reiter.framenet.RealizedFrame;
  */
 public class FlatFormat extends CorpusReader {
 
-    /**
-     * Creates the FlatFormat object and processes the file.
-     * 
-     * @param frameNet
-     *            The FrameNet object.
-     */
-    public FlatFormat(final FrameNet frameNet, final Logger logger) {
-	super(frameNet, logger);
-    }
-
-    /**
-     * This method parses the given file and stores the found annotation
-     * sentence-wise in the object.
-     * 
-     */
-    @Override
-    public void parse(final File file) throws FileNotFoundException,
-	    ParsingException, FrameNotFoundException,
-	    FrameElementNotFoundException {
-	BufferedReader br;
-
-	if (!file.exists() || !file.canRead()) {
-	    this.getLogger().severe(
-		    "FlatFormat.process(): cannot read " + file.getName());
-	} else {
-	    try {
-		br = new BufferedReader(new FileReader(file));
-		String line = "";
-		String text = "";
-		int sentenceId = 0;
-		RealizedFrame current = null;
-		Sentence currentSentence = null;
-		String[] token = { "" };
-		List<String> tokens = new LinkedList<String>();
-		do {
-
-		    if (br.ready()) {
-			line = br.readLine();
-			// s += line;
-
-			token = line.split(" ");
-			tokens = new LinkedList<String>();
-			for (String word : token) {
-			    tokens.add(word);
-			}
-			if (token[0].equals("frame")) {
-			    // System.out.print(".");
-			    if (current != null) {
-				currentSentence.addRealizedFrame(current);
-			    }
-			    try {
-				IToken tok =
-					currentSentence.getTokenForString(join(
-						' ', tokens.subList(2,
-							tokens.size())));
-				if (tok != null) {
-				    current =
-					    getFrameNet().getFrame(token[1])
-						    .realize(tok);
-				}
-			    } catch (FrameNotFoundException e) {
-				this.getLogger().warning(e.getMessage());
-				current = null;
-			    }
-			}
-			if (token[0].equals("fe") && current != null) {
-			    try {
-				IToken tok =
-					currentSentence.getTokenForString(join(
-						' ', tokens.subList(2,
-							tokens.size())));
-				if (tok != null) {
-				    current.addRealizedFrameElement(token[1],
-					    tok);
-				}
-			    } catch (FrameElementNotFoundException e) {
-				this.getLogger().warning(e.getMessage());
-				if (this.isAbortOnError()) {
-				    throw new FrameElementNotFoundException(
-					    e.getFrame(), e.getFrameElement());
-				}
-			    }
-			}
-			if (token[0].equals("text")) {
-			    if (currentSentence != null) {
-				this.getSentences().add(currentSentence);
-				this.getSentenceIndex().put(
-					currentSentence.getIdString(),
-					currentSentence);
-			    }
-			    text = join(' ', tokens.subList(1, tokens.size()));
-			    currentSentence = new Sentence(sentenceId++, text);
-			}
-		    }
-		} while (/* line.matches("^.*[a-zA-Z0-9_].*$") && */br.ready());
-		if (current != null) {
-		    currentSentence.addRealizedFrame(current);
-		}
-		if (currentSentence != null) {
-		    this.getSentences().add(currentSentence);
-		    this.getSentenceIndex().put(currentSentence.getIdString(),
-			    currentSentence);
-		}
-		text = join(' ', tokens.subList(1, tokens.size()));
-		currentSentence = new Sentence(sentenceId++, text);
-
-		// System.out.println("");
-		br.close();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	/**
+	 * Creates the FlatFormat object and processes the file.
+	 * 
+	 * @param frameNet
+	 *            The FrameNet object.
+	 */
+	public FlatFormat(final FrameNet frameNet, final Logger logger) {
+		super(frameNet, logger);
 	}
-    }
 
-    private String join(final char c, final Collection<String> a) {
-	String ret = "";
-	boolean first = true;
-	for (String s : a) {
-	    if (first) {
-		ret += s;
-		first = false;
-	    } else {
-		ret += String.valueOf(c) + s;
-	    }
+	/**
+	 * This method parses the given file and stores the found annotation
+	 * sentence-wise in the object.
+	 * 
+	 */
+	@Override
+	public void parse(final File file) throws FileNotFoundException,
+			ParsingException, FrameNotFoundException,
+			FrameElementNotFoundException {
+		BufferedReader br = null;
+
+		if (!file.exists() || !file.canRead()) {
+			this.getLogger().severe(
+					"FlatFormat.process(): cannot read " + file.getName());
+		} else {
+			try {
+				br = new BufferedReader(new FileReader(file));
+				String line = "";
+				String text = "";
+				int sentenceId = 0;
+				RealizedFrame current = null;
+				Sentence currentSentence = null;
+				String[] token = { "" };
+				List<String> tokens = new LinkedList<String>();
+				do {
+
+					if (br.ready()) {
+						line = br.readLine();
+						// s += line;
+
+						token = line.split(" ");
+						tokens = new LinkedList<String>();
+						for (String word : token) {
+							tokens.add(word);
+						}
+						if (token[0].equals("frame")) {
+							// System.out.print(".");
+							if (current != null) {
+								currentSentence.addRealizedFrame(current);
+							}
+							try {
+								IToken tok =
+										currentSentence.getTokenForString(join(
+												' ', tokens.subList(2,
+														tokens.size())));
+								if (tok != null) {
+									current =
+											getFrameNet().getFrame(token[1])
+													.realize(tok);
+								}
+							} catch (FrameNotFoundException e) {
+								this.getLogger().warning(e.getMessage());
+								current = null;
+							}
+						}
+						if (token[0].equals("fe") && current != null) {
+							try {
+								IToken tok =
+										currentSentence.getTokenForString(join(
+												' ', tokens.subList(2,
+														tokens.size())));
+								if (tok != null) {
+									current.addRealizedFrameElement(token[1],
+											tok);
+								}
+							} catch (FrameElementNotFoundException e) {
+								this.getLogger().warning(e.getMessage());
+								if (this.isAbortOnError()) {
+									throw new FrameElementNotFoundException(
+											e.getFrame(), e.getFrameElement());
+								}
+							}
+						}
+						if (token[0].equals("text")) {
+							if (currentSentence != null) {
+								this.getSentences().add(currentSentence);
+								this.getSentenceIndex().put(
+										currentSentence.getIdString(),
+										currentSentence);
+							}
+							text = join(' ', tokens.subList(1, tokens.size()));
+							currentSentence = new Sentence(sentenceId++, text);
+						}
+					}
+				} while (/* line.matches("^.*[a-zA-Z0-9_].*$") && */br.ready());
+				if (current != null) {
+					currentSentence.addRealizedFrame(current);
+				}
+				if (currentSentence != null) {
+					this.getSentences().add(currentSentence);
+					this.getSentenceIndex().put(currentSentence.getIdString(),
+							currentSentence);
+				}
+				text = join(' ', tokens.subList(1, tokens.size()));
+				currentSentence = new Sentence(sentenceId++, text);
+
+				// System.out.println("");
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
-	return ret;
-    }
+
+	private String join(final char c, final Collection<String> a) {
+		String ret = "";
+		boolean first = true;
+		for (String s : a) {
+			if (first) {
+				ret += s;
+				first = false;
+			} else {
+				ret += String.valueOf(c) + s;
+			}
+		}
+		return ret;
+	}
 }

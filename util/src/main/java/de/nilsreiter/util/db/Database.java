@@ -1,31 +1,16 @@
 package de.nilsreiter.util.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Database {
+public interface Database {
+	@Deprecated
+	public Statement getStatement() throws SQLException;
 
-	private Connection connection = null;
+	public Connection getConnection() throws SQLException;
 
-	public Database(DatabaseConfiguration dbc) throws SQLException,
-			ClassNotFoundException {
-		Class.forName("com.mysql.jdbc.Driver");
+	public String getTableName(String baseTblSimilarities);
 
-		connection = DriverManager.getConnection(dbc.getURL(),
-				dbc.getUsername(), dbc.getPassword());
-	}
-
-	protected Statement getStatement() throws SQLException {
-		return connection.createStatement();
-	}
-
-	public Connection getConnection() {
-		return connection;
-	}
-
-	public void disconnect() throws SQLException {
-		this.getConnection().close();
-	}
+	public void dropTable(String table_documents) throws SQLException;
 }

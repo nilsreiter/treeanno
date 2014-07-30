@@ -1,6 +1,7 @@
 package de.nilsreiter.web;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,10 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.nilsreiter.web.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
-import de.uniheidelberg.cl.a10.data2.alignment.io.EventAlignmentReader;
+import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentReader;
 
 /**
  * Servlet implementation class AlignmentLoader
@@ -19,16 +19,21 @@ import de.uniheidelberg.cl.a10.data2.alignment.io.EventAlignmentReader;
 public class AlignmentLoader extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
 
-	EventAlignmentReader alignmentReader;
+	DBAlignmentReader<Event> alignmentReader;
 
 	public AlignmentLoader() {
 		super();
 	}
 
 	@Override
-	public void init() {
+	public void init() throws ServletException {
 		super.init();
-		alignmentReader = new EventAlignmentReader(docMan);
+		try {
+			alignmentReader = docMan.getAlignmentReader();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -40,24 +45,23 @@ public class AlignmentLoader extends AbstractServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		if (request.getParameter("doc") == null) {
-			RequestDispatcher view = request
-					.getRequestDispatcher("documentset/select.jsp");
+			RequestDispatcher view =
+					request.getRequestDispatcher("alignment/select.jsp");
 			view.forward(request, response);
 			return;
 		}
-		Alignment<Event> alignment = alignmentReader.read(docMan
-				.findStreamFor(request.getParameter("doc")));
+		Alignment<Event> alignment;
+		alignment = getAlignment(request);
 
-		request.setAttribute("location",
-				new Location("Rituals", Area.Alignment));
 		request.setAttribute("alignment", alignment);
 		request.setAttribute("documents", alignment.getDocuments());
 		request.setAttribute("map", docMan.getClassesForTokens(alignment));
 		request.setAttribute("doc", alignment.getId());
 
 		request.setAttribute("arity", alignment.getDocuments().size());
-		RequestDispatcher view = request
-				.getRequestDispatcher("documentset/alignment.jsp");
+		RequestDispatcher view =
+				request.getRequestDispatcher("alignment/alignment.jsp");
 		view.forward(request, response);
+
 	}
 }

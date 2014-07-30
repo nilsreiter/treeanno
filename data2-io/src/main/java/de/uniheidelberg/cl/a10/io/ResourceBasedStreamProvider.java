@@ -19,4 +19,10 @@ public class ResourceBasedStreamProvider implements DataStreamProvider {
 
 	}
 
+	@Override
+	public InputStream findStreamFor(String objectName, String type)
+			throws IOException {
+		return this.findStreamFor(objectName);
+	}
+
 }

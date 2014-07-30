@@ -19,13 +19,11 @@ import de.uniheidelberg.cl.a10.data2.FrameElement;
 import de.uniheidelberg.cl.a10.data2.Mention;
 import de.uniheidelberg.cl.a10.data2.Token;
 
-;
-
 public class TestDataReader {
 
 	@Test
 	public void testReader() throws Exception {
-		URL url = this.getClass().getResource("/test_docs/document.xml");
+		URL url = this.getClass().getResource("/document.xml");
 		File testWsdl = new File(url.getFile());
 
 		DataReader dr = new DataReader();
@@ -81,6 +79,9 @@ public class TestDataReader {
 			}
 		}
 
+		// corpus name
+		assertEquals("testcorpus", text.getCorpusName());
+
 		// frame extraction
 		assertEquals(text.getFrames().size(), 1);
 		assertEquals(text.getFrames().get(0).getFrameName(), "chant_frame");
@@ -104,7 +105,7 @@ public class TestDataReader {
 		// events
 		Event ev0 = text.getEvents().get(0);
 		assertEquals(1, text.getEvents().size());
-		assertEquals("t6", ev0.getAnchor().getId());
+		assertEquals("t6", ev0.firstToken().getId());
 		assertEquals(1, ev0.getArguments().size());
 		assertEquals(5, ev0.getArguments().get("Subject").size());
 		assertNotNull(ev0.getEventClass());

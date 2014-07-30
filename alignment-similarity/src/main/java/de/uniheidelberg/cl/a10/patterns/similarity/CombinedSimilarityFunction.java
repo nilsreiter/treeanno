@@ -65,21 +65,18 @@ public class CombinedSimilarityFunction<T> extends
 
 	@Override
 	public synchronized Probability sim(final T arg0, final T arg1) {
-		if (features.size() == 0)
-			return Probability.NULL;
-		if (arg0 == null || arg1 == null)
-			return Probability.NULL;
+		if (features.size() == 0) return Probability.NULL;
+		if (arg0 == null || arg1 == null) return Probability.NULL;
 
 		Probability p = this.getFromHistory(arg0, arg1);
-		if (p != null)
-			return p;
+		if (p != null) return p;
 
 		List<Probability> ps = new ArrayList<Probability>();
 		for (int i = 0; i < features.size(); i++) {
 			for (int j = 0; j < weights.get(i); j++) {
 				try {
 					ps.add(features.get(i).sim(arg0, arg1));
-				} catch (IncompatibleException e) {
+				} catch (Exception e) {
 					// If a function is not compatible, we silently catch the
 					// exception
 				}
@@ -132,7 +129,7 @@ public class CombinedSimilarityFunction<T> extends
 	}
 
 	@Override
-	public void readConfiguration(final SimilarityConfiguration tc) {
+	public void readConfiguration(final Object tc) {
 		super.readConfiguration(tc);
 		for (SimilarityFunction<? extends T> sf : features) {
 			sf.readConfiguration(tc);

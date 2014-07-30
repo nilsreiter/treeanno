@@ -10,7 +10,7 @@
 <title></title>
 </head>
 <body>
-<jsp:include page="menu.jsp" />
+<jsp:include page="${param.area}/menu.jsp" />
 
 <div class="error dialog">
 <h1>${title}</h1>

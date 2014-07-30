@@ -1,15 +1,18 @@
 package de.nilsreiter.web;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import de.nilsreiter.web.Location.Area;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.alignment.io.EventAlignmentReader;
+import de.uniheidelberg.cl.a10.data2.io.DBDocumentSetReader;
 
 public class EventSimilarityLoaderDocumentSet extends
 		AbstractEventSimilarityLoader {
@@ -18,12 +21,17 @@ public class EventSimilarityLoaderDocumentSet extends
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private EventAlignmentReader alignmentReader;
+
+	DBDocumentSetReader dbsr;
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		alignmentReader = new EventAlignmentReader(docMan);
+		try {
+			dbsr = docMan.getDocumentSetReader();
+		} catch (SQLException e) {
+			throw new ServletException(e);
+		}
 
 	}
 
@@ -42,16 +50,25 @@ public class EventSimilarityLoaderDocumentSet extends
 			throws IOException {
 		List<Document> documents = new ArrayList<Document>();
 
-		documents.addAll(alignmentReader.read(
-				docMan.findStreamFor(request.getParameter("doc")))
-				.getDocuments());
+		try {
+			documents.addAll(dbsr.read((request.getParameter("doc"))).getSet());
+		} catch (ValidityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParsingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return documents;
 
 	}
 
 	@Override
-	protected Location getLocation() {
-		return new Location("Rituals", Area.Alignment);
+	protected Area getArea() {
+		return Area.DocumentSet;
 	}
 
 }

@@ -1,16 +1,34 @@
-<%@ page import="de.nilsreiter.web.Location,de.nilsreiter.web.Location.Area"  %>
-<jsp:useBean id="location" class="de.nilsreiter.web.Location" scope="request">
-	<jsp:setProperty property="area" name="location" value="Document"/>
-	<jsp:setProperty property="corpus" name="location" value="Rituals"/>
-</jsp:useBean>
+<%@ page import="de.nilsreiter.web.beans.menu.Location,
+	de.nilsreiter.web.beans.menu.Location.Area" %>
+
+<%
+	if (session.getAttribute("location") == null) {
+		session.setAttribute("location", new Location(Area.Document));
+	}
+	((Location)session.getAttribute("location")).setArea(Area.Document);
+%>
 <%@ include file="head.jsp" %>
+
+<div class="level2 content">
+<%@ include file="../common/document-menu.jsp" %>
+
+<div class="level3 content">
+
+<div class="content level4">
+
 <div id="documentpicker" class="dialog picker">
-	<h1>Select Document</h1>
-	<ul class="filelist">
-	<c:forEach var="documentName" items="${docman.documents}">
-		<li onclick="location.href='view-document?doc=${documentName}'">${documentName}</li>
-	</c:forEach>
-	</ul>
+	<h1>Open Document</h1>
+	<table class="filelist">
+	<thead><tr><th>Id</th><th>Corpus</th><th>Name</th><th>Content</th></tr></thead>
+	<tbody></tbody>
+	</table>
 	
 </div>
-<%@ include file="foot.jsp" %>
+</div>
+</div>
+</div>
+<script>
+populate_file_list("#documentpicker");
+</script>
+</body>
+</html>

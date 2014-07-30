@@ -1,25 +1,42 @@
 package de.nilsreiter.web;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Enumeration;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.nilsreiter.web.Location.Area;
-import de.uniheidelberg.cl.a10.data2.Event;
-import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
-import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
-import de.uniheidelberg.cl.a10.data2.io.DataReader;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+import de.uniheidelberg.cl.a10.data2.Document;
+import de.uniheidelberg.cl.a10.data2.DocumentSet;
+import de.uniheidelberg.cl.a10.data2.impl.DocumentSet_impl;
+import de.uniheidelberg.cl.a10.data2.io.DBDataReader;
+import de.uniheidelberg.cl.a10.data2.io.DBDocumentSet;
+import de.uniheidelberg.cl.a10.data2.io.DBDocumentSetWriter;
 
 /**
  * Servlet implementation class CreateDocumentSet
  */
 public class CreateDocumentSet extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
+
+	DBDocumentSetWriter dbsw;
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		try {
+			dbsw = new DBDocumentSetWriter(docMan.getDatabase());
+			DBDocumentSet dbds = new DBDocumentSet(docMan.getDatabase());
+			dbds.initIfTableNotExists();
+		} catch (SQLException e) {
+			throw new ServletException(e);
+		}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -29,32 +46,32 @@ public class CreateDocumentSet extends AbstractServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		Alignment<Event> alignment = new Alignment_impl<Event>(
-				request.getParameter("setname"));
+		DocumentSet docset =
+				new DocumentSet_impl(request.getParameter("setname"));
 
-		DataReader dr = new DataReader();
+		DBDataReader dr = docMan.getDataReader();
 		Enumeration<String> pEnum = request.getParameterNames();
 		while (pEnum.hasMoreElements()) {
 			String pName = pEnum.nextElement();
 			if (pName.startsWith("doc")) {
-				alignment.getDocuments().add(
-						dr.read(docMan.findStreamFor(pName.substring(3))));
+				String dId = pName.substring(3);
+				try {
+					Document document = dr.read(String.valueOf(dId));
+					docset.add(document);
+				} catch (ValidityException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (ParsingException e) {
+					e.printStackTrace();
+				}
 			}
 		}
+		dbsw.write(docset);
+		docMan.documentSetInfo = null;
 
-		// TODO: Saving needs to happen here, then maybe redirect?
+		response.sendRedirect("view-document-set?doc="
+				+ dbsw.getLastCreatedId());
 
-		request.setAttribute("location",
-				new Location("Rituals", Area.Alignment));
-
-		request.setAttribute("alignment", alignment);
-		request.setAttribute("documents", alignment.getDocuments());
-		request.setAttribute("map", docMan.getClassesForTokens(alignment));
-		request.setAttribute("doc", alignment.getId());
-
-		request.setAttribute("arity", alignment.getDocuments().size());
-		RequestDispatcher view = request
-				.getRequestDispatcher("documentset/alignment.jsp");
-		view.forward(request, response);
 	}
 }

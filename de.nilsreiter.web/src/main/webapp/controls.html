@@ -1,4 +1,13 @@
-<input type="checkbox" onchange="jQuery('.event').toggleClass('highlightEvent')" />Events
-<input type="checkbox" onchange="jQuery('.frame').toggleClass('highlightFrame')" />Frames
-<input type="checkbox" onchange="jQuery('.mention').toggleClass('highlightMention')" />Mentions
-<input type="checkbox" onchange="jQuery('.sentence').toggleClass('div')" />Split sentences
+
+<!-- <li><input type="checkbox" onchange="jQuery('.event').toggleClass('highlightEvent')" />Events</li>
+<li><input type="checkbox" onchange="jQuery('.frame').toggleClass('highlightFrame')" />Frames</li>
+<li><input type="checkbox" onchange="jQuery('.mention').toggleClass('highlightMention')" />Mentions</li>
+<li><input type="checkbox" onchange="jQuery('.sentence').toggleClass('div')" />Split sentences</li>
+<li><input type="search" onkeyup="localsearch(this.value)"/></li> -->
+
+<input type="checkbox" id="button-highlight-events" /><label for="button-highlight-events">Events</label>
+<input type="checkbox" id="button-highlight-frames" /><label for="button-highlight-frames">Frames</label>
+<input type="checkbox" id="button-highlight-mentions" /><label for="button-highlight-mentions">Mentions</label>
+<input type="checkbox" id="button-split-sentences" /><label for="button-split-sentences">Split Sentences</label>
+
+<label for="local-search-field">Search</label><input type="search"  id="local-search-field" onkeyup="localsearch(this.value)" />

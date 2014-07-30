@@ -12,7 +12,6 @@ import de.uniheidelberg.cl.a10.patterns.data.PMath;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.models.impl.HiddenMarkovModel_impl;
 import de.uniheidelberg.cl.a10.patterns.models.impl.SEHiddenMarkovModel_impl;
-import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class TestSEHiddenMarkovModel extends TestHiddenMarkovModel {
@@ -27,7 +26,8 @@ public class TestSEHiddenMarkovModel extends TestHiddenMarkovModel {
 	@Test
 	public void testHMM() {
 
-		HiddenMarkovModel_impl<Object> hmm = new SEHiddenMarkovModel_impl<Object>();
+		HiddenMarkovModel_impl<Object> hmm =
+				new SEHiddenMarkovModel_impl<Object>();
 		hmm.init(seq1);
 		hmm.init(seq2);
 
@@ -44,7 +44,8 @@ public class TestSEHiddenMarkovModel extends TestHiddenMarkovModel {
 	@Test
 	public void testMerging() {
 
-		HiddenMarkovModel_impl<Object> hmm = new SEHiddenMarkovModel_impl<Object>();
+		HiddenMarkovModel_impl<Object> hmm =
+				new SEHiddenMarkovModel_impl<Object>();
 		hmm.init(seq2);
 		hmm.init(seq1);
 		assertEquals(0.5, hmm.p(seq2).getProbability(), 0.0);
@@ -58,11 +59,12 @@ public class TestSEHiddenMarkovModel extends TestHiddenMarkovModel {
 	@Test
 	public void testCopy() {
 
-		SEHiddenMarkovModel_impl<Object> hmmo = new SEHiddenMarkovModel_impl<Object>();
+		SEHiddenMarkovModel_impl<Object> hmmo =
+				new SEHiddenMarkovModel_impl<Object>();
 		hmmo.init(seq2);
 		hmmo.init(seq1);
-		HiddenMarkovModel_impl<Object> hmm = new SEHiddenMarkovModel_impl<Object>(
-				hmmo);
+		HiddenMarkovModel_impl<Object> hmm =
+				new SEHiddenMarkovModel_impl<Object>(hmmo);
 		assertEquals(0.5, hmm.p(seq1).getProbability(), 0.0);
 		assertEquals(0.5, hmm.p(seq2).getProbability(), 0.0);
 		assertEquals(
@@ -76,8 +78,10 @@ public class TestSEHiddenMarkovModel extends TestHiddenMarkovModel {
 		List<Integer> sseq1 = Arrays.asList(0, 1, 2, 3, 4, -1);
 		List<Integer> sseq2 = Arrays.asList(0, 5, 6, -1);
 
-		SEHiddenMarkovModel_impl<Object> hmm = new SEHiddenMarkovModel_impl<Object>();
-		SEHiddenMarkovModel_impl<Object> hmmprime = new SEHiddenMarkovModel_impl<Object>();
+		SEHiddenMarkovModel_impl<Object> hmm =
+				new SEHiddenMarkovModel_impl<Object>();
+		SEHiddenMarkovModel_impl<Object> hmmprime =
+				new SEHiddenMarkovModel_impl<Object>();
 		hmm.init(seq1);
 		hmm.init(seq2);
 
@@ -110,10 +114,8 @@ public class TestSEHiddenMarkovModel extends TestHiddenMarkovModel {
 		SimilarityFunction<Object> sf = new SimilarityFunction<Object>() {
 			@Override
 			public Probability sim(final Object arg0, final Object arg1) {
-				if (arg0 == null || arg1 == null)
-					return Probability.NULL;
-				if (arg0.equals(arg1))
-					return Probability.ONE;
+				if (arg0 == null || arg1 == null) return Probability.NULL;
+				if (arg0.equals(arg1)) return Probability.ONE;
 				if (arg0 == c && arg1 == b)
 					return Probability.fromProbability(0.5);
 				if (arg0 == b && arg1 == c)
@@ -127,14 +129,15 @@ public class TestSEHiddenMarkovModel extends TestHiddenMarkovModel {
 			}
 
 			@Override
-			public void readConfiguration(final SimilarityConfiguration tc) {
+			public void readConfiguration(final Object tc) {
 				// TODO Auto-generated method stub
 
 			}
 
 		};
 
-		SEHiddenMarkovModel_impl<Object> hmm = new SEHiddenMarkovModel_impl<Object>();
+		SEHiddenMarkovModel_impl<Object> hmm =
+				new SEHiddenMarkovModel_impl<Object>();
 		hmm.init(seq1);
 		hmm.init(seq2);
 		hmm.setEventSimilarity(sf);

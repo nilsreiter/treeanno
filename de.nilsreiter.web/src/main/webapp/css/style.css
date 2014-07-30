@@ -4,7 +4,6 @@ div.content {
 	margin:0;	
 	padding:0;
 	border-style:none;
-	width:100%;
 }
 
 div.box {
@@ -16,7 +15,6 @@ div.box {
 
 div#loading {
 	background-color:white;
-	width:100%;
 	height:100%;
 	z-index:10;
 	text-align:center;
@@ -39,8 +37,13 @@ div.originaltext {
 	padding:10px;
 }
 
+.surface {
+	font-family:serif;
+}
 
-
+.localsearchresult {
+	background-color:#FAA;
+}
 
 .highlightFrame {
 	background-color:green;
@@ -55,8 +58,12 @@ div.originaltext {
 
 body {
 	margin:0;
-	padding:0px;
+	padding:0;
 	border-style:none;
+	font-family:sans-serif;
+	font-size:small;
+	background-color:#EEE;
+
 }
 
 span.div {
@@ -67,11 +74,11 @@ span.div {
 
 
 #canvascontainer {
-	width:100%;	
 	height:100%;
 	background:none;
 	position:absolute;
 	top:0px;
+	width:100%;
 }
 
 #canvas {
@@ -87,13 +94,17 @@ div.locationbar {
 	font-style:sans-serif;
 }
 
+ul { 
+	list-style-type:none;
+}
+
 .dialog {
 	border:thin solid black;
 	border-radius:5px;
 	padding:0;
-	width:300px;
+	/*width:300px;*/
 	position:relative;
-	top:200px;
+	top:150px;
 	left:20%;
 	float:left;
 	margin:50px;
@@ -108,59 +119,97 @@ div.locationbar {
 	font-size:large;
 }
 
-.dialog p {
+.dialog p, .dialog > div {
 	padding:5px;
 	margin:10px;
 }
 
-ul.filelist {
+
+table.filelist, ul.filelist {
 	list-style-type:none;
 	padding:5px;
 	margin:10px;
 	border:thin solid #DDD;
+	border-collapse:collapse;
+	height:30vh;
 }
 
-ul.filelist li {
+table.filelist tbody {
+	height:100%;
+	overflow:auto;
+}
+
+table.filelist > thead > tr, table.filelist > tbody{
+    display:block;
+}
+
+ul.filelist li, table.filelist tbody tr {
 	cursor:pointer;
 	background-color:white;
 }
-
-ul.filelist li:nth-child(even) {
+ul.filelist li:nth-child(even), table.filelist tr:nth-child(even) {
 	background-color:#DDD;
 }
 
-
-
-.content > .event {
-	border:thin solid #AAA;
-	border-radius:5px;
-	width:300px;
-	position:relative;
-	left:10%;
-	margin:40px;
+table.filelist tr th {
+	font-size:x-small;
+	padding:5px;
 }
 
-.content > .event .eventclass {
-	font-variant:small-caps;
+
+table.filelist tr td {
+	padding:5px;
 }
 
-.content > .event .surface {
+#documentsetcreator {
+	height:350px;
 }
 
-div.event table {
-	border:none;
-	margin:20px;
-	border-collapse: collapse;
-}
 
-div.event table tr:first-child {
-	border-bottom:thin solid black;
-}
 
-div.event table tr td {
-	padding-right:15px;
-}
+
+
 /* Menus and navigation */
+#sidebar {
+	position:fixed;
+	top:5%;
+	right:0px;
+	width:300px;
+	border:thin solid black;
+	border-right:none;
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+	background-color:white;
+	height:80vh;
+	overflow:auto;
+}
+
+#sidebar h1 {
+	margin:0;
+	padding:10px;
+	background-color:#EEE;
+	border-top-left-radius:5px;
+	font-size:medium;
+}
+
+#sidebar h2 {
+	font-size:small;
+}
+
+#sidebar ul {
+	margin-top:0;
+	padding-left:10px;
+	font-size:small;
+}
+
+#sidebar table {
+	font-size:small;
+}
+
+#sidebar div {
+	padding-left:3px;
+}
+
 .menu {
 	width:100%;
 	margin:0;
@@ -184,24 +233,27 @@ div.event table tr td {
 }
 
 .menu ul li.active {
-	font-size:large;
+	font-size:medium;
 }
 
+.menu ul li.disabled {
+	color:#888;
+}
 
 .menu ul li a {
 	text-decoration:none;
 	color:black;
 }
 
-.level1 {
-	background-color:#EEE;
-}
+
+
 
 .level1 > .menu {
 	text-align:center;
 	position:relative;
-	left:30%;
+	left:25%;
 	border:none;
+	width:50%;
 }
 
 .level1 > .menu ul li {
@@ -226,13 +278,84 @@ div.event table tr td {
 
 .level3 > .menu {
 	width:100% !important;
-	height:50px;
 	border:none;
+	padding:5px;
+}
+
+.level3 > .menu ul li {
+	background-color:#BBB;
+	border:thin solid #CCC;
+	border-bottom:none;
 }
 
 .level4 {
-	background-color:white;
+	background-color:#BBB;
 	width:100%;
-	height:100%;
 }
 
+.level4 > .menu {
+	width:100% !important;
+	border:none;
+	padding:5px;
+}
+
+.level5 {
+	background-color:white;
+}
+
+/*
+ * Search Results
+ */
+ 
+div#results {
+}
+
+div#results > table {
+	margin-left: auto;
+	margin-right: auto;
+	border-collapse:collapse;
+	font-size:small;
+}
+
+div#results > table > tbody > tr > td {
+	border:thin solid black;
+}
+
+div#results td.hit {
+	border:medium solid red;
+}
+
+.ui-button-text {
+	font-size:small;
+	font-weight:normal;
+}
+
+/*
+ * Search query definition
+ */
+div#eventpattern {
+	overflow:scroll;
+	max-height:150px;
+	width:1000px;
+} 
+
+#eventpattern label {
+	font-size:small;
+}
+
+.addcontainer {
+	float:left;
+}
+
+div.eventspecifier {
+	font-size:small;	
+}
+
+/**
+ * Running processes
+ */
+div#running {
+	position:absolute;
+	right:5px;
+	top:5px;
+}

@@ -4,8 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 import de.uniheidelberg.cl.a10.HasId;
+import de.uniheidelberg.cl.a10.HasTitle;
 
-public interface Document extends AnnotationObject, HasId {
+public interface Document extends AnnotationObject, HasId, HasTitle {
 
 	HasId getById(String id);
 
@@ -33,6 +34,7 @@ public interface Document extends AnnotationObject, HasId {
 	 * 
 	 * @return List of Frames in their temporal ordering.
 	 */
+	@Deprecated
 	List<? extends Frame> getFramesInTemporalOrdering();
 
 	List<? extends Mantra> getMantras();
@@ -73,5 +75,9 @@ public interface Document extends AnnotationObject, HasId {
 	void addEvent(Event ev);
 
 	Event getEventById(String id);
+
+	String getCorpusName();
+
+	void setCorpusName(String corpusName);
 
 }

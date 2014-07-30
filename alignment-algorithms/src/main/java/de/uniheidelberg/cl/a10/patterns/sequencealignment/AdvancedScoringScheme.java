@@ -2,7 +2,7 @@ package de.uniheidelberg.cl.a10.patterns.sequencealignment;
 
 import de.uniheidelberg.cl.a10.Util;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
-import de.uniheidelberg.cl.a10.patterns.similarity.IncompatibleException;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 /**
@@ -31,8 +31,7 @@ public class AdvancedScoringScheme<T> extends BasicScoringScheme<T> {
 
 	@Override
 	public double scoreSubstitution(final T a, final T b) {
-		if (a == null || b == null)
-			return gap_cost;
+		if (a == null || b == null) return gap_cost;
 		Probability p;
 		try {
 			p = function.sim(a, b);
@@ -43,7 +42,7 @@ public class AdvancedScoringScheme<T> extends BasicScoringScheme<T> {
 				return Util.scale(0.0, threshold.getProbability(), -1.0, 0.0,
 						p.getProbability());
 			}
-		} catch (IncompatibleException e) {
+		} catch (SimilarityCalculationException e) {
 			return Util.scale(0.0, threshold.getProbability(), -1.0, 0.0, 0.0);
 		}
 
@@ -53,7 +52,7 @@ public class AdvancedScoringScheme<T> extends BasicScoringScheme<T> {
 	public Probability sim(final T a, final T b) {
 		try {
 			return this.function.sim(a, b);
-		} catch (IncompatibleException e) {
+		} catch (SimilarityCalculationException e) {
 			e.printStackTrace();
 		}
 		return Probability.NULL;

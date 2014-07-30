@@ -2,6 +2,7 @@ package de.nilsreiter.web.rpc;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -9,13 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONArray;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+
 import org.json.JSONObject;
 
 import de.nilsreiter.web.AbstractServlet;
+import de.nilsreiter.web.json.JSONConversion;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
-import de.uniheidelberg.cl.a10.data2.io.DataReader;
 
 /**
  * Servlet implementation class GetEvents
@@ -35,24 +38,32 @@ public class GetEvents extends AbstractServlet implements Servlet {
 			return;
 
 		}
-		Document document = new DataReader().read(docMan.findStreamFor(request
-				.getParameter("doc")));
+		Document document;
+		try {
+			document = docMan.getDataReader().read(request.getParameter("doc"));
 
-		PrintWriter out = response.getWriter();
-		JSONArray json = new JSONArray();
-		for (Event event : document.getEvents()) {
-			JSONObject eventObject = new JSONObject();
-			eventObject.put("id", event.getGlobalId());
-			eventObject.put("class", event.getEventClass());
-			eventObject.put("anchorId", event.firstToken().getGlobalId());
-			for (String role : event.getArguments().keySet()) {
-				JSONObject roleObject = new JSONObject();
-				roleObject.put("name", event.getArguments().get(role));
+			JSONObject json = new JSONObject();
+			json.put("id", document.getId());
+			for (Event event : document.getEvents()) {
+				json.append("events", JSONConversion.getEvent(event));
 			}
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/json");
+			PrintWriter out = response.getWriter();
+			out.print(json.toString());
+			out.flush();
+			out.close();
+		} catch (ValidityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParsingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		out.print(json.toString());
-		out.flush();
-		out.close();
+
 	}
 
 }
