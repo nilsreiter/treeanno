@@ -56,6 +56,7 @@
   	<module>de.nilsreiter.web</module>
   	<module>de.nilsreiter.pipeline</module>
   	<module>de.nilsreiter.lm</module>
+  	<module>de.nilsreiter.test</module>
   </modules>
   <dependencies>
   </dependencies>
