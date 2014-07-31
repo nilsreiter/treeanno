@@ -64,11 +64,13 @@ public interface Document extends AnnotationObject, HasId, HasTitle {
 
 	List<Token> getTokens();
 
+	@Override
 	String getTitle();
 
+	@Override
 	void setTitle(String title);
 
-	List<? extends Event> getEvents();
+	List<Event> getEvents();
 
 	List<AnnotationObjectInDocument> getAnnotations(Class<?> clazz);
 

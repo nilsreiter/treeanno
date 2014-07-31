@@ -28,7 +28,7 @@ import de.uniheidelberg.cl.a10.data2.Token;
  * 
  */
 public class Document_impl extends AnnotationObject_impl implements
-		Comparable<Document_impl>, Document {
+Comparable<Document_impl>, Document {
 
 	/**
 	 * Map storing all tokens in this document, mapping from tokenId to Token.
@@ -541,7 +541,7 @@ public class Document_impl extends AnnotationObject_impl implements
 	}
 
 	@Override
-	public List<? extends Event> getEvents() {
+	public List<Event> getEvents() {
 		return this.listOfEvents;
 	}
 
