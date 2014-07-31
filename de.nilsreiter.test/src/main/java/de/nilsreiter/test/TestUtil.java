@@ -30,6 +30,7 @@ public class TestUtil {
 			Event event = mock(Event.class);
 			when(event.getId()).thenReturn("ev" + i);
 			when(event.getRitualDocument()).thenReturn(doc);
+			when(doc.getById("ev" + i)).thenReturn(event);
 			events.add(event);
 		}
 		when(doc.getId()).thenReturn(documentId);
