@@ -27,10 +27,12 @@ public class TestUtil {
 		Document doc = mock(Document.class);
 		List<Event> events = new LinkedList<Event>();
 		for (int i = 0; i < numberOfEvents; i++) {
+			String id = "ev" + String.valueOf(i);
 			Event event = mock(Event.class);
-			when(event.getId()).thenReturn("ev" + i);
+			when(event.getId()).thenReturn(id);
 			when(event.getRitualDocument()).thenReturn(doc);
-			when(doc.getById("ev" + i)).thenReturn(event);
+			when(doc.getById(id)).thenReturn(event);
+			when(event.toString()).thenReturn(id);
 			events.add(event);
 		}
 		when(doc.getId()).thenReturn(documentId);
