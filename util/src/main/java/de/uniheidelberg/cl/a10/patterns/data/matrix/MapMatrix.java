@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -27,6 +28,8 @@ public class MapMatrix<R, C, V> implements Matrix<R, C, V>, Serializable {
 
 	V defaultValue = null;
 
+	boolean hasDefault = false;
+
 	/**
 	 * Constructs a new empty matrix
 	 */
@@ -37,6 +40,7 @@ public class MapMatrix<R, C, V> implements Matrix<R, C, V>, Serializable {
 	public MapMatrix(final V defVale) {
 		this.data = new HashMap<R, Map<C, V>>();
 		this.defaultValue = defVale;
+		this.hasDefault = true;
 	}
 
 	/**
@@ -58,10 +62,16 @@ public class MapMatrix<R, C, V> implements Matrix<R, C, V>, Serializable {
 	@Override
 	public V get(final R r, final C c) {
 		if (!data.containsKey(r)) {
-			return defaultValue;
+			if (hasDefault)
+				return defaultValue;
+			else
+				throw new NoSuchElementException(r.toString());
 		}
-		if (!data.get(r).containsKey(c)) {
-			return defaultValue;
+		if (!data.get(r).containsKey(c) && hasDefault) {
+			if (hasDefault)
+				return defaultValue;
+			else
+				throw new NoSuchElementException(c.toString());
 		}
 		return data.get(r).get(c);
 
@@ -87,8 +97,8 @@ public class MapMatrix<R, C, V> implements Matrix<R, C, V>, Serializable {
 	}
 
 	private boolean isDefaultValue(final V val) {
-		return (defaultValue == val || (defaultValue != null && defaultValue
-				.equals(val)));
+		return (hasDefault && (defaultValue == val || (defaultValue != null && defaultValue
+				.equals(val))));
 	}
 
 	/**
@@ -147,6 +157,7 @@ public class MapMatrix<R, C, V> implements Matrix<R, C, V>, Serializable {
 	 */
 	public void setDefaultValue(final V defaultValue) {
 		this.defaultValue = defaultValue;
+		this.hasDefault = true;
 	}
 
 	public void clear() {
