@@ -31,6 +31,12 @@ public class BMMFactory<T extends HasDocument> {
 		this.sfFactory = factory;
 	}
 
+	public BMMFactory(SimilarityFunction<T> func) {
+		this.sfFactory = null;
+		this.similarityFunction = func;
+
+	}
+
 	/**
 	 * Most important method. Returns the trainer object.
 	 * 
@@ -64,12 +70,14 @@ public class BMMFactory<T extends HasDocument> {
 			InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
 		if (bmmc.getThreshold() != Double.MIN_VALUE) {
-			prior = new GeometricDistributionWithThreshold<T>(
-					this.getSimilarityFunction(bmmc), bmmc.prior,
-					bmmc.getThreshold());
+			prior =
+					new GeometricDistributionWithThreshold<T>(
+							this.getSimilarityFunction(bmmc), bmmc.prior,
+							bmmc.getThreshold());
 		} else {
-			prior = new GeometricDistribution<T>(
-					this.getSimilarityFunction(bmmc), bmmc.prior);
+			prior =
+					new GeometricDistribution<T>(
+							this.getSimilarityFunction(bmmc), bmmc.prior);
 		}
 		return prior;
 	}
@@ -78,7 +86,9 @@ public class BMMFactory<T extends HasDocument> {
 			final SimilarityConfiguration bmmc) throws FileNotFoundException,
 			SecurityException, InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
-		return sfFactory.getSimilarityFunction(bmmc);
+		if (this.similarityFunction == null && this.sfFactory != null)
+			this.similarityFunction = sfFactory.getSimilarityFunction(bmmc);
+		return this.similarityFunction;
 	}
 
 	public Prior<T> getLastPrior() {
