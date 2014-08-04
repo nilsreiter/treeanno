@@ -14,10 +14,12 @@ import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
 import de.nilsreiter.alignment.algorithm.impl.BayesianModelMerging_impl;
+import de.nilsreiter.alignment.algorithm.impl.MRSystem_impl;
 import de.nilsreiter.alignment.algorithm.impl.NeedlemanWunsch_impl;
 import de.nilsreiter.event.similarity.SimilarityFunctionFactory;
 import de.nilsreiter.util.db.impl.DatabaseDataSource_impl;
 import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class AlgorithmFactory {
@@ -67,6 +69,14 @@ public class AlgorithmFactory {
 								new DatabaseDataSource_impl(dataSource),
 								configuration);
 				return new BayesianModelMerging_impl<Event>(func, configuration);
+			} else if (MRSystem.class.isAssignableFrom(cl)) {
+				MRSystem_impl<Event> mrs = new MRSystem_impl<Event>();
+				mrs.setSimilarityFunction(SimilarityFunctionFactory
+						.getSimilarityFunction(new DatabaseDataSource_impl(
+								dataSource), configuration));
+				mrs.setThreshold(Probability.fromProbability(configuration
+						.getDouble(MRSystem.CONFIG_THRESHOLD)));
+				return mrs;
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
