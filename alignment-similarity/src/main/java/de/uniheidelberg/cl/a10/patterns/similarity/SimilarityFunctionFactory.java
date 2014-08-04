@@ -13,7 +13,8 @@ public class SimilarityFunctionFactory<T> {
 
 	Map<String, String> functionAliases = new HashMap<String, String>();
 
-	Map<Class<? extends SimilarityFunction<T>>, SimilarityFunction<T>> functions = new HashMap<Class<? extends SimilarityFunction<T>>, SimilarityFunction<T>>();
+	Map<Class<? extends SimilarityFunction<T>>, SimilarityFunction<T>> functions =
+			new HashMap<Class<? extends SimilarityFunction<T>>, SimilarityFunction<T>>();
 
 	public SimilarityFunctionFactory() {
 		this.functionIndex = new HashMap<String, SimilarityFunction<T>>();
@@ -29,7 +30,7 @@ public class SimilarityFunctionFactory<T> {
 
 	public SimilarityFunction<T> getSimilarityFunction(
 			final Class<? extends SimilarityFunction<T>> clazz)
-			throws InstantiationException, IllegalAccessException {
+					throws InstantiationException, IllegalAccessException {
 		if (!functions.containsKey(clazz)) {
 			functions.put(clazz, clazz.newInstance());
 		}
@@ -38,7 +39,7 @@ public class SimilarityFunctionFactory<T> {
 
 	public synchronized SimilarityFunction<T> getSimilarityFunction(
 			final String functionName, final SimilarityConfiguration sConf)
-			throws InstantiationException, IllegalAccessException {
+					throws InstantiationException, IllegalAccessException {
 		if (this.functionIndex.containsKey(functionName
 				+ sConf.getCommandLine())) {
 			return this.functionIndex
@@ -46,15 +47,16 @@ public class SimilarityFunctionFactory<T> {
 		}
 		Class<?> cl = null;
 		try {
-			cl = Class.forName(this.getClass().getPackage().getName() + "."
-					+ functionName);
+			cl =
+					Class.forName(this.getClass().getPackage().getName() + "."
+							+ functionName);
 		} catch (ClassNotFoundException e) {
 
 		}
 		if (cl != null && SimilarityFunction.class.isAssignableFrom(cl)) {
 			@SuppressWarnings("unchecked")
-			SimilarityFunction<T> sf = this
-					.getSimilarityFunction((Class<? extends SimilarityFunction<T>>) cl);
+			SimilarityFunction<T> sf =
+					this.getSimilarityFunction((Class<? extends SimilarityFunction<T>>) cl);
 			this.functionIndex.put(functionName + sConf.getCommandLine(), sf);
 			return sf;
 		}
@@ -63,8 +65,7 @@ public class SimilarityFunctionFactory<T> {
 
 	public SimilarityFunction<T> getSimilarityFunction(
 			final SimilarityConfiguration bmmc) throws FileNotFoundException,
-			SecurityException, InstantiationException, IllegalAccessException,
-			ClassNotFoundException {
+			SecurityException, InstantiationException, IllegalAccessException {
 		CombinedSimilarityFunction<T> csf = new CombinedSimilarityFunction<T>();
 
 		csf.setOperation(bmmc.combination);
@@ -87,11 +88,11 @@ public class SimilarityFunctionFactory<T> {
 			double w = 1;
 			try {
 				w = Double.valueOf(bmmc.weights.get(i));
-			} catch (IndexOutOfBoundsException e) {
-			}
+			} catch (IndexOutOfBoundsException e) {}
 			if (this.functionAliases.containsKey(sf)) {
-				simFun = this.getSimilarityFunction(functionAliases.get(sf),
-						bmmc);
+				simFun =
+						this.getSimilarityFunction(functionAliases.get(sf),
+								bmmc);
 			} else {
 				simFun = this.getSimilarityFunction(sf, bmmc);
 			}
