@@ -63,7 +63,10 @@ public class TestSEHiddenMarkovModel extends TestHiddenMarkovModel {
 				new SEHiddenMarkovModel_impl<Object>();
 		hmmo.init(seq2);
 		hmmo.init(seq1);
-		HiddenMarkovModel_impl<Object> hmm =
+		assertEquals(0.5, hmmo.p(seq1).getProbability(), 0.0);
+		assertEquals(0.5, hmmo.p(seq2).getProbability(), 0.0);
+
+		SEHiddenMarkovModel_impl<Object> hmm =
 				new SEHiddenMarkovModel_impl<Object>(hmmo);
 		assertEquals(0.5, hmm.p(seq1).getProbability(), 0.0);
 		assertEquals(0.5, hmm.p(seq2).getProbability(), 0.0);
