@@ -16,7 +16,6 @@ import de.uniheidelberg.cl.a10.Main;
 import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
-import de.uniheidelberg.cl.a10.patterns.mroth.impl.MRSystemFactory;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 
@@ -46,8 +45,7 @@ public class MRSystemMain extends MainWithInputSequences {
 			ClassNotFoundException, SimilarityCalculationException {
 		List<List<FrameTokenEvent>> sequences;
 		sequences = this.getSequences();
-		MRSystem<FrameTokenEvent> mrs =
-				MRSystemFactory.getInstance(similarityConf);
+		MRSystem<FrameTokenEvent> mrs = null;
 		mrs.setLogger(logger);
 		return mrs.align(sequences.get(0), sequences.get(1));
 	}

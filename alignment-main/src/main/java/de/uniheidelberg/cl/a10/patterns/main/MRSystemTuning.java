@@ -101,14 +101,14 @@ public class MRSystemTuning extends MainWithInputSequences {
 								conf = new SimilarityConfiguration();
 								conf.setThreshold(d);
 								conf.similarityFunctions =
-										Arrays.asList("WNS", "FNS", "VNS",
-												"ATS", "GDS");
+										new String[] { "WNS", "FNS", "VNS",
+												"ATS", "GDS" };
 								conf.weights =
-										Arrays.asList(String.valueOf(w0),
-												String.valueOf(w1),
-												String.valueOf(w2),
-												String.valueOf(w3),
-												String.valueOf(w4));
+										new String[] { String.valueOf(w0),
+										String.valueOf(w1),
+										String.valueOf(w2),
+										String.valueOf(w3),
+										String.valueOf(w4) };
 								conf.combination = Operation.GEO;
 								confs.add(conf);
 							}

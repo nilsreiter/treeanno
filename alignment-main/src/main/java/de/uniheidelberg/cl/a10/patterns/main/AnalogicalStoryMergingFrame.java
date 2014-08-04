@@ -41,9 +41,9 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 	BMMConfiguration bmmConf = new BMMConfiguration();
 
 	public static void main(final String[] args) throws SecurityException,
-	FrameNotFoundException, FrameElementNotFoundException, IOException,
-	InstantiationException, IllegalAccessException,
-	ClassNotFoundException {
+			FrameNotFoundException, FrameElementNotFoundException, IOException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException {
 		Main.initProperties();
 		AnalogicalStoryMergingFrame asm = new AnalogicalStoryMergingFrame();
 		asm.processArguments(args, asm.bmmConf);
@@ -90,7 +90,7 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 	}
 
 	public void run() throws SecurityException, InstantiationException,
-	IllegalAccessException, ClassNotFoundException {
+			IllegalAccessException, ClassNotFoundException {
 		// System.err.println(bmmConf.getLineDescription());
 		try {
 			Collection<List<FrameTokenEvent>> sequences;
@@ -110,10 +110,10 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 	}
 
 	protected void
-			runMerging(final Collection<List<FrameTokenEvent>> sequences)
-					throws FileNotFoundException, SecurityException,
-					InstantiationException, IllegalAccessException,
-					ClassNotFoundException {
+	runMerging(final Collection<List<FrameTokenEvent>> sequences)
+			throws FileNotFoundException, SecurityException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException {
 		BMMFactory<FrameTokenEvent> trainingFactory =
 				new BMMFactory<FrameTokenEvent>();
 
@@ -128,8 +128,6 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 			hmm = bmm.init(sequences.iterator());
 		} else {
 
-			// Precomputing similarities
-			bmm.precomputeSimilarities(sequences);
 			// Training
 			hmm = bmm.train(sequences.iterator());
 		}
