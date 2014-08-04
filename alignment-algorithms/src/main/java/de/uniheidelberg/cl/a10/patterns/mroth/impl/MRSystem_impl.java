@@ -15,6 +15,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedSubgraph;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
+import de.nilsreiter.alignment.algorithm.MRSystem;
 import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.AlignmentIdProvider;
@@ -22,10 +23,10 @@ import de.uniheidelberg.cl.a10.data2.alignment.Link;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.AlignmentIdProvider_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
-import de.uniheidelberg.cl.a10.patterns.mroth.MRSystem;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
+@Deprecated
 public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 
 	List<T> sequence1;
@@ -45,7 +46,6 @@ public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 		return sequence1;
 	}
 
-	@Override
 	public void setSequence1(final List<T> sequence1) {
 		this.sequence1 = sequence1;
 	}
@@ -54,7 +54,6 @@ public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 		return sequence2;
 	}
 
-	@Override
 	public void setSequence2(final List<T> sequence2) {
 		this.sequence2 = sequence2;
 	}
@@ -253,6 +252,12 @@ public class MRSystem_impl<T extends FrameTokenEvent> implements MRSystem<T> {
 	@Override
 	public void setLogger(final Logger logger) {
 		this.logger = logger;
+	}
+
+	@Override
+	public Alignment<T> align(List<T> list1, List<T> list2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
