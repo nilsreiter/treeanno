@@ -16,19 +16,23 @@ import de.uniheidelberg.cl.a10.patterns.data.EventChainExtractor;
 
 public abstract class MainWithInputSequences extends MainWithInputDocuments {
 
-	@Option(name = "--extraction", usage = "Controls the pre-filtering of frames into events")
-	protected EventChainExtractor.Extraction extraction = EventChainExtractor.Extraction.ANNOTATEDFRAMES;
+	@Option(
+			name = "--extraction",
+			usage = "Controls the pre-filtering of frames into events. Deprecated. ")
+	protected EventChainExtractor.Extraction extraction =
+			EventChainExtractor.Extraction.ANNOTATEDFRAMES;
 
 	List<List<FrameTokenEvent>> sequences = null;
 
+	@Deprecated
 	EventChainExtractor eventChainExtractor;
 
 	public List<List<FrameTokenEvent>> getSequences()
 			throws ParserConfigurationException, SAXException, IOException {
 		if (sequences == null) {
 			sequences = new LinkedList<List<FrameTokenEvent>>();
-			eventChainExtractor = EventChainExtractor
-					.getEventChainExtractor(extraction);
+			eventChainExtractor =
+					EventChainExtractor.getEventChainExtractor(extraction);
 			for (Document rd : this.getDocuments()) {
 				sequences.add(eventChainExtractor.getEventChain(rd));
 			}
