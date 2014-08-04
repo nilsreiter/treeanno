@@ -36,7 +36,7 @@ public class Run extends MainWithInputDocuments {
 		AlgorithmFactory af = AlgorithmFactory.getInstance();
 		Configuration configuration = new BaseConfiguration();
 		configuration.setProperty(AlgorithmFactory.CONFIG_KEY_ALGORITHM,
-				NeedlemanWunsch.class.getCanonicalName());
+				algorithmClass);
 		configuration.setProperty("database.url",
 				"jdbc:mysql://127.0.0.1:53903/reiter");
 		configuration.setProperty("database.username", "reiterns");
@@ -45,8 +45,8 @@ public class Run extends MainWithInputDocuments {
 		configuration.setProperty(
 				"similarity.de.nilsreiter.event.similarity.WordNet", "1.0");
 		AlignmentAlgorithm<Event> algo = af.getAlgorithm(configuration);
-		List<Event> l1 = (List<Event>) this.getDocuments().get(0).getEvents();
-		List<Event> l2 = (List<Event>) this.getDocuments().get(1).getEvents();
+		List<Event> l1 = this.getDocuments().get(0).getEvents();
+		List<Event> l2 = this.getDocuments().get(1).getEvents();
 		Alignment<Event> alignment = algo.align(l1, l2);
 		AlignmentWriter aw = new AlignmentWriter(System.out);
 		aw.write(alignment);
