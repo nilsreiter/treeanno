@@ -24,8 +24,7 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
  * @param <T>
  */
 public class GeometricDistributionWithThreshold<T> extends
-		GeometricDistribution<T> implements Prior<T>,
-		Serializable {
+		GeometricDistribution<T> implements Prior<T>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	double threshold = Double.MIN_VALUE;
@@ -40,7 +39,6 @@ public class GeometricDistributionWithThreshold<T> extends
 	@Override
 	protected Probability k(final HiddenMarkovModel_impl<T> hmm,
 			final Integer state1, final Integer state2) {
-
 		for (T event1 : hmm.getEventsForState(state1)) {
 			for (T event2 : hmm.getEventsForState(state2)) {
 				if (this.sim(event1, event2).getProbability() < this.threshold)
@@ -53,8 +51,7 @@ public class GeometricDistributionWithThreshold<T> extends
 	@Override
 	public boolean isCandidate(final HiddenMarkovModel_impl<T> hmm,
 			final Integer s1, final Integer s2) {
-		if (s1 == s2)
-			return true;
+		if (s1 == s2) return true;
 		Probability p = Probability.ONE;
 		for (T event1 : hmm.getEventsForState(s1)) {
 			for (T event2 : hmm.getEventsForState(s2)) {
