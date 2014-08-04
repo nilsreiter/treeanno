@@ -87,7 +87,7 @@ public class SimilarityFunctionFactory<T> {
 			SimilarityFunction<T> simFun = null;
 			double w = 1;
 			try {
-				w = Double.valueOf(bmmc.weights.get(i));
+				w = Double.valueOf(bmmc.getWeights()[i]);
 			} catch (IndexOutOfBoundsException e) {}
 			if (this.functionAliases.containsKey(sf)) {
 				simFun =
