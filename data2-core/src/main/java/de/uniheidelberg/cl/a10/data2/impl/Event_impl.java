@@ -23,6 +23,8 @@ public class Event_impl extends HasTokens_impl implements Event {
 
 	String eventClass;
 
+			Token target;
+
 	@Deprecated
 	public Event_impl(String id, HasTokens anc) {
 		super(id);
@@ -37,7 +39,8 @@ public class Event_impl extends HasTokens_impl implements Event {
 		super(id);
 		for (Token token : tok) {
 			this.add(token);
-				}
+		}
+		this.target = this.firstToken();
 	}
 
 			@Override
@@ -87,6 +90,15 @@ public class Event_impl extends HasTokens_impl implements Event {
 
 	public void setIndexOf(int indexOf) {
 		this.indexOf = indexOf;
+	}
+
+	@Override
+	public Token getTarget() {
+		return target;
+	}
+
+	public void setTarget(Token target) {
+		this.target = target;
 	}
 
 }
