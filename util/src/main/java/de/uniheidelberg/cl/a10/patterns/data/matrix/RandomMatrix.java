@@ -3,6 +3,17 @@ package de.uniheidelberg.cl.a10.patterns.data.matrix;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * This class implements the Matrix interface, but returns a new random number
+ * on every call to {@link #get(Object, Object)}. Mainly used for testing and
+ * demo purposes. Additional calls to {@link #get(Object, Object)} will produce
+ * new random numbers.
+ * 
+ * @author reiterns
+ *
+ * @param <R>
+ * @param <C>
+ */
 public class RandomMatrix<R, C> implements Matrix<R, C, Double> {
 
 	Random random;
