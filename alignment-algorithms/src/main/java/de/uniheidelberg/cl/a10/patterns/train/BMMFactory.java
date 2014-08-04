@@ -52,8 +52,7 @@ public class BMMFactory<T extends HasDocument> {
 	 */
 	public BayesianModelMerging<T> getTrainer(final BMMConfiguration bmmc)
 			throws FileNotFoundException, SecurityException,
-			InstantiationException, IllegalAccessException,
-			ClassNotFoundException {
+			InstantiationException, IllegalAccessException {
 		this.getPrior(bmmc);
 		BayesianModelMerging<T> bmm;
 		if (bmmc.isThreaded()) {
@@ -67,8 +66,7 @@ public class BMMFactory<T extends HasDocument> {
 
 	public Prior<T> getPrior(final BMMConfiguration bmmc)
 			throws FileNotFoundException, SecurityException,
-			InstantiationException, IllegalAccessException,
-			ClassNotFoundException {
+			InstantiationException, IllegalAccessException {
 		if (bmmc.getThreshold() != Double.MIN_VALUE) {
 			prior =
 					new GeometricDistributionWithThreshold<T>(
@@ -84,8 +82,7 @@ public class BMMFactory<T extends HasDocument> {
 
 	public SimilarityFunction<T> getSimilarityFunction(
 			final SimilarityConfiguration bmmc) throws FileNotFoundException,
-			SecurityException, InstantiationException, IllegalAccessException,
-			ClassNotFoundException {
+			SecurityException, InstantiationException, IllegalAccessException {
 		if (this.similarityFunction == null && this.sfFactory != null)
 			this.similarityFunction = sfFactory.getSimilarityFunction(bmmc);
 		return this.similarityFunction;
