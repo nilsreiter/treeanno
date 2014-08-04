@@ -14,8 +14,12 @@ import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
 import de.nilsreiter.alignment.algorithm.impl.BayesianModelMerging_impl;
+import de.nilsreiter.alignment.algorithm.impl.Harmonic_impl;
 import de.nilsreiter.alignment.algorithm.impl.MRSystem_impl;
 import de.nilsreiter.alignment.algorithm.impl.NeedlemanWunsch_impl;
+import de.nilsreiter.alignment.algorithm.impl.SameLemma_impl;
+import de.nilsreiter.alignment.algorithm.impl.SameSurface_impl;
+import de.nilsreiter.alignment.algorithm.impl.WeightedHarmonic_impl;
 import de.nilsreiter.event.similarity.SimilarityFunctionFactory;
 import de.nilsreiter.util.db.impl.DatabaseDataSource_impl;
 import de.uniheidelberg.cl.a10.data2.Event;
@@ -51,7 +55,15 @@ public class AlgorithmFactory {
 					new PoolingDataSource<PoolableConnection>(connectionPool);
 
 			Class<?> cl;
-			cl = Class.forName(configuration.getString(CONFIG_KEY_ALGORITHM));
+			try {
+				cl =
+						Class.forName(configuration
+								.getString(CONFIG_KEY_ALGORITHM));
+			} catch (ClassNotFoundException e) {
+				cl =
+						Class.forName("de.nilsreiter.alignment.algorithm."
+								+ configuration.getString(CONFIG_KEY_ALGORITHM));
+			}
 			if (NeedlemanWunsch.class.isAssignableFrom(cl)) {
 				NeedlemanWunsch<Event> algo =
 						new NeedlemanWunsch_impl<Event>(
@@ -77,6 +89,14 @@ public class AlgorithmFactory {
 				mrs.setThreshold(Probability.fromProbability(configuration
 						.getDouble(MRSystem.CONFIG_THRESHOLD)));
 				return mrs;
+			} else if (WeightedHarmonic.class.isAssignableFrom(cl)) {
+				return new WeightedHarmonic_impl<Event>();
+			} else if (Harmonic.class.isAssignableFrom(cl)) {
+				return new Harmonic_impl<Event>();
+			} else if (SameLemma.class.isAssignableFrom(cl)) {
+				return new SameLemma_impl<Event>();
+			} else if (SameSurface.class.isAssignableFrom(cl)) {
+				return new SameSurface_impl<Event>();
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
