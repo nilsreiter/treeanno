@@ -44,7 +44,6 @@ public class TestNeedlemanWunsch {
 		} catch (IncompatibleScoringSchemeException e) {
 			fail("This should not happen.");
 		}
-
 		scheme =
 				new AdvancedScoringScheme<String>(
 						Probability.fromProbability(0.5),
@@ -78,7 +77,7 @@ public class TestNeedlemanWunsch {
 			assertEquals(AlignmentType.Full, at.get(0).getAlignmentType());
 			assertEquals(AlignmentType.Full, at.get(1).getAlignmentType());
 			assertEquals(AlignmentType.Partial, at.get(2).getAlignmentType());
-			assertEquals(1.2, at.get(2).getScore(), 0.0);
+			assertEquals(0.6, at.get(2).getScore(), 0.0);
 			assertEquals(AlignmentType.Full, at.get(3).getAlignmentType());
 		} catch (IncompatibleScoringSchemeException e) {
 			fail("This should not happen.");
