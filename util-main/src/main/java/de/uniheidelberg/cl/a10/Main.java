@@ -29,6 +29,8 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
+import de.nilsreiter.util.StringUtil;
+
 /**
  * This is the super class for all classes with main methods. All the option
  * parsing is done here. Every class with a main method inherits from this one.
@@ -44,16 +46,20 @@ public abstract class Main {
 	}
 
 	@Deprecated
-	@Option(name = "--corpus", aliases = { "-c" }, usage = "Selects the corpus to use. Deprecated.")
+	@Option(name = "--corpus", aliases = { "-c" },
+			usage = "Selects the corpus to use. Deprecated.")
 	protected Corpus corpus = Corpus.Rituals;
 
-	@Option(name = "--help", usage = "Prints this usage screen", aliases = { "-h" })
+	@Option(name = "--help", usage = "Prints this usage screen",
+			aliases = { "-h" })
 	boolean printUsage = false;
 
-	@Option(name = "--loglevel", usage = "Sets the logging level", aliases = { "-l" })
+	@Option(name = "--loglevel", usage = "Sets the logging level",
+			aliases = { "-l" })
 	protected String logLevel = "WARNING";
 
-	@Option(name = "--config", usage = "Configuration file. Default: configuration.ini")
+	@Option(name = "--config",
+			usage = "Configuration file. Default: configuration.ini")
 	protected File configFile = new File("configuration.ini");
 
 	protected Logger logger = Logger.getAnonymousLogger();
@@ -79,6 +85,7 @@ public abstract class Main {
 		}
 	}
 
+	@Deprecated
 	public enum Host {
 		/**
 		 * My old laptop ...
@@ -96,8 +103,10 @@ public abstract class Main {
 		CLUSTER
 	};
 
+	@Deprecated
 	public static Host host;
 
+	@Deprecated
 	public static Host initProperties() {
 		Host host = Host.GILLESPIE;
 		try {
@@ -170,7 +179,7 @@ public abstract class Main {
 		}
 
 		if (args != null && args.length > 0)
-			this.commandLine = join(args, " ", 0);
+			this.commandLine = StringUtil.join(args, " ", 0);
 		if (this.printUsage) {
 			// System.err.println(parser.printExample(ExampleMode.ALL));
 			parser.printUsage(System.err);
@@ -195,17 +204,6 @@ public abstract class Main {
 		return url;
 	}
 
-	public static String join(final String[] array, final String delimiter,
-			final int starting) {
-		StringBuffer buf = new StringBuffer();
-		for (int i = starting; i < array.length; i++) {
-			buf.append(array[i]);
-			buf.append(delimiter);
-		}
-		String r = buf.toString();
-		return r.substring(0, r.length() - delimiter.length());
-	}
-
 	/**
 	 * This class returns a Writer for the given file. If the file parameter is
 	 * null, a Writer to out is returned. This way, the method can produce
@@ -223,7 +221,7 @@ public abstract class Main {
 	 */
 	@Deprecated
 	public Writer
-	getWriterForFileOption(final File file, final PrintStream out) {
+			getWriterForFileOption(final File file, final PrintStream out) {
 		if (file == null) {
 			try {
 				return new OutputStreamWriter(out, "UTF-8");
