@@ -26,6 +26,7 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunctionFactory;
 
+@Deprecated
 public class Inspector extends Main {
 
 	@Argument(usage = "Two files in data2-XML format", required = true)
@@ -52,9 +53,9 @@ public class Inspector extends Main {
 	};
 
 	public static void main(final String[] args) throws FileNotFoundException,
-	ParserConfigurationException, SAXException, IOException,
-	SecurityException, InstantiationException, IllegalAccessException,
-	ClassNotFoundException, CmdLineException {
+			ParserConfigurationException, SAXException, IOException,
+			SecurityException, InstantiationException, IllegalAccessException,
+			ClassNotFoundException, CmdLineException {
 		Main.initProperties();
 		Inspector insp = new Inspector();
 		insp.processArguments(args, insp.sConf);
@@ -74,8 +75,8 @@ public class Inspector extends Main {
 	}
 
 	protected void initSimilarityFunctions() throws InstantiationException,
-	IllegalAccessException, FileNotFoundException, SecurityException,
-	ClassNotFoundException {
+			IllegalAccessException, FileNotFoundException, SecurityException,
+			ClassNotFoundException {
 		SimilarityFunctionFactory<FrameTokenEvent> factory =
 				new SimilarityFunctionFactory<FrameTokenEvent>();
 		System.out.println("Initialising similarity functions ... ");
@@ -105,31 +106,31 @@ public class Inspector extends Main {
 	}
 
 	protected void init() throws SecurityException,
-	ParserConfigurationException, SAXException, IOException,
-	InstantiationException, IllegalAccessException,
-	ClassNotFoundException {
+			ParserConfigurationException, SAXException, IOException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException {
 		DataReader dr = new DataReader();
 		System.out.println("Reading ritual documents ... ");
 		rdoc =
 				new Document[] { dr.read(arguments.get(0)),
-						dr.read(arguments.get(1)) };
+				dr.read(arguments.get(1)) };
 
 		this.initSimilarityFunctions();
 
 	}
 
 	protected void reset(final String[] args) throws CmdLineException,
-	FileNotFoundException, SecurityException, InstantiationException,
-	IllegalAccessException, ClassNotFoundException {
+			FileNotFoundException, SecurityException, InstantiationException,
+			IllegalAccessException, ClassNotFoundException {
 		CmdLineParser parser = new CmdLineParser(this.sConf);
 		parser.parseArgument(args);
 		this.initSimilarityFunctions();
 	}
 
 	protected void run() throws FileNotFoundException,
-	ParserConfigurationException, SAXException, IOException,
-	CmdLineException, SecurityException, InstantiationException,
-	IllegalAccessException, ClassNotFoundException {
+			ParserConfigurationException, SAXException, IOException,
+			CmdLineException, SecurityException, InstantiationException,
+			IllegalAccessException, ClassNotFoundException {
 
 		// sf_combined_avg.addFeature(sf_arg);
 
@@ -204,9 +205,9 @@ public class Inspector extends Main {
 		} else {
 			StringBuilder b = new StringBuilder();
 			b.append(f1.getId()).append(": ").append(f1.getTarget().getLemma())
-			.append("\n");
+					.append("\n");
 			b.append(f2.getId()).append(": ").append(f2.getTarget().getLemma())
-			.append("\n");
+					.append("\n");
 			b.append(this.getSimilarityString(sf_wordnet, f1, f2));
 			b.append(this.getSimilarityString(sf_verbnet, f1, f2));
 			b.append(this.getSimilarityString(sf_framenet, f1, f2));

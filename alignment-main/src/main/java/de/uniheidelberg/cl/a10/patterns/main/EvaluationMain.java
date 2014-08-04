@@ -12,17 +12,12 @@ import nu.xom.ValidityException;
 import org.kohsuke.args4j.Option;
 
 import de.uniheidelberg.cl.a10.Main;
-import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
-import de.uniheidelberg.cl.a10.data2.alignment.AlignmentFactory;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentReader;
-import de.uniheidelberg.cl.a10.data2.io.DataReader;
 import de.uniheidelberg.cl.a10.eval.AlignmentEvaluation;
 import de.uniheidelberg.cl.a10.eval.AlignmentEvaluationSettings;
 import de.uniheidelberg.cl.a10.eval.SingleResult;
-import de.uniheidelberg.cl.a10.patterns.io.ModelReader;
-import de.uniheidelberg.cl.a10.patterns.models.impl.SEHiddenMarkovModel_impl;
 
 public class EvaluationMain extends Main {
 	static final String BMM_ERROR_MESSAGE =
@@ -34,7 +29,7 @@ public class EvaluationMain extends Main {
 			usage = "The system output. If not set, the system output will be"
 					+ " read from STDIN. If the filename ends with .bmm, we"
 					+ " assume the file to be a hidden markov model.",
-			aliases = { "-s" })
+					aliases = { "-s" })
 	File silver = null;
 
 	@Option(name = "--of", usage = "Output format.")
@@ -66,7 +61,7 @@ public class EvaluationMain extends Main {
 		Alignment<Token> goldDocument = ar.read(settings.gold);
 		evaluation =
 				de.uniheidelberg.cl.a10.eval.Evaluation
-						.getAlignmentEvaluation(this.settings.evaluationStyle);
+				.getAlignmentEvaluation(this.settings.evaluationStyle);
 
 		Builder xBuilder = new Builder();
 
@@ -86,27 +81,9 @@ public class EvaluationMain extends Main {
 
 	}
 
-	public SingleResult evaluateHMM(final Alignment<Token> goldDocument,
-			final Document silverDoc) throws IOException {
-		ModelReader mr =
-				new ModelReader(new DataReader(), this.settings.dataDirectory);
-		SEHiddenMarkovModel_impl<FrameTokenEvent> bmm =
-				mr.readHiddenMarkovModel(silverDoc);
-		AlignmentFactory<FrameTokenEvent> alignmentFactory =
-				new AlignmentFactory<FrameTokenEvent>();
-
-		SingleResult ss =
-				this.evaluateAlignment(goldDocument, alignmentFactory
-						.getTokenAlignmentFromHMM(bmm), bmm
-						.getTrainingConfiguration().getWikiDescription());
-
-		return ss;
-
-	}
-
 	public SingleResult evaluateAlignment(final Alignment<Token> goldDocument,
 			final Alignment<Token> silverDocument, final String name)
-					throws FileNotFoundException, IOException {
+			throws FileNotFoundException, IOException {
 		SingleResult res;
 		res = this.evaluation.evaluate(goldDocument, silverDocument, name);
 
@@ -114,7 +91,7 @@ public class EvaluationMain extends Main {
 	}
 
 	public static void main(final String[] args) throws IOException,
-	ValidityException, ParsingException {
+			ValidityException, ParsingException {
 		EvaluationMain eval = new EvaluationMain();
 		eval.processArguments(args, eval.settings);
 		eval.run();

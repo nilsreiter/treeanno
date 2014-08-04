@@ -21,8 +21,8 @@ import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.uniheidelberg.cl.a10.Main;
 import de.uniheidelberg.cl.a10.NullOutputStream;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.AlignmentFactory;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
@@ -40,6 +40,7 @@ import de.uniheidelberg.cl.a10.patterns.sequencealignment.SmithWaterman;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunctionFactory;
 
+@Deprecated
 public class SequenceAlignment extends MainWithInputSequences {
 
 	@Option(name = "--output", usage = "Output file for XML output")
@@ -55,7 +56,8 @@ public class SequenceAlignment extends MainWithInputSequences {
 
 	SimilarityFunction<FrameTokenEvent> similarityFunction = null;
 
-	SequenceAlignmentConfiguration saConfig = new SequenceAlignmentConfiguration();
+	SequenceAlignmentConfiguration saConfig =
+			new SequenceAlignmentConfiguration();
 
 	public static void main(final String[] args) throws SecurityException,
 			FrameNotFoundException, FrameElementNotFoundException, IOException,
@@ -77,9 +79,10 @@ public class SequenceAlignment extends MainWithInputSequences {
 			IOException {
 
 		PairwiseAlignmentAlgorithm<FrameTokenEvent> algo;
-		ScoringScheme<FrameTokenEvent> scoringScheme = new AdvancedScoringScheme<FrameTokenEvent>(
-				Probability.fromProbability(this.saConfig.threshold),
-				this.getSimilarityFunction());
+		ScoringScheme<FrameTokenEvent> scoringScheme =
+				new AdvancedScoringScheme<FrameTokenEvent>(
+						Probability.fromProbability(this.saConfig.threshold),
+						this.getSimilarityFunction());
 		switch (this.saConfig.algorithm) {
 		case SmithWaterman:
 			algo = new SmithWaterman<FrameTokenEvent>();
@@ -103,7 +106,8 @@ public class SequenceAlignment extends MainWithInputSequences {
 		List<FrameTokenEvent> seq2 = seqIter.next();
 
 		algo.setSequences(seq1, seq2);
-		PairwiseAlignment<FrameTokenEvent> alignment = algo.computePairwiseAlignment();
+		PairwiseAlignment<FrameTokenEvent> alignment =
+				algo.computePairwiseAlignment();
 		return alignment;
 	}
 
@@ -127,12 +131,13 @@ public class SequenceAlignment extends MainWithInputSequences {
 		d1 = dr.read(getArguments().get(0));
 		d2 = dr.read(getArguments().get(1));
 
-		PairwiseAlignment<FrameTokenEvent> alignment = this.getAlignmentFromAlgorithm(d1,
-				d2);
+		PairwiseAlignment<FrameTokenEvent> alignment =
+				this.getAlignmentFromAlgorithm(d1, d2);
 		doc = AlignmentFactory.fromPairwiseAlignment(alignment, d1, d2);
 
-		AlignmentWriter dw = new AlignmentWriter(
-				this.getOutputStreamForFileOption(output, stdout));
+		AlignmentWriter dw =
+				new AlignmentWriter(this.getOutputStreamForFileOption(output,
+						stdout));
 		dw.write(new EventTokenConverter().convert(doc));
 		dw.close();
 
@@ -141,8 +146,9 @@ public class SequenceAlignment extends MainWithInputSequences {
 	protected String getVerticalAlignmentTable(
 			final PairwiseAlignment<Frame> alignment, final int cellwidth) {
 		StringBuilder b = new StringBuilder();
-		String formatString = "%1$" + cellwidth + "." + cellwidth
-				+ "s %2$-4.4s %3$-" + cellwidth + "." + cellwidth + "s\n";
+		String formatString =
+				"%1$" + cellwidth + "." + cellwidth + "s %2$-4.4s %3$-"
+						+ cellwidth + "." + cellwidth + "s\n";
 		Formatter formatter = new Formatter(b, Locale.US);
 		formatter.format(formatString, "Sequence 1", "  ", "Sequence 2");
 		for (int i = 0; i < alignment.getScoreTagLine().size(); i++) {
@@ -157,8 +163,7 @@ public class SequenceAlignment extends MainWithInputSequences {
 	}
 
 	protected String getString(final Frame f) {
-		if (f == null)
-			return null;
+		if (f == null) return null;
 		StringBuilder b = new StringBuilder();
 		b.append(f.toExtendedString());
 		return b.toString();
@@ -169,9 +174,10 @@ public class SequenceAlignment extends MainWithInputSequences {
 			InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
 		if (this.similarityFunction == null) {
-			SimilarityFunctionFactory<FrameTokenEvent> factory = new SimilarityFunctionFactory<FrameTokenEvent>();
-			SimilarityFunction<FrameTokenEvent> sf = factory
-					.getSimilarityFunction(saConfig);
+			SimilarityFunctionFactory<FrameTokenEvent> factory =
+					new SimilarityFunctionFactory<FrameTokenEvent>();
+			SimilarityFunction<FrameTokenEvent> sf =
+					factory.getSimilarityFunction(saConfig);
 
 			this.similarityFunction = sf;
 		}
