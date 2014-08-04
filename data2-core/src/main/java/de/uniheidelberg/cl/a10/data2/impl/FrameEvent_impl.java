@@ -5,6 +5,7 @@ import java.util.Set;
 import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
 import de.uniheidelberg.cl.a10.data2.Frame;
 
+@Deprecated
 public class FrameEvent_impl extends FrameTokenEvent_impl {
 
 	Frame frame = null;
@@ -12,8 +13,9 @@ public class FrameEvent_impl extends FrameTokenEvent_impl {
 	public FrameEvent_impl(final Frame frame) {
 		super(frame.getId(), frame.getTarget());
 		this.frame = frame;
-		this.position = (double) frame.indexOf()
-				/ (double) frame.getRitualDocument().getFrames().size();
+		this.position =
+				(double) frame.indexOf()
+						/ (double) frame.getRitualDocument().getFrames().size();
 		this.ritualDocument = frame.getRitualDocument();
 	}
 
@@ -30,6 +32,7 @@ public class FrameEvent_impl extends FrameTokenEvent_impl {
 	/**
 	 * @return the frame
 	 */
+	@Override
 	public Frame getFrame() {
 		return frame;
 	}
