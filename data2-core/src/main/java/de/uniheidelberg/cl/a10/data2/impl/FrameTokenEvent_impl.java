@@ -1,12 +1,13 @@
 package de.uniheidelberg.cl.a10.data2.impl;
 
 import de.uniheidelberg.cl.a10.HasId;
-import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Frame;
+import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.Token;
 
-public abstract class FrameTokenEvent_impl extends AnnotationObjectInDocument_impl
-		implements FrameTokenEvent {
+@Deprecated
+public abstract class FrameTokenEvent_impl extends
+		AnnotationObjectInDocument_impl implements FrameTokenEvent {
 
 	Token target = null;
 
