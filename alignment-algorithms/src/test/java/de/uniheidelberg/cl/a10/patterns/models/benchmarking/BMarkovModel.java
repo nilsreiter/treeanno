@@ -27,6 +27,7 @@ public class BMarkovModel {
 			sequence1.add(rsf.next());
 		}
 
+		rsf.reset();
 		rsf.numberOfStrings = 1000;
 		while (rsf.hasNext()) {
 			sequence2.add(rsf.next());
