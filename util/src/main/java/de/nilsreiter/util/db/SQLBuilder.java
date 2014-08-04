@@ -20,7 +20,17 @@ public class SQLBuilder {
 	}
 
 	public SQLBuilder where(String condition) {
-		sb.append(" WHERE ").append(condition).append(' ');
+		sb.append(" WHERE (").append(condition).append(") ");
+		return this;
+	}
+
+	public SQLBuilder and(String condition) {
+		sb.append(" AND (").append(condition).append(") ");
+		return this;
+	}
+
+	public SQLBuilder or(String condition) {
+		sb.append(" OR (").append(condition).append(") ");
 		return this;
 	}
 
