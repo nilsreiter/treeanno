@@ -92,12 +92,12 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 	 * @param model
 	 */
 	public MarkovModel_impl(final MarkovModel_impl<T> model) {
-		transitionProbabilities = new DiffMatrix<T, T, Probability>(
-				model.transitionProbabilities);
+		transitionProbabilities =
+				new DiffMatrix<T, T, Probability>(model.transitionProbabilities);
 		degree = new Counter<T>(model.degree);
 		finalStates = new HashSet<T>(model.finalStates);
-		startingProbabilities = new ProbabilityDistribution<T>(
-				model.startingProbabilities);
+		startingProbabilities =
+				new ProbabilityDistribution<T>(model.startingProbabilities);
 		states = new HashSet<T>(model.states);
 
 	}
@@ -110,7 +110,6 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 	 *            The sequence to learn from.
 	 */
 	public synchronized void learn(final List<T> sequence) {
-		Iterator<T> iterator = sequence.iterator();
 
 		// Update starting probabilities
 		double prob = 1.0 / ++n;
@@ -120,6 +119,7 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 					Probability.fromProbability(oldProb - (oldProb * prob)));
 		}
 
+		Iterator<T> iterator = sequence.iterator();
 		T last = iterator.next();
 
 		startingProbabilities.put(last, startingProbabilities.get(last)
@@ -216,8 +216,7 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 		for (BasicPair<T, T> p : toRemove) {
 			this.removeEdge(p.getElement1(), p.getElement2());
 		}
-		if (finalStates.contains(s2))
-			finalStates.add(s1);
+		if (finalStates.contains(s2)) finalStates.add(s1);
 		this.degree.remove(s2);
 		this.states.remove(s2);
 		this.finalStates.remove(s2);
@@ -228,15 +227,18 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 		Probability prob = Probability.NULL;
 		if (this.getSuccessors(from).size() > 1) {
 			double succ = this.getSuccessors(from).size() - 1;
-			double d = this.transitionProbabilities.get(from, to)
-					.getProbability() / succ;
+			double d =
+					this.transitionProbabilities.get(from, to).getProbability()
+					/ succ;
 			prob = Probability.fromProbability(d);
 		}
 		transitionProbabilities.put(from, to, Probability.NULL);
 		for (T target : this.getSuccessors(from)) {
 			if (to != target) {
-				Probability newFactor = PMath.add(
-						this.transitionProbabilities.get(from, target), prob);
+				Probability newFactor =
+						PMath.add(
+								this.transitionProbabilities.get(from, target),
+								prob);
 				this.transitionProbabilities.put(from, target, newFactor);
 			}
 		}
@@ -259,10 +261,10 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 	protected void addEdge(final T from, final T to, final Probability prob) {
 
 		for (T target : this.getSuccessors(from)) {
-			Probability newFactor = PMath.subtract(
-					this.transitionProbabilities.get(from, target),
-					PMath.multiply(prob,
-							this.transitionProbabilities.get(from, target)));
+			Probability newFactor =
+					PMath.subtract(this.transitionProbabilities.get(from,
+							target), PMath.multiply(prob,
+									this.transitionProbabilities.get(from, target)));
 			this.transitionProbabilities.put(from, target, newFactor);
 		}
 
@@ -272,15 +274,15 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 
 	protected void addEdge(final T from, final T to) {
 		this.degree.add(from);
-		Probability newprob = Probability.fromProbability(1.0 / this.degree
-				.get(from));
+		Probability newprob =
+				Probability.fromProbability(1.0 / this.degree.get(from));
 
 		for (T target : this.transitionProbabilities.getColumns()) {
 
 			if (this.transitionProbabilities.get(from, target).isPositive()) {
-				Probability newFactor = PMath
-						.subtract(this.transitionProbabilities
-								.get(from, target), PMath.multiply(newprob,
+				Probability newFactor =
+						PMath.subtract(this.transitionProbabilities.get(from,
+								target), PMath.multiply(newprob,
 								this.transitionProbabilities.get(from, target)));
 				this.transitionProbabilities.put(from, target, newFactor);
 			}
@@ -301,10 +303,11 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 			if (!states.contains(path.get(i + 1))) {
 				throw new OutOfVocabularyException();
 			}
-			r = PMath.multiply(
-					r,
-					getTransitionProbabilities().get(path.get(i),
-							path.get(i + 1)));
+			r =
+					PMath.multiply(
+							r,
+							getTransitionProbabilities().get(path.get(i),
+									path.get(i + 1)));
 		}
 		return r;
 	}
@@ -318,8 +321,8 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 			if (!states.contains(path[i + 1])) {
 				throw new OutOfVocabularyException();
 			}
-			r = PMath
-					.multiply(
+			r =
+					PMath.multiply(
 							r,
 							this.getTransitionProbabilities().get(path[i],
 									path[i + 1]));
@@ -382,7 +385,8 @@ public class MarkovModel_impl<T> extends AbstractModel<List<T>> implements
 	}
 
 	public ProbabilityDistribution<List<T>> getShortestPathsWithProbabilities() {
-		ProbabilityDistribution<List<T>> r = new ProbabilityDistribution<List<T>>();
+		ProbabilityDistribution<List<T>> r =
+				new ProbabilityDistribution<List<T>>();
 		for (List<T> s : this.getShortestPaths()) {
 			r.put(s, this.p(s));
 		}
