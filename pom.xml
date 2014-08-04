@@ -13,6 +13,12 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <distributionManagement>
+    <site>
+      <id>A10</id>
+      <url>http://www.nilsreiter.de</url>
+    </site>
+  </distributionManagement>
 
 <build>
 <plugins>
