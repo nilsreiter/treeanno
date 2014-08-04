@@ -39,5 +39,11 @@
   	  		<artifactId>commons-dbcp2</artifactId>
   	  		<version>2.0.1</version>
   	  	</dependency>
+  	  	<dependency>
+  	  		<groupId>de.nilsreiter.test</groupId>
+  	  		<artifactId>de.nilsreiter.test</artifactId>
+  	  		<version>0.0.1-SNAPSHOT</version>
+  	  		<scope>test</scope>
+  	  	</dependency>
   </dependencies>
 </project>
