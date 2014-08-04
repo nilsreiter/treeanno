@@ -23,7 +23,6 @@ public abstract class MainWithIO extends Main {
 
 	@Option(
 			name = "--output",
-			// aliases = { "-o" },
 			usage = "The output file or directory. If not set, System.out is used.")
 	protected File output = null;
 
@@ -31,7 +30,8 @@ public abstract class MainWithIO extends Main {
 		try {
 			return this.getInputStreamForFileOption(input);
 		} catch (FileNotFoundException e) {
-			logger.warning("File " + input.getName() + " not found.");
+			logger.warning("File " + input.getName()
+					+ " not found. Falling back on standard input.");
 			return System.in;
 		}
 	}
