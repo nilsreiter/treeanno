@@ -23,23 +23,27 @@ import de.uniheidelberg.cl.a10.patterns.train.BMMConfiguration;
 import de.uniheidelberg.cl.a10.patterns.train.BMMFactory;
 import de.uniheidelberg.cl.a10.patterns.train.BayesianModelMerging;
 
+@Deprecated
 public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 
-	@Option(name = "--model", usage = "If set, the trained model will be saved in the given file."
-			+ " File suffix controls the type (.ser = binary, .xml = XML)."
-			+ " If not set, an XML representation of the model will be"
-			+ " written to System.out.")
+	@Option(
+			name = "--model",
+			usage = "If set, the trained model will be saved in the given file."
+					+ " File suffix controls the type (.ser = binary, .xml = XML)."
+					+ " If not set, an XML representation of the model will be"
+					+ " written to System.out.")
 	File model = null;
 
-	@Option(name = "--nomerging", usage = "Initialises a hidden markov model without any merging")
+	@Option(name = "--nomerging",
+			usage = "Initialises a hidden markov model without any merging")
 	boolean nomerging = false;
 
 	BMMConfiguration bmmConf = new BMMConfiguration();
 
 	public static void main(final String[] args) throws SecurityException,
-			FrameNotFoundException, FrameElementNotFoundException, IOException,
-			InstantiationException, IllegalAccessException,
-			ClassNotFoundException {
+	FrameNotFoundException, FrameElementNotFoundException, IOException,
+	InstantiationException, IllegalAccessException,
+	ClassNotFoundException {
 		Main.initProperties();
 		AnalogicalStoryMergingFrame asm = new AnalogicalStoryMergingFrame();
 		asm.processArguments(args, asm.bmmConf);
@@ -49,9 +53,10 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 	public void writeModel(final SEHiddenMarkovModel_impl<FrameTokenEvent> hmm)
 			throws IOException {
 		if (this.model != null) {
-			OutputStream os = this.getOutputStreamForFileOption(this.model,
-					null);
-			ModelWriter<FrameTokenEvent> mw = new ModelWriter<FrameTokenEvent>(os);
+			OutputStream os =
+					this.getOutputStreamForFileOption(this.model, null);
+			ModelWriter<FrameTokenEvent> mw =
+					new ModelWriter<FrameTokenEvent>(os);
 			try {
 				mw.write(hmm);
 				mw.close();
@@ -64,8 +69,10 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 				os.close();
 			}
 		} else {
-			ModelWriter<FrameTokenEvent> mw = new ModelWriter<FrameTokenEvent>(
-					this.getOutputStreamForFileOption(this.model, System.out));
+			ModelWriter<FrameTokenEvent> mw =
+					new ModelWriter<FrameTokenEvent>(
+							this.getOutputStreamForFileOption(this.model,
+									System.out));
 
 			try {
 				mw.write(hmm);
@@ -83,7 +90,7 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 	}
 
 	public void run() throws SecurityException, InstantiationException,
-			IllegalAccessException, ClassNotFoundException {
+	IllegalAccessException, ClassNotFoundException {
 		// System.err.println(bmmConf.getLineDescription());
 		try {
 			Collection<List<FrameTokenEvent>> sequences;
@@ -102,13 +109,16 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 		}
 	}
 
-	protected void runMerging(final Collection<List<FrameTokenEvent>> sequences)
-			throws FileNotFoundException, SecurityException,
-			InstantiationException, IllegalAccessException,
-			ClassNotFoundException {
-		BMMFactory<FrameTokenEvent> trainingFactory = new BMMFactory<FrameTokenEvent>();
+	protected void
+			runMerging(final Collection<List<FrameTokenEvent>> sequences)
+					throws FileNotFoundException, SecurityException,
+					InstantiationException, IllegalAccessException,
+					ClassNotFoundException {
+		BMMFactory<FrameTokenEvent> trainingFactory =
+				new BMMFactory<FrameTokenEvent>();
 
-		BayesianModelMerging<FrameTokenEvent> bmm = trainingFactory.getTrainer(bmmConf);
+		BayesianModelMerging<FrameTokenEvent> bmm =
+				trainingFactory.getTrainer(bmmConf);
 		// Settings
 		Level level = Level.parse(logLevel.toUpperCase());
 		bmm.setLogLevel(level);

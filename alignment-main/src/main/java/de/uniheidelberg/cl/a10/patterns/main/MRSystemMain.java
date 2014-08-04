@@ -9,17 +9,18 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.kohsuke.args4j.Option;
 import org.xml.sax.SAXException;
 
+import de.nilsreiter.alignment.algorithm.MRSystem;
 import de.saar.coli.salsa.reiter.framenet.FrameElementNotFoundException;
 import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.uniheidelberg.cl.a10.Main;
 import de.uniheidelberg.cl.a10.data2.FrameTokenEvent;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
-import de.uniheidelberg.cl.a10.patterns.mroth.MRSystem;
 import de.uniheidelberg.cl.a10.patterns.mroth.impl.MRSystemFactory;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 
+@Deprecated
 public class MRSystemMain extends MainWithInputSequences {
 	@Option(name = "--output", usage = "Output file for XML output")
 	File output = null;
@@ -48,9 +49,7 @@ public class MRSystemMain extends MainWithInputSequences {
 		MRSystem<FrameTokenEvent> mrs =
 				MRSystemFactory.getInstance(similarityConf);
 		mrs.setLogger(logger);
-		mrs.setSequence1(sequences.get(0));
-		mrs.setSequence2(sequences.get(1));
-		return mrs.getAlignment();
+		return mrs.align(sequences.get(0), sequences.get(1));
 	}
 
 	public void run() throws SecurityException, InstantiationException,

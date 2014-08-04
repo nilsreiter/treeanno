@@ -16,6 +16,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
  * @author reiter
  * 
  */
+@Deprecated
 public class FrameTokenConverter {
 
 	public Alignment<Token> convert(final Alignment<Frame> document) {

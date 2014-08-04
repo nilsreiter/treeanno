@@ -16,6 +16,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
  * @author reiter
  * 
  */
+@Deprecated
 public class EventTokenConverter {
 
 	public Alignment<Token> convert(final Alignment<FrameTokenEvent> document) {
@@ -29,8 +30,7 @@ public class EventTokenConverter {
 			Link<Token> l = ret.addAlignment(aa.getId(), tokens);
 			if (aa.getDescription() != null)
 				l.setDescription(aa.getDescription());
-			if (!Double.isNaN(aa.getScore()))
-				l.setScore(aa.getScore());
+			if (!Double.isNaN(aa.getScore())) l.setScore(aa.getScore());
 		}
 
 		return ret;

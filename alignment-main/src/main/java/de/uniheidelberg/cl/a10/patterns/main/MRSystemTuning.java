@@ -36,10 +36,10 @@ public class MRSystemTuning extends MainWithInputSequences {
 	AlignmentEvaluation<Token> evaluation;
 
 	public static void main(final String[] args) throws SecurityException,
-			FrameNotFoundException, FrameElementNotFoundException, IOException,
-			InstantiationException, IllegalAccessException,
-			ClassNotFoundException, ParserConfigurationException, SAXException,
-			IncompatibleException {
+	FrameNotFoundException, FrameElementNotFoundException, IOException,
+	InstantiationException, IllegalAccessException,
+	ClassNotFoundException, ParserConfigurationException, SAXException,
+	IncompatibleException {
 		Main.initProperties();
 		MRSystemTuning asm = new MRSystemTuning();
 		asm.processArguments(args, asm.settings);
@@ -47,13 +47,14 @@ public class MRSystemTuning extends MainWithInputSequences {
 	}
 
 	public void run() throws SecurityException, InstantiationException,
-			IllegalAccessException, ClassNotFoundException,
-			ParserConfigurationException, SAXException, IOException,
-			IncompatibleException {
-		evaluation = de.uniheidelberg.cl.a10.eval.Evaluation
-				.getAlignmentEvaluation(this.settings.evaluationStyle);
-		TokenAlignmentReader ar = new TokenAlignmentReader(
-				settings.dataDirectory);
+	IllegalAccessException, ClassNotFoundException,
+	ParserConfigurationException, SAXException, IOException,
+	IncompatibleException {
+		evaluation =
+				de.uniheidelberg.cl.a10.eval.Evaluation
+						.getAlignmentEvaluation(this.settings.evaluationStyle);
+		TokenAlignmentReader ar =
+				new TokenAlignmentReader(settings.dataDirectory);
 		Alignment<Token> goldDocument = ar.read(settings.gold);
 		List<SimilarityConfiguration> confs = this.getConfigurationSpace();
 		for (int i = 0; i < this.getArguments().size(); i++) {
@@ -64,12 +65,13 @@ public class MRSystemTuning extends MainWithInputSequences {
 						mrsm.similarityConf = sc;
 						mrsm.setArguments(Arrays.asList(this.getArguments()
 								.get(i), this.getArguments().get(j)));
-						Alignment<Token> silver = new EventTokenConverter()
-								.convert(mrsm.align());
-						SingleResult res = evaluation.evaluate(goldDocument,
-								silver, sc);
-						String pair = this.getArguments().get(i) + " "
-								+ this.getArguments().get(j);
+						Alignment<Token> silver =
+								new EventTokenConverter().convert(mrsm.align());
+						SingleResult res =
+								evaluation.evaluate(goldDocument, silver, sc);
+						String pair =
+								this.getArguments().get(i) + " "
+										+ this.getArguments().get(j);
 						Output op = Output.getOutput(outputStyle);
 						op.setNumberFormatString("%1$.2f");
 						op.setPrintHeader(false);
@@ -85,7 +87,8 @@ public class MRSystemTuning extends MainWithInputSequences {
 	}
 
 	protected List<SimilarityConfiguration> getConfigurationSpace() {
-		List<SimilarityConfiguration> confs = new LinkedList<SimilarityConfiguration>();
+		List<SimilarityConfiguration> confs =
+				new LinkedList<SimilarityConfiguration>();
 
 		SimilarityConfiguration conf;
 
@@ -97,12 +100,15 @@ public class MRSystemTuning extends MainWithInputSequences {
 							for (int w4 = 1; w4 < 3; w4++) {
 								conf = new SimilarityConfiguration();
 								conf.setThreshold(d);
-								conf.similarityFunctions = Arrays.asList("WNS",
-										"FNS", "VNS", "ATS", "GDS");
-								conf.weights = Arrays.asList(
-										String.valueOf(w0), String.valueOf(w1),
-										String.valueOf(w2), String.valueOf(w3),
-										String.valueOf(w4));
+								conf.similarityFunctions =
+										Arrays.asList("WNS", "FNS", "VNS",
+												"ATS", "GDS");
+								conf.weights =
+										Arrays.asList(String.valueOf(w0),
+												String.valueOf(w1),
+												String.valueOf(w2),
+												String.valueOf(w3),
+												String.valueOf(w4));
 								conf.combination = Operation.GEO;
 								confs.add(conf);
 							}
