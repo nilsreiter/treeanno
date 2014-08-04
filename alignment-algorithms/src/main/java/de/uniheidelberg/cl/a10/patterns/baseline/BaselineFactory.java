@@ -1,14 +1,16 @@
 package de.uniheidelberg.cl.a10.patterns.baseline;
 
-import de.uniheidelberg.cl.a10.HasTarget;
+import de.nilsreiter.alignment.algorithm.Baseline;
+import de.nilsreiter.alignment.algorithm.impl.Harmonic_impl;
+import de.nilsreiter.alignment.algorithm.impl.NoAlignment_impl;
+import de.nilsreiter.alignment.algorithm.impl.SameLemma_impl;
+import de.nilsreiter.alignment.algorithm.impl.SameSurface_impl;
+import de.nilsreiter.alignment.algorithm.impl.WeightedHarmonic_impl;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
-import de.uniheidelberg.cl.a10.patterns.baseline.impl.Harmonic_impl;
-import de.uniheidelberg.cl.a10.patterns.baseline.impl.NoAlignment_impl;
-import de.uniheidelberg.cl.a10.patterns.baseline.impl.SameLemma_impl;
-import de.uniheidelberg.cl.a10.patterns.baseline.impl.SameSurface_impl;
-import de.uniheidelberg.cl.a10.patterns.baseline.impl.WeightedHarmonic_impl;
+import de.uniheidelberg.cl.a10.data2.HasTokens;
 
-public class BaselineFactory<T extends HasDocument & HasTarget> {
+@Deprecated
+public class BaselineFactory<T extends HasDocument & HasTokens> {
 
 	public Baseline<T> getBaseline(final Baseline.Type type) {
 		switch (type) {

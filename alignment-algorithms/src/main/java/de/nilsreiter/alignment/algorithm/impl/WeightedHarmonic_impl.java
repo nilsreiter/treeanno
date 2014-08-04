@@ -1,11 +1,11 @@
-package de.uniheidelberg.cl.a10.patterns.baseline.impl;
+package de.nilsreiter.alignment.algorithm.impl;
 
 import java.util.List;
 
+import de.nilsreiter.alignment.algorithm.WeightedHarmonic;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.Link;
-import de.uniheidelberg.cl.a10.patterns.baseline.WeightedHarmonic;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class WeightedHarmonic_impl<T extends HasDocument> extends
