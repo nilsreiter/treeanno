@@ -135,10 +135,11 @@ SimilarityDatabase<T> {
 		SQLBuilder b = new SQLBuilder();
 		b.create(database.getTableName(table_similarities)).struct(
 				TBL_STRUCT_SIMILARITIES);
-
-		Statement stmt = database.getStatement();
+		Connection conn = database.getConnection();
+		Statement stmt = conn.createStatement();
 		stmt.execute(b.toString());
 		stmt.close();
+		conn.close();
 
 	}
 
@@ -147,7 +148,7 @@ SimilarityDatabase<T> {
 		StringBuilder b = new StringBuilder();
 		b.append("DELETE FROM ").append(table_similarities);
 		b.append(" WHERE type='").append(type).append("';");
-		Statement stmt = database.getStatement();
+		Statement stmt = database.getConnection().createStatement();
 		stmt.execute(b.toString());
 		stmt.close();
 
@@ -172,9 +173,14 @@ SimilarityDatabase<T> {
 		Statement stmt = conn.createStatement();
 		SQLBuilder b = new SQLBuilder();
 		b.select("*")
-				.from(table_similarities)
-				.where("document1='" + doc1.getId() + "' AND document2='"
-						+ doc2.getId() + "'");
+		.from(table_similarities)
+		.where(" ( document1='" + doc1.getId() + "' AND document2='"
+				+ doc2.getId() + "')" + " OR ( document1='"
+				+ doc1.getId() + "' AND document2='" + doc1.getId()
+				+ "' )" + " OR ( document1='" + doc2.getId()
+				+ "' AND document2='" + doc1.getId() + "' )"
+				+ " OR ( document1='" + doc2.getId()
+				+ "' AND document2='" + doc2.getId() + "' )");
 
 		ResultSet rs = stmt.executeQuery(b.toString());
 
@@ -187,11 +193,14 @@ SimilarityDatabase<T> {
 			String type = rs.getString(2);
 			double sim = rs.getDouble(7);
 
+			@SuppressWarnings("unchecked")
 			T aoi1 = (T) doc1.getById(id1);
+			@SuppressWarnings("unchecked")
 			T aoi2 = (T) doc2.getById(id2);
 			if (!matrixMap.containsKey(type))
-				matrixMap.put(type, new MapMatrix<T, T, Double>());
-			matrixMap.get(type).put(aoi1, aoi2, sim);
+				matrixMap.put(type, new MapMatrix<T, T, Double>(0.0));
+			if (aoi1 != null && aoi2 != null)
+				matrixMap.get(type).put(aoi1, aoi2, sim);
 		}
 		stmt.close();
 		conn.close();
