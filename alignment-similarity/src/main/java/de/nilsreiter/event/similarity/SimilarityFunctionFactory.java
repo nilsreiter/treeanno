@@ -2,10 +2,12 @@ package de.nilsreiter.event.similarity;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.commons.configuration.Configuration;
@@ -99,8 +101,9 @@ public class SimilarityFunctionFactory {
 				String className = key.substring(11);
 				Class<?> cl = Class.forName(className);
 				if (EventSimilarityFunction.class.isAssignableFrom(cl)) {
+					@SuppressWarnings("unchecked")
 					Class<? extends EventSimilarityFunction> simClass =
-							(Class<? extends EventSimilarityFunction>) cl;
+					(Class<? extends EventSimilarityFunction>) cl;
 					weightMap.put(simClass, weight);
 				}
 			}
@@ -119,6 +122,7 @@ public class SimilarityFunctionFactory {
 		Logger logger = Logger.getAnonymousLogger();
 		SimilarityDatabase<Event> simDB;
 		Map<String, Matrix<Event, Event, Double>> cache = null;
+		Set<String> activePair = new HashSet<String>();
 
 		public CachingSimilarityFunction(
 				Map<Class<? extends EventSimilarityFunction>, Double> weightMap,
@@ -129,26 +133,40 @@ public class SimilarityFunctionFactory {
 
 		@Override
 		public Probability sim(Event arg0, Event arg1) {
+
+			if (!activePair.contains(arg0.getRitualDocument().getId())
+					&& !activePair.contains(arg1.getRitualDocument().getId()))
+				cache = null;
+
 			double p = 0.0;
 			for (Class<? extends EventSimilarityFunction> func : fWeightMap
 					.keySet()) {
 				try {
 					double w = fWeightMap.get(func);
 					if (cache == null) {
+						logger.info("Retrieving similarities from database");
 						cache =
 								simDB.getSimilarities(arg0.getRitualDocument(),
 										arg1.getRitualDocument());
+						activePair.clear();
+						activePair.add(arg0.getRitualDocument().getId());
+						activePair.add(arg1.getRitualDocument().getId());
+						logger.info("Retrieved similarities from database for "
+								+ arg0.getRitualDocument().getId() + " and "
+								+ arg1.getRitualDocument().getId());
+
 					}
-					double p0 =
-							cache.get(func.getSimpleName().substring(0, 4))
-							.get(arg0, arg1);
+					if (arg0.equals(arg1)) return Probability.ONE;
+					String s = func.getSimpleName().substring(0, 4);
+					Matrix<Event, Event, Double> m = cache.get(s);
+					double p0 = m.get(arg0, arg1);
 					p = p + (w * p0);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
-			System.err.println("Retrieved similarity (" + arg0.getGlobalId()
-					+ "," + arg1.getGlobalId() + ")");
+			logger.finer("Retrieved similarity (" + arg0.getGlobalId() + ","
+					+ arg1.getGlobalId() + ")");
 
 			return Probability.fromProbability(p);
 		}
