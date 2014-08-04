@@ -20,7 +20,7 @@ import de.uniheidelberg.cl.a10.patterns.models.HiddenMarkovModel;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class HiddenMarkovModel_impl<T> extends AbstractModel<List<T>> implements
-Serializable, HiddenMarkovModel<T> {
+		Serializable, HiddenMarkovModel<T> {
 	private static final long serialVersionUID = 1L;
 
 	PreciseMarkovModel_impl<Integer> mm = null;
@@ -48,6 +48,8 @@ Serializable, HiddenMarkovModel<T> {
 		this.emissionProbabilities =
 				new MapMatrix<Integer, T, Probability>(
 						hmm.emissionProbabilities);
+		this.emissionProbabilities.setDefaultValue(hmm.emissionProbabilities
+				.getDefaultValue());
 		this.state = hmm.state;
 		this.history =
 				new MapMatrix<Integer, Integer, ProbabilityDistribution<T>>(
@@ -170,37 +172,37 @@ Serializable, HiddenMarkovModel<T> {
 
 			Probability[] c =
 					new Probability[] {
-							this.mergeEmissionProbabilities(state1, state2,
-									eventSequence.get(state1Index)),
+					this.mergeEmissionProbabilities(state1, state2,
+							eventSequence.get(state1Index)),
 							this.mm.getConditionalProbability(state1,
 									stateSequence.get(state1Index + 1), state1,
 									state2),
-							this.mm.getConditionalProbability(
-									stateSequence.get(state1Index - 1), state1,
-									state1, state2),
-							this.mergeEmissionProbabilities(state1, state2,
-									eventSequence.get(state2Index)),
-							this.mm.getConditionalProbability(state1,
-									stateSequence.get(state2Index + 1), state1,
-									state2),
-							this.mm.getConditionalProbability(
-									stateSequence.get(state2Index - 1), state1,
-									state1, state2) };
+									this.mm.getConditionalProbability(
+											stateSequence.get(state1Index - 1), state1,
+											state1, state2),
+											this.mergeEmissionProbabilities(state1, state2,
+													eventSequence.get(state2Index)),
+													this.mm.getConditionalProbability(state1,
+															stateSequence.get(state2Index + 1), state1,
+															state2),
+															this.mm.getConditionalProbability(
+																	stateSequence.get(state2Index - 1), state1,
+																	state1, state2) };
 
 			Probability[] d =
 					new Probability[] {
-							this.getProbability(state1,
-									eventSequence.get(state1Index)),
+					this.getProbability(state1,
+							eventSequence.get(state1Index)),
 							mm.getProbability(state1,
 									stateSequence.get(state1Index + 1)),
-							mm.getProbability(
-									stateSequence.get(state1Index - 1), state1),
-							this.getProbability(state2,
-									eventSequence.get(state2Index)),
-							mm.getProbability(state2,
-									stateSequence.get(state2Index + 1)),
-							mm.getProbability(
-									stateSequence.get(state2Index - 1), state2) };
+									mm.getProbability(
+											stateSequence.get(state1Index - 1), state1),
+											this.getProbability(state2,
+													eventSequence.get(state2Index)),
+													mm.getProbability(state2,
+															stateSequence.get(state2Index + 1)),
+															mm.getProbability(
+																	stateSequence.get(state2Index - 1), state2) };
 			p = PMath.multiply(p, c[0], c[1], c[2], c[3], c[4], c[5]);
 			return PMath.divide(p, PMath.multiply(d));
 
@@ -278,8 +280,8 @@ Serializable, HiddenMarkovModel<T> {
 				PMath.multiply(
 						this.mm.getStartingProbabilities().get(
 								stateSequence.get(0)),
-								this.getProbability(stateSequence.get(0),
-										eventSequence.get(0)));
+						this.getProbability(stateSequence.get(0),
+								eventSequence.get(0)));
 		for (int i = 1; i < stateSequence.size(); i++) {
 			if (d == Probability.NULL) return d;
 			d =
@@ -288,7 +290,7 @@ Serializable, HiddenMarkovModel<T> {
 							mm.getTransitionProbabilities().get(
 									stateSequence.get(i - 1),
 									stateSequence.get(i)), this.getProbability(
-									stateSequence.get(i), eventSequence.get(i)));
+											stateSequence.get(i), eventSequence.get(i)));
 		}
 		if (this.mm.getFinalStates().contains(
 				stateSequence.get(stateSequence.size() - 1))) return d;
@@ -327,7 +329,7 @@ Serializable, HiddenMarkovModel<T> {
 		StringBuilder b = new StringBuilder();
 		b.append(mm.toString());
 		b.append("Emission Probabilities: " + this.emissionProbabilities)
-		.append('\n');
+				.append('\n');
 		b.append("History").append('\n');
 		b.append(this.history).append('\n');
 		return b.toString();
@@ -363,7 +365,7 @@ Serializable, HiddenMarkovModel<T> {
 	 * @see de.uniheidelberg.cl.a10.patterns.models.impl.MarkovModel_impl#getTransitionProbabilities()
 	 */
 	public MapMatrix<Integer, Integer, Probability>
-			getTransitionProbabilities() {
+	getTransitionProbabilities() {
 		return mm.getTransitionProbabilities();
 	}
 
@@ -372,9 +374,9 @@ Serializable, HiddenMarkovModel<T> {
 	 * @see de.uniheidelberg.cl.a10.patterns.models.impl.MarkovModel_impl#setTransitionProbabilities(de.uniheidelberg.cl.a10.patterns.data.matrix.DoubleMapMatrix)
 	 */
 	public
-			void
-			setTransitionProbabilities(
-					final MapMatrix<Integer, Integer, Probability> transitionProbabilities) {
+	void
+	setTransitionProbabilities(
+			final MapMatrix<Integer, Integer, Probability> transitionProbabilities) {
 		mm.setTransitionProbabilities(transitionProbabilities);
 	}
 
