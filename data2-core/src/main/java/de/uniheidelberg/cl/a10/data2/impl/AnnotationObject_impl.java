@@ -50,10 +50,8 @@ public abstract class AnnotationObject_impl implements HasId, AnnotationObject {
 	 */
 	@Override
 	public boolean equals(final Object other) {
-		if (this == other)
-			return true;
-		if (!(other instanceof AnnotationObject_impl))
-			return false;
+		if (this == other) return true;
+		if (!(other instanceof AnnotationObject_impl)) return false;
 		AnnotationObject_impl doo = (AnnotationObject_impl) other;
 		return this.getId().equals(doo.getId());
 	}
