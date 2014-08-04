@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 import org.apache.commons.math3.util.Pair;
 
@@ -189,9 +188,7 @@ AbstractTrainer<List<T>> {
 			// s2);
 
 			if (d.getLogProbability() > p.getLogProbability()) {
-				if (this.configuration.greedy) {
-					return this.performMerge(hmm, sequences, s1, s2);
-				}
+
 				p = d;
 				if (maxPair == null) {
 					maxPair = new Pair<Integer, Integer>(s1, s2);
@@ -393,17 +390,6 @@ AbstractTrainer<List<T>> {
 		return hmm;
 	}
 
-	public void precomputeSimilarities(final Collection<List<T>> sequences) {
-		if (configuration.precomputeSimilarities) {
-			logger.log(Level.INFO, "Now Precomputing similarities");
-			for (List<T> s1 : sequences) {
-				for (List<T> s2 : sequences) {
-					prior.precompute(s1, s2);
-				}
-			}
-		}
-	}
-
 	@Override
 	public SEHiddenMarkovModel_impl<T> train(
 			final Iterator<List<T>> trainingInstances) {
@@ -422,7 +408,6 @@ AbstractTrainer<List<T>> {
 		long duration = now - time;
 		hmm.setProperty("Training time", String.valueOf(duration));
 		hmm.setProperty("Training time (s)", String.valueOf(duration * 1E-9));
-		hmm.setProperty("Greedy", String.valueOf(this.configuration.greedy));
 		hmm.setProperty("Training date", new Date().toString());
 		return hmm;
 	}

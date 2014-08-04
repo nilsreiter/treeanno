@@ -13,7 +13,7 @@ import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.models.impl.SEHiddenMarkovModel_impl;
 
 public class ThreadedBayesianModelMerging<T extends HasDocument> extends
-		BayesianModelMerging<T> {
+BayesianModelMerging<T> {
 
 	int maximalNumberOfThreads = Integer.MAX_VALUE;
 
@@ -34,8 +34,8 @@ public class ThreadedBayesianModelMerging<T extends HasDocument> extends
 		Pair<Integer, Integer> maxPair = null;
 		List<TestMergeThread> threads = new ArrayList<TestMergeThread>();
 
-		Iterator<org.apache.commons.math3.util.Pair<Integer, Integer>> iterator = new PairIterator(
-				hmm, new StateMergeFilter(hmm));
+		Iterator<org.apache.commons.math3.util.Pair<Integer, Integer>> iterator =
+				new PairIterator(hmm, new StateMergeFilter(hmm));
 
 		Semaphore semaphore = new Semaphore(this.maximalNumberOfThreads);
 		while (iterator.hasNext()) {
@@ -49,14 +49,13 @@ public class ThreadedBayesianModelMerging<T extends HasDocument> extends
 						&& hmm.emissionsEqual(s1, s2)) {
 					return this.performMerge(hmm, sequences, s1, s2);
 				}
-				TestMergeThread tmr = new TestMergeThread(hmm, sequences, s1,
-						s2, semaphore);
+				TestMergeThread tmr =
+						new TestMergeThread(hmm, sequences, s1, s2, semaphore);
 				threads.add(tmr);
 				try {
 					semaphore.acquire();
 					tmr.start();
-				} catch (InterruptedException e) {
-				}
+				} catch (InterruptedException e) {}
 
 			}
 		}
@@ -67,13 +66,6 @@ public class ThreadedBayesianModelMerging<T extends HasDocument> extends
 				Probability d = tmr.getReturnValue();
 				logger.finest(tmr.s1 + " and " + tmr.s2 + " would give " + d);
 				if (d.getLogProbability() > p.getLogProbability()) {
-					if (this.configuration.greedy) {
-						for (TestMergeThread otherThread : threads) {
-							otherThread.kill();
-						}
-						return this
-								.performMerge(hmm, sequences, tmr.s1, tmr.s2);
-					}
 					p = d;
 					if (maxPair == null) {
 						maxPair = new Pair<Integer, Integer>(tmr.s1, tmr.s2);
@@ -122,8 +114,8 @@ public class ThreadedBayesianModelMerging<T extends HasDocument> extends
 
 		@Override
 		public void run() {
-			this.returnValue = getConditionalProbabilityOfModel(hmm, sequences,
-					s1, s2);
+			this.returnValue =
+					getConditionalProbabilityOfModel(hmm, sequences, s1, s2);
 			sem.release();
 			return;
 

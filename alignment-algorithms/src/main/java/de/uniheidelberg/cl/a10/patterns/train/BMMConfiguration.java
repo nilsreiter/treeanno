@@ -6,30 +6,38 @@ import java.util.List;
 
 import org.kohsuke.args4j.Option;
 
+import de.nilsreiter.alignment.algorithm.AlgorithmConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 
-public class BMMConfiguration extends SimilarityConfiguration {
+public class BMMConfiguration extends SimilarityConfiguration implements
+AlgorithmConfiguration {
 	@Option(name = "--greedy", usage = "Enables a greedy merging strategy")
-	public boolean greedy = false;
+	@Deprecated
+	boolean greedy = false;
 
-	@Option(name = "--threaded", usage = "Use the threaded variant of bayesian model merging", aliases = { "-m" })
-	public boolean threaded = false;
+	@Option(name = "--threaded",
+			usage = "Use the threaded variant of bayesian model merging",
+			aliases = { "-m" })
+	boolean threaded = false;
 
-	@Option(name = "--prior", usage = "Set the prior probability for the geometric distribution. Default: 0.95", aliases = { "-p" })
+	@Option(
+			name = "--prior",
+			usage = "Set the prior probability for the geometric distribution. Default: 0.95",
+			aliases = { "-p" })
 	public double prior = 0.95;
 
-	@Option(name = "--precompute-similarities", usage = "Precomputes all the similarities needed", aliases = { "-ps" })
+	@Option(name = "--precompute-similarities",
+			usage = "Precomputes all the similarities needed",
+			aliases = { "-ps" })
+	@Deprecated
 	public boolean precomputeSimilarities = false;
 
 	@Override
 	public String getWikiDescription() {
 		StringBuilder b = new StringBuilder(super.getWikiDescription());
-		if (threaded)
-			b.append("m ");
-		if (greedy)
-			b.append("g ");
-		if (prior != 0.95)
-			b.append("p=").append(prior).append(" ");
+		if (threaded) b.append("m ");
+		if (greedy) b.append("g ");
+		if (prior != 0.95) b.append("p=").append(prior).append(" ");
 		return b.toString();
 
 	}
@@ -53,7 +61,7 @@ public class BMMConfiguration extends SimilarityConfiguration {
 	}
 
 	public String getLineDescription() throws IllegalArgumentException,
-			IllegalAccessException {
+	IllegalAccessException {
 		StringBuilder b = new StringBuilder();
 		for (Field f : this.getClass().getDeclaredFields()) {
 			Option o = f.getAnnotation(Option.class);
@@ -168,5 +176,10 @@ public class BMMConfiguration extends SimilarityConfiguration {
 		f.format(s, ob);
 		f.close();
 		return b.toString();
+	}
+
+	@Override
+	public Class<?> getAlgorithmClass() {
+		return BayesianModelMerging.class;
 	}
 }
