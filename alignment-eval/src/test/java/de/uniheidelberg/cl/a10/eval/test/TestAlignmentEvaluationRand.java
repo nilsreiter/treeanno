@@ -21,9 +21,10 @@ public class TestAlignmentEvaluationRand {
 
 	@Before
 	public void setUp() throws Exception {
-		t = new Token[] { mock(Token.class), mock(Token.class),
-				mock(Token.class), mock(Token.class), mock(Token.class),
-				mock(Token.class) };
+		t =
+				new Token[] { mock(Token.class), mock(Token.class),
+				mock(Token.class), mock(Token.class),
+				mock(Token.class), mock(Token.class) };
 	}
 
 	@Test
@@ -37,8 +38,8 @@ public class TestAlignmentEvaluationRand {
 
 		silver.addAlignment("a0", Arrays.asList(t));
 
-		AlignmentEvaluation<Token> eval = Evaluation
-				.getAlignmentEvaluation(Style.RAND);
+		AlignmentEvaluation<Token> eval =
+				Evaluation.getAlignmentEvaluation(Style.RAND);
 		SingleResult res = eval.evaluate(gold, silver);
 		assertEquals(0.2, res.p(), 0.0);
 
@@ -53,8 +54,8 @@ public class TestAlignmentEvaluationRand {
 		gold.addAlignment("a1", Arrays.asList(t[2], t[3]));
 		gold.addAlignment("a2", Arrays.asList(t[4], t[5]));
 
-		AlignmentEvaluation<Token> eval = Evaluation
-				.getAlignmentEvaluation(Style.RAND);
+		AlignmentEvaluation<Token> eval =
+				Evaluation.getAlignmentEvaluation(Style.RAND);
 
 		SingleResult res = eval.evaluate(gold, silver);
 		assertEquals(0.8, res.p(), 0.0);
