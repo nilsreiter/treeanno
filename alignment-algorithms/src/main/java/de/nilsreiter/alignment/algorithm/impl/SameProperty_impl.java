@@ -15,7 +15,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.impl.AlignmentIdProvider_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 
 public abstract class SameProperty_impl<T extends HasDocument & HasTokens>
-		implements Baseline<T> {
+implements Baseline<T> {
 
 	public abstract String getProperty(T t);
 
@@ -77,4 +77,8 @@ public abstract class SameProperty_impl<T extends HasDocument & HasTokens>
 		return alignment;
 	}
 
+	@Override
+	public Class<?> getConfigurationBean() {
+		return Object.class;
+	}
 }

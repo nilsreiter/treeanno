@@ -32,9 +32,12 @@ public class MRSystem_impl<T extends HasDocument> implements MRSystem<T> {
 
 	SimilarityFunction<T> similarityFunction;
 
+	@Deprecated
 	Probability threshold = Probability.NULL;
 
 	Logger logger = Logger.getLogger(getClass().getName());
+
+	MRSystemConfiguration config;
 
 	@Override
 	public Alignment<T> getAlignment() {
@@ -53,11 +56,11 @@ public class MRSystem_impl<T extends HasDocument> implements MRSystem<T> {
 				try {
 					score =
 							this.similarityFunction.sim(e1, e2)
-									.getProbability();
+							.getProbability();
 				} catch (NullPointerException e) {
 					score =
 							this.similarityFunction.sim(e2, e1)
-									.getProbability();
+							.getProbability();
 				}
 				if (!al.together(e1, e2)) {
 					Link<T> link = al.addAlignment(idp.getNextAlignmentId(), s);
@@ -128,8 +131,8 @@ public class MRSystem_impl<T extends HasDocument> implements MRSystem<T> {
 
 	@SuppressWarnings("unchecked")
 	protected List<Set<T>>
-			getComponents(final DirectedGraph<T, DefaultWeightedEdge> graph,
-					final Set<T> part) {
+	getComponents(final DirectedGraph<T, DefaultWeightedEdge> graph,
+			final Set<T> part) {
 		DirectedWeightedSubgraph<T, DefaultWeightedEdge> subgraph =
 				new DirectedWeightedSubgraph<T, DefaultWeightedEdge>(
 						(WeightedGraph<T, DefaultWeightedEdge>) graph, part,
@@ -145,9 +148,9 @@ public class MRSystem_impl<T extends HasDocument> implements MRSystem<T> {
 			final Set<T> vertices, final int level) {
 		@SuppressWarnings("unchecked")
 		DirectedWeightedSubgraph<T, DefaultWeightedEdge> subgraph =
-				new DirectedWeightedSubgraph<T, DefaultWeightedEdge>(
-						(WeightedGraph<T, DefaultWeightedEdge>) baseGraph,
-						vertices, null);
+		new DirectedWeightedSubgraph<T, DefaultWeightedEdge>(
+				(WeightedGraph<T, DefaultWeightedEdge>) baseGraph,
+				vertices, null);
 
 		return subgraph;
 
@@ -215,11 +218,7 @@ public class MRSystem_impl<T extends HasDocument> implements MRSystem<T> {
 
 	@Override
 	public Probability getThreshold() {
-		return threshold;
-	}
-
-	public void setThreshold(final Probability threshold) {
-		this.threshold = threshold;
+		return Probability.fromProbability(config.getThreshold());
 	}
 
 	@Override
@@ -245,6 +244,19 @@ public class MRSystem_impl<T extends HasDocument> implements MRSystem<T> {
 
 	public List<T> getSequence2() {
 		return sequence2;
+	}
+
+	@Override
+	public Class<?> getConfigurationBean() {
+		return MRSystemConfiguration.class;
+	}
+
+	public MRSystemConfiguration getConfig() {
+		return config;
+	}
+
+	public void setConfig(MRSystemConfiguration config) {
+		this.config = config;
 	}
 
 }

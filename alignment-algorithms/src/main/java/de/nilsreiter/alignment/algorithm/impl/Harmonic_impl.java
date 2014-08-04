@@ -117,4 +117,9 @@ public class Harmonic_impl<T extends HasDocument> implements Harmonic<T> {
 		// System.err.println(alignment.getAlignments());
 		return alignment;
 	}
+
+	@Override
+	public Class<?> getConfigurationBean() {
+		return Object.class;
+	}
 }

@@ -15,7 +15,9 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 
 import de.nilsreiter.alignment.algorithm.impl.BayesianModelMerging_impl;
 import de.nilsreiter.alignment.algorithm.impl.Harmonic_impl;
+import de.nilsreiter.alignment.algorithm.impl.MRSystemConfiguration;
 import de.nilsreiter.alignment.algorithm.impl.MRSystem_impl;
+import de.nilsreiter.alignment.algorithm.impl.NeedlemanWunschConfiguration;
 import de.nilsreiter.alignment.algorithm.impl.NeedlemanWunsch_impl;
 import de.nilsreiter.alignment.algorithm.impl.SameLemma_impl;
 import de.nilsreiter.alignment.algorithm.impl.SameSurface_impl;
@@ -23,8 +25,8 @@ import de.nilsreiter.alignment.algorithm.impl.WeightedHarmonic_impl;
 import de.nilsreiter.event.similarity.SimilarityFunctionFactory;
 import de.nilsreiter.util.db.impl.DatabaseDataSource_impl;
 import de.uniheidelberg.cl.a10.data2.Event;
-import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
+import de.uniheidelberg.cl.a10.patterns.train.BMMConfiguration;
 
 public class AlgorithmFactory {
 	public static final String CONFIG_KEY_ALGORITHM = "alignment.algorithm";
@@ -36,7 +38,7 @@ public class AlgorithmFactory {
 	};
 
 	public AlignmentAlgorithm<Event> getAlgorithm(Configuration configuration) {
-
+		ConfigurationConverter conv = new ConfigurationConverter();
 		try {
 
 			DataSource dataSource;
@@ -65,29 +67,35 @@ public class AlgorithmFactory {
 								+ configuration.getString(CONFIG_KEY_ALGORITHM));
 			}
 			if (NeedlemanWunsch.class.isAssignableFrom(cl)) {
+				NeedlemanWunschConfiguration nwConf =
+						(NeedlemanWunschConfiguration) conv.getConfiguration(
+								NeedlemanWunschConfiguration.class,
+								configuration);
 				NeedlemanWunsch<Event> algo =
-						new NeedlemanWunsch_impl<Event>(
-								configuration
-										.getDouble(NeedlemanWunsch.PARAM_THRESHOLD),
+						new NeedlemanWunsch_impl<Event>(nwConf,
 								SimilarityFunctionFactory
-										.getSimilarityFunction(
-												new DatabaseDataSource_impl(
-														dataSource),
-												configuration));
+								.getSimilarityFunction(
+										new DatabaseDataSource_impl(
+												dataSource), nwConf));
 				return algo;
 			} else if (BayesianModelMerging.class.isAssignableFrom(cl)) {
+				BMMConfiguration bmmConf =
+						(BMMConfiguration) conv.getConfiguration(
+								BMMConfiguration.class, configuration);
 				SimilarityFunction<Event> func =
 						SimilarityFunctionFactory.getSimilarityFunction(
 								new DatabaseDataSource_impl(dataSource),
-								configuration);
-				return new BayesianModelMerging_impl<Event>(func, configuration);
+								bmmConf);
+				return new BayesianModelMerging_impl<Event>(func, bmmConf);
 			} else if (MRSystem.class.isAssignableFrom(cl)) {
+				MRSystemConfiguration conf =
+						(MRSystemConfiguration) conv.getConfiguration(
+								MRSystemConfiguration.class, configuration);
 				MRSystem_impl<Event> mrs = new MRSystem_impl<Event>();
+				mrs.setConfig(conf);
 				mrs.setSimilarityFunction(SimilarityFunctionFactory
 						.getSimilarityFunction(new DatabaseDataSource_impl(
-								dataSource), configuration));
-				mrs.setThreshold(Probability.fromProbability(configuration
-						.getDouble(MRSystem.CONFIG_THRESHOLD)));
+								dataSource), conf));
 				return mrs;
 			} else if (WeightedHarmonic.class.isAssignableFrom(cl)) {
 				return new WeightedHarmonic_impl<Event>();
