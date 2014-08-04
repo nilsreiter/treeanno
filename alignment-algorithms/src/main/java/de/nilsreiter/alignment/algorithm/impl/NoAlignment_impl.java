@@ -37,4 +37,8 @@ public class NoAlignment_impl<T extends HasDocument> implements NoAlignment<T> {
 		return alignment;
 	}
 
+	@Override
+	public Class<?> getConfigurationBean() {
+		return Object.class;
+	}
 }

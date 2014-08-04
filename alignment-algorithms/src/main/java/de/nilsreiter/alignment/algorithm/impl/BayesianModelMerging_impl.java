@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.apache.commons.configuration.Configuration;
-
 import de.nilsreiter.alignment.algorithm.BayesianModelMerging;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
@@ -26,14 +24,12 @@ public class BayesianModelMerging_impl<T extends HasDocument> extends
 	de.uniheidelberg.cl.a10.patterns.train.BayesianModelMerging<T> bmm;
 
 	public BayesianModelMerging_impl(SimilarityFunction<T> sf,
-			Configuration config) throws FileNotFoundException,
+			BMMConfiguration config) throws FileNotFoundException,
 			SecurityException, InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
 		this.function = sf;
 		BMMFactory<T> trainingFactory = new BMMFactory<T>(sf);
-		BMMConfiguration bmmc = new BMMConfiguration();
-		bmmc.setThreaded(config.getBoolean(CONFIG_THREADED));
-		bmmc.setThreshold(config.getDouble(CONFIG_THRESHOLD));
+		BMMConfiguration bmmc = config;
 		bmm = trainingFactory.getTrainer(bmmc);
 		bmm.setLogLevel(Level.ALL);
 
@@ -70,5 +66,10 @@ public class BayesianModelMerging_impl<T extends HasDocument> extends
 		}
 
 		return doc;
+	}
+
+	@Override
+	public Class<?> getConfigurationBean() {
+		return BMMConfiguration.class;
 	}
 }

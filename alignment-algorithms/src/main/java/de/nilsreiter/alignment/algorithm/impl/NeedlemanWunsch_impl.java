@@ -16,6 +16,7 @@ import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.AdvancedScoringScheme;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.DoubleNeedlemanWunsch;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.ScoringScheme;
+import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class NeedlemanWunsch_impl<T extends HasDocument> extends
@@ -23,11 +24,12 @@ AbstractAlignmentAlgorithm_impl<T> implements NeedlemanWunsch<T> {
 
 	DoubleNeedlemanWunsch<T> dnw;
 
-	public NeedlemanWunsch_impl(double threshold, SimilarityFunction<T> function) {
+	public NeedlemanWunsch_impl(NeedlemanWunschConfiguration nwConf,
+			SimilarityFunction<T> function) {
 		this.function = function;
 		ScoringScheme<T> scoringScheme =
-				new AdvancedScoringScheme<T>(
-						Probability.fromProbability(threshold), this.function);
+				new AdvancedScoringScheme<T>(Probability.fromProbability(nwConf
+						.getThreshold()), this.function);
 		dnw = new DoubleNeedlemanWunsch<T>(scoringScheme);
 	}
 
@@ -65,6 +67,11 @@ AbstractAlignmentAlgorithm_impl<T> implements NeedlemanWunsch<T> {
 					pa.getScoreTagLine().get(i).getScore());
 		}
 		return document;
+	}
+
+	@Override
+	public Class<?> getConfigurationBean() {
+		return SimilarityConfiguration.class;
 	}
 
 }
