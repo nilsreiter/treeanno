@@ -15,19 +15,19 @@ import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
 import de.uniheidelberg.cl.a10.main.MainWithInputDocuments;
 
-public class Run extends MainWithInputDocuments {
+public class AlignmentMain extends MainWithInputDocuments {
 
 	@Option(name = "--algorithm",
 			usage = "fully specified class name of algorihm")
 	String algorithmClass = null;
 
 	public static void main(String[] args) throws IOException {
-		Run r = new Run();
+		AlignmentMain r = new AlignmentMain();
 		r.processArguments(args);
 		r.run();
 	}
 
-	public Run() {
+	public AlignmentMain() {
 		super();
 
 	}
