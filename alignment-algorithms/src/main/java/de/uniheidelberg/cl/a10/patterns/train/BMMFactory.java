@@ -50,6 +50,7 @@ public class BMMFactory<T extends HasDocument> {
 	 * @throws ClassNotFoundException
 	 *             If a similarity function is specified that does not exist.
 	 */
+
 	public BayesianModelMerging<T> getTrainer(final BMMConfiguration bmmc)
 			throws FileNotFoundException, SecurityException,
 			InstantiationException, IllegalAccessException {

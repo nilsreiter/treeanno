@@ -33,7 +33,8 @@ public class BMMConfigurationIterator implements Iterator<BMMConfiguration> {
 
 	public void setInterestingFields() {
 		try {
-			List<ResetableIterator<Double>> iters = new LinkedList<ResetableIterator<Double>>();
+			List<ResetableIterator<Double>> iters =
+					new LinkedList<ResetableIterator<Double>>();
 			iters.add(new CollectionIterator<Double>(Arrays
 					.asList(Double.MIN_VALUE)));
 			iters.add(new DoubleIterator(0.1, 0.9, 0.1));
