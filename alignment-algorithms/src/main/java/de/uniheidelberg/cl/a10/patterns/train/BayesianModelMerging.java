@@ -87,7 +87,7 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
  *            The class T represents the events.
  */
 public class BayesianModelMerging<T extends HasDocument> extends
-		AbstractTrainer<List<T>> {
+AbstractTrainer<List<T>> {
 
 	transient Prior<T> prior = null;
 
@@ -95,7 +95,8 @@ public class BayesianModelMerging<T extends HasDocument> extends
 
 	SimilarityFunction<T> eventSimilarity = null;
 
-	List<Pair<Integer, Integer>> mergeHistory = new LinkedList<Pair<Integer, Integer>>();
+	List<Pair<Integer, Integer>> mergeHistory =
+			new LinkedList<Pair<Integer, Integer>>();
 
 	BMMConfiguration configuration = null;
 
@@ -113,21 +114,22 @@ public class BayesianModelMerging<T extends HasDocument> extends
 	 */
 	protected void performMerges(final SEHiddenMarkovModel_impl<T> hmm,
 			final Collection<List<T>> sequences) {
-		Map<List<T>, List<Integer>> viterbiPaths = new HashMap<List<T>, List<Integer>>();
+		Map<List<T>, List<Integer>> viterbiPaths =
+				new HashMap<List<T>, List<Integer>>();
 		Viterbi<T> vi = new ParallelViterbi2<T>();
 		for (List<T> seq : sequences) {
 			List<T> sseq = hmm.ensureStartSymbolEndSymbol(seq);
 			viterbiPaths.put(sseq, vi.viterbi(hmm, sseq).getSecond());
 		}
 		Probability prob;
-		Probability newProb = this.getConditionalProbabilityOfModel(hmm,
-				viterbiPaths);
+		Probability newProb =
+				this.getConditionalProbabilityOfModel(hmm, viterbiPaths);
 		logger.info("P(M|S) = " + newProb);
 		do {
 			// System.gc();
 			prob = newProb;
-			Pair<Probability, Map<List<T>, List<Integer>>> r = this
-					.performMerge(hmm, viterbiPaths);
+			Pair<Probability, Map<List<T>, List<Integer>>> r =
+					this.performMerge(hmm, viterbiPaths);
 			newProb = r.getFirst();
 			logger.info("P(M|S) = " + newProb);
 			viterbiPaths = r.getSecond();
@@ -173,17 +175,18 @@ public class BayesianModelMerging<T extends HasDocument> extends
 		Probability p = this.getConditionalProbabilityOfModel(hmm, sequences);
 		Pair<Integer, Integer> maxPair = null;
 
-		Iterator<Pair<Integer, Integer>> pairIterator = new PairIterator(hmm,
-				new StateMergeFilter(hmm));
+		Iterator<Pair<Integer, Integer>> pairIterator =
+				new PairIterator(hmm, new StateMergeFilter(hmm));
 		while (pairIterator.hasNext()) {
 			Pair<Integer, Integer> pair = pairIterator.next();
 			logger.finer("Evaluating state merge pair " + pair);
 			Integer s1 = pair.getFirst();
 			Integer s2 = pair.getSecond();
 
-			Probability d = this.getConditionalProbabilityOfModel(hmm,
-					sequences, s1, s2);// this.performTestMerge(sequences, s1,
-										// s2);
+			Probability d =
+					this.getConditionalProbabilityOfModel(hmm, sequences, s1,
+							s2);// this.performTestMerge(sequences, s1,
+			// s2);
 
 			if (d.getLogProbability() > p.getLogProbability()) {
 				if (this.configuration.greedy) {
@@ -223,8 +226,9 @@ public class BayesianModelMerging<T extends HasDocument> extends
 	protected Probability getConditionalProbabilityOfModel(
 			final SEHiddenMarkovModel_impl<T> hmm,
 			final Map<List<T>, List<Integer>> sequences) {
-		return PMath.multiply(this.prior.getModelProbability(hmm),
-				this.getSequencesProbability(hmm, sequences));
+		Probability p_m = this.prior.getModelProbability(hmm);
+		Probability p_s = this.getSequencesProbability(hmm, sequences);
+		return PMath.multiply(p_m, p_s);
 
 	}
 
@@ -331,8 +335,9 @@ public class BayesianModelMerging<T extends HasDocument> extends
 			final Integer z2) {
 		Probability d = Probability.ONE;
 		for (Entry<List<T>, List<Integer>> entry : sequences.entrySet()) {
-			d = PMath.multiply(d,
-					hmm.p(entry.getValue(), entry.getKey(), z1, z2));
+			d =
+					PMath.multiply(d,
+							hmm.p(entry.getValue(), entry.getKey(), z1, z2));
 		}
 		return d;
 	}
@@ -362,11 +367,12 @@ public class BayesianModelMerging<T extends HasDocument> extends
 	public SEHiddenMarkovModel_impl<T> train1(
 			final SEHiddenMarkovModel_impl<T> hmm,
 			final Iterator<List<T>> trainingInstances) {
-		Map<List<T>, List<Integer>> viterbiPaths = new HashMap<List<T>, List<Integer>>();
+		Map<List<T>, List<Integer>> viterbiPaths =
+				new HashMap<List<T>, List<Integer>>();
 		Viterbi<T> vi = new ParallelViterbi2<T>();
 		while (trainingInstances.hasNext()) {
-			List<T> seq = hmm.ensureStartSymbolEndSymbol(trainingInstances
-					.next());
+			List<T> seq =
+					hmm.ensureStartSymbolEndSymbol(trainingInstances.next());
 			viterbiPaths.put(seq, vi.viterbi(hmm, seq).getSecond());
 		}
 		this.performMerge(hmm, viterbiPaths);
@@ -450,7 +456,8 @@ public class BayesianModelMerging<T extends HasDocument> extends
 		return arr;
 	}
 
-	public static <T> List<T> replace(final List<T> list, final T e1, final T e2) {
+	public static <T> List<T>
+			replace(final List<T> list, final T e1, final T e2) {
 		while (list.indexOf(e1) >= 0) {
 			list.set(list.indexOf(e1), e2);
 		}

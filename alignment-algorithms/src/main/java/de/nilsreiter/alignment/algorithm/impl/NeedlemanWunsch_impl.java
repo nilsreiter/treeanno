@@ -18,12 +18,10 @@ import de.uniheidelberg.cl.a10.patterns.sequencealignment.DoubleNeedlemanWunsch;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.ScoringScheme;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
-public class NeedlemanWunsch_impl<T extends HasDocument> implements
-		NeedlemanWunsch<T> {
+public class NeedlemanWunsch_impl<T extends HasDocument> extends
+AbstractAlignmentAlgorithm_impl<T> implements NeedlemanWunsch<T> {
 
 	DoubleNeedlemanWunsch<T> dnw;
-
-	SimilarityFunction<T> function;
 
 	public NeedlemanWunsch_impl(double threshold, SimilarityFunction<T> function) {
 		this.function = function;
@@ -39,7 +37,7 @@ public class NeedlemanWunsch_impl<T extends HasDocument> implements
 		try {
 			return this.fromPairwiseAlignment(dnw.computePairwiseAlignment(),
 					list1.get(0).getRitualDocument(), list2.get(0)
-					.getRitualDocument());
+							.getRitualDocument());
 		} catch (IncompatibleScoringSchemeException e) {
 			e.printStackTrace();
 		}
@@ -47,10 +45,10 @@ public class NeedlemanWunsch_impl<T extends HasDocument> implements
 	}
 
 	protected
-	Alignment<T>
-			fromPairwiseAlignment(
-					final de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment<T> pa,
-					final Document text1, final Document text2) {
+			Alignment<T>
+	fromPairwiseAlignment(
+			final de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment<T> pa,
+			final Document text1, final Document text2) {
 		Alignment<T> document = new Alignment_impl<T>("");
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		document.getDocuments().add(text1);
@@ -69,8 +67,4 @@ public class NeedlemanWunsch_impl<T extends HasDocument> implements
 		return document;
 	}
 
-	@Override
-	public SimilarityFunction<T> getSimilarityFunction() {
-		return function;
-	}
 }
