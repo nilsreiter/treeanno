@@ -33,7 +33,7 @@ public class DBAlignment {
 	public String getSelectStatement(String id) throws SQLException {
 		SQLBuilder b = new SQLBuilder();
 		b.select("xml").from(database.getTableName(table))
-				.where("databaseId = '" + id + "'");
+		.where("databaseId = '" + id + "'");
 		return b.toString();
 	}
 
@@ -48,7 +48,7 @@ public class DBAlignment {
 		SQLBuilder b = new SQLBuilder();
 		b.create(database.getTableName(table)).struct(TBL_STRUCT);
 
-		Statement stmt = database.getStatement();
+		Statement stmt = database.getConnection().createStatement();
 		stmt.execute(b.toString());
 
 		stmt.close();
