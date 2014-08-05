@@ -47,7 +47,7 @@ public abstract class Main {
 
 	@Deprecated
 	@Option(name = "--corpus", aliases = { "-c" },
-			usage = "Selects the corpus to use. Deprecated.")
+	usage = "Selects the corpus to use. Deprecated.")
 	protected Corpus corpus = Corpus.Rituals;
 
 	@Option(name = "--help", usage = "Prints this usage screen",
@@ -221,7 +221,7 @@ public abstract class Main {
 	 */
 	@Deprecated
 	public Writer
-			getWriterForFileOption(final File file, final PrintStream out) {
+	getWriterForFileOption(final File file, final PrintStream out) {
 		if (file == null) {
 			try {
 				return new OutputStreamWriter(out, "UTF-8");
