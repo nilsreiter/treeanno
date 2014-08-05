@@ -30,8 +30,8 @@ public abstract class MainWithIO extends Main {
 		try {
 			return this.getInputStreamForFileOption(input);
 		} catch (FileNotFoundException e) {
-			logger.warning("File " + input.getName()
-					+ " not found. Falling back on standard input.");
+			logger.error("File {} not found. Falling back on standard input.",
+					input.getName());
 			return System.in;
 		}
 	}

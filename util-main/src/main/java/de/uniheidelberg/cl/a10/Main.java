@@ -15,8 +15,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -28,6 +26,8 @@ import org.kohsuke.args4j.ClassParser;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.util.StringUtil;
 
@@ -54,15 +54,16 @@ public abstract class Main {
 			aliases = { "-h" })
 	boolean printUsage = false;
 
-	@Option(name = "--loglevel", usage = "Sets the logging level",
-			aliases = { "-l" })
+	@Deprecated
+	@Option(name = "--loglevel", usage = "Sets the logging level. Deprecated.",
+	aliases = { "-l" })
 	protected String logLevel = "WARNING";
 
 	@Option(name = "--config",
 			usage = "Configuration file. Default: configuration.ini")
 	protected File configFile = new File("configuration.ini");
 
-	protected Logger logger = Logger.getAnonymousLogger();
+	protected Logger logger = LoggerFactory.getLogger(Main.class);
 
 	@Deprecated
 	public static final String defaultRitualDataDirectory = "data2/silver";
@@ -185,7 +186,6 @@ public abstract class Main {
 			parser.printUsage(System.err);
 			System.exit(0);
 		}
-		this.logger.setLevel(Level.parse(logLevel));
 
 		try {
 			this.configuration =
@@ -194,7 +194,7 @@ public abstract class Main {
 							new HierarchicalINIConfiguration(
 									getDefaultConfigFile())));
 		} catch (ConfigurationException e) {
-			this.logger.severe(e.getLocalizedMessage());
+			this.logger.error(e.getLocalizedMessage());
 		}
 
 	}
