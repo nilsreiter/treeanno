@@ -86,7 +86,7 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
  *            The class T represents the events.
  */
 public class BayesianModelMerging<T extends HasDocument> extends
-AbstractTrainer<List<T>> {
+		AbstractTrainer<List<T>> {
 
 	transient Prior<T> prior = null;
 
@@ -178,7 +178,7 @@ AbstractTrainer<List<T>> {
 				new PairIterator(hmm, new StateMergeFilter(hmm));
 		while (pairIterator.hasNext()) {
 			Pair<Integer, Integer> pair = pairIterator.next();
-			logger.finer("Evaluating state merge pair " + pair);
+			logger.trace("Evaluating state merge pair {}", pair);
 			Integer s1 = pair.getFirst();
 			Integer s2 = pair.getSecond();
 
@@ -442,7 +442,7 @@ AbstractTrainer<List<T>> {
 	}
 
 	public static <T> List<T>
-			replace(final List<T> list, final T e1, final T e2) {
+	replace(final List<T> list, final T e1, final T e2) {
 		while (list.indexOf(e1) >= 0) {
 			list.set(list.indexOf(e1), e2);
 		}

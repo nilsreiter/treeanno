@@ -40,7 +40,7 @@ BayesianModelMerging<T> {
 		Semaphore semaphore = new Semaphore(this.maximalNumberOfThreads);
 		while (iterator.hasNext()) {
 			Pair<Integer, Integer> pair = iterator.next();
-			logger.finer("Evaluating state merge pair " + pair);
+			logger.debug("Evaluating state merge pair {}.", pair);
 			Integer s1 = pair.getFirst();
 			Integer s2 = pair.getSecond();
 			if (this.prior.isCandidate(hmm, s1, s2)) {
@@ -64,7 +64,8 @@ BayesianModelMerging<T> {
 			try {
 				tmr.join();
 				Probability d = tmr.getReturnValue();
-				logger.finest(tmr.s1 + " and " + tmr.s2 + " would give " + d);
+				logger.debug("{} and {} would give {}", new Object[] { tmr.s1,
+						tmr.s2, d });
 				if (d.getLogProbability() > p.getLogProbability()) {
 					p = d;
 					if (maxPair == null) {
@@ -79,7 +80,7 @@ BayesianModelMerging<T> {
 				e.printStackTrace();
 			}
 		}
-		logger.info(counter + " threads processed.");
+		logger.info("{} threads processed.", counter);
 
 		if (maxPair != null) {
 			return this.performMerge(hmm, sequences, maxPair.getFirst(),

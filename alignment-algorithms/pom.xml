@@ -15,8 +15,6 @@
   	<dependency>
   		<groupId>org.mockito</groupId>
   		<artifactId>mockito-core</artifactId>
-  		<version>1.9.5</version>
-  		<scope>test</scope>
   	</dependency>
   	<dependency>
   		<groupId>de.nilsreiter</groupId>
@@ -48,5 +46,17 @@
   	  		<artifactId>commons-beanutils</artifactId>
   	  		<version>1.9.1</version>
   	  	</dependency>
+  	  	<dependency>
+    		<groupId>org.slf4j</groupId>
+   			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>ch.qos.logback</groupId>
+    		<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+    		<groupId>org.slf4j</groupId>
+   		 	<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
   </dependencies>
 </project>
