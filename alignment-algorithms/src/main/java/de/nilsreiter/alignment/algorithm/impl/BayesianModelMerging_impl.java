@@ -20,7 +20,7 @@ import de.uniheidelberg.cl.a10.patterns.train.BMMConfiguration;
 import de.uniheidelberg.cl.a10.patterns.train.BMMFactory;
 
 public class BayesianModelMerging_impl<T extends HasDocument> extends
-		AbstractAlignmentAlgorithm_impl<T> implements BayesianModelMerging<T> {
+AbstractAlignmentAlgorithm_impl<T> implements BayesianModelMerging<T> {
 	de.uniheidelberg.cl.a10.patterns.train.BayesianModelMerging<T> bmm;
 
 	public BayesianModelMerging_impl(SimilarityFunction<T> sf,
@@ -31,8 +31,11 @@ public class BayesianModelMerging_impl<T extends HasDocument> extends
 		BMMFactory<T> trainingFactory = new BMMFactory<T>(sf);
 		BMMConfiguration bmmc = config;
 		bmm = trainingFactory.getTrainer(bmmc);
-		bmm.setLogLevel(Level.ALL);
 
+	}
+
+	public void setLogLevel(Level lvl) {
+		bmm.setLogLevel(lvl);
 	}
 
 	@Override
@@ -51,7 +54,7 @@ public class BayesianModelMerging_impl<T extends HasDocument> extends
 	}
 
 	public Alignment<T>
-	getAlignmentFromHMM(final HiddenMarkovModel_impl<T> hmm) {
+			getAlignmentFromHMM(final HiddenMarkovModel_impl<T> hmm) {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		FullAlignment<T> doc = new FullAlignment_impl<T>(null);
 
