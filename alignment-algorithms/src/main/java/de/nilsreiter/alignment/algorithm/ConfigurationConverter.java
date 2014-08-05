@@ -14,15 +14,13 @@ public class ConfigurationConverter {
 				config);
 	}
 
-	public Object getConfiguration(
+	public AlgorithmConfiguration getConfiguration(
 			Class<? extends AlgorithmConfiguration> beanClass,
 			Configuration config) {
-		Object bmmc;
+		AlgorithmConfiguration bmmc;
 		try {
 			bmmc = beanClass.newInstance();
-			String prefix =
-					((AlgorithmConfiguration) bmmc).getAlgorithmClass()
-							.getSimpleName();
+			String prefix = bmmc.getAlgorithmClass().getSimpleName();
 			Iterator<String> keyIter = config.getKeys(prefix);
 			while (keyIter.hasNext()) {
 				String key = keyIter.next();
