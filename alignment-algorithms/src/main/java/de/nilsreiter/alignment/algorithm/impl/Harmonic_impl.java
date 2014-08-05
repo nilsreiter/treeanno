@@ -70,11 +70,10 @@ public class Harmonic_impl<T extends HasDocument> implements Harmonic<T> {
 	}
 
 	@Override
-	public Alignment<T> align(final List<T> seq1, List<T> seq2) {
+	public Alignment<T> align(String id, final List<T> seq1, List<T> seq2) {
 
 		// 0. Setup
-		Alignment<T> alignment =
-				new Alignment_impl<T>(Baseline.class.getCanonicalName());
+		Alignment<T> alignment = new Alignment_impl<T>(id);
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 
 		// 1. Find the shorter list

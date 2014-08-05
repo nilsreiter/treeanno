@@ -26,9 +26,9 @@ public class MRSystemMain extends MainWithInputSequences {
 	SimilarityConfiguration similarityConf = new SimilarityConfiguration();
 
 	public static void main(final String[] args) throws SecurityException,
-	FrameNotFoundException, FrameElementNotFoundException, IOException,
-	InstantiationException, IllegalAccessException,
-	ClassNotFoundException {
+			FrameNotFoundException, FrameElementNotFoundException, IOException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException {
 		Main.initProperties();
 		MRSystemMain asm = new MRSystemMain();
 		asm.processArguments(args, asm.similarityConf);
@@ -46,11 +46,11 @@ public class MRSystemMain extends MainWithInputSequences {
 		List<List<FrameTokenEvent>> sequences;
 		sequences = this.getSequences();
 		MRSystem<FrameTokenEvent> mrs = null;
-		return mrs.align(sequences.get(0), sequences.get(1));
+		return null; // mrs.align(sequences.get(0), sequences.get(1));
 	}
 
 	public void run() throws SecurityException, InstantiationException,
-	IllegalAccessException, ClassNotFoundException {
+			IllegalAccessException, ClassNotFoundException {
 
 		try {
 

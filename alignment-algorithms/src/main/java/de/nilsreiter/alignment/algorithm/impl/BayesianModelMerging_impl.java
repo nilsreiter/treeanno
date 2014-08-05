@@ -34,7 +34,7 @@ public class BayesianModelMerging_impl<T extends HasDocument> extends
 	}
 
 	@Override
-	public Alignment<T> align(List<T> list1, List<T> list2) {
+	public Alignment<T> align(String id, List<T> list1, List<T> list2) {
 		try {
 			this.function.sim(list1.get(0), list2.get(0));
 		} catch (SimilarityCalculationException e) {
@@ -45,13 +45,13 @@ public class BayesianModelMerging_impl<T extends HasDocument> extends
 		input.add(list1);
 		input.add(list2);
 		SEHiddenMarkovModel_impl<T> model = bmm.train(input.iterator());
-		return getAlignmentFromHMM(model);
+		return getAlignmentFromHMM(id, model);
 	}
 
-	public Alignment<T>
-	getAlignmentFromHMM(final HiddenMarkovModel_impl<T> hmm) {
+	public Alignment<T> getAlignmentFromHMM(String id,
+			final HiddenMarkovModel_impl<T> hmm) {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
-		FullAlignment<T> doc = new FullAlignment_impl<T>(null);
+		FullAlignment<T> doc = new FullAlignment_impl<T>(id);
 
 		for (Integer state : hmm.getStates()) {
 			if (hmm.getEventsForState(state).size() > 1)

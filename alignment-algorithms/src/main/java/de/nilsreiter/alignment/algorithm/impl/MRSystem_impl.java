@@ -38,13 +38,14 @@ public class MRSystem_impl<T extends HasDocument> implements MRSystem<T> {
 	Logger logger = Logger.getLogger(getClass().getName());
 
 	MRSystemConfiguration config;
+	String alignmentId;
 
 	@Override
 	public Alignment<T> getAlignment() {
 		DirectedGraph<T, DefaultWeightedEdge> graph = this.getGraph();
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		Set<Set<T>> set = this.recurse(graph, 0);
-		Alignment<T> al = new Alignment_impl<T>("mrs");
+		Alignment<T> al = new Alignment_impl<T>(alignmentId);
 
 		for (Set<T> s : set) {
 			logger.finest(s.toString());
@@ -232,9 +233,11 @@ public class MRSystem_impl<T extends HasDocument> implements MRSystem<T> {
 	}
 
 	@Override
-	public synchronized Alignment<T> align(List<T> list1, List<T> list2) {
+	public synchronized Alignment<T> align(String id, List<T> list1,
+			List<T> list2) {
 		sequence1 = list1;
 		sequence2 = list2;
+		alignmentId = id;
 		return this.getAlignment();
 	}
 

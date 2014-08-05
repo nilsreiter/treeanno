@@ -7,7 +7,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 public interface Baseline<T> extends AlignmentAlgorithm<T> {
 
 	@Override
-	Alignment<T> align(List<T> seq1, List<T> seq2);
+	Alignment<T> align(String id, List<T> seq1, List<T> seq2);
 
 	@Deprecated
 	Alignment<T> getAlignment(List<List<T>> sequences);
