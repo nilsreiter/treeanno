@@ -14,6 +14,7 @@ import de.nilsreiter.test.TestUtil;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
+import de.uniheidelberg.cl.a10.patterns.similarity.Operation;
 
 public class TestAlgorithmFactory {
 	AlgorithmFactory factory;
@@ -43,14 +44,16 @@ public class TestAlgorithmFactory {
 		configuration.addProperty("NeedlemanWunsch.similarityFunctions",
 				"de.nilsreiter.event.similarity.WordNet");
 		configuration.addProperty("NeedlemanWunsch.weight", "1.0");
+		configuration.addProperty("NeedlemanWunsch.combination", Operation.AVG);
 
 		NeedlemanWunsch<Event> aa =
 				(NeedlemanWunsch<Event>) factory.getAlgorithm(configuration);
 		assertEquals(
 				de.nilsreiter.alignment.algorithm.impl.NeedlemanWunsch_impl.class,
 				aa.getClass());
-		assertEquals("1.0*WordNet", aa.getSimilarityFunction().toString());
-		assertNotNull(aa.align(documents[0].getEvents(),
+		assertEquals("1/1.0(1.0*WordNet)", aa.getSimilarityFunction()
+				.toString());
+		assertNotNull(aa.align("test", documents[0].getEvents(),
 				documents[1].getEvents()));
 	}
 
@@ -72,7 +75,8 @@ public class TestAlgorithmFactory {
 				aa.getClass());
 		assertEquals("1.0*WordNet", aa.getSimilarityFunction().toString());
 		Alignment<Event> alignment =
-				aa.align(documents[0].getEvents(), documents[1].getEvents());
+				aa.align("test", documents[0].getEvents(),
+						documents[1].getEvents());
 		assertNotNull(alignment);
 		assertEquals(19, alignment.getAlignments().size());
 	}
@@ -93,7 +97,8 @@ public class TestAlgorithmFactory {
 				de.nilsreiter.alignment.algorithm.impl.MRSystem_impl.class,
 				aa.getClass());
 		Alignment<Event> alignment =
-				aa.align(documents[0].getEvents(), documents[1].getEvents());
+				aa.align("test", documents[0].getEvents(),
+						documents[1].getEvents());
 		assertNotNull(alignment);
 		assertEquals(15, alignment.getAlignments().size());
 	}

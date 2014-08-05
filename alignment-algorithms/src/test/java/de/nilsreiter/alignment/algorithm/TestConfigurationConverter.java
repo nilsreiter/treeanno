@@ -9,6 +9,7 @@ import org.apache.commons.configuration.HierarchicalINIConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uniheidelberg.cl.a10.patterns.similarity.Operation;
 import de.uniheidelberg.cl.a10.patterns.train.BMMConfiguration;
 
 public class TestConfigurationConverter {
@@ -31,6 +32,7 @@ public class TestConfigurationConverter {
 				bmmc.getThreshold(), 1e10);
 		assertEquals(config.getBoolean("BayesianModelMerging.threaded", false),
 				bmmc.isThreaded());
+		assertEquals(Operation.AVG, bmmc.getCombination());
 		bmmc.getSimilarityFunctions();
 	}
 }
