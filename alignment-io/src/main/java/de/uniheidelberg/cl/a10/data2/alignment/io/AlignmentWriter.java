@@ -11,7 +11,7 @@ import de.uniheidelberg.cl.a10.io.AbstractXMLWriter;
 import de.uniheidelberg.cl.a10.io.XMLConstants;
 
 public class AlignmentWriter extends
-AbstractXMLWriter<Alignment<? extends AnnotationObjectInDocument>> {
+		AbstractXMLWriter<Alignment<? extends AnnotationObjectInDocument>> {
 
 	public AlignmentWriter(final OutputStream os) {
 		super(os);
@@ -21,7 +21,8 @@ AbstractXMLWriter<Alignment<? extends AnnotationObjectInDocument>> {
 	public Element getElement(
 			final Alignment<? extends AnnotationObjectInDocument> a) {
 		Element rootElement = new Element("nalignment");
-		rootElement.addAttribute(new Attribute(XMLConstants.ID, a.getId()));
+		if (a.getId() != null)
+			rootElement.addAttribute(new Attribute(XMLConstants.ID, a.getId()));
 		if (a.getTitle() != null)
 			rootElement.addAttribute(new Attribute(XMLConstants.TITLE, a
 					.getTitle()));
