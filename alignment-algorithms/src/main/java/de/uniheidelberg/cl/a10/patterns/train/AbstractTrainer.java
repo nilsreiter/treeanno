@@ -1,10 +1,9 @@
 package de.uniheidelberg.cl.a10.patterns.train;
 
 import java.util.Iterator;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.uniheidelberg.cl.a10.patterns.Model;
 import de.uniheidelberg.cl.a10.patterns.Trainer;
@@ -22,9 +21,7 @@ public abstract class AbstractTrainer<T> implements Trainer<T> {
 	protected transient Logger logger;
 
 	public AbstractTrainer() {
-		this.logger = Logger.getLogger(this.toString());
-		this.logger.setUseParentHandlers(false);
-		this.logger.addHandler(new ConsoleHandler());
+		this.logger = LoggerFactory.getLogger(this.getClass());
 	}
 
 	@Override
@@ -32,13 +29,6 @@ public abstract class AbstractTrainer<T> implements Trainer<T> {
 
 	public Model<T> init(final Iterator<T> trainingInstances) {
 		throw new UnsupportedOperationException();
-	}
-
-	public void setLogLevel(final Level level) {
-		this.logger.setLevel(level);
-		for (Handler h : logger.getHandlers()) {
-			h.setLevel(level);
-		}
 	}
 
 	/**

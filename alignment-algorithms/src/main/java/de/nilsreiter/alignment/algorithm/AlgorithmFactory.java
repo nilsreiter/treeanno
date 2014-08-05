@@ -12,6 +12,8 @@ import org.apache.commons.dbcp2.PoolableConnectionFactory;
 import org.apache.commons.dbcp2.PoolingDataSource;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.alignment.algorithm.impl.BayesianModelMerging_impl;
 import de.nilsreiter.alignment.algorithm.impl.Harmonic_impl;
@@ -29,6 +31,8 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import de.uniheidelberg.cl.a10.patterns.train.BMMConfiguration;
 
 public class AlgorithmFactory {
+	Logger logger = LoggerFactory.getLogger(AlgorithmFactory.class);
+
 	public static final String CONFIG_KEY_ALGORITHM = "alignment.algorithm";
 
 	public static <T extends Event> AlgorithmFactory getInstance() {
@@ -74,9 +78,9 @@ public class AlgorithmFactory {
 				NeedlemanWunsch<Event> algo =
 						new NeedlemanWunsch_impl<Event>(nwConf,
 								SimilarityFunctionFactory
-								.getSimilarityFunction(
-										new DatabaseDataSource_impl(
-												dataSource), nwConf));
+										.getSimilarityFunction(
+												new DatabaseDataSource_impl(
+														dataSource), nwConf));
 				return algo;
 			} else if (BayesianModelMerging.class.isAssignableFrom(cl)) {
 				BMMConfiguration bmmConf =
@@ -107,6 +111,7 @@ public class AlgorithmFactory {
 				return new SameSurface_impl<Event>();
 			}
 		} catch (ClassNotFoundException e) {
+			logger.error(e.getLocalizedMessage());
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

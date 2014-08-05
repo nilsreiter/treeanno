@@ -3,7 +3,6 @@ package de.nilsreiter.alignment.algorithm.impl;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
 
 import de.nilsreiter.alignment.algorithm.BayesianModelMerging;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
@@ -20,7 +19,7 @@ import de.uniheidelberg.cl.a10.patterns.train.BMMConfiguration;
 import de.uniheidelberg.cl.a10.patterns.train.BMMFactory;
 
 public class BayesianModelMerging_impl<T extends HasDocument> extends
-AbstractAlignmentAlgorithm_impl<T> implements BayesianModelMerging<T> {
+		AbstractAlignmentAlgorithm_impl<T> implements BayesianModelMerging<T> {
 	de.uniheidelberg.cl.a10.patterns.train.BayesianModelMerging<T> bmm;
 
 	public BayesianModelMerging_impl(SimilarityFunction<T> sf,
@@ -32,10 +31,6 @@ AbstractAlignmentAlgorithm_impl<T> implements BayesianModelMerging<T> {
 		BMMConfiguration bmmc = config;
 		bmm = trainingFactory.getTrainer(bmmc);
 
-	}
-
-	public void setLogLevel(Level lvl) {
-		bmm.setLogLevel(lvl);
 	}
 
 	@Override
@@ -54,7 +49,7 @@ AbstractAlignmentAlgorithm_impl<T> implements BayesianModelMerging<T> {
 	}
 
 	public Alignment<T>
-			getAlignmentFromHMM(final HiddenMarkovModel_impl<T> hmm) {
+	getAlignmentFromHMM(final HiddenMarkovModel_impl<T> hmm) {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		FullAlignment<T> doc = new FullAlignment_impl<T>(null);
 
