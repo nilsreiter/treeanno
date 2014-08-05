@@ -26,9 +26,11 @@ import de.uniheidelberg.cl.a10.patterns.data.EventChainExtractor;
  */
 @Deprecated
 public abstract class MainWithIOAndInputSequences extends
-		MainWithInputDocuments {
-	@Option(name = "--extraction", usage = "Controls the pre-filtering of frames into events")
-	protected EventChainExtractor.Extraction extraction = EventChainExtractor.Extraction.ANNOTATEDFRAMES;
+MainWithInputDocuments {
+	@Option(name = "--extraction",
+			usage = "Controls the pre-filtering of frames into events")
+	protected EventChainExtractor.Extraction extraction =
+			EventChainExtractor.Extraction.ANNOTATEDFRAMES;
 
 	List<List<FrameTokenEvent>> sequences = null;
 
@@ -38,8 +40,8 @@ public abstract class MainWithIOAndInputSequences extends
 			throws ParserConfigurationException, SAXException, IOException {
 		if (sequences == null) {
 			sequences = new LinkedList<List<FrameTokenEvent>>();
-			eventChainExtractor = EventChainExtractor
-					.getEventChainExtractor(extraction);
+			eventChainExtractor =
+					EventChainExtractor.getEventChainExtractor(extraction);
 			for (Document rd : this.getDocuments()) {
 				sequences.add(eventChainExtractor.getEventChain(rd));
 			}
@@ -51,19 +53,20 @@ public abstract class MainWithIOAndInputSequences extends
 		return eventChainExtractor;
 	}
 
-	@Option(name = "--input", aliases = { "-i" }, usage = "The input file. If not set, System.in is used.")
+	@Option(name = "--input", aliases = { "-i" },
+			usage = "The input file. If not set, System.in is used.")
 	File input = null;
 
 	@Option(name = "--output",
-	// aliases = { "-o" },
-	usage = "The output file. If not set, System.out is used.")
+			// aliases = { "-o" },
+			usage = "The output file. If not set, System.out is used.")
 	File output = null;
 
 	public InputStream getInputStream() {
 		try {
 			return this.getInputStreamForFileOption(input);
 		} catch (FileNotFoundException e) {
-			logger.warning("File " + input.getName() + " not found.");
+			logger.error("File {} not found.", input.getName());
 			return System.in;
 		}
 	}
