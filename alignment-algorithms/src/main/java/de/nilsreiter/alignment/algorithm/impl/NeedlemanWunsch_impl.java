@@ -15,6 +15,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.AdvancedScoringScheme;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.DoubleNeedlemanWunsch;
+import de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.ScoringScheme;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
@@ -34,24 +35,22 @@ AbstractAlignmentAlgorithm_impl<T> implements NeedlemanWunsch<T> {
 	}
 
 	@Override
-	public Alignment<T> align(List<T> list1, List<T> list2) {
+	public Alignment<T> align(String id, List<T> list1, List<T> list2) {
 		dnw.setSequences(list1, list2);
 		try {
-			return this.fromPairwiseAlignment(dnw.computePairwiseAlignment(),
-					list1.get(0).getRitualDocument(), list2.get(0)
-							.getRitualDocument());
+			return this.fromPairwiseAlignment(id, dnw
+					.computePairwiseAlignment(), list1.get(0)
+					.getRitualDocument(), list2.get(0).getRitualDocument());
 		} catch (IncompatibleScoringSchemeException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	protected
-			Alignment<T>
-	fromPairwiseAlignment(
-			final de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment<T> pa,
-			final Document text1, final Document text2) {
-		Alignment<T> document = new Alignment_impl<T>("");
+	protected Alignment<T> fromPairwiseAlignment(String id,
+			final PairwiseAlignment<T> pa, final Document text1,
+			final Document text2) {
+		Alignment<T> document = new Alignment_impl<T>(id);
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		document.getDocuments().add(text1);
 		document.getDocuments().add(text2);

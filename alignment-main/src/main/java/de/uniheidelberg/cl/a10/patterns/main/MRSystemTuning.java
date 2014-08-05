@@ -36,10 +36,10 @@ public class MRSystemTuning extends MainWithInputSequences {
 	AlignmentEvaluation<Token> evaluation;
 
 	public static void main(final String[] args) throws SecurityException,
-	FrameNotFoundException, FrameElementNotFoundException, IOException,
-	InstantiationException, IllegalAccessException,
-	ClassNotFoundException, ParserConfigurationException, SAXException,
-	IncompatibleException {
+			FrameNotFoundException, FrameElementNotFoundException, IOException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException, ParserConfigurationException, SAXException,
+			IncompatibleException {
 		Main.initProperties();
 		MRSystemTuning asm = new MRSystemTuning();
 		asm.processArguments(args, asm.settings);
@@ -47,12 +47,12 @@ public class MRSystemTuning extends MainWithInputSequences {
 	}
 
 	public void run() throws SecurityException, InstantiationException,
-	IllegalAccessException, ClassNotFoundException,
-	ParserConfigurationException, SAXException, IOException,
-	IncompatibleException {
+			IllegalAccessException, ClassNotFoundException,
+			ParserConfigurationException, SAXException, IOException,
+			IncompatibleException {
 		evaluation =
 				de.uniheidelberg.cl.a10.eval.Evaluation
-						.getAlignmentEvaluation(this.settings.evaluationStyle);
+				.getAlignmentEvaluation(this.settings.evaluationStyle);
 		TokenAlignmentReader ar =
 				new TokenAlignmentReader(settings.dataDirectory);
 		Alignment<Token> goldDocument = ar.read(settings.gold);
@@ -102,14 +102,14 @@ public class MRSystemTuning extends MainWithInputSequences {
 								conf.setThreshold(d);
 								conf.similarityFunctions =
 										new String[] { "WNS", "FNS", "VNS",
-												"ATS", "GDS" };
+										"ATS", "GDS" };
 								conf.weights =
 										new String[] { String.valueOf(w0),
-										String.valueOf(w1),
-										String.valueOf(w2),
-										String.valueOf(w3),
-										String.valueOf(w4) };
-								conf.combination = Operation.GEO;
+												String.valueOf(w1),
+												String.valueOf(w2),
+												String.valueOf(w3),
+												String.valueOf(w4) };
+								conf.setCombination(Operation.GEO);
 								confs.add(conf);
 							}
 						}

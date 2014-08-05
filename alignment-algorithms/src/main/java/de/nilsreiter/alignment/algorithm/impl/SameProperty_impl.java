@@ -15,7 +15,7 @@ import de.uniheidelberg.cl.a10.data2.alignment.impl.AlignmentIdProvider_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 
 public abstract class SameProperty_impl<T extends HasDocument & HasTokens>
-implements Baseline<T> {
+		implements Baseline<T> {
 
 	public abstract String getProperty(T t);
 
@@ -45,9 +45,9 @@ implements Baseline<T> {
 	}
 
 	@Override
-	public Alignment<T> align(final List<T> seq1, List<T> seq2) {
+	public Alignment<T> align(String id, final List<T> seq1, List<T> seq2) {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
-		Alignment<T> alignment = new Alignment_impl<T>("SameLemma");
+		Alignment<T> alignment = new Alignment_impl<T>(id);
 		Map<String, Set<T>> alignments = new HashMap<String, Set<T>>();
 
 		for (int i = 0; i < seq1.size(); i++) {

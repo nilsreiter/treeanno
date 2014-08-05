@@ -26,9 +26,8 @@ public class NoAlignment_impl<T extends HasDocument> implements NoAlignment<T> {
 	}
 
 	@Override
-	public Alignment<T> align(List<T> seq1, List<T> seq2) {
-		FullAlignment<T> alignment =
-				new FullAlignment_impl<T>("NoAlignmentBaseline");
+	public Alignment<T> align(String id, List<T> seq1, List<T> seq2) {
+		FullAlignment<T> alignment = new FullAlignment_impl<T>(id);
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
 		alignment.getDocuments().add(seq1.get(0).getRitualDocument());
 		alignment.addSingletons(idp, seq1);
