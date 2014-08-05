@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -120,8 +119,6 @@ public class AnalogicalStoryMergingFrame extends MainWithInputSequences {
 		BayesianModelMerging<FrameTokenEvent> bmm =
 				trainingFactory.getTrainer(bmmConf);
 		// Settings
-		Level level = Level.parse(logLevel.toUpperCase());
-		bmm.setLogLevel(level);
 		SEHiddenMarkovModel_impl<FrameTokenEvent> hmm;
 
 		if (nomerging) {
