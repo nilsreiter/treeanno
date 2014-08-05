@@ -24,30 +24,34 @@ public class StateMergeFilter implements Filter<Pair<Integer, Integer>> {
 		int s1 = pair.getFirst();
 		int s2 = pair.getSecond();
 
-		if (hmm instanceof HiddenMarkovModel_impl) {
-			HiddenMarkovModel_impl<? extends HasDocument> hmmp = (HiddenMarkovModel_impl<? extends HasDocument>) hmm;
-			if (hmmp.getEventsForState(s1).size() == 1
-					&& hmmp.getEventsForState(s2).size() == 1) {
-				HasDocument ev1 = hmmp.getEventsForState(pair.getFirst())
-						.iterator().next();
-				HasDocument ev2 = hmmp.getEventsForState(pair.getSecond())
-						.iterator().next();
-				if (ev1.getRitualDocument() != null
-						&& ev2.getRitualDocument() != null
-						&& ev1.getRitualDocument().equals(
-								ev2.getRitualDocument()))
-					return false;
-			}
-		}
-		// }
-
 		if (hmm instanceof SEHiddenMarkovModel_impl) {
-			SEHiddenMarkovModel_impl<? extends HasDocument> sehmm = (SEHiddenMarkovModel_impl<? extends HasDocument>) hmm;
+			SEHiddenMarkovModel_impl<? extends HasDocument> sehmm =
+					(SEHiddenMarkovModel_impl<? extends HasDocument>) hmm;
 			return (sehmm.getStartState() != pair.getFirst()
 					&& pair.getFirst() != SEHiddenMarkovModel_impl.END
 					&& sehmm.getStartState() != pair.getSecond()
 					&& pair.getSecond() > pair.getFirst() && pair.getSecond() != SEHiddenMarkovModel_impl.END);
 		}
+
+		if (hmm instanceof HiddenMarkovModel_impl) {
+			HiddenMarkovModel_impl<? extends HasDocument> hmmp =
+					(HiddenMarkovModel_impl<? extends HasDocument>) hmm;
+			if (hmmp.getEventsForState(s1).size() == 1
+					&& hmmp.getEventsForState(s2).size() == 1) {
+				HasDocument ev1 =
+						hmmp.getEventsForState(pair.getFirst()).iterator()
+								.next();
+				HasDocument ev2 =
+						hmmp.getEventsForState(pair.getSecond()).iterator()
+								.next();
+				if (ev1.getRitualDocument() != null
+						&& ev2.getRitualDocument() != null
+						&& ev1.getRitualDocument().equals(
+								ev2.getRitualDocument())) return false;
+			}
+		}
+		// }
+
 		return pair.getSecond() > pair.getFirst();
 	}
 
