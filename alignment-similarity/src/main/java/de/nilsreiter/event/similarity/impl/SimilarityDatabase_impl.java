@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.event.similarity.EventSimilarityFunction;
 import de.nilsreiter.event.similarity.SimilarityDatabase;
@@ -22,11 +23,9 @@ import de.uniheidelberg.cl.a10.patterns.data.matrix.Matrix;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class SimilarityDatabase_impl<T extends HasId & HasDocument> implements
-SimilarityDatabase<T> {
+		SimilarityDatabase<T> {
 
-	private static final Logger logger = Logger
-			.getLogger(SimilarityDatabase.class.getName());
-
+	private Logger logger = LoggerFactory.getLogger(SimilarityDatabase.class);
 	public static final String BASE_TBL_SIMILARITIES = "similarities";
 
 	private final String table_similarities;
@@ -52,7 +51,7 @@ SimilarityDatabase<T> {
 	Database database;
 
 	public SimilarityDatabase_impl(Database db) throws SQLException,
-			ClassNotFoundException {
+	ClassNotFoundException {
 		database = db;
 		table_similarities = BASE_TBL_SIMILARITIES;
 	}
@@ -63,10 +62,10 @@ SimilarityDatabase<T> {
 			double similarity) throws SQLException {
 		if (putStatement == null)
 			putStatement =
-			database.getConnection().prepareStatement(
-					"INSERT INTO "
-							+ database.getTableName(table_similarities)
-							+ " values (default,?,?,?,?,?,?)");
+					database.getConnection().prepareStatement(
+							"INSERT INTO "
+									+ database.getTableName(table_similarities)
+									+ " values (default,?,?,?,?,?,?)");
 		putStatement.setString(1,
 				simType.getSimpleName().substring(0, typeNameMaxLength));
 		putStatement.setString(2, e1.getRitualDocument().getId());
@@ -78,7 +77,7 @@ SimilarityDatabase<T> {
 		putStatement.addBatch();
 
 		if (++putCounter % batchSize == 0) {
-			logger.log(Level.INFO, "Executing batch");
+			logger.trace("Executing batch");
 			putStatement.executeBatch();
 		}
 
@@ -91,7 +90,7 @@ SimilarityDatabase<T> {
 	 */
 	@Override
 	public synchronized void finish() throws SQLException {
-		logger.log(Level.INFO, "Executing batch");
+		logger.trace("Executing batch");
 		putStatement.executeBatch();
 		putStatement.close();
 	}
@@ -102,8 +101,8 @@ SimilarityDatabase<T> {
 		if (getStatement == null) {
 			SQLBuilder b = new SQLBuilder();
 			b.select("sim")
-			.from(database.getTableName(table_similarities))
-			.where("type=? AND document1=? AND document2=? AND id1=? AND id2=?");
+					.from(database.getTableName(table_similarities))
+					.where("type=? AND document1=? AND document2=? AND id1=? AND id2=?");
 
 			getStatement =
 					database.getConnection().prepareStatement(b.toString());
@@ -118,9 +117,8 @@ SimilarityDatabase<T> {
 		if (rs.first())
 			return rs.getDouble(1);
 		else {
-			logger.warning("No entry found for " + simType + " (" + e1.getId()
-					+ " and " + e2.getId() + "). ");
-
+			logger.error("No entry found for {}({} and {})", new Object[] {
+					simType, e1.getId(), e2.getId() });
 			return 0.0;
 		}
 	}
@@ -173,14 +171,14 @@ SimilarityDatabase<T> {
 		Statement stmt = conn.createStatement();
 		SQLBuilder b = new SQLBuilder();
 		b.select("*")
-		.from(table_similarities)
-		.where(" ( document1='" + doc1.getId() + "' AND document2='"
-				+ doc2.getId() + "')" + " OR ( document1='"
-				+ doc1.getId() + "' AND document2='" + doc1.getId()
-				+ "' )" + " OR ( document1='" + doc2.getId()
-				+ "' AND document2='" + doc1.getId() + "' )"
-				+ " OR ( document1='" + doc2.getId()
-				+ "' AND document2='" + doc2.getId() + "' )");
+				.from(table_similarities)
+				.where(" ( document1='" + doc1.getId() + "' AND document2='"
+						+ doc2.getId() + "')" + " OR ( document1='"
+						+ doc1.getId() + "' AND document2='" + doc1.getId()
+						+ "' )" + " OR ( document1='" + doc2.getId()
+						+ "' AND document2='" + doc1.getId() + "' )"
+						+ " OR ( document1='" + doc2.getId()
+						+ "' AND document2='" + doc2.getId() + "' )");
 
 		ResultSet rs = stmt.executeQuery(b.toString());
 

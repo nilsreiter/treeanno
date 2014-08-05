@@ -15,7 +15,7 @@ import org.kohsuke.args4j.Option;
 import de.uniheidelberg.cl.a10.patterns.TrainingConfiguration;
 
 public class SimilarityConfiguration implements TrainingConfiguration,
-Cloneable {
+		Cloneable {
 
 	@Option(name = "--sf_arg_coref",
 			usage = "Include coreferring mentions into comparison")
@@ -43,7 +43,7 @@ Cloneable {
 	@Option(name = "--threshold",
 			usage = "The threshold for the similarity functions. If not set, a"
 					+ " geometric distribution w/o threshold will be used.",
-					aliases = { "-t" })
+			aliases = { "-t" })
 	public double threshold = Double.MIN_VALUE;
 
 	/**
@@ -53,7 +53,7 @@ Cloneable {
 	@Option(name = "--operation",
 			usage = "Sets the way multiple similarity functions are combined. "
 					+ "Default: GEO", aliases = { "-o" })
-	public Operation combination = Operation.GEO;
+	Operation combination = Operation.GEO;
 
 	@Option(
 			name = "--history",
@@ -76,7 +76,7 @@ Cloneable {
 		b.append("w=").append(this.weights).append(" ");
 		if (this.threshold != Double.MIN_VALUE)
 			b.append("t=").append(format("%1$3.1f", this.threshold))
-			.append(" ");
+					.append(" ");
 		return b.toString();
 	}
 
@@ -254,5 +254,13 @@ Cloneable {
 
 	public void setWeights(String[] weights) {
 		this.weights = weights;
+	}
+
+	public Operation getCombination() {
+		return combination;
+	}
+
+	public void setCombination(Operation combination) {
+		this.combination = combination;
 	}
 }
