@@ -17,6 +17,7 @@ import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.patterns.data.PMath;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.data.matrix.Matrix;
+import de.uniheidelberg.cl.a10.patterns.similarity.Operation;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
@@ -60,7 +61,7 @@ public class SimilarityFunctionFactory {
 						lp.add(Probability.fromProbability(simDB.getSimilarity(
 								simFun, arg0, arg1)));
 					}
-					switch (simConf.combination) {
+					switch (simConf.getCombination()) {
 					case GEO:
 						return PMath.geometricMean(lp, weights);
 					case HARM:
@@ -108,14 +109,14 @@ public class SimilarityFunctionFactory {
 				if (EventSimilarityFunction.class.isAssignableFrom(cl)) {
 					@SuppressWarnings("unchecked")
 					Class<? extends EventSimilarityFunction> simClass =
-							(Class<? extends EventSimilarityFunction>) cl;
+					(Class<? extends EventSimilarityFunction>) cl;
 					functionList.add(simClass);
 					weightList.add(weight);
 				}
 			}
 
 			return new CachingSimilarityFunction(functionList, weightList,
-					simDB);
+					simDB, configuration.getCombination());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -133,20 +134,23 @@ public class SimilarityFunctionFactory {
 		SimilarityDatabase<Event> simDB;
 		Map<String, Matrix<Event, Event, Double>> cache = null;
 		Set<String> activePair = new HashSet<String>();
+		Operation operation;
 
 		public CachingSimilarityFunction(
 				List<Class<? extends EventSimilarityFunction>> functions,
-				List<Double> weights, SimilarityDatabase<Event> simDB) {
+				List<Double> weights, SimilarityDatabase<Event> simDB,
+				Operation comb) {
 			this.functions = functions;
 			this.weights = weights;
 			this.simDB = simDB;
+			this.operation = comb;
 		}
 
 		@Override
 		public Probability sim(Event arg0, Event arg1) {
 
 			if (!activePair.contains(arg0.getRitualDocument().getId())
-					&& !activePair.contains(arg1.getRitualDocument().getId()))
+					|| !activePair.contains(arg1.getRitualDocument().getId()))
 				cache = null;
 
 			double p = 0.0;
@@ -177,26 +181,60 @@ public class SimilarityFunctionFactory {
 				String s = func.getSimpleName().substring(0, 4);
 				Matrix<Event, Event, Double> m = cache.get(s);
 				double p0 = m.get(arg0, arg1);
-				p = p + (w * p0);
+				switch (operation) {
+				case GEO:
+					p = p * (Math.pow(p0, w));
+					break;
+				default:
+					p = p + (w * p0);
+					break;
+				}
 
 			}
 			logger.trace("Retrieved similarity (" + arg0.getGlobalId() + ","
 					+ arg1.getGlobalId() + ")");
 
-			return Probability.fromProbability(p / wsum);
+			double fp;
+			switch (operation) {
+			case GEO:
+				fp = Math.pow(p, 1 / wsum);
+				break;
+			default:
+				fp = p / wsum;
+			}
+
+			return Probability.fromProbability(fp);
 		}
 
 		@Override
 		public String toString() {
 			StringBuilder b = new StringBuilder();
-
+			double wsum = 0;
 			for (int i = 0; i < functions.size(); i++) {
 				double w = weights.get(i);
-				b.append(w).append('*')
-						.append(functions.get(i).getSimpleName()).append("+");
+				wsum += w;
+				switch (operation) {
+				case GEO:
+					b.append(functions.get(i).getSimpleName()).append('^')
+							.append(w).append('*');
+					break;
+				default:
+					b.append(w).append('*')
+							.append(functions.get(i).getSimpleName())
+							.append("+");
+					break;
+				}
 
 			}
-			return b.deleteCharAt(b.length() - 1).toString();
+			b.deleteCharAt(b.length() - 1);
+			switch (operation) {
+			case GEO:
+				return b.insert(0, '(').append(')').append('^').append(1)
+						.append('/').append(wsum).toString();
+			default:
+				return b.insert(0, '(').insert(0, wsum).insert(0, "/")
+						.insert(0, 1).append(')').toString();
+			}
 
 		}
 
