@@ -3,7 +3,8 @@ package de.nilsreiter.alignment.algorithm;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
-import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.configuration.Configuration;
 
 import de.uniheidelberg.cl.a10.patterns.train.BMMConfiguration;
@@ -18,6 +19,18 @@ public class ConfigurationConverter {
 			Class<? extends AlgorithmConfiguration> beanClass,
 			Configuration config) {
 		AlgorithmConfiguration bmmc;
+
+		BeanUtilsBean beanUtilsBean = new BeanUtilsBean(new ConvertUtilsBean() {
+			@Override
+			public Object convert(String value, Class clazz) {
+				if (clazz.isEnum()) {
+					return Enum.valueOf(clazz, value);
+				} else {
+					return super.convert(value, clazz);
+				}
+			}
+		});
+
 		try {
 			bmmc = beanClass.newInstance();
 			String prefix = bmmc.getAlgorithmClass().getSimpleName();
@@ -27,7 +40,7 @@ public class ConfigurationConverter {
 				try {
 					Object obj = config.getProperty(key);
 					String property = key.substring(prefix.length() + 1);
-					BeanUtils.setProperty(bmmc, property, obj);
+					beanUtilsBean.setProperty(bmmc, property, obj);
 				} catch (IllegalAccessException e) {
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
