@@ -83,6 +83,9 @@
   	<module>de.nilsreiter.pipeline</module>
   	<module>de.nilsreiter.lm</module>
   	<module>de.nilsreiter.test</module>
+  	<module>de.nilsreiter.pipeline.semafor</module>
+  	<module>de.nilsreiter.semafor</module>
+  	<module>edu.cmu.cs.lti.ark</module>
   </modules>
   <dependencies>
  
