@@ -2,6 +2,7 @@ package de.nilsreiter.pipeline.uima.event;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
@@ -11,6 +12,11 @@ import de.nilsreiter.pipeline.uima.event.type.Role;
 import de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticArgument;
 import de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticPredicate;
 
+@TypeCapability(inputs = {
+		"de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticPredicate",
+		"de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticArgument" },
+outputs = { "de.nilsreiter.pipeline.uima.event.type.Event",
+"de.nilsreiter.pipeline.uima.event.type.Role" })
 public class EventAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
@@ -36,6 +42,12 @@ public class EventAnnotator extends JCasAnnotator_ImplBase {
 			}
 
 			event.addToIndexes();
+		}
+
+		if (!JCasUtil.exists(jcas, SemanticPredicate.class)) {
+			Event event = new Event(jcas);
+			event.setBegin(1);
+			event.setEnd(2);
 		}
 
 	}

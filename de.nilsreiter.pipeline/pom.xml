@@ -9,6 +9,14 @@
   <artifactId>de.nilsreiter.pipeline</artifactId>
   <name>de.nilsreiter.pipeline</name>
   <dependencies>
+ 	 <dependency>
+  		<groupId>org.apache.uima</groupId>
+  		<artifactId>uimaj-core</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.apache.uima</groupId>
+  		<artifactId>uimafit-core</artifactId>
+  	</dependency>
   	<dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
   		<artifactId>de.tudarmstadt.ukp.dkpro.core-asl</artifactId>
@@ -123,6 +131,12 @@
   		<artifactId>de.nilsreiter.lm</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter.pipeline.semafor</groupId>
+  		<artifactId>de.nilsreiter.pipeline.semafor</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	
   </dependencies>
   <repositories>
   <repository>

@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Jul 10 13:44:43 CEST 2014
+ * Updated by JCasGen Tue Sep 02 17:18:27 CEST 2014
  * XML source: /Users/reiterns/Documents/Workspace/a10/de.nilsreiter.pipeline/src/main/java/de/nilsreiter/pipeline/uima/event/Event.xml
  * @generated */
 public class Role extends Annotation {
