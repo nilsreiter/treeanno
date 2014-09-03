@@ -15,6 +15,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.logging.Handler;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -28,6 +29,7 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import de.nilsreiter.util.StringUtil;
 
@@ -46,8 +48,7 @@ public abstract class Main {
 	}
 
 	@Deprecated
-	@Option(name = "--corpus", aliases = { "-c" },
-	usage = "Selects the corpus to use. Deprecated.")
+	@Option(name = "--corpus", aliases = { "-c" })
 	protected Corpus corpus = Corpus.Rituals;
 
 	@Option(name = "--help", usage = "Prints this usage screen",
@@ -55,8 +56,7 @@ public abstract class Main {
 	boolean printUsage = false;
 
 	@Deprecated
-	@Option(name = "--loglevel", usage = "Sets the logging level. Deprecated.",
-	aliases = { "-l" })
+	@Option(name = "--loglevel", aliases = { "-l" })
 	protected String logLevel = "WARNING";
 
 	@Option(name = "--config",
@@ -195,7 +195,16 @@ public abstract class Main {
 									getDefaultConfigFile())));
 		} catch (ConfigurationException e) {
 			this.logger.error(e.getLocalizedMessage());
+			if (this.configFile.exists()) {
+				try {
+					this.configuration =
+							new HierarchicalINIConfiguration(this.configFile);
+				} catch (ConfigurationException e1) {
+					e1.printStackTrace();
+				}
+			}
 		}
+		this.logger.info(configuration.toString());
 
 	}
 
@@ -221,7 +230,7 @@ public abstract class Main {
 	 */
 	@Deprecated
 	public Writer
-	getWriterForFileOption(final File file, final PrintStream out) {
+			getWriterForFileOption(final File file, final PrintStream out) {
 		if (file == null) {
 			try {
 				return new OutputStreamWriter(out, "UTF-8");
@@ -291,15 +300,38 @@ public abstract class Main {
 		}
 	}
 
+	public void removeHandlersFromRootLogger() {
+		java.util.logging.Logger logger = java.util.logging.Logger.getGlobal();
+		for (Handler hdl : logger.getHandlers()) {
+			logger.removeHandler(hdl);
+		}
+	}
+
 	public Main(final String[] args) {
+
+		this.removeHandlersFromRootLogger();
+		// add SLF4JBridgeHandler to j.u.l's root logger, should be done once
+		// during
+		// the initialization phase of your application
+		SLF4JBridgeHandler.install();
 		processArguments(args);
 	}
 
 	public Main() {
+		this.removeHandlersFromRootLogger();
+
+		// add SLF4JBridgeHandler to j.u.l's root logger, should be done once
+		// during
+		// the initialization phase of your application
+		SLF4JBridgeHandler.install();
 
 	}
 
 	public Configuration getConfiguration() {
 		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 }
