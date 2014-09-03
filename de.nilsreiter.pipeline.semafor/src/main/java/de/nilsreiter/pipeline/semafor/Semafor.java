@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
@@ -27,6 +28,14 @@ import de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticPredicate;
 import de.tudarmstadt.ukp.dkpro.core.api.syntax.type.dependency.Dependency;
 import edu.cmu.cs.lti.ark.fn.parsing.ParserDriver;
 
+@TypeCapability(
+		inputs = {
+				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence",
+				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token",
+				"de.tudarmstadt.ukp.dkpro.core.api.syntax.type.dependency.Dependency" },
+		outputs = {
+				"de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticPredicate",
+				"de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticArgument" })
 public class Semafor extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_SENTENCE_LIMIT = "Sentence Limit";
@@ -47,14 +56,19 @@ public class Semafor extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		getLogger().setLevel(Level.ALL);
+		getLogger().info("Preparing Semafor input");
 		try {
 			// Creating temporal directory for
 			// 1. the input files to semafor
 			File tmpdirInput = IOUtil.createTempDir("semafor", ".input");
-			System.err.println(tmpdirInput.getAbsolutePath());
+			getLogger()
+					.debug("Semafor input directory: "
+							+ tmpdirInput.getAbsolutePath());
 			// 2. the output files of semafor (and a log file)
 			File tmpdirOutput = IOUtil.createTempDir("semafor", ".output");
-			System.err.println(tmpdirOutput.getAbsolutePath());
+			getLogger().debug(
+					"Semafor output directory: "
+							+ tmpdirOutput.getAbsolutePath());
 
 			File parserOutput = new File(tmpdirInput, "parser.conll");
 			File tokenized = new File(tmpdirInput, "tokenized.txt");
@@ -162,6 +176,7 @@ public class Semafor extends JCasAnnotator_ImplBase {
 					new File(
 							"/Users/reiterns/Documents/Resources/semafor-model/file_properties.xml");
 
+			getLogger().info("Running Semafor");
 			ParserDriver.main(new String[] {
 					"mstmode:noserver",
 					"mstserver:localhost",
@@ -199,6 +214,7 @@ public class Semafor extends JCasAnnotator_ImplBase {
 
 			// After Semafor has been running, we read in the produced output
 			// file
+			getLogger().info("Parsing Semafor output");
 			BufferedReader br = new BufferedReader(new FileReader(outputFile));
 			while (br.ready()) {
 				String line = br.readLine();
