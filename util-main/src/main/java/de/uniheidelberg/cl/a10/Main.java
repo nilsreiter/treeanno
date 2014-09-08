@@ -204,7 +204,6 @@ public abstract class Main {
 				}
 			}
 		}
-		this.logger.info(configuration.toString());
 
 	}
 
@@ -230,7 +229,7 @@ public abstract class Main {
 	 */
 	@Deprecated
 	public Writer
-			getWriterForFileOption(final File file, final PrintStream out) {
+	getWriterForFileOption(final File file, final PrintStream out) {
 		if (file == null) {
 			try {
 				return new OutputStreamWriter(out, "UTF-8");
