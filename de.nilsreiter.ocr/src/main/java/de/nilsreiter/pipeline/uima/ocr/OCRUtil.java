@@ -1,5 +1,6 @@
 package de.nilsreiter.pipeline.uima.ocr;
 
+import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
@@ -7,13 +8,18 @@ import de.nilsreiter.pipeline.uima.ocr.type.OCRCorrection;
 
 public abstract class OCRUtil {
 
-	public static OCRCorrection correct(JCas jcas, Annotation hyph,
+	public static OCRCorrection correct(JCas jcas, Annotation toCorrect,
 			String correction) {
-		OCRCorrection corr = new OCRCorrection(jcas);
-		corr.setBegin(hyph.getBegin());
-		corr.setEnd(hyph.getEnd());
+		return correct(jcas, toCorrect.getBegin(), toCorrect.getEnd(),
+				correction);
+	}
+
+	public static OCRCorrection correct(JCas jcas, int begin, int end,
+			String correction) {
+		OCRCorrection corr =
+				AnnotationFactory.createAnnotation(jcas, begin, end,
+						OCRCorrection.class);
 		corr.setCorrection(correction);
-		corr.addToIndexes();
 		return corr;
 	}
 

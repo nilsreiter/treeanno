@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Mon Jul 21 11:46:42 CEST 2014
+ * Updated by JCasGen Thu Sep 04 08:21:46 CEST 2014
  * @generated */
 public class OCRError_Type extends Annotation_Type {
   /** @generated 
@@ -69,6 +69,30 @@ public class OCRError_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_Description, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_Detector;
+  /** @generated */
+  final int     casFeatCode_Detector;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public String getDetector(int addr) {
+        if (featOkTst && casFeat_Detector == null)
+      jcas.throwFeatMissing("Detector", "de.nilsreiter.pipeline.uima.ocr.type.OCRError");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_Detector);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setDetector(int addr, String v) {
+        if (featOkTst && casFeat_Detector == null)
+      jcas.throwFeatMissing("Detector", "de.nilsreiter.pipeline.uima.ocr.type.OCRError");
+    ll_cas.ll_setStringValue(addr, casFeatCode_Detector, v);}
+    
+  
 
 
 
@@ -84,6 +108,10 @@ public class OCRError_Type extends Annotation_Type {
  
     casFeat_Description = jcas.getRequiredFeatureDE(casType, "Description", "uima.cas.String", featOkTst);
     casFeatCode_Description  = (null == casFeat_Description) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Description).getCode();
+
+ 
+    casFeat_Detector = jcas.getRequiredFeatureDE(casType, "Detector", "uima.cas.String", featOkTst);
+    casFeatCode_Detector  = (null == casFeat_Detector) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Detector).getCode();
 
   }
 }

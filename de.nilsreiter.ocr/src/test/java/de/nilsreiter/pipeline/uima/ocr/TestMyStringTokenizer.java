@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import de.nilsreiter.ocr.MyStringTokenizer;
+
 public class TestMyStringTokenizer {
 	@Test
 	public void test() {

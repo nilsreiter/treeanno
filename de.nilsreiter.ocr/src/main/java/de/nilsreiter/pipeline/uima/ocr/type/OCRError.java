@@ -11,8 +11,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Mon Jul 21 11:46:42 CEST 2014
- * XML source: /Users/reiterns/Documents/Workspace/a10/de.nilsreiter.pipeline/src/main/java/de/nilsreiter/pipeline/uima/ocr/types.xml
+ * Updated by JCasGen Thu Sep 04 08:21:46 CEST 2014
+ * XML source: /Users/reiterns/Documents/Workspace/a10/de.nilsreiter.ocr/src/main/java/de/nilsreiter/pipeline/uima/ocr/types.xml
  * @generated */
 public class OCRError extends Annotation {
   /** @generated
@@ -96,6 +96,28 @@ public class OCRError extends Annotation {
     if (OCRError_Type.featOkTst && ((OCRError_Type)jcasType).casFeat_Description == null)
       jcasType.jcas.throwFeatMissing("Description", "de.nilsreiter.pipeline.uima.ocr.type.OCRError");
     jcasType.ll_cas.ll_setStringValue(addr, ((OCRError_Type)jcasType).casFeatCode_Description, v);}    
+   
+    
+  //*--------------*
+  //* Feature: Detector
+
+  /** getter for Detector - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public String getDetector() {
+    if (OCRError_Type.featOkTst && ((OCRError_Type)jcasType).casFeat_Detector == null)
+      jcasType.jcas.throwFeatMissing("Detector", "de.nilsreiter.pipeline.uima.ocr.type.OCRError");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((OCRError_Type)jcasType).casFeatCode_Detector);}
+    
+  /** setter for Detector - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setDetector(String v) {
+    if (OCRError_Type.featOkTst && ((OCRError_Type)jcasType).casFeat_Detector == null)
+      jcasType.jcas.throwFeatMissing("Detector", "de.nilsreiter.pipeline.uima.ocr.type.OCRError");
+    jcasType.ll_cas.ll_setStringValue(addr, ((OCRError_Type)jcasType).casFeatCode_Detector, v);}    
   }
 
     

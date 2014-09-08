@@ -6,17 +6,22 @@ import org.apache.uima.fit.descriptor.ExternalResource;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
+import de.nilsreiter.ocr.resources.SubstitutionRules;
+import de.nilsreiter.ocr.resources.WordList;
 import de.nilsreiter.pipeline.uima.ocr.OCRUtil;
-import de.nilsreiter.pipeline.uima.ocr.SubstitutionRules;
-import de.nilsreiter.pipeline.uima.ocr.WordList;
 import de.nilsreiter.pipeline.uima.ocr.type.OCRError;
 
+/**
+ * 
+ * @author reiterns
+ *
+ */
 public class Substitution extends JCasAnnotator_ImplBase {
 	public final static String RESOURCE_WORDLIST = "Word List";
 	public final static String RESOURCE_RULES = "Rules List";
 
-	@ExternalResource(key = RESOURCE_WORDLIST)
-	private WordList wordList;
+	@ExternalResource(key = RESOURCE_WORDLIST, mandatory = false)
+	WordList wordList = null;
 
 	@ExternalResource(key = RESOURCE_RULES)
 	SubstitutionRules rules;
@@ -28,15 +33,10 @@ public class Substitution extends JCasAnnotator_ImplBase {
 			for (String key : rules.keySet()) {
 				if (surface.contains(key)) {
 
-					String repl = surface.replace(key, rules.get(key));
-					if (wordList.contains(repl)) {
+					String repl = surface.replaceAll(key, rules.get(key));
+					if (wordList == null || wordList.contains(repl)) {
 						OCRUtil.correct(arg0, error, repl).setLevel(1);
-						// error.removeFromIndexes();
 					}
-					/*
-					 * else OCRUtil.correct(arg0, error, repl).setLevel(2);
-					 */
-
 				}
 
 			}

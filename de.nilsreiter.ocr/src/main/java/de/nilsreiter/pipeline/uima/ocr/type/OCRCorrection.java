@@ -11,8 +11,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Mon Jul 21 11:46:42 CEST 2014
- * XML source: /Users/reiterns/Documents/Workspace/a10/de.nilsreiter.pipeline/src/main/java/de/nilsreiter/pipeline/uima/ocr/types.xml
+ * Updated by JCasGen Thu Sep 04 08:21:46 CEST 2014
+ * XML source: /Users/reiterns/Documents/Workspace/a10/de.nilsreiter.ocr/src/main/java/de/nilsreiter/pipeline/uima/ocr/types.xml
  * @generated */
 public class OCRCorrection extends Annotation {
   /** @generated

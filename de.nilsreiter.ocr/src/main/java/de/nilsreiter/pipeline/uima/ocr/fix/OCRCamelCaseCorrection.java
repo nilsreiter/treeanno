@@ -6,9 +6,9 @@ import org.apache.uima.fit.descriptor.ExternalResource;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.nilsreiter.pipeline.uima.ocr.CamelCaseSplitter;
+import de.nilsreiter.ocr.CamelCaseSplitter;
+import de.nilsreiter.ocr.resources.WordList;
 import de.nilsreiter.pipeline.uima.ocr.OCRUtil;
-import de.nilsreiter.pipeline.uima.ocr.WordList;
 import de.nilsreiter.pipeline.uima.ocr.type.OCRError;
 
 public class OCRCamelCaseCorrection extends JCasAnnotator_ImplBase {
@@ -23,7 +23,7 @@ public class OCRCamelCaseCorrection extends JCasAnnotator_ImplBase {
 		for (OCRError error : JCasUtil.select(jcas, OCRError.class)) {
 			if (ccs.isCamelCase(error.getCoveredText())) {
 				String correctionString =
-						ccs.splitAtCaseChange(error.getCoveredText());
+						ccs.splitAtCaseChange(error.getCoveredText(), "");
 				int count = 0;
 				for (String part : correctionString.split(" ")) {
 					if (wordList.contains(part)) count++;
