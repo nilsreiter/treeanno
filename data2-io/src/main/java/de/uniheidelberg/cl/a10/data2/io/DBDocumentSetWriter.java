@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 import de.nilsreiter.util.StringUtil;
 import de.nilsreiter.util.db.DBUtils;
@@ -35,6 +37,7 @@ public class DBDocumentSetWriter implements Writer<DocumentSet> {
 				}
 			}, ","));
 			stmt.setString(2, object.getId());
+			stmt.setTimestamp(3, Timestamp.from(Instant.now()));
 			stmt.executeUpdate();
 
 			ResultSet generatedKeys = stmt.getGeneratedKeys();
