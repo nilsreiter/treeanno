@@ -16,7 +16,8 @@ public class DBDocumentSet {
 
 	public PreparedStatement getInsertStatement() throws SQLException {
 		SQLBuilder b = new SQLBuilder();
-		b.insert(database.getTableName(tableName)).values("default", "?", "?");
+		b.insert(database.getTableName(tableName)).values("default", "?", "?",
+				"?");
 
 		return database.getConnection().prepareStatement(b.toString(),
 				Statement.RETURN_GENERATED_KEYS);
@@ -31,7 +32,7 @@ public class DBDocumentSet {
 
 		SQLBuilder sb = new SQLBuilder();
 		sb.create(database.getTableName(tableName))
-		.struct("id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, document TEXT, documentset TEXT");
+		.struct("id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, document TEXT, documentset TEXT, creationDate TIMESTAMP");
 
 		Connection conn = database.getConnection();
 		Statement stmt = conn.createStatement();
