@@ -32,55 +32,60 @@
 package neobio.alignment;
 
 /**
- * Signals that an scoring scheme is not compatible with the sequences being aligned.
+ * Signals that an scoring scheme is not compatible with the sequences being
+ * aligned.
  *
  * @author Sergio A. de Carvalho Jr.
  * @see ScoringScheme
  * @see PairwiseAlignmentAlgorithm
  */
-public class IncompatibleScoringSchemeException extends Exception
-{
+public class IncompatibleScoringSchemeException extends Exception {
 	/**
-	 * Constructs an <CODE>IncompatibleScoringSchemeException</CODE> with null as its
-	 * error detail message.
+	 * 
 	 */
-	public IncompatibleScoringSchemeException ()
-	{
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Constructs an <CODE>IncompatibleScoringSchemeException</CODE> with null
+	 * as its error detail message.
+	 */
+	public IncompatibleScoringSchemeException() {
 		super();
 	}
 
 	/**
-	 * Constructs an <CODE>IncompatibleScoringSchemeException</CODE> with the specified
-	 * detail message.
+	 * Constructs an <CODE>IncompatibleScoringSchemeException</CODE> with the
+	 * specified detail message.
 	 *
-	 * @param message an error message
+	 * @param message
+	 *            an error message
 	 */
-	public IncompatibleScoringSchemeException (String message)
-	{
+	public IncompatibleScoringSchemeException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Constructs an <CODE>IncompatibleScoringSchemeException</CODE> with the specified
-	 * cause (and a detail message that typically contains the class and detail message
-	 * of cause).
+	 * Constructs an <CODE>IncompatibleScoringSchemeException</CODE> with the
+	 * specified cause (and a detail message that typically contains the class
+	 * and detail message of cause).
 	 *
-	 * @param cause a cause
+	 * @param cause
+	 *            a cause
 	 */
-	public IncompatibleScoringSchemeException (Throwable cause)
-	{
+	public IncompatibleScoringSchemeException(Throwable cause) {
 		super(cause);
 	}
 
 	/**
-	 * Constructs an <CODE>IncompatibleScoringSchemeException</CODE> with the specified
-	 * detail message and cause.
+	 * Constructs an <CODE>IncompatibleScoringSchemeException</CODE> with the
+	 * specified detail message and cause.
 	 *
-	 * @param message an error message
-	 * @param cause a cause
+	 * @param message
+	 *            an error message
+	 * @param cause
+	 *            a cause
 	 */
-	public IncompatibleScoringSchemeException (String message, Throwable cause)
-	{
+	public IncompatibleScoringSchemeException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }

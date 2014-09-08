@@ -87,6 +87,7 @@
   	<module>de.nilsreiter.legacy</module>
   	<module>edu.cmu.cs.lti.ark</module>
   	<module>de.nilsreiter.ocr</module>
+  	<module>neobio.alignment</module>
   </modules>
   <dependencies>
  
