@@ -1,9 +1,11 @@
 package de.nilsreiter.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * A collection of various unsorted utility functions.
@@ -63,5 +65,27 @@ public final class IOUtil {
 
 		in.close();
 		out.close();
+	}
+
+	public static String getFileContents(File file)
+
+			throws IOException {
+		return getFileContents(file, -1);
+	}
+
+	public static String getFileContents(File file, int maxlength)
+			throws IOException {
+		StringBuilder b = new StringBuilder();
+
+		int l = 0;
+		InputStreamReader fr =
+				new InputStreamReader(new FileInputStream(file), "UTF-8");
+		while (fr.ready() && (maxlength < 0 || l < maxlength)) {
+			b.append((char) fr.read());
+			l++;
+		}
+		fr.close();
+
+		return b.toString();
 	}
 }
