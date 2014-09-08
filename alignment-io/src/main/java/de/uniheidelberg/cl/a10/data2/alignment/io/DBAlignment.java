@@ -26,14 +26,14 @@ public class DBAlignment {
 	public PreparedStatement getInsertStatement() throws SQLException {
 		SQLBuilder b = new SQLBuilder();
 		b.insert(database.getTableName(table));
-		b.values("default", "?", "?", "?");
+		b.values("default", "?", "?", "?", "?");
 		return database.getConnection().prepareStatement(b.toString());
 	}
 
 	public String getSelectStatement(String id) throws SQLException {
 		SQLBuilder b = new SQLBuilder();
 		b.select("xml").from(database.getTableName(table))
-		.where("databaseId = '" + id + "'");
+				.where("databaseId = '" + id + "'");
 		return b.toString();
 	}
 

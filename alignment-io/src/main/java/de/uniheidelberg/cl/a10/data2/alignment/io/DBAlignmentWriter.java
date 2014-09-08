@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 import de.nilsreiter.util.db.impl.DatabaseDBConfiguration_impl;
 import de.uniheidelberg.cl.a10.data2.AnnotationObjectInDocument;
@@ -45,6 +47,7 @@ Writer<Alignment<? extends AnnotationObjectInDocument>> {
 			statement.setString(fC++, doc.getId());
 			statement.setString(fC++, docIds);
 			statement.setString(fC++, outputStream.toString());
+			statement.setTimestamp(fC++, Timestamp.from(Instant.now()));
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			throw new IOException(e);
