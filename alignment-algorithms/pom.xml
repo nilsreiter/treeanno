@@ -58,5 +58,10 @@
     		<groupId>org.slf4j</groupId>
    		 	<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>neobio.alignment</groupId>
+			<artifactId>neobio.alignment</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
   </dependencies>
 </project>
