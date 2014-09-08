@@ -39,7 +39,7 @@ import de.uniheidelberg.cl.a10.MainWithIODir;
 public class PipelineMain extends MainWithIODir {
 
 	@Option(name = "--part", aliases = { "-p" }, usage = "The pipeline to use")
-	Pipeline part = Pipeline.Basic;
+	Pipeline part = Pipeline.Ling;
 
 	@Option(name = "--format", aliases = { "-f" },
 			usage = "Export data format", multiValued = true)
@@ -49,7 +49,7 @@ public class PipelineMain extends MainWithIODir {
 	ExternalResourceDescription mfsResource;
 
 	enum Pipeline {
-		Basic, Second, Full, Event
+		Basic, Second, Full, Ling, Event
 	};
 
 	enum ExportFormat {
@@ -102,6 +102,8 @@ public class PipelineMain extends MainWithIODir {
 	public List<AnalysisEngineDescription> getPipeline(Pipeline pl)
 			throws ResourceInitializationException {
 		switch (pl) {
+		case Ling:
+			return this.getLingPipeline();
 		case Event:
 			ArrayList<AnalysisEngineDescription> ae =
 			new ArrayList<AnalysisEngineDescription>();
@@ -146,6 +148,39 @@ public class PipelineMain extends MainWithIODir {
 				getConfiguration().getString("Semafor.model"),
 				Semafor.PARAM_EXCLUDE_PUNCTUATION, false));
 		l.add(createEngineDescription(EventAnnotator.class));
+
+		return l;
+	}
+
+	public List<AnalysisEngineDescription> getLingPipeline()
+			throws ResourceInitializationException {
+
+		ArrayList<AnalysisEngineDescription> l =
+				new ArrayList<AnalysisEngineDescription>();
+
+		l.add(createEngineDescription(StanfordSegmenter.class));
+		l.add(createEngineDescription(StanfordLemmatizer.class));
+		l.add(createEngineDescription(StanfordPosTagger.class));
+		l.add(createEngineDescription(StanfordParser.class,
+				StanfordParser.PARAM_MODE,
+				StanfordParser.DependenciesMode.BASIC,
+				StanfordParser.PARAM_WRITE_CONSTITUENT, false,
+				StanfordParser.PARAM_WRITE_POS, false,
+				StanfordParser.PARAM_WRITE_LEMMA, false,
+				StanfordParser.PARAM_READ_POS, true));
+		l.add(createEngineDescription(StanfordCoreferenceResolver.class));
+		l.add(createEngineDescription(WSDItemAnnotator.class,
+				WSDItemAnnotator.PARAM_FEATURE_PATH,
+				"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.NN"));
+		l.add(createEngineDescription(WSDItemCompleter.class));
+		l.add(createEngineDescription(WSDAnnotatorIndividualPOS.class,
+				WSDAnnotatorIndividualPOS.WSD_ALGORITHM_RESOURCE, mfsResource,
+				WSDAnnotatorIndividualPOS.PARAM_DISAMBIGUATION_METHOD_NAME,
+				MostFrequentSenseBaseline.class.getName()));
+		l.add(createEngineDescription(WSDPostProcess.class));
+		l.add(createEngineDescription(Semafor.class, Semafor.PARAM_MODEL,
+				getConfiguration().getString("Semafor.model"),
+				Semafor.PARAM_EXCLUDE_PUNCTUATION, false));
 
 		return l;
 	}

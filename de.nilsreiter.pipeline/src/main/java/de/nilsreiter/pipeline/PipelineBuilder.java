@@ -9,6 +9,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.nilsreiter.pipeline.uima.Data2Exporter;
+import de.tudarmstadt.ukp.dkpro.core.io.conll.Conll2006Writer;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 
 public class PipelineBuilder {
@@ -26,6 +27,15 @@ public class PipelineBuilder {
 		pipeline.add(createEngineDescription(XmiWriter.class,
 				XmiWriter.PARAM_TARGET_LOCATION,
 				new File(directory, "xmi").getAbsolutePath()));
+		return pipeline;
+	}
+
+	public static List<AnalysisEngineDescription> conll(
+			List<AnalysisEngineDescription> pipeline, File directory)
+					throws ResourceInitializationException {
+		pipeline.add(createEngineDescription(Conll2006Writer.class,
+				Conll2006Writer.PARAM_TARGET_LOCATION, new File(directory,
+						"conll").getAbsolutePath()));
 		return pipeline;
 	}
 
