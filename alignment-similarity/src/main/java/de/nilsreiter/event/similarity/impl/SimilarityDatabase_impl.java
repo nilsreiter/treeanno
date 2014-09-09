@@ -23,7 +23,7 @@ import de.uniheidelberg.cl.a10.patterns.data.matrix.Matrix;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class SimilarityDatabase_impl<T extends HasId & HasDocument> implements
-		SimilarityDatabase<T> {
+SimilarityDatabase<T> {
 
 	private Logger logger = LoggerFactory.getLogger(SimilarityDatabase.class);
 	public static final String BASE_TBL_SIMILARITIES = "similarities";
@@ -51,7 +51,7 @@ public class SimilarityDatabase_impl<T extends HasId & HasDocument> implements
 	Database database;
 
 	public SimilarityDatabase_impl(Database db) throws SQLException,
-	ClassNotFoundException {
+			ClassNotFoundException {
 		database = db;
 		table_similarities = BASE_TBL_SIMILARITIES;
 	}
@@ -62,10 +62,10 @@ public class SimilarityDatabase_impl<T extends HasId & HasDocument> implements
 			double similarity) throws SQLException {
 		if (putStatement == null)
 			putStatement =
-					database.getConnection().prepareStatement(
-							"INSERT INTO "
-									+ database.getTableName(table_similarities)
-									+ " values (default,?,?,?,?,?,?)");
+			database.getConnection().prepareStatement(
+					"INSERT INTO "
+							+ database.getTableName(table_similarities)
+							+ " values (default,?,?,?,?,?,?)");
 		putStatement.setString(1,
 				simType.getSimpleName().substring(0, typeNameMaxLength));
 		putStatement.setString(2, e1.getRitualDocument().getId());
@@ -101,8 +101,8 @@ public class SimilarityDatabase_impl<T extends HasId & HasDocument> implements
 		if (getStatement == null) {
 			SQLBuilder b = new SQLBuilder();
 			b.select("sim")
-					.from(database.getTableName(table_similarities))
-					.where("type=? AND document1=? AND document2=? AND id1=? AND id2=?");
+			.from(database.getTableName(table_similarities))
+			.where("type=? AND document1=? AND document2=? AND id1=? AND id2=?");
 
 			getStatement =
 					database.getConnection().prepareStatement(b.toString());
@@ -168,22 +168,49 @@ public class SimilarityDatabase_impl<T extends HasId & HasDocument> implements
 	public Map<String, Matrix<T, T, Double>> getSimilarities(Document doc1,
 			Document doc2) throws SQLException {
 		Connection conn = database.getConnection();
-		Statement stmt = conn.createStatement();
-		SQLBuilder b = new SQLBuilder();
-		b.select("*")
-				.from(table_similarities)
-				.where(" ( document1='" + doc1.getId() + "' AND document2='"
-						+ doc2.getId() + "')" + " OR ( document1='"
-						+ doc1.getId() + "' AND document2='" + doc1.getId()
-						+ "' )" + " OR ( document1='" + doc2.getId()
-						+ "' AND document2='" + doc1.getId() + "' )"
-						+ " OR ( document1='" + doc2.getId()
-						+ "' AND document2='" + doc2.getId() + "' )");
-
-		ResultSet rs = stmt.executeQuery(b.toString());
 
 		Map<String, Matrix<T, T, Double>> matrixMap =
 				new HashMap<String, Matrix<T, T, Double>>();
+
+		SQLBuilder b;
+
+		b = new SQLBuilder();
+		b.select("*")
+		.from(table_similarities)
+				.where("document1='" + doc2.getId() + "' and document2='"
+				+ doc2.getId() + "'");
+		this.addSimilaritiesToMatrix(conn, matrixMap, b, doc2, doc2);
+
+		b = new SQLBuilder();
+		b.select("*")
+				.from(table_similarities)
+		.where("document1='" + doc1.getId() + "' and document2='"
+				+ doc1.getId() + "'");
+		this.addSimilaritiesToMatrix(conn, matrixMap, b, doc1, doc1);
+
+		b = new SQLBuilder();
+		b.select("*")
+				.from(table_similarities)
+				.where("document1='" + doc1.getId() + "' and document2='"
+				+ doc2.getId() + "'");
+		this.addSimilaritiesToMatrix(conn, matrixMap, b, doc1, doc2);
+
+		b = new SQLBuilder();
+		b.select("*")
+				.from(table_similarities)
+		.where("document1='" + doc2.getId() + "' and document2='"
+				+ doc1.getId() + "'");
+		this.addSimilaritiesToMatrix(conn, matrixMap, b, doc2, doc1);
+
+		conn.close();
+		return matrixMap;
+	}
+
+	protected void addSimilaritiesToMatrix(Connection conn,
+			Map<String, Matrix<T, T, Double>> matrixMap, SQLBuilder query,
+			Document doc1, Document doc2) throws SQLException {
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(query.toString());
 
 		while (rs.next()) {
 			String id1 = rs.getString("id1");
@@ -197,11 +224,10 @@ public class SimilarityDatabase_impl<T extends HasId & HasDocument> implements
 			T aoi2 = (T) doc2.getById(id2);
 			if (!matrixMap.containsKey(type))
 				matrixMap.put(type, new MapMatrix<T, T, Double>(0.0));
-			if (aoi1 != null && aoi2 != null)
+			if (aoi1 != null && aoi2 != null) {
 				matrixMap.get(type).put(aoi1, aoi2, sim);
+				matrixMap.get(type).put(aoi2, aoi1, sim);
+			}
 		}
-		stmt.close();
-		conn.close();
-		return matrixMap;
 	}
 }
