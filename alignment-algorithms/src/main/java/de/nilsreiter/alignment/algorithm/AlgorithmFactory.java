@@ -25,6 +25,7 @@ import de.nilsreiter.alignment.algorithm.impl.SameLemma_impl;
 import de.nilsreiter.alignment.algorithm.impl.SameSurface_impl;
 import de.nilsreiter.alignment.algorithm.impl.WeightedHarmonic_impl;
 import de.nilsreiter.event.similarity.SimilarityFunctionFactory;
+import de.nilsreiter.util.db.Database;
 import de.nilsreiter.util.db.impl.DatabaseDataSource_impl;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
@@ -41,8 +42,59 @@ public class AlgorithmFactory {
 		return af;
 	};
 
-	public AlignmentAlgorithm<Event> getAlgorithm(Configuration configuration) {
+	public AlignmentAlgorithm<Event> getAlgorithm(Database database,
+			Configuration configuration) throws ClassNotFoundException,
+			FileNotFoundException, SecurityException, InstantiationException,
+			IllegalAccessException {
 		ConfigurationConverter conv = new ConfigurationConverter();
+
+		Class<?> cl;
+		try {
+			cl = Class.forName(configuration.getString(CONFIG_KEY_ALGORITHM));
+		} catch (ClassNotFoundException e) {
+			cl =
+					Class.forName("de.nilsreiter.alignment.algorithm."
+							+ configuration.getString(CONFIG_KEY_ALGORITHM));
+		}
+		if (NeedlemanWunsch.class.isAssignableFrom(cl)) {
+			NeedlemanWunschConfiguration nwConf =
+					(NeedlemanWunschConfiguration) conv.getConfiguration(
+							NeedlemanWunschConfiguration.class, configuration);
+			NeedlemanWunsch<Event> algo =
+					new NeedlemanWunsch_impl<Event>(nwConf,
+							SimilarityFunctionFactory.getSimilarityFunction(
+									database, nwConf));
+			return algo;
+		} else if (BayesianModelMerging.class.isAssignableFrom(cl)) {
+			BMMConfiguration bmmConf =
+					(BMMConfiguration) conv.getConfiguration(
+							BMMConfiguration.class, configuration);
+			SimilarityFunction<Event> func =
+					SimilarityFunctionFactory.getSimilarityFunction(database,
+							bmmConf);
+			return new BayesianModelMerging_impl<Event>(func, bmmConf);
+		} else if (MRSystem.class.isAssignableFrom(cl)) {
+			MRSystemConfiguration conf =
+					(MRSystemConfiguration) conv.getConfiguration(
+							MRSystemConfiguration.class, configuration);
+			MRSystem_impl<Event> mrs = new MRSystem_impl<Event>();
+			mrs.setConfig(conf);
+			mrs.setSimilarityFunction(SimilarityFunctionFactory
+					.getSimilarityFunction(database, conf));
+			return mrs;
+		} else if (WeightedHarmonic.class.isAssignableFrom(cl)) {
+			return new WeightedHarmonic_impl<Event>();
+		} else if (Harmonic.class.isAssignableFrom(cl)) {
+			return new Harmonic_impl<Event>();
+		} else if (SameLemma.class.isAssignableFrom(cl)) {
+			return new SameLemma_impl<Event>();
+		} else if (SameSurface.class.isAssignableFrom(cl)) {
+			return new SameSurface_impl<Event>();
+		}
+		return null;
+	}
+
+	public AlignmentAlgorithm<Event> getAlgorithm(Configuration configuration) {
 		try {
 
 			DataSource dataSource;
@@ -59,57 +111,8 @@ public class AlgorithmFactory {
 							poolableConnectionFactory);
 			dataSource =
 					new PoolingDataSource<PoolableConnection>(connectionPool);
-
-			Class<?> cl;
-			try {
-				cl =
-						Class.forName(configuration
-								.getString(CONFIG_KEY_ALGORITHM));
-			} catch (ClassNotFoundException e) {
-				cl =
-						Class.forName("de.nilsreiter.alignment.algorithm."
-								+ configuration.getString(CONFIG_KEY_ALGORITHM));
-			}
-			if (NeedlemanWunsch.class.isAssignableFrom(cl)) {
-				NeedlemanWunschConfiguration nwConf =
-						(NeedlemanWunschConfiguration) conv.getConfiguration(
-								NeedlemanWunschConfiguration.class,
-								configuration);
-				NeedlemanWunsch<Event> algo =
-						new NeedlemanWunsch_impl<Event>(nwConf,
-								SimilarityFunctionFactory
-										.getSimilarityFunction(
-												new DatabaseDataSource_impl(
-														dataSource), nwConf));
-				return algo;
-			} else if (BayesianModelMerging.class.isAssignableFrom(cl)) {
-				BMMConfiguration bmmConf =
-						(BMMConfiguration) conv.getConfiguration(
-								BMMConfiguration.class, configuration);
-				SimilarityFunction<Event> func =
-						SimilarityFunctionFactory.getSimilarityFunction(
-								new DatabaseDataSource_impl(dataSource),
-								bmmConf);
-				return new BayesianModelMerging_impl<Event>(func, bmmConf);
-			} else if (MRSystem.class.isAssignableFrom(cl)) {
-				MRSystemConfiguration conf =
-						(MRSystemConfiguration) conv.getConfiguration(
-								MRSystemConfiguration.class, configuration);
-				MRSystem_impl<Event> mrs = new MRSystem_impl<Event>();
-				mrs.setConfig(conf);
-				mrs.setSimilarityFunction(SimilarityFunctionFactory
-						.getSimilarityFunction(new DatabaseDataSource_impl(
-								dataSource), conf));
-				return mrs;
-			} else if (WeightedHarmonic.class.isAssignableFrom(cl)) {
-				return new WeightedHarmonic_impl<Event>();
-			} else if (Harmonic.class.isAssignableFrom(cl)) {
-				return new Harmonic_impl<Event>();
-			} else if (SameLemma.class.isAssignableFrom(cl)) {
-				return new SameLemma_impl<Event>();
-			} else if (SameSurface.class.isAssignableFrom(cl)) {
-				return new SameSurface_impl<Event>();
-			}
+			return this.getAlgorithm(new DatabaseDataSource_impl(dataSource),
+					configuration);
 		} catch (ClassNotFoundException e) {
 			logger.error(e.getLocalizedMessage());
 			e.printStackTrace();
