@@ -1,4 +1,4 @@
-package de.nilsreiter.pipeline;
+package de.nilsreiter.ocr;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.apache.uima.fit.factory.CollectionReaderFactory.createReader;
@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
@@ -23,7 +24,9 @@ import org.slf4j.LoggerFactory;
 import de.nilsreiter.ocr.resources.SubstitutionRules;
 import de.nilsreiter.ocr.resources.WordList;
 import de.nilsreiter.ocr.uima.OCRCorrectedExport;
+import de.nilsreiter.ocr.uima.analysis.FrequencyDictionaryExtractor;
 import de.nilsreiter.ocr.uima.detect.HyphenationDetection;
+import de.nilsreiter.ocr.uima.detect.InfrequentWordsMarker;
 import de.nilsreiter.ocr.uima.detect.OCRErrorDetectionLMBased;
 import de.nilsreiter.ocr.uima.detect.OCRErrorDetectionWordList;
 import de.nilsreiter.pipeline.uima.ocr.OCRTokenizer;
@@ -42,17 +45,25 @@ public class OCRCorrectMain extends MainWithIODir {
 	ExternalResourceDescription wordList;
 	ExternalResourceDescription substitutionRules;
 
+	public enum Step {
+		Rules, Info, Hyphenation
+	};
+
 	@Option(name = "--wordlist", usage = "A file containing a list of words")
-	File wordListFile;
+	File wordListFile = null;
 
 	@Option(name = "--rules", usage = "A file containing substitution rules")
-	File rulesFile;
+	File rulesFile = null;
 
 	@Option(name = "--language", usage = "The language")
 	String language;
 
 	@Option(name = "--xmi", usage = "Also print XMI files for inspection")
 	boolean printxmi;
+
+	@Option(name = "--step", aliases = { "-s" }, usage = "Processing step(s)",
+			multiValued = true)
+	List<Step> steps = new LinkedList<Step>();
 
 	public static void main(String[] args) throws Exception {
 		OCRCorrectMain pm = new OCRCorrectMain();
@@ -62,26 +73,62 @@ public class OCRCorrectMain extends MainWithIODir {
 	}
 
 	private void initResources() throws MalformedURLException {
-		logger.info("Initialising word list.");
-		wordList =
-				createExternalResourceDescription(WordList.class, wordListFile
-						.toURI().toURL());
-		logger.info("Initialising substitution rules.");
-		substitutionRules =
-				createExternalResourceDescription(SubstitutionRules.class,
-						rulesFile.toURI().toURL());
+		if (wordListFile != null) {
+			logger.info("Initialising word list.");
+			wordList =
+					createExternalResourceDescription(WordList.class,
+							wordListFile.toURI().toURL());
+		}
+		if (rulesFile != null) {
+			logger.info("Initialising substitution rules.");
+			substitutionRules =
+					createExternalResourceDescription(SubstitutionRules.class,
+							rulesFile.toURI().toURL());
+		}
 	}
 
 	public void run() throws IOException, ResourceInitializationException,
 			UIMAException {
 		File tempdir = IOUtil.createTempDir("pipeline", "");
 
-		int step = 0;
-		File stepdir = new File(tempdir, String.valueOf(step));
+		int stepNumber = 0;
+		for (Step step : steps) {
+			File stepdir = new File(tempdir, String.valueOf(stepNumber++));
+			switch (step) {
+			case Hyphenation:
+				fixHyphenation(input, output);
+				break;
+			case Rules:
+				fixRules(input, output);
+				break;
+			default:
+				info(input, output);
+			}
+		}
 		// fixHyphenation(input, stepdir);
 
-		step++;
-		fixRules(input, output);
+		if (steps.contains(Step.Hyphenation)) {}
+		if (steps.contains(Step.Rules)) {
+			stepNumber++;
+		}
+	}
+
+	private void info(File input, File output) throws UIMAException,
+			IOException {
+		CollectionReader cr = this.getCollectionReader(input);
+
+		AnalysisEngineDescription detect =
+				createEngineDescription(InfrequentWordsMarker.class);
+		List<AnalysisEngineDescription> pl =
+				new ArrayList<AnalysisEngineDescription>();
+		pl.add(createEngineDescription(OCRTokenizer.class));
+		pl.add(createEngineDescription(FrequencyDictionaryExtractor.class));
+		pl.add(detect);
+		pl.add(createEngineDescription(XmiWriter.class,
+				XmiWriter.PARAM_TARGET_LOCATION,
+				new File(output, "xmi").getAbsolutePath()));
+		runPipeline(cr, pl.toArray(new AnalysisEngineDescription[pl.size()]));
+
 	}
 
 	protected CollectionReader getCollectionReader(File directory)
@@ -131,9 +178,9 @@ public class OCRCorrectMain extends MainWithIODir {
 				createEngineDescription(HyphenationDetection.class),
 				createEngineDescription(HyphenationCorrection.class,
 						HyphenationCorrection.RESOURCE_WORDLIST, wordList),
-				createEngineDescription(OCRCorrectedExport.class,
-						OCRCorrectedExport.PARAM_OUTPUT_DIRECTORY,
-						outputDirectory.getAbsolutePath()));
+						createEngineDescription(OCRCorrectedExport.class,
+								OCRCorrectedExport.PARAM_OUTPUT_DIRECTORY,
+								outputDirectory.getAbsolutePath()));
 	}
 
 	public AnalysisEngineDescription[] getPipeline()
@@ -161,9 +208,9 @@ public class OCRCorrectMain extends MainWithIODir {
 				createEngineDescription(HyphenationDetection.class),
 				createEngineDescription(HyphenationCorrection.class,
 						HyphenationCorrection.RESOURCE_WORDLIST, wordList),
-				createEngineDescription(XmiWriter.class,
-						XmiWriter.PARAM_TARGET_LOCATION, "target/out/"),
-				createEngineDescription(OCRCorrectedExport.class) };
+						createEngineDescription(XmiWriter.class,
+								XmiWriter.PARAM_TARGET_LOCATION, "target/out/"),
+								createEngineDescription(OCRCorrectedExport.class) };
 	}
 
 }
