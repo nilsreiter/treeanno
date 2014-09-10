@@ -10,7 +10,7 @@ import de.nilsreiter.ocr.resources.WordList;
 import de.nilsreiter.pipeline.uima.ocr.OCRUtil;
 import de.nilsreiter.pipeline.uima.ocr.type.Hyphenation;
 
-public class HyphenationCorrection extends JCasAnnotator_ImplBase {
+public class HyphenationCorrectionWordList extends JCasAnnotator_ImplBase {
 	public final static String RESOURCE_WORDLIST = "Word List";
 
 	@ExternalResource(key = RESOURCE_WORDLIST)
