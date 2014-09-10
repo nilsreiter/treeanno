@@ -1,5 +1,8 @@
 package de.uniheidelberg.cl.reiter.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,8 +17,7 @@ public class Counter<K> extends HashMap<K, Integer> {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public Counter() {
-	}
+	public Counter() {}
 
 	public Counter(final Counter<K> c) {
 		for (K k : c.keySet()) {
@@ -99,5 +101,20 @@ public class Counter<K> extends HashMap<K, Integer> {
 			return super.get(k);
 		}
 		return 0;
+	}
+
+	public static Counter<String> fromString(Reader r) throws IOException {
+		Counter<String> c = new Counter<String>();
+
+		BufferedReader buf = new BufferedReader(r);
+		String l;
+		while ((l = buf.readLine()) != null) {
+			if (l != null) {
+				String[] line = l.split("\t");
+				c.add(line[0], Integer.valueOf(line[1]));
+			}
+		}
+		buf.close();
+		return c;
 	}
 }
