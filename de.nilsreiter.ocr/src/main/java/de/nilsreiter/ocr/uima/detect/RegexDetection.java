@@ -12,7 +12,7 @@ public abstract class RegexDetection extends JCasAnnotator_ImplBase {
 
 	Pattern pattern;
 
-	public void markRegex(JCas jcas, Class<? extends Annotation> annoClass) {
+	protected void markRegex(JCas jcas, Class<? extends Annotation> annoClass) {
 		String text = jcas.getDocumentText();
 
 		Matcher m = pattern.matcher(text);
