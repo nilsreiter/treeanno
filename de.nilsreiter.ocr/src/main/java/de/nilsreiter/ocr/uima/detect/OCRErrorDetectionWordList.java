@@ -17,6 +17,7 @@ public class OCRErrorDetectionWordList extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_EXCLUDE_UPPER_CASE = "Exclue Upper Case";
 	public static final String PARAM_EXCLUDE_PUNCTUATION = "Exclue Punctuation";
+	public static final String PARAM_EXCLUDE_NUMBERS = "Exclue Numbers";
 
 	@ExternalResource(key = RESOURCE_WORDLIST)
 	private WordList wordList;
@@ -27,6 +28,9 @@ public class OCRErrorDetectionWordList extends JCasAnnotator_ImplBase {
 	@ConfigurationParameter(name = PARAM_EXCLUDE_PUNCTUATION)
 	boolean excludePunctuation = false;
 
+	@ConfigurationParameter(name = PARAM_EXCLUDE_NUMBERS, mandatory = false)
+	boolean excludeNumbers = true;
+
 	@Override
 	public void process(JCas arg0) throws AnalysisEngineProcessException {
 		for (Token oToken : JCasUtil.select(arg0, Token.class)) {
@@ -34,6 +38,8 @@ public class OCRErrorDetectionWordList extends JCasAnnotator_ImplBase {
 			if (excludeUpperCase && token.matches("^[A-Z]+$")) {
 
 			} else if (excludePunctuation && token.matches("^\\p{Punct}$")) {
+
+			} else if (excludeNumbers && token.matches("^[0-9]+$")) {
 
 			} else if (!wordList.contains(token)) {
 				OCRError error =
