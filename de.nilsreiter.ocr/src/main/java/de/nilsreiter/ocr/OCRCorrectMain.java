@@ -25,6 +25,7 @@ import de.nilsreiter.ocr.resources.SubstitutionRules;
 import de.nilsreiter.ocr.resources.WordList;
 import de.nilsreiter.ocr.uima.OCRCorrectedExport;
 import de.nilsreiter.ocr.uima.analysis.FrequencyDictionaryExtractor;
+import de.nilsreiter.ocr.uima.detect.CharDetection;
 import de.nilsreiter.ocr.uima.detect.HyphenationDetection;
 import de.nilsreiter.ocr.uima.detect.InfrequentWordsMarker;
 import de.nilsreiter.ocr.uima.detect.OCRErrorDetectionLMBased;
@@ -32,6 +33,7 @@ import de.nilsreiter.ocr.uima.detect.OCRErrorDetectionWordList;
 import de.nilsreiter.pipeline.uima.ocr.OCRTokenizer;
 import de.nilsreiter.pipeline.uima.ocr.fix.EditDistanceFix;
 import de.nilsreiter.pipeline.uima.ocr.fix.HyphenationCorrection;
+import de.nilsreiter.pipeline.uima.ocr.fix.HyphenationCorrectionWordList;
 import de.nilsreiter.pipeline.uima.ocr.fix.Substitution;
 import de.nilsreiter.util.IOUtil;
 import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
@@ -46,7 +48,7 @@ public class OCRCorrectMain extends MainWithIODir {
 	ExternalResourceDescription substitutionRules;
 
 	public enum Step {
-		Rules, Info, Hyphenation
+		Rules, Info, Hyphenation, FixLongS
 	};
 
 	@Option(name = "--wordlist", usage = "A file containing a list of words")
@@ -88,7 +90,7 @@ public class OCRCorrectMain extends MainWithIODir {
 	}
 
 	public void run() throws IOException, ResourceInitializationException,
-			UIMAException {
+	UIMAException {
 		File tempdir = IOUtil.createTempDir("pipeline", "");
 
 		int stepNumber = 0;
@@ -100,6 +102,9 @@ public class OCRCorrectMain extends MainWithIODir {
 				break;
 			case Rules:
 				fixRules(input, output);
+				break;
+			case FixLongS:
+				fixLongS(input, output);
 				break;
 			default:
 				info(input, output);
@@ -114,7 +119,7 @@ public class OCRCorrectMain extends MainWithIODir {
 	}
 
 	private void info(File input, File output) throws UIMAException,
-			IOException {
+	IOException {
 		CollectionReader cr = this.getCollectionReader(input);
 
 		AnalysisEngineDescription detect =
@@ -170,17 +175,48 @@ public class OCRCorrectMain extends MainWithIODir {
 		runPipeline(cr, pl.toArray(new AnalysisEngineDescription[pl.size()]));
 	}
 
+	public void fixLongS(File inputDirectory, File outputDirectory)
+			throws ResourceInitializationException, UIMAException, IOException {
+		List<AnalysisEngineDescription> pl =
+				new ArrayList<AnalysisEngineDescription>();
+
+		pl.add(createEngineDescription(CharDetection.class,
+				CharDetection.PARAM_CHAR, 'ſ'));
+		pl.add(createEngineDescription(Substitution.class,
+				Substitution.RESOURCE_RULES, substitutionRules));
+		pl.add(createEngineDescription(OCRCorrectedExport.class,
+				OCRCorrectedExport.PARAM_OUTPUT_DIRECTORY,
+				outputDirectory.getAbsolutePath()));
+
+		if (printxmi) {
+			pl.add(createEngineDescription(XmiWriter.class,
+					XmiWriter.PARAM_TARGET_LOCATION, new File(outputDirectory,
+							"xmi").getAbsolutePath()));
+		}
+
+		runPipeline(this.getCollectionReader(inputDirectory),
+				pl.toArray(new AnalysisEngineDescription[pl.size()]));
+
+	}
+
 	public void fixHyphenation(File inputDirectory, File outputDirectory)
 			throws ResourceInitializationException, UIMAException, IOException {
+		List<AnalysisEngineDescription> pl =
+				new ArrayList<AnalysisEngineDescription>();
 
-		runPipeline(
-				getCollectionReader(inputDirectory),
-				createEngineDescription(HyphenationDetection.class),
-				createEngineDescription(HyphenationCorrection.class,
-						HyphenationCorrection.RESOURCE_WORDLIST, wordList),
-						createEngineDescription(OCRCorrectedExport.class,
-								OCRCorrectedExport.PARAM_OUTPUT_DIRECTORY,
-								outputDirectory.getAbsolutePath()));
+		pl.add(createEngineDescription(HyphenationDetection.class));
+		pl.add(createEngineDescription(HyphenationCorrection.class));
+		pl.add(createEngineDescription(OCRCorrectedExport.class,
+				OCRCorrectedExport.PARAM_OUTPUT_DIRECTORY,
+				outputDirectory.getAbsolutePath()));
+		if (printxmi) {
+			pl.add(createEngineDescription(XmiWriter.class,
+					XmiWriter.PARAM_TARGET_LOCATION, new File(outputDirectory,
+							"xmi").getAbsolutePath()));
+		}
+		runPipeline(this.getCollectionReader(inputDirectory),
+				pl.toArray(new AnalysisEngineDescription[pl.size()]));
+
 	}
 
 	public AnalysisEngineDescription[] getPipeline()
@@ -206,11 +242,12 @@ public class OCRCorrectMain extends MainWithIODir {
 						true);
 		return new AnalysisEngineDescription[] {
 				createEngineDescription(HyphenationDetection.class),
-				createEngineDescription(HyphenationCorrection.class,
-						HyphenationCorrection.RESOURCE_WORDLIST, wordList),
-						createEngineDescription(XmiWriter.class,
-								XmiWriter.PARAM_TARGET_LOCATION, "target/out/"),
-								createEngineDescription(OCRCorrectedExport.class) };
+				createEngineDescription(HyphenationCorrectionWordList.class,
+						HyphenationCorrectionWordList.RESOURCE_WORDLIST,
+						wordList),
+				createEngineDescription(XmiWriter.class,
+						XmiWriter.PARAM_TARGET_LOCATION, "target/out/"),
+				createEngineDescription(OCRCorrectedExport.class) };
 	}
 
 }

@@ -14,7 +14,7 @@ public class HyphenationDetection extends RegexDetection {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		pattern =
-				Pattern.compile("\\b\\w+-+" + newlinePattern + "\\w+\\b",
+				Pattern.compile("\\b[\\wſ]+-+" + newlinePattern + "[\\wſ]+\\b",
 						Pattern.MULTILINE);
 		this.markRegex(jcas, Hyphenation.class);
 
