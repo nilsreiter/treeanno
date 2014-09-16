@@ -1,6 +1,6 @@
 
 
-/* First created by JCasGen Thu Jul 10 13:35:45 CEST 2014 */
+/* First created by JCasGen Fri Sep 12 17:14:42 CEST 2014 */
 package de.nilsreiter.pipeline.uima.event.type;
 
 import org.apache.uima.jcas.JCas; 
@@ -11,8 +11,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Sep 02 17:18:27 CEST 2014
- * XML source: /Users/reiterns/Documents/Workspace/a10/de.nilsreiter.pipeline/src/main/java/de/nilsreiter/pipeline/uima/event/Event.xml
+ * Updated by JCasGen Fri Sep 12 17:14:42 CEST 2014
+ * XML source: /Users/reiterns/Documents/Workspace/a10/de.nilsreiter.pipeline.event/src/main/java/de/nilsreiter/pipeline/uima/event/Event.xml
  * @generated */
 public class Role extends Annotation {
   /** @generated

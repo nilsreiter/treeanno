@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Thu Jul 10 13:35:45 CEST 2014 */
+/* First created by JCasGen Fri Sep 12 17:14:42 CEST 2014 */
 package de.nilsreiter.pipeline.uima.event.type;
 
 import org.apache.uima.jcas.JCas;
@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Sep 02 17:18:27 CEST 2014
+ * Updated by JCasGen Fri Sep 12 17:14:42 CEST 2014
  * @generated */
 public class Event_Type extends Annotation_Type {
   /** @generated 
@@ -79,7 +79,7 @@ public class Event_Type extends Annotation_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i);
-  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i);
+	return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_arguments), i);
   }
    
   /** @generated

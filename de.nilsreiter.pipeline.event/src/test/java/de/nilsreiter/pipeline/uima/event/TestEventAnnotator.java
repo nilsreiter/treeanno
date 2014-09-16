@@ -31,23 +31,46 @@ public class TestEventAnnotator {
 
 		SemanticArgument arg =
 				createAnnotation(jcas, 0, 7, SemanticArgument.class);
-		arg.setRole("EVENT_TEST_ROLE");
+		arg.setRole("Ego");
 		SemanticPredicate sp =
-				createAnnotation(jcas, 8, 15, SemanticPredicate.class);
-		sp.setCategory("EVENT_TEST_CATEGORY");
+				createAnnotation(jcas, 4, 7, SemanticPredicate.class);
+		sp.setCategory("Kinship");
 		sp.setArguments(new FSArray(jcas, 1));
 		sp.setArguments(0, arg);
+
+		sp = createAnnotation(jcas, 8, 15, SemanticPredicate.class);
+		sp.setCategory("Communication_noise");
+		sp.setArguments(new FSArray(jcas, 0));
 	}
 
 	@Test
-	public void testEventAnnotator() throws AnalysisEngineProcessException,
+	public void testEventAnnotatorAllEvents()
+			throws AnalysisEngineProcessException,
 			ResourceInitializationException {
 		SimplePipeline.runPipeline(jcas,
 				createEngineDescription(EventAnnotator.class));
 
 		assertTrue(JCasUtil.exists(jcas, Event.class));
-		assertEquals("EVENT_TEST_ROLE",
-				JCasUtil.selectByIndex(jcas, Event.class, 0).getName());
+		assertEquals(2, JCasUtil.select(jcas, Event.class).size());
+		assertEquals("Kinship", JCasUtil.selectByIndex(jcas, Event.class, 0)
+				.getName());
 	}
 
+	@Test
+	public void testEventAnnotatorFrameNetEvents()
+			throws AnalysisEngineProcessException,
+			ResourceInitializationException {
+		SimplePipeline.runPipeline(
+				jcas,
+				createEngineDescription(EventAnnotator.class,
+						EventAnnotator.PARAM_DETECTION_STYLE,
+						EventAnnotator.Detection.FNEventInheritance,
+						EventAnnotator.PARAM_FNHOME,
+						"/Users/reiterns/Documents/Resources/framenet-1.5"));
+
+		assertTrue(JCasUtil.exists(jcas, Event.class));
+		assertEquals(1, JCasUtil.select(jcas, Event.class).size());
+		assertEquals("Communication_noise",
+				JCasUtil.selectByIndex(jcas, Event.class, 0).getName());
+	}
 }

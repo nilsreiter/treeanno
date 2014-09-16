@@ -147,7 +147,7 @@ public class Data2Exporter extends CasConsumer_ImplBase {
 			}
 			Token uToken =
 					JCasUtil.selectCovered(jcas, Token.class, wsdr.getWsdItem())
-							.get(0);
+					.get(0);
 			tokenMap.get(uToken).setSense(dSense);
 		}
 
@@ -170,11 +170,16 @@ public class Data2Exporter extends CasConsumer_ImplBase {
 			uimaDoc.addEvent(ev);
 		}
 
+		File oDirectory = new File(this.outputDirectory);
+		if (!oDirectory.exists()) {
+			oDirectory.mkdirs();
+		}
+
 		FileOutputStream fos;
 		try {
 			fos =
-					new FileOutputStream(new File(this.outputDirectory,
-							uimaDoc.getId() + ".xml"));
+					new FileOutputStream(new File(oDirectory, uimaDoc.getId()
+							+ ".xml"));
 			DataWriter dw = new DataWriter(fos);
 			dw.write(uimaDoc);
 			fos.flush();

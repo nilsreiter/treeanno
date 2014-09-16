@@ -18,14 +18,18 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ExternalResourceDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.kohsuke.args4j.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.pipeline.semafor.Semafor;
+import de.nilsreiter.pipeline.uima.ClearAnnotation;
 import de.nilsreiter.pipeline.uima.event.EventAnnotator;
 import de.nilsreiter.pipeline.uima.wsd.WSDItemCompleter;
 import de.nilsreiter.pipeline.uima.wsd.WSDPostProcess;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordCoreferenceResolver;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
+import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordParser;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
@@ -49,12 +53,14 @@ public class PipelineMain extends MainWithIODir {
 	ExternalResourceDescription mfsResource;
 
 	enum Pipeline {
-		Basic, Second, Full, Ling, Event
+		Basic, Second, Full, Ling, Event, Shallow
 	};
 
 	enum ExportFormat {
 		XMI, DATA2
 	}
+
+	Logger logger = LoggerFactory.getLogger(PipelineMain.class);
 
 	public static void main(String[] args) throws Exception {
 		PipelineMain pm = new PipelineMain();
@@ -67,20 +73,33 @@ public class PipelineMain extends MainWithIODir {
 	}
 
 	public void initResources() {
-		wordnet =
-				createExternalResourceDescription(
-						WordNetSynsetSenseInventoryResource.class,
-						WordNetSynsetSenseInventoryResource.PARAM_WORDNET_PROPERTIES_URL,
-						getConfiguration().getString("paths.extjwnl"),
-						WordNetSynsetSenseInventoryResource.PARAM_SENSE_INVENTORY_NAME,
-						"WordNet 3.0");
-		mfsResource =
-				createExternalResourceDescription(
-						WSDResourceIndividualPOS.class,
-						WSDResourceIndividualPOS.SENSE_INVENTORY_RESOURCE,
-						wordnet,
-						WSDResourceIndividualPOS.DISAMBIGUATION_METHOD,
-						MostFrequentSenseBaseline.class.getName());
+
+		switch (part) {
+		default:
+			return;
+		case Full:
+		case Basic:
+		case Second:
+		case Ling:
+			logger.info("Initialising resource: WordNet");
+			wordnet =
+					createExternalResourceDescription(
+							WordNetSynsetSenseInventoryResource.class,
+							WordNetSynsetSenseInventoryResource.PARAM_WORDNET_PROPERTIES_URL,
+							getConfiguration().getString("paths.extjwnl"),
+							WordNetSynsetSenseInventoryResource.PARAM_SENSE_INVENTORY_NAME,
+							"WordNet 3.0");
+
+			logger.info("Initialising resource: MFS");
+			mfsResource =
+					createExternalResourceDescription(
+							WSDResourceIndividualPOS.class,
+							WSDResourceIndividualPOS.SENSE_INVENTORY_RESOURCE,
+							wordnet,
+							WSDResourceIndividualPOS.DISAMBIGUATION_METHOD,
+							MostFrequentSenseBaseline.class.getName());
+		}
+
 	}
 
 	public CollectionReader getXmiCollectionReader()
@@ -96,6 +115,7 @@ public class PipelineMain extends MainWithIODir {
 			pl = xmi(pl, this.getOutputDirectory());
 		if (exportFormat.contains(ExportFormat.DATA2))
 			pl = data2(pl, this.getOutputDirectory());
+		logger.info("Running pipeline.");
 		runPipeline(getXmiCollectionReader(), array(pl));
 	}
 
@@ -106,11 +126,23 @@ public class PipelineMain extends MainWithIODir {
 			return this.getLingPipeline();
 		case Event:
 			ArrayList<AnalysisEngineDescription> ae =
-			new ArrayList<AnalysisEngineDescription>();
-			ae.add(createEngineDescription(EventAnnotator.class));
+					new ArrayList<AnalysisEngineDescription>();
+			ae.add(createEngineDescription(ClearAnnotation.class,
+					ClearAnnotation.PARAM_TYPE,
+					"de.nilsreiter.pipeline.uima.event.type.Role"));
+			ae.add(createEngineDescription(ClearAnnotation.class,
+					ClearAnnotation.PARAM_TYPE,
+					"de.nilsreiter.pipeline.uima.event.type.Event"));
+			ae.add(createEngineDescription(EventAnnotator.class,
+					EventAnnotator.PARAM_DETECTION_STYLE,
+					EventAnnotator.Detection.FNEventInheritance,
+					EventAnnotator.PARAM_FNHOME,
+					getConfiguration().getString("paths.fnhome")));
 			return ae;
 		case Full:
 			return this.getFullPipeline();
+		case Shallow:
+			return this.getShallowPipeline();
 		case Second:
 			return this.getRowlandsonPipeline2();
 		default:
@@ -127,14 +159,16 @@ public class PipelineMain extends MainWithIODir {
 		l.add(createEngineDescription(StanfordSegmenter.class));
 		l.add(createEngineDescription(StanfordLemmatizer.class));
 		l.add(createEngineDescription(StanfordPosTagger.class));
+		l.add(createEngineDescription(StanfordNamedEntityRecognizer.class));
 		l.add(createEngineDescription(StanfordParser.class,
 				StanfordParser.PARAM_MODE,
 				StanfordParser.DependenciesMode.BASIC,
-				StanfordParser.PARAM_WRITE_CONSTITUENT, false,
+				StanfordParser.PARAM_WRITE_CONSTITUENT, true,
 				StanfordParser.PARAM_WRITE_POS, false,
 				StanfordParser.PARAM_WRITE_LEMMA, false,
 				StanfordParser.PARAM_READ_POS, true));
-		l.add(createEngineDescription(StanfordCoreferenceResolver.class));
+		l.add(createEngineDescription(StanfordCoreferenceResolver.class,
+				StanfordCoreferenceResolver.PARAM_POSTPROCESSING, true));
 		l.add(createEngineDescription(WSDItemAnnotator.class,
 				WSDItemAnnotator.PARAM_FEATURE_PATH,
 				"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.NN"));
@@ -230,5 +264,18 @@ public class PipelineMain extends MainWithIODir {
 
 		return l;
 
+	}
+
+	public List<AnalysisEngineDescription> getShallowPipeline()
+			throws ResourceInitializationException {
+
+		ArrayList<AnalysisEngineDescription> l =
+				new ArrayList<AnalysisEngineDescription>();
+
+		l.add(createEngineDescription(StanfordSegmenter.class));
+		l.add(createEngineDescription(StanfordLemmatizer.class));
+		l.add(createEngineDescription(StanfordPosTagger.class));
+
+		return l;
 	}
 }
