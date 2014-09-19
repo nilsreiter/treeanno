@@ -9,5 +9,20 @@
   		<artifactId>javax.mail</artifactId>
   		<version>1.5.2</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.apache.lucene</groupId>
+  		<artifactId>lucene-core</artifactId>
+  		<version>4.10.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.apache.lucene</groupId>
+  		<artifactId>lucene-classification</artifactId>
+  		<version>4.10.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.apache.lucene</groupId>
+  		<artifactId>lucene-analyzers-common</artifactId>
+  		<version>4.10.0</version>
+  	</dependency>
   </dependencies>
 </project>
