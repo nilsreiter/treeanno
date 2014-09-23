@@ -6,14 +6,15 @@ import static org.apache.uima.fit.factory.ExternalResourceFactory.createExternal
 import static org.apache.uima.fit.pipeline.SimplePipeline.runPipeline;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.metadata.AnalysisEngineMetaData;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ExternalResourceDescription;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -35,7 +36,6 @@ import de.nilsreiter.pipeline.uima.ocr.fix.EditDistanceFix;
 import de.nilsreiter.pipeline.uima.ocr.fix.HyphenationCorrection;
 import de.nilsreiter.pipeline.uima.ocr.fix.HyphenationCorrectionWordList;
 import de.nilsreiter.pipeline.uima.ocr.fix.Substitution;
-import de.nilsreiter.util.IOUtil;
 import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.uniheidelberg.cl.a10.MainWithIODir;
@@ -57,15 +57,19 @@ public class OCRCorrectMain extends MainWithIODir {
 	@Option(name = "--rules", usage = "A file containing substitution rules")
 	File rulesFile = null;
 
-	@Option(name = "--language", usage = "The language")
-	String language;
+	@Option(name = "--language", usage = "The language. Default: en",
+			required = false)
+	String language = "en";
 
 	@Option(name = "--xmi", usage = "Also print XMI files for inspection")
 	boolean printxmi;
 
-	@Option(name = "--step", aliases = { "-s" }, usage = "Processing step(s)",
-			multiValued = true)
-	List<Step> steps = new LinkedList<Step>();
+	@Option(name = "--step", aliases = { "-s" }, usage = "Processing step",
+			required = true)
+	Step step = null;
+
+	@Option(name = "--no-report", usage = "Suppress printing of report file")
+	boolean nosig = false;
 
 	public static void main(String[] args) throws Exception {
 		OCRCorrectMain pm = new OCRCorrectMain();
@@ -81,7 +85,7 @@ public class OCRCorrectMain extends MainWithIODir {
 					createExternalResourceDescription(WordList.class,
 							wordListFile.toURI().toURL());
 		}
-		if (rulesFile != null) {
+		if (step == Step.FixLongS) {} else if (rulesFile != null) {
 			logger.info("Initialising substitution rules.");
 			substitutionRules =
 					createExternalResourceDescription(SubstitutionRules.class,
@@ -90,36 +94,64 @@ public class OCRCorrectMain extends MainWithIODir {
 	}
 
 	public void run() throws IOException, ResourceInitializationException,
-	UIMAException {
-		File tempdir = IOUtil.createTempDir("pipeline", "");
+			UIMAException {
 
-		int stepNumber = 0;
-		for (Step step : steps) {
-			File stepdir = new File(tempdir, String.valueOf(stepNumber++));
-			switch (step) {
-			case Hyphenation:
-				fixHyphenation(input, output);
-				break;
-			case Rules:
-				fixRules(input, output);
-				break;
-			case FixLongS:
-				fixLongS(input, output);
-				break;
-			default:
-				info(input, output);
-			}
-		}
-		// fixHyphenation(input, stepdir);
+		List<AnalysisEngineDescription> pl = getPipeline(step);
+		pl.add(createEngineDescription(OCRCorrectedExport.class,
+				OCRCorrectedExport.PARAM_OUTPUT_DIRECTORY,
+				output.getAbsolutePath()));
+		runPipeline(this.getCollectionReader(input),
+				pl.toArray(new AnalysisEngineDescription[pl.size()]));
 
-		if (steps.contains(Step.Hyphenation)) {}
-		if (steps.contains(Step.Rules)) {
-			stepNumber++;
+		if (!nosig) {
+			this.printSignature(pl, new File(output, "report.txt"));
 		}
+
 	}
 
+	protected List<AnalysisEngineDescription> getPipeline(Step step)
+			throws ResourceInitializationException {
+		List<AnalysisEngineDescription> pl =
+				new ArrayList<AnalysisEngineDescription>();
+		switch (step) {
+		case FixLongS:
+			pl.add(createEngineDescription(CharDetection.class,
+					CharDetection.PARAM_CHAR, 'ſ'));
+			pl.add(createEngineDescription(Substitution.class,
+					Substitution.RESOURCE_RULES, substitutionRules));
+			break;
+		case Hyphenation:
+			pl.add(createEngineDescription(HyphenationDetection.class));
+			pl.add(createEngineDescription(HyphenationCorrection.class));
+			break;
+		case Rules:
+			pl.add(createEngineDescription(OCRTokenizer.class));
+			pl.add(createEngineDescription(OCRErrorDetectionWordList.class,
+					OCRErrorDetectionWordList.RESOURCE_WORDLIST, wordList,
+					OCRErrorDetectionWordList.PARAM_EXCLUDE_UPPER_CASE, true,
+					OCRErrorDetectionWordList.PARAM_EXCLUDE_PUNCTUATION, true));
+			pl.add(createEngineDescription(Substitution.class,
+					Substitution.RESOURCE_WORDLIST, wordList,
+					Substitution.RESOURCE_RULES, substitutionRules));
+			break;
+		case Info:
+		default:
+			pl.add(createEngineDescription(OCRTokenizer.class));
+			pl.add(createEngineDescription(FrequencyDictionaryExtractor.class));
+			pl.add(createEngineDescription(InfrequentWordsMarker.class));
+			break;
+		}
+		if (printxmi) {
+			pl.add(createEngineDescription(XmiWriter.class,
+					XmiWriter.PARAM_TARGET_LOCATION,
+					new File(output, "xmi").getAbsolutePath()));
+		}
+		return pl;
+	}
+
+	@Deprecated
 	private void info(File input, File output) throws UIMAException,
-	IOException {
+			IOException {
 		CollectionReader cr = this.getCollectionReader(input);
 
 		AnalysisEngineDescription detect =
@@ -143,6 +175,7 @@ public class OCRCorrectMain extends MainWithIODir {
 				TextReader.PARAM_LANGUAGE, language);
 	}
 
+	@Deprecated
 	public void fixRules(File inputDirectory, File outputDirectory)
 			throws UIMAException, IOException {
 		CollectionReader cr = this.getCollectionReader(inputDirectory);
@@ -173,8 +206,14 @@ public class OCRCorrectMain extends MainWithIODir {
 		}
 
 		runPipeline(cr, pl.toArray(new AnalysisEngineDescription[pl.size()]));
+
+		if (!nosig) {
+			this.printSignature(pl, new File(outputDirectory, "report.txt"));
+		}
+
 	}
 
+	@Deprecated
 	public void fixLongS(File inputDirectory, File outputDirectory)
 			throws ResourceInitializationException, UIMAException, IOException {
 		List<AnalysisEngineDescription> pl =
@@ -197,8 +236,13 @@ public class OCRCorrectMain extends MainWithIODir {
 		runPipeline(this.getCollectionReader(inputDirectory),
 				pl.toArray(new AnalysisEngineDescription[pl.size()]));
 
+		if (!nosig) {
+			this.printSignature(pl, new File(outputDirectory, "report.txt"));
+		}
+
 	}
 
+	@Deprecated
 	public void fixHyphenation(File inputDirectory, File outputDirectory)
 			throws ResourceInitializationException, UIMAException, IOException {
 		List<AnalysisEngineDescription> pl =
@@ -217,8 +261,13 @@ public class OCRCorrectMain extends MainWithIODir {
 		runPipeline(this.getCollectionReader(inputDirectory),
 				pl.toArray(new AnalysisEngineDescription[pl.size()]));
 
+		if (!nosig) {
+			this.printSignature(pl, new File(outputDirectory, "report.txt"));
+		}
+
 	}
 
+	@Deprecated
 	public AnalysisEngineDescription[] getPipeline()
 			throws ResourceInitializationException {
 
@@ -245,9 +294,24 @@ public class OCRCorrectMain extends MainWithIODir {
 				createEngineDescription(HyphenationCorrectionWordList.class,
 						HyphenationCorrectionWordList.RESOURCE_WORDLIST,
 						wordList),
-				createEngineDescription(XmiWriter.class,
-						XmiWriter.PARAM_TARGET_LOCATION, "target/out/"),
-				createEngineDescription(OCRCorrectedExport.class) };
+						createEngineDescription(XmiWriter.class,
+								XmiWriter.PARAM_TARGET_LOCATION, "target/out/"),
+								createEngineDescription(OCRCorrectedExport.class) };
+	}
+
+	public void printSignature(List<AnalysisEngineDescription> list,
+			File sigFile) throws IOException {
+		StringBuilder b = new StringBuilder();
+		for (AnalysisEngineDescription aed : list) {
+			b.append(aed.getImplementationName()).append('\n');
+			AnalysisEngineMetaData meta = aed.getAnalysisEngineMetaData();
+			b.append(meta.getConfigurationParameterSettings()).append('\n');
+			b.append('\n');
+		}
+
+		FileWriter fw = new FileWriter(sigFile);
+		fw.write(b.toString());
+		fw.close();
 	}
 
 }
