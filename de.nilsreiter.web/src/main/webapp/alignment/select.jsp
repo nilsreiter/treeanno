@@ -19,6 +19,8 @@
 <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="js/scripts.js" type="text/javascript"></script>
 <script src='js/jcanvas.min.js'></script>
+<script src='js/sorttable.js'></script>
+<script src="js/moment-with-locales.js"></script>
 <script src="js/jquery-ui/jquery-ui.min.js"></script>
 <link href="js/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 
@@ -31,23 +33,47 @@
 <div class="content level2">
 <%@ include file="../common/document-menu.jsp" %>
 
+<div class="content level3">
+<div class="content level4">
+<div class="level5 content alignment-select">
 
-
-
-<div id="alignmentdocumentpicker" class="dialog picker">
 	<h1>Select Alignment</h1>
-	<ul class="filelist">
-	<c:forEach var="document" items="${docman.alignmentDocuments}">
-		<li onclick="location.href='view-alignment?doc=${document.databaseId}'">${document.id} (${document.documentIds })</li>
-	</c:forEach>
-	</ul>
-</div>
+	<div>
+		<table class="filelist sortable">
+		<thead>
+			<tr><th>Id</th><th>Title</th><th>Created</th><th>Documents</th><th colspan="2">Actions</th></tr>
+		</thead>
+		<tbody></tbody>
+		</table>
+	</div>
+<div>
 
-<!--<jsp:include page="/alignment/alignment-settings.jsp">
+<jsp:include page="/alignment/alignment-settings.jsp">
 	<jsp:param value="rpc/align" name="action"/>
-</jsp:include>-->
-
+</jsp:include>
+</div></div>
 </div>
 </div>
+</div>
+</div>
+<script>
+$(".content.level5").accordion({ header: "h1", heightStyle:"content" });
+jQuery.getJSON("rpc/get-alignment-info", function (data) { 
+	for (ali in data['alignments']) {
+		var alignment = data['alignments'][ali];
+		var tr = document.createElement("tr");
+		// alert(JSON.stringify(alignment));
+		var mom = moment(alignment['creationDate']);
+		$(tr).append('<td>'+alignment['databaseId']+'</td>');
+		$(tr).append('<td>'+alignment['id']+'</td>');
+		$(tr).append('<td sorttable_customkey="'+mom.toDate().getTime()+'">'+mom.fromNow()+'</td>');
+		$(tr).append('<td>'+alignment['documentIdList'].join(", ")+'</td>');
+		$(tr).append('<td><a href="view-alignment?doc='+alignment['databaseId']+'">open</span></td>');
+		$(tr).append('<td><a href="delete-alignment?doc='+alignment['databaseId']+'">delete</span></td>');
+		
+		$("table.filelist tbody").append(tr);
+	}
+});
+</script>
 </body>
 </html>

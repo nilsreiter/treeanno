@@ -24,7 +24,7 @@ public class DocumentSetMenuBar extends MenuBar {
 		mi = new MenuItem();
 		mi.setName("Event Search");
 		mi.setHref("event-search");
-		mi.setJspFile("/documentset/event-search.jsp");
+		mi.setJspFile("/event-search");
 		mi.setNeedsDocument(true);
 		add(mi);
 

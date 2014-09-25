@@ -10,11 +10,12 @@ import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 
 public class Location {
 
-	AbstractState<Document> documentState = new AbstractState<Document>();
+	AbstractState<Document> documentState = new AbstractState<Document>(
+			Document.class);
 	AbstractState<DocumentSet> documentSetState =
-			new AbstractState<DocumentSet>();
+			new AbstractState<DocumentSet>(DocumentSet.class);
 	AbstractState<Alignment<Event>> alignmentState =
-			new AbstractState<Alignment<Event>>();
+			new AbstractState<Alignment<Event>>(Alignment.class);
 
 	public Location() {}
 
@@ -176,6 +177,21 @@ public class Location {
 			break;
 		default:
 			break;
+		}
+	}
+
+	public MenuBar getAdditionalMenuEntries() {
+		switch (getCurrentArea()) {
+		case Corpus:
+			MenuBar mb = new MenuBar();
+			MenuItem mi = new MenuItem();
+			mi.setName("Manage");
+			mi.setHref("manage-alignments");
+			mi.setJspFile("/alignment/manage.jsp");
+			mb.add(mi);
+			return mb;
+		default:
+			return new MenuBar();
 		}
 	}
 

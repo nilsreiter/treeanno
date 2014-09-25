@@ -56,7 +56,7 @@ public abstract class AbstractEventSimilarityLoader extends AbstractServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+		getLocation(getArea(), request);
 		if (request.getParameter("doc") == null) {
 			RequestDispatcher view =
 					request.getRequestDispatcher(this.getSelectorJSP());

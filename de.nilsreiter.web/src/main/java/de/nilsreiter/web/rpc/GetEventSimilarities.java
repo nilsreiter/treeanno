@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
@@ -22,7 +25,6 @@ import org.json.JSONObject;
 import de.nilsreiter.event.similarity.EventSimilarityFunction;
 import de.nilsreiter.event.similarity.SimilarityProvider;
 import de.nilsreiter.event.similarity.impl.SimilarityDatabase_impl;
-import de.nilsreiter.web.AbstractServlet;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentReader;
@@ -33,7 +35,7 @@ import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 /**
  * Servlet implementation class GetEventSimilarities
  */
-public class GetEventSimilarities extends AbstractServlet {
+public class GetEventSimilarities extends RPCServlet {
 	private static final long serialVersionUID = 1L;
 	DBAlignmentReader<Event> alignmentReader;
 	DBDataReader dataReader;
@@ -109,6 +111,13 @@ public class GetEventSimilarities extends AbstractServlet {
 			e.printStackTrace();
 		}
 
+		Cache cache = CacheManager.getInstance().getCache("main");
+
+		if (cache.isKeyInCache(documents)) {
+			returnJSON(response, (JSONObject) cache.get(documents)
+					.getObjectValue());
+		}
+
 		// Create a map for similarities
 		Random random = new Random();
 		JSONObject json = new JSONObject();
@@ -142,6 +151,7 @@ public class GetEventSimilarities extends AbstractServlet {
 												sims.get(typeShortId).get(
 														token1, token2));
 									} catch (NullPointerException e) {
+										e.printStackTrace();
 										// this only for development!!
 										typeObject.put(token2.firstToken()
 												.getGlobalId(), random
@@ -159,10 +169,8 @@ public class GetEventSimilarities extends AbstractServlet {
 
 			}
 		}
-		response.setContentType("application/json");
-		response.getWriter().print(json.toString());
-		response.getWriter().flush();
-		response.getWriter().close();
+		cache.put(new Element(documents, json));
+		returnJSON(response, json);
 
 	}
 }

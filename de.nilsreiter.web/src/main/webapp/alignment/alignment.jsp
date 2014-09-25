@@ -26,11 +26,8 @@
 </div>
 
 <div class="content level3">
-<jsp:include page="../common/menu.jsp">
-	<jsp:param value="view" name="active"/>
-	<jsp:param value="${alignment.id}" name="payload" />
-	<jsp:param value="${doc}" name="doc" />
-</jsp:include>
+<%@ include file="../common/menu.jsp" %>
+
 
 <div class="content level4">
 <div class="menu">
@@ -79,7 +76,7 @@ function toggleAlignments() {
 		myCanvas.height=canvasContainer.offsetHeight;
 		var canvasOffset = $(myCanvas).offset();
 
-		jQuery.getJSON('rpc/get-alignments?doc=${doc}', function (data) { 
+		jQuery.getJSON('rpc/get-alignments?doc=${param.doc}', function (data) { 
 			var mySVG = document.getElementById("svg");
 			for (var alId in data) {
 				context.strokeStyle = "black";

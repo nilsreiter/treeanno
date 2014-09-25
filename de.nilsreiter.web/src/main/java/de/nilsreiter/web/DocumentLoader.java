@@ -13,22 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import de.nilsreiter.web.beans.menu.Location;
 import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.io.DBDataReader;
 
 public class DocumentLoader extends AbstractServlet {
-
-	DBDataReader dataReader;
-
-	public DocumentLoader() {
-		super();
-
-	}
-
-	@Override
-	public void init() throws ServletException {
-		super.init();
-		dataReader = docMan.getDataReader();
-	}
 
 	/**
 	 * 

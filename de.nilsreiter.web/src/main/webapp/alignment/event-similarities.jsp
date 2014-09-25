@@ -28,10 +28,8 @@
 <%@ include file="../common/document-menu.jsp" %>
 </div>
 <div class="content level3">
-<jsp:include page="../common/menu.jsp">
-	<jsp:param value="event-similarities" name="active"/>
-	<jsp:param value="${alignment.id}" name="payload" />
-</jsp:include>
+<%@ include file="../common/menu.jsp" %>
+
 
 <div class="content level4">
 
@@ -42,9 +40,9 @@
 	<img src="gfx/loading1.gif"/>
 </div>
 
-<div id="alignmentcontent" class="content level5" >
+<div id="alignmentcontent" class="content level5" style="display:none" >
 <c:forEach var="i" begin="0" end="${arity-1}" >
-	<div class="alignmenttext">
+	<div class="alignmenttext surface">
 	<h1>${documents[i].id}</h1>
 	<jsp:include page="../common/document-box-similarities.jsp">
 		<jsp:param value="${i}" name="i"/>
@@ -57,23 +55,27 @@
 
 </div>
 </div>
+</div>
+</div>
 <script>
 init_controls("div.level4 > div.menu");
-jQuery(".content.level5").css("display", "none");
+jQuery(".content.level5").hide();
 jQuery.getJSON('rpc/get-event-similarities?doctype=alignment&doc=${doc}', function (data) { 
 	for(var tokId in data) {
 		for (var type in data[tokId]) {
-			$("#"+tokId+" div.typechooser label."+type+ " input").bind("click", {'type':type,'data':data[tokId][type], 'tokId':tokId},  function (event) {
+			$("#"+tokId+" div.typechooser label."+type+ " input").bind("click", 
+					{'type':type,'data':data[tokId][type], 'tokId':tokId},  
+					function (event) {
 				var type = event.data.type;
-				var tokId = event.data.tokId;
+				var tokenId = event.data.tokId;
 				$("span.st"+type+" > span").unwrap();
 				$("div#sm"+type).remove();
-				if ($("#"+tokId+" div.typechooser label."+type+ " input").prop("checked")) {
+				if ($("#"+tokenId+" div.typechooser label."+type+ " input").prop("checked")) {
 					for (var oTok in event.data.data) {
 						$("#"+oTok).wrap("<span class=\"st"+type+"\" style=\"background-color:rgba("+colors[type]+","+event.data.data[oTok]+")\"></span>");
 					}
-					$("#"+tokId).prepend("<div id=\"sm"+type+"\" class=\"sourcemarker\" style=\"background-color:rgb("+colors[type]+");\"></div>");
-					$("#sm"+type).bind("click", {type:type,tokId:tokId}, function(event) { 
+					$("#"+tokenId).prepend("<div id=\"sm"+type+"\" class=\"sourcemarker\" style=\"background-color:rgb("+colors[type]+");\"></div>");
+					$("#sm"+type).bind("click", {type:type,tokId:tokenId}, function(event) { 
 						$("#"+event.data.tokId+" div.typechooser label."+event.data.type+ " input").click();
 					});
 				}
@@ -81,7 +83,7 @@ jQuery.getJSON('rpc/get-event-similarities?doctype=alignment&doc=${doc}', functi
 		}
 	}
 	$("#loading").css("display", "none");
-	jQuery(".content.level4").css("display", "block");
+	jQuery(".content.level5").show();
 
 });
 	

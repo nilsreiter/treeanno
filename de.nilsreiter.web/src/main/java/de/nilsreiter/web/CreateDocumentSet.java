@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.ehcache.CacheManager;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 import de.uniheidelberg.cl.a10.data2.Document;
@@ -68,7 +69,8 @@ public class CreateDocumentSet extends AbstractServlet {
 			}
 		}
 		dbsw.write(docset);
-		docMan.documentSetInfo = null;
+		CacheManager.getInstance().getCache("main").remove("documentSetInfo");
+		// docMan.documentSetInfo = null;
 
 		response.sendRedirect("view-document-set?doc="
 				+ dbsw.getLastCreatedId());

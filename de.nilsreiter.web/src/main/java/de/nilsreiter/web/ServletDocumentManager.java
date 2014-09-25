@@ -62,14 +62,14 @@ public class ServletDocumentManager {
 			for (Event event : link.getElements()) {
 				classesForTokens.put(event.firstToken(),
 						classesForTokens.get(event.firstToken())
-								+ " alignment " + link.getId());
+						+ " alignment " + link.getId());
 			}
 		}
 		return classesForTokens;
 	}
 
 	public Map<Token, String>
-			getClassesForTokens(Collection<Document> documents) {
+	getClassesForTokens(Collection<Document> documents) {
 
 		StringMap<Token> classesForTokens = new StringMap<Token>();
 		for (Document document : documents) {
@@ -80,13 +80,13 @@ public class ServletDocumentManager {
 				classesForTokens.append(frame.firstToken(),
 						" frame " + frame.getId());
 			}
-			for (Event frame : document.getEvents()) {
-				if (!classesForTokens.containsKey((frame).firstToken())) {
-					classesForTokens.append(((HasTokens) frame).firstToken(),
+			for (Event event : document.getEvents()) {
+				if (!classesForTokens.containsKey((event).firstToken())) {
+					classesForTokens.append(((HasTokens) event).firstToken(),
 							"");
 				}
-				classesForTokens.put(((HasTokens) frame).firstToken(),
-						" event " + frame.getId());
+				classesForTokens.append(((HasTokens) event).firstToken(),
+						" event " + event.getId());
 
 			}
 			for (Mention mention : document.getMentions()) {
@@ -135,7 +135,7 @@ public class ServletDocumentManager {
 	}
 
 	public List<DocumentSetInfo> getDocumentSetInfo() {
-		if (this.documentSetInfo == null) {
+		if (documentSetInfo == null) {
 			SQLBuilder b = new SQLBuilder();
 			b.select("*").from(database.getTableName("documentSets"));
 			documentSetInfo = new LinkedList<DocumentSetInfo>();
@@ -154,6 +154,11 @@ public class ServletDocumentManager {
 						for (String s : rs.getString(2).split(",")) {
 							dsi.add(s);
 						}
+						if (rs.getDate(4) == null) {
+							dsi.setCreationDate(0);
+						} else {
+							dsi.setCreationDate(rs.getTimestamp(4).getTime());
+						}
 						documentSetInfo.add(dsi);
 					} while (rs.next());
 					return documentSetInfo;
@@ -166,7 +171,8 @@ public class ServletDocumentManager {
 				DBUtils.close(conn);
 			}
 		}
-		return documentSetInfo;
+
+		return this.documentSetInfo;
 	}
 
 	public List<AlignmentInfo> getAlignmentDocuments() {
@@ -186,6 +192,11 @@ public class ServletDocumentManager {
 						AlignmentInfo dsi = new AlignmentInfo();
 						dsi.setId(rs.getString(2));
 						dsi.setDatabaseId(rs.getString(1));
+						if (rs.getDate(5) == null) {
+							dsi.setCreationDate(0);
+						} else {
+							dsi.setCreationDate(rs.getTimestamp(5).getTime());
+						}
 						for (String s : rs.getString(3).split(",")) {
 							dsi.add(s);
 						}
@@ -214,7 +225,7 @@ public class ServletDocumentManager {
 
 	@SuppressWarnings("unchecked")
 	public List<Class<? extends EventSimilarityFunction>>
-			getSupportedFunctions() {
+	getSupportedFunctions() {
 		List<Class<? extends EventSimilarityFunction>> similarityTypes =
 				Arrays.asList(WordNet.class, FrameNet.class, VerbNet.class,
 						ArgumentText.class, GaussianDistanceSimilarity.class);

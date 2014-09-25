@@ -18,6 +18,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import de.nilsreiter.event.similarity.SimilarityDatabase;
@@ -41,6 +44,12 @@ public class AppContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext sc = sce.getServletContext();
 
+		CacheManager cacheMgr = CacheManager.getInstance();
+		cacheMgr.addCache(new Cache("main", 1000, false, false, 60 * 60,
+				60 * 10));
+		cacheMgr.addCache(new Cache("documents", 100, false, false, 60 * 60,
+				60 * 10));
+
 		try {
 
 			Database database = null;
@@ -51,27 +60,27 @@ public class AppContextListener implements ServletContextListener {
 								DatabaseConfiguration.getLocalConfiguration());
 				SimilarityProvider<Event> sde =
 						new SimilarityProvider<Event>() {
-							Random random = new Random();
+					Random random = new Random();
 
-							@Override
-							public
-									double
-									getSimilarity(
-											Class<? extends SimilarityFunction<Event>> simType,
-											Event e1, Event e2)
+					@Override
+					public
+					double
+					getSimilarity(
+							Class<? extends SimilarityFunction<Event>> simType,
+									Event e1, Event e2)
 											throws SQLException {
-								return random.nextDouble();
-							}
+						return random.nextDouble();
+					}
 
-							@Override
-							public
-									Map<String, Matrix<Event, Event, Double>>
-									getSimilarities(Document doc1, Document doc2)
-											throws SQLException {
+					@Override
+					public
+					Map<String, Matrix<Event, Event, Double>>
+					getSimilarities(Document doc1, Document doc2)
+							throws SQLException {
 
-								return new RandomMap();
-							}
-						};
+						return new RandomMap();
+					}
+				};
 				sc.setAttribute("simdatabase", sde);
 			} else {
 
@@ -107,8 +116,8 @@ public class AppContextListener implements ServletContextListener {
 
 		ThreadFactory daemonFactory =
 				new BasicThreadFactory.Builder()
-						.namingPattern("workerthread-%d").daemon(true)
-						.priority(Thread.NORM_PRIORITY).build();
+		.namingPattern("workerthread-%d").daemon(true)
+		.priority(Thread.NORM_PRIORITY).build();
 
 		executor =
 				Executors.newFixedThreadPool(Runtime.getRuntime()
@@ -136,7 +145,7 @@ public class AppContextListener implements ServletContextListener {
 	}
 
 	public static class RandomMap implements
-	Map<String, Matrix<Event, Event, Double>> {
+			Map<String, Matrix<Event, Event, Double>> {
 
 		Random random = new Random();
 
@@ -179,8 +188,8 @@ public class AppContextListener implements ServletContextListener {
 
 		@Override
 		public
-				void
-		putAll(Map<? extends String, ? extends Matrix<Event, Event, Double>> m) {
+		void
+				putAll(Map<? extends String, ? extends Matrix<Event, Event, Double>> m) {
 
 		}
 
@@ -201,7 +210,7 @@ public class AppContextListener implements ServletContextListener {
 
 		@Override
 		public Set<java.util.Map.Entry<String, Matrix<Event, Event, Double>>>
-		entrySet() {
+				entrySet() {
 			return null;
 		}
 	}

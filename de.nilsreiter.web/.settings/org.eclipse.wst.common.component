@@ -37,6 +37,15 @@
         <dependent-module archiveName="alignment-api-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/alignment-api/alignment-api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="alignment-algorithms-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/alignment-algorithms/alignment-algorithms">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="neobio.alignment-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/neobio.alignment/neobio.alignment">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="de.nilsreiter.alignment.rwalk-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/de.nilsreiter.alignment.rwalk/de.nilsreiter.alignment.rwalk">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="de.nilsreiter.web"/>
         <property name="java-output-path" value="/de.nilsreiter.web/target/classes"/>
     </wb-module>

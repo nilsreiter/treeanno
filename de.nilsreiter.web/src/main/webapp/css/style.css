@@ -126,9 +126,7 @@ ul {
 
 
 table.filelist, ul.filelist {
-	list-style-type:none;
 	padding:5px;
-	margin:10px;
 	border:thin solid #DDD;
 	border-collapse:collapse;
 	height:30vh;
@@ -139,12 +137,10 @@ table.filelist tbody {
 	overflow:auto;
 }
 
-table.filelist > thead > tr, table.filelist > tbody{
-    display:block;
-}
+
 
 ul.filelist li, table.filelist tbody tr {
-	cursor:pointer;
+	/*cursor:pointer;*/
 	background-color:white;
 }
 ul.filelist li:nth-child(even), table.filelist tr:nth-child(even) {
@@ -358,4 +354,8 @@ div#running {
 	position:absolute;
 	right:5px;
 	top:5px;
+}
+
+.alignment-select #alignmentform > div {
+	float:left;
 }

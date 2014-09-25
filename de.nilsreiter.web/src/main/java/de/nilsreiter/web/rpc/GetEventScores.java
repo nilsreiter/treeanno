@@ -12,21 +12,31 @@ import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import de.nilsreiter.web.AbstractServlet;
+import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
+import de.uniheidelberg.cl.a10.data2.alignment.graph.AlignmentGraphFactory;
+import de.uniheidelberg.cl.a10.data2.alignment.graph.Edge;
 import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentReader;
+import de.uniheidelberg.cl.a10.graph.NRWalk;
 import de.uniheidelberg.cl.reiter.util.Counter;
+import edu.uci.ics.jung.graph.UndirectedGraph;
 
 /**
  * Servlet implementation class GetEventScores
  */
-public class GetEventScores extends AbstractServlet {
+public class GetEventScores extends RPCServlet {
 	private static final long serialVersionUID = 1L;
 
+	Logger logger = LoggerFactory.getLogger(getClass());
+
 	DBAlignmentReader<Event> alignmentReader;
+
+	int k = 1, n = 10;
 
 	@Override
 	public void init() throws ServletException {
@@ -41,29 +51,44 @@ public class GetEventScores extends AbstractServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		getLocation(request).setArea(Area.Alignment);
 		if (request.getParameter("doc") == null) {
 			response.getWriter().print("");
 			return;
 
 		}
+		if (request.getParameter("k") == null) {
+			response.getWriter().print("");
+			return;
+		}
+		if (request.getParameter("n") == null) {
+			response.getWriter().print("");
+			return;
+		}
+
 		boolean scale = request.getParameter("scale") != null;
+
+		k = Integer.parseInt(request.getParameter("k"));
+		n = Integer.parseInt(request.getParameter("n"));
 
 		Alignment<Event> alignment;
 		try {
 			alignment = alignmentReader.read((request.getParameter("doc")));
 
-			// make or retrieve scores
-			Random random = new Random();
+			Counter<Event> connectivityScores;
+
+			// find longer sequence
 			int longest = 0;
-			Counter<Event> counter = new Counter<Event>();
 			for (Document document : alignment.getDocuments()) {
-				for (Event event : document.getEvents()) {
-					counter.put(event, random.nextInt(100));
-				}
 				if (document.getEvents().size() > longest) {
 					longest = document.getEvents().size();
 				}
 			}
+
+			connectivityScores = makeWalkScores(alignment);
+
+			// make or retrieve scores
+			// makeRandomScores(connectivityScores, alignment);
 
 			// convert to JSON
 			JSONObject json = new JSONObject();
@@ -74,10 +99,9 @@ public class GetEventScores extends AbstractServlet {
 				int i = 0;
 				for (Event event : document.getEvents()) {
 					JSONObject point = new JSONObject();
-					point.put("y", counter.get(event));
+					point.put("y", connectivityScores.get(event));
 					if (scale)
-						point.put("x", i++
-								* ((double) longest / (double) (currlength)));
+						point.put("x", i++ * ((double) longest / (currlength)));
 					else
 						point.put("x", i++);
 
@@ -86,7 +110,7 @@ public class GetEventScores extends AbstractServlet {
 				}
 				json.append("series", serie);
 			}
-			response.getWriter().print(json.toString());
+			returnJSON(response, json);
 		} catch (ValidityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,5 +122,33 @@ public class GetEventScores extends AbstractServlet {
 			e.printStackTrace();
 		}
 
+	}
+
+	protected Counter<Event> makeWalkScores(Alignment<Event> alignment) {
+		logger.debug("Creating graph for alignment document {}.",
+				alignment.getId());
+		UndirectedGraph<Event, Edge> graph =
+				AlignmentGraphFactory.getInstance().getUndirectedGraph(
+						alignment, alignment.getDocument(0).getEvents(),
+						alignment.getDocument(1).getEvents());
+		logger.info("Initialising random walk algorithm with k={} and n={}.",
+				k, n);
+		NRWalk nrw = new NRWalk(k, n);
+		return nrw.doWalk(graph);
+	}
+
+	protected Counter<Event> makeRandomScores(Alignment<Event> alignment) {
+		Random random = new Random();
+		int longest = 0;
+		Counter<Event> connectivityScores = new Counter<Event>();
+		for (Document document : alignment.getDocuments()) {
+			for (Event event : document.getEvents()) {
+				connectivityScores.put(event, random.nextInt(100));
+			}
+			if (document.getEvents().size() > longest) {
+				longest = document.getEvents().size();
+			}
+		}
+		return connectivityScores;
 	}
 }

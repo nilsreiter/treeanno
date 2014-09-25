@@ -1,6 +1,9 @@
 var colors = new Object();
-colors["WordNet"] = "255,0,0";
-colors["FrameNet"] = "0,255,0";
+colors["WordNet"] = "255,100,100";
+colors["FrameNet"] = "100,255,100";
+colors["VerbNet"] = "100,100,255";
+colors["ArgumentText"] = "255,100,255";
+colors["GaussianDistanceSimilarity"] = "100,255,255";
 
 
 function clear_similarities(type) {
@@ -9,7 +12,7 @@ function clear_similarities(type) {
 }
 
 function show_similarities(type,eventId) {
-	
+	alert("show_similarities");
 	clear_similarities(type);
 	if ($("#"+eventId+" div.typechooser label."+type+ " input").prop("checked")) {
 		var sims = $("#"+eventId).data("similarities").trim().split(' ');

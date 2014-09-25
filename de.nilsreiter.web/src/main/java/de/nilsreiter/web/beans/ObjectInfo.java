@@ -2,6 +2,7 @@ package de.nilsreiter.web.beans;
 
 public abstract class ObjectInfo {
 	String databaseId;
+	long creationDate;
 
 	public String getDatabaseId() {
 		return databaseId;
@@ -22,5 +23,13 @@ public abstract class ObjectInfo {
 			return obj.hashCode() == this.hashCode();
 		}
 		return false;
+	}
+
+	public long getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(long creationDate) {
+		this.creationDate = creationDate;
 	}
 }

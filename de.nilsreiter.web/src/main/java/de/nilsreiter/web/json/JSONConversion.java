@@ -12,7 +12,7 @@ public class JSONConversion {
 	public static JSONObject getToken(Token token) {
 		JSONObject json = new JSONObject();
 		json.put("id", token.getId());
-		json.put("globalid", token.getGlobalId());
+		// json.put("globalid", token.getGlobalId());
 		json.put("surface", token.getSurface());
 		for (Mention m : token.getMentions()) {
 			json.append("mentionIds", m.getId());
@@ -55,4 +55,5 @@ public class JSONConversion {
 		}
 		return sentenceObject;
 	}
+
 }

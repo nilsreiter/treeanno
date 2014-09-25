@@ -1,7 +1,7 @@
 package de.nilsreiter.web.rpc;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -12,12 +12,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationUtils;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import de.nilsreiter.alignment.algorithm.AlgorithmFactory;
+import de.nilsreiter.alignment.algorithm.AlignmentAlgorithm;
+import de.nilsreiter.util.db.Database;
 import de.uniheidelberg.cl.a10.data2.DocumentSet;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
-import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignment;
 import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentWriter;
 
@@ -25,6 +32,8 @@ import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentWriter;
  * Servlet implementation class AlignDocumentSet
  */
 public class AlignDocumentSet extends RPCServlet {
+	Logger logger = LoggerFactory.getLogger(AlignDocumentSet.class);
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -34,6 +43,23 @@ public class AlignDocumentSet extends RPCServlet {
 	@Override
 	protected void doPost(final HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		Configuration config = new BaseConfiguration();
+		config.setProperty("alignment.algorithm",
+				request.getParameter("algorithm"));
+		String algName;
+		try {
+			algName =
+					Class.forName(request.getParameter("algorithm"))
+							.getSimpleName();
+		} catch (ClassNotFoundException e) {
+			throw new ServletException(e);
+		}
+		config.setProperty(algName + ".threshold",
+				request.getParameter("threshold"));
+		config.setProperty(algName + ".combination",
+				request.getParameter("combination"));
+		config.setProperty("BayesianModelMerging.threaded", true);
+
 		JSONObject obj = new JSONObject();
 		StringBuilder formula = new StringBuilder();
 		for (String s : request.getParameterMap().keySet()) {
@@ -41,6 +67,9 @@ public class AlignDocumentSet extends RPCServlet {
 				obj.append(s, v);
 				if (s.startsWith("weight_") && Double.valueOf(v) > 0) {
 					formula.append(v).append(s.substring(38)).append(" + ");
+					config.addProperty(algName + ".similarityFunctions",
+							s.substring(7));
+					config.addProperty(algName + ".weights", Double.valueOf(v));
 				}
 			}
 		}
@@ -53,12 +82,30 @@ public class AlignDocumentSet extends RPCServlet {
 				new AlignmentThread(request.getParameter("alignmenttitle"));
 		at.setDocumentSet(getDocumentSet(request,
 				request.getParameter("fileselector")));
-		at.setAlgorithm(request.getParameter("algorithm"));
-		at.setFuture(service.submit(at));
-		at.setSettings(obj);
+
+		logger.debug("Alignment algorithm configuration\n {}",
+				ConfigurationUtils.toString(config));
+		at.setConfiguration(config);
+		try {
+			at.init(docMan.getDatabase());
+			at.setFuture(service.submit(at));
+			at.setSettings(obj);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		((List<AlignmentThread>) getServletContext().getAttribute("futures"))
-				.add(at);
+		.add(at);
 
 		returnJSON(response, obj);
 	}
@@ -69,8 +116,10 @@ public class AlignDocumentSet extends RPCServlet {
 		JSONObject settings;
 		String title;
 		DocumentSet docSet;
-		String algorithm;
 		long start;
+		Configuration configuration;
+		AlignmentAlgorithm<Event> algorithm;
+		Logger logger = LoggerFactory.getLogger(AlignmentThread.class);
 
 		public AlignmentThread(String title) {
 			this.title = title;
@@ -80,20 +129,40 @@ public class AlignDocumentSet extends RPCServlet {
 			docSet = ds;
 		}
 
+		public void init(Database dataSource) throws ClassNotFoundException,
+		FileNotFoundException, SecurityException,
+		InstantiationException, IllegalAccessException {
+			AlgorithmFactory factory = new AlgorithmFactory();
+			algorithm = factory.getAlgorithm(dataSource, getConfiguration());
+
+		}
+
 		@Override
 		public Alignment<Event> call() throws Exception {
+			logger.info("Starting alignment thread.");
 			start = System.currentTimeMillis();
-			Thread.sleep(10000);
-			Alignment<Event> alignment = new Alignment_impl<Event>(title);
-			alignment.setTitle(title);
-			alignment.addAlignment("al0", new HashSet<Event>());
+			// Thread.sleep(100000);
+			Alignment<Event> alignment = null;
+			for (int i = 0; i < docSet.size(); i++) {
+				for (int j = i + 1; j < docSet.size(); j++) {
+					logger.debug("Aligning documents {} and {}.", docSet
+							.getSet().get(i).getId(), docSet.getSet().get(j)
+							.getId());
+					alignment =
+							algorithm.align(title, docSet.getSet().get(i)
+									.getEvents(), docSet.getSet().get(j)
+									.getEvents());
+					alignment.setTitle(title);
 
-			alignment.getDocuments().addAll(docSet.getSet());
+					logger.debug("Storing alignment to database.");
+					DBAlignmentWriter dbaw =
+							new DBAlignmentWriter(new DBAlignment(
+									docMan.getDatabase()));
+					dbaw.write(alignment);
+					docMan.alignmentInfo = null;
 
-			DBAlignmentWriter dbaw =
-					new DBAlignmentWriter(new DBAlignment(docMan.getDatabase()));
-			dbaw.write(alignment);
-			docMan.alignmentInfo = null;
+				}
+			}
 			return alignment;
 		}
 
@@ -103,14 +172,6 @@ public class AlignDocumentSet extends RPCServlet {
 
 		public void setFuture(Future<Alignment<Event>> future) {
 			this.future = future;
-		}
-
-		public String getAlgorithm() {
-			return algorithm;
-		}
-
-		public void setAlgorithm(String algorithm) {
-			this.algorithm = algorithm;
 		}
 
 		public JSONObject getSettings() {
@@ -123,6 +184,14 @@ public class AlignDocumentSet extends RPCServlet {
 
 		public long getStart() {
 			return start;
+		}
+
+		public Configuration getConfiguration() {
+			return configuration;
+		}
+
+		public void setConfiguration(Configuration configuration) {
+			this.configuration = configuration;
 		}
 
 	}

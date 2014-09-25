@@ -265,6 +265,14 @@
     <filter-name>EncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <filter>
+    <filter-name>SessionFilter</filter-name>
+    <filter-class>de.nilsreiter.web.SessionFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>SessionFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
   <servlet>
     <description></description>
     <display-name>GetMetaInformation</display-name>
@@ -294,5 +302,31 @@
   <servlet-mapping>
     <servlet-name>AlignDocumentSet</servlet-name>
     <url-pattern>/rpc/align</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ManageAlignments</servlet-name>
+    <jsp-file>/alignment/manage.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ManageAlignments</servlet-name>
+    <url-pattern>/manage-alignments</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>GetAlignmentInfo</display-name>
+    <servlet-name>GetAlignmentInfo</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.GetAlignmentInfo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetAlignmentInfo</servlet-name>
+    <url-pattern>/rpc/get-alignment-info</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>RPCMain</servlet-name>
+    <jsp-file>/rpc/Main.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RPCMain</servlet-name>
+    <url-pattern>/rpc/main</url-pattern>
   </servlet-mapping>
 </web-app>

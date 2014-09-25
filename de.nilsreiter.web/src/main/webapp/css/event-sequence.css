@@ -16,7 +16,7 @@
 
 table.event,div.event {
 	border:none;
-	margin:20px;
+	margin-top:20px;
 	border-collapse: collapse;
 	overflow:scroll;
 }

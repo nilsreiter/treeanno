@@ -1,7 +1,6 @@
 package de.nilsreiter.web;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,31 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
-import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentReader;
 
 /**
  * Servlet implementation class AlignmentLoader
  */
 public class AlignmentLoader extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
-
-	DBAlignmentReader<Event> alignmentReader;
-
-	public AlignmentLoader() {
-		super();
-	}
-
-	@Override
-	public void init() throws ServletException {
-		super.init();
-		try {
-			alignmentReader = docMan.getAlignmentReader();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse

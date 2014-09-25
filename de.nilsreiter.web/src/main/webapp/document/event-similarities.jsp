@@ -55,8 +55,8 @@
 </div>
 </div>
 <script>
+jQuery(".content.level5").hide();
 init_controls("div.level4 > div.menu");
-jQuery(".content.level5").css("display", "none");
 
 jQuery.getJSON('rpc/get-event-similarities?doctype=document&doc=${doc}', function (data) { 
 	for(var tokId in data) {
@@ -79,8 +79,8 @@ jQuery.getJSON('rpc/get-event-similarities?doctype=document&doc=${doc}', functio
 				}
 			});
 		}
-		$("#loading").css("display", "none");
-		jQuery(".content.level5").css("display", "block");
+		$("#loading").hide();
+		jQuery(".content.level5").show();
 	}
 });
 	

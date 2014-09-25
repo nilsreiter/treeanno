@@ -155,6 +155,6 @@ public abstract class AbstractServlet extends HttpServlet {
 
 		location.setCurrentObject(Area.DocumentSet, docId);
 
-		return null;
+		return this.getDocumentSet(request, docId);
 	};
 }

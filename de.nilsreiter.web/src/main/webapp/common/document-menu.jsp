@@ -5,13 +5,23 @@
 <div class="menu">
 <ul>
 	<c:choose>
-		<c:when test="${param.doc == null }">
+		<c:when test="${param.doc == null}">
 			<li class="active">Open</li>
 		</c:when>
 		<c:otherwise>
 			<li><a href="${location.openTarget}">Open</a></li>
 		</c:otherwise>
 	</c:choose>
+	<c:forEach var="menuItem" items="${location.additionalMenuEntries.menuItems}">
+		<c:choose>
+			<c:when test="${pageContext.request.servletPath == menuItem.href}">
+				<li class="active">${menuItem.name}</li>
+			</c:when>
+			<c:otherwise>
+				<li><a href="${menuItem.href}">${menuItem.name}</a></li>
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
 	<c:forEach var="object" items="${location.openObjects}">
 		<c:choose>
 			<c:when test="${object.key == param.doc}">

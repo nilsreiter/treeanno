@@ -28,9 +28,11 @@
 <%@include file="../common/menu.jsp" %>
 
 <div class="content level4">
-	
-<div class="${doc}"></div>
 
+<div class="content level5">
+	
+<div class="${param.doc}"></div>
+</div>
 </div>
 </div>
 </div>
@@ -66,14 +68,13 @@ jQuery.getJSON("rpc/get-events?doc=${param.doc}", function (data) {
 	
 	for (ev in data['events']) {
 		var event = data['events'][ev];
-
-		
-		// $("div."+id).append(eventtable(event, eventClasses));
-		
-		$("div."+id).append('<div id="'+data['events'][ev]['id']+'" class="event '+data['events'][ev]['class']+'" style="overflow:auto"></div>');
-		var pos = (parseInt(data['events'][ev]['position'] * 1000))/10;
-		$("#"+data['events'][ev]['id']).append("<span>"+pos+"%</span>");
-		append_eventsvg("div#"+data['events'][ev]['id'], event, eventClasses);
+ 		// alert(JSON.stringify(event));
+		if (typeof event != "undefined") {
+			$("div."+id).append('<div id="'+event['id']+'" class="event '+event['class']+'" style="overflow:auto"></div>');
+			var pos = (parseInt(event['position'] * 1000))/10;
+			$("#"+event['id']).append("<span>"+pos+"%</span>");
+			append_eventsvg("div#"+event['id'], event, eventClasses);
+		}
 
 		
 	}

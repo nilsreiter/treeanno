@@ -9,6 +9,10 @@ public class AbstractState<T extends HasId> implements State {
 	Map<String, T> openDocuments = new HashMap<String, T>();
 	String currentDocument = null;
 
+	public AbstractState(Class<?> cl) {
+
+	}
+
 	@Override
 	public Map<String, T> getOpen() {
 		return openDocuments;

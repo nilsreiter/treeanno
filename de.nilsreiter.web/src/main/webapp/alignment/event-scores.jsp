@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
+<jsp:directive.page contentType="text/html; charset=UTF-8" 
+		pageEncoding="UTF-8" session="true" import="java.util.*, de.uniheidelberg.cl.a10.data2.*"/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>		
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,6 +12,8 @@
 <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="js/highcharts.js" type="text/javascript"></script>
 <script src="js/scripts.js" type="text/javascript"></script>
+<script src="js/jquery-ui/jquery-ui.min.js"></script>
+<link href="js/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 
 
 </head>
@@ -29,37 +31,63 @@
 	<jsp:param value="event-scores" name="active"/>
 </jsp:include>
 
+<div class="content level4">
+<div class="menu">
+
+<div>k = <input id="randomwalk_k" value="5" size="2"></input></div>
+<div>n = <input id="randomwalk_n" value="10" size="2"></input></div>
+<div id="randomwalk_redraw">Redraw</div>
+</div>
+
 <div class="content level5">
+	<div id="loading"><img src="gfx/loading1.gif"/></div>
 	<div id="chart_container"></div>
 <script>
-jQuery.getJSON('rpc/get-event-scores?doc=${doc}&scale', function (data) { 
-    $('#chart_container').highcharts({
-        chart: {
-            type: 'spline'
-        },
-        title: {
-            text: 'Event Scores'
-        },
-        xAxis: {
-        	type:'linear'
-        },
-        yAxis: {
-            title: {
-                text: 'Transitions'
-            }
-        },series: data['series'],
-        plotOptions: {
-            spline: {
-                dataLabels: {
-                    enabled: false
-                },
-            }
-        },
 
-    });
+$( ".level4 .menu div").css("display", "inline-block");
+$( ".level4 .menu div").css("margin-right", "10px");
+
+$( "#randomwalk_k" ).spinner({min:1, max:10,step:1, value:5});
+$( "#randomwalk_n" ).spinner({min:10, max:100,step:10, value:100});
+
+$( "#randomwalk_redraw").button().click(function( event ) {
+    event.preventDefault();
+    var n = $("#randomwalk_n").spinner("value");
+    var k = $("#randomwalk_k").spinner("value");
+    redraw(n, k);
 });
 
+redraw(10, 5);
+
+function redraw(n, k) {
+	$("#loading").show();
+	$("#chart_container").hide();
+	
+	
+	jQuery.getJSON('rpc/get-event-scores?doc=${param.doc}&scale=scale&k='+k+'&n='+n, function (data) { 
+		$("#loading").hide();
+		$("#chart_container").show();
+    	$('#chart_container').highcharts({
+    	    chart: {
+        	    type: 'spline'
+        	},
+        	title: {
+        	    text: 'Event Scores'
+        	},
+        	xAxis: { type:'linear' },
+       	 	yAxis: {
+            	title: { text: 'Transitions' }
+        	}, series: data['series'],
+        	plotOptions: {
+            	spline: {
+                	dataLabels: { enabled: false },
+            	}
+        	},
+    	});
+	});
+}
 </script>
+</div>
 </div>
 </div>
 </div>

@@ -1,4 +1,11 @@
-
+var Week = new Array(
+		{name:"Sunday",short:"Sun"}, 
+		{name:"Monday", short:"Mon"}, 
+		{name:"Tuesday", short:"Tue"},
+		{name:"Wednesday", short:"Wed"},
+		{name:"Thursday", short:"Thu"},
+		{name:"Friday", short:"Fri"},
+		{name:"Saturday", short:"Sat"});
 
 
 
@@ -29,13 +36,18 @@ function connect(id, color) {
 
 
 
-function populate_file_list(target) {
-	jQuery.getJSON('rpc/get-document-info', function (data) { 
+function populate_file_list(target, rpcCall) {
+	jQuery.getJSON(rpcCall, function (data) { 
 		for (var i in data) {
-			var s = "<tr onclick=\"location.href='view-document?doc="+
-					data[i]['id']+"'\"><td>"+data[i]['databaseId']+"</td><td>"+data[i]['corpus']+"</td><td>"+
-					data[i]['id']+"</td><td>"+data[i]['textBegin']+" ...</td></tr>";
-			$(target+" table.filelist tbody").append(s);
+			var row = document.createElement("tr");
+			
+			$(row).append("<td>"+data[i]['databaseId']+"</td>");
+			$(row).append("<td>"+data[i]['corpus']+"</td>");
+			$(row).append("<td>"+data[i]['id']+"</td>");
+			$(row).append("<td>"+data[i]['textBegin']+" ...</td>");
+			$(row).bind("click", function() {location.href="view-document?doc="+
+				data[i]['id']});
+			$(target).append(row);
 		}
 	});
 }
@@ -54,37 +66,49 @@ function dragmove(d) {
 }
 
 function append_eventsvg(target, event, eventClasses) {
-	var svg = d3.select(target).append("svg").attr("width", "100%").attr("height", 200);
+	
+	if (typeof(event) == 'undefined')
+		return;
+	var svg = d3.select(target).append("svg");
+	svg.attr("height", 200);
 	if (typeof( eventClasses[event['class']]) =='undefined')
 		eventClasses[event['class']] =1;
 	else 
 		eventClasses[event['class']]++;
 	
 	var tokenY = 180;
-	
+	// alert(svg);
 	var sentenceIndex = new Object();
-	var w = 50;
-	for (var tok in event['sentence']['tokens']) {
+	var p_width=50;
+	var w = p_width;;
+	for (var tok = 0; tok < event['sentence']['tokens'].length; tok++) {
 		var token = event['sentence']['tokens'][tok];
 		var entityIds = token['entityIds'];
-		textelement = svg.append("text").text(token['surface'])
+		var textelement = svg.append("text").text(token['surface'])
 			.attr("x",w).attr("y", tokenY)
 			.attr("class","surface"); 
 		sentenceIndex[token['id']] = textelement;
-		
-		if (textelement != null && textelement.node() !=null && typeof entityIds !=  "undefined") {
+		if (textelement.node() !=null && typeof entityIds !=  "undefined") {
 			for (eId in entityIds) {
 				svg.insert("rect", "text").attr("x", w).attr("y", tokenY-parseInt(textelement.node().getBBox().height)+4)
-					.attr("width", textelement.getBBox().width)
+					.attr("width", textelement.node().getBBox().width)
 					.attr("height",textelement.node().getBBox().height)
 					.attr("class", "tokenbg "+entityIds[eId]);
 			}
 		}
+		if (textelement.size()>0)
+			w += textelement.node().getBBox().width+2;
 		
-		w += textelement.node().getBBox().width+2;
 	}
+	svg.attr("width", w+p_width);
+	$(target).css("width", w+p_width).css("margin-left","auto").css("margin-right","auto");
+	// alert(JSON.stringify(sentenceIndex));
+	// alert(event['token'][0]['id']);
 	var targetElement = sentenceIndex[event['token'][0]['id']];
-	var targetXpos = parseInt(targetElement.attr("x"))+parseInt(((targetElement.node().getBBox().width) / 2.0));
+	
+	var targetXpos = parseInt(targetElement.attr("x")) +
+		parseInt(((targetElement.node().getBBox().width) / 2.0));
+	
 	svg.append("text").text(event['class']).attr("x",targetXpos).attr("y","20").style("text-anchor", "middle").attr("class", "eventclass");
 	
 	svg.append("line").attr("x1", targetXpos).attr("y1", 30).attr("x2", targetXpos).attr("y2", 160)
