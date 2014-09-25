@@ -89,6 +89,7 @@
   	<module>de.nilsreiter.ocr</module>
   	<module>neobio.alignment</module>
   	<module>de.nilsreiter.pipeline.event</module>
+  	<module>de.nilsreiter.alignment.rwalk</module>
   </modules>
   <dependencies>
  
