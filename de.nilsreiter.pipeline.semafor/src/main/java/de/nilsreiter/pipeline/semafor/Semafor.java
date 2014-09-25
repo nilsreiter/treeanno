@@ -21,6 +21,7 @@ import org.apache.uima.util.Level;
 
 import de.nilsreiter.util.IOUtil;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.PUNC;
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticArgument;
@@ -32,10 +33,10 @@ import edu.cmu.cs.lti.ark.fn.parsing.ParserDriver;
 		inputs = {
 				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence",
 				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token",
-				"de.tudarmstadt.ukp.dkpro.core.api.syntax.type.dependency.Dependency" },
+		"de.tudarmstadt.ukp.dkpro.core.api.syntax.type.dependency.Dependency" },
 		outputs = {
 				"de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticPredicate",
-				"de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticArgument" })
+		"de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticArgument" })
 public class Semafor extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_SENTENCE_LIMIT = "Sentence Limit";
@@ -57,13 +58,16 @@ public class Semafor extends JCasAnnotator_ImplBase {
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		getLogger().setLevel(Level.ALL);
 		getLogger().info("Preparing Semafor input");
+		String docId =
+				JCasUtil.selectSingle(jcas, DocumentMetaData.class)
+				.getDocumentId();
 		try {
 			// Creating temporal directory for
 			// 1. the input files to semafor
 			File tmpdirInput = IOUtil.createTempDir("semafor", ".input");
 			getLogger()
-					.debug("Semafor input directory: "
-							+ tmpdirInput.getAbsolutePath());
+			.debug("Semafor input directory: "
+					+ tmpdirInput.getAbsolutePath());
 			// 2. the output files of semafor (and a log file)
 			File tmpdirOutput = IOUtil.createTempDir("semafor", ".output");
 			getLogger().debug(
@@ -106,8 +110,8 @@ public class Semafor extends JCasAnnotator_ImplBase {
 						if (JCasUtil.selectCovered(jcas, Dependency.class, pt)
 								.size() > 0)
 							dep =
-							JCasUtil.selectCovered(jcas,
-									Dependency.class, pt).get(0);
+									JCasUtil.selectCovered(jcas,
+											Dependency.class, pt).get(0);
 						fw.write(String.valueOf(++i));
 						fw.write("\t");
 						fw.write(pt.getCoveredText());
@@ -177,103 +181,117 @@ public class Semafor extends JCasAnnotator_ImplBase {
 							"/Users/reiterns/Documents/Resources/semafor-model/file_properties.xml");
 
 			getLogger().info("Running Semafor");
-			ParserDriver.main(new String[] {
-					"mstmode:noserver",
-					"mstserver:localhost",
-					"mstport:8080",
-					"posfile:" + postagged.getAbsolutePath(),
-					"test-parsefile:" + parserOutput.getAbsolutePath(),
-					"stopwords-file:" + stopwords.getAbsolutePath(),
-					"wordnet-configfile:" + wnProperties.getAbsolutePath(),
-					"fnidreqdatafile:"
-							+ new File(datadir, "reqData.jobj")
-					.getAbsolutePath(),
-					"goldsegfile:null",
-					"userelaxed:no",
-					"testtokenizedfile:" + tokenized.getAbsolutePath(),
-					"idmodelfile:"
-							+ new File(datadir, "idmodel.converted.dat")
-					.getAbsolutePath(),
-					"alphabetfile:"
-							+ new File(new File(modelDirectory, "scan"),
-									"parser.conf.unlabeled").getAbsolutePath(),
-									"framenet-femapfile:"
-											+ new File(modelDirectory,
-													"framenet.frame.element.map")
-					.getAbsolutePath(),
-					"eventsfile:"
-							+ new File(tmpdirInput, "events.bin")
-					.getAbsolutePath(),
-					"spansfile:"
-							+ new File(tmpdirInput, "spans").getAbsolutePath(),
-							"model:"
-									+ new File(datadir, "argmodel.converted.dat")
-					.getAbsolutePath(), "useGraph:null",
-					"frameelementsoutputfile:" + outputFile.getAbsolutePath(),
-					"alllemmatagsfile:" + new File(tmpdirInput, "lemmatags") });
+			try {
+				ParserDriver.main(new String[] {
+						"mstmode:noserver",
+						"mstserver:localhost",
+						"mstport:8080",
+						"posfile:" + postagged.getAbsolutePath(),
+						"test-parsefile:" + parserOutput.getAbsolutePath(),
+						"stopwords-file:" + stopwords.getAbsolutePath(),
+						"wordnet-configfile:" + wnProperties.getAbsolutePath(),
+						"fnidreqdatafile:"
+								+ new File(datadir, "reqData.jobj")
+										.getAbsolutePath(),
+						"goldsegfile:null",
+						"userelaxed:no",
+						"testtokenizedfile:" + tokenized.getAbsolutePath(),
+						"idmodelfile:"
+								+ new File(datadir, "idmodel.converted.dat")
+										.getAbsolutePath(),
+						"alphabetfile:"
+								+ new File(new File(modelDirectory, "scan"),
+										"parser.conf.unlabeled")
+										.getAbsolutePath(),
+						"framenet-femapfile:"
+								+ new File(modelDirectory,
+										"framenet.frame.element.map")
+										.getAbsolutePath(),
+						"eventsfile:"
+								+ new File(tmpdirInput, "events.bin")
+										.getAbsolutePath(),
+						"spansfile:"
+								+ new File(tmpdirInput, "spans")
+										.getAbsolutePath(),
+						"model:"
+								+ new File(datadir, "argmodel.converted.dat")
+										.getAbsolutePath(),
+						"useGraph:null",
+						"frameelementsoutputfile:"
+								+ outputFile.getAbsolutePath(),
+						"alllemmatagsfile:"
+								+ new File(tmpdirInput, "lemmatags") });
 
-			// After Semafor has been running, we read in the produced output
-			// file
-			getLogger().info("Parsing Semafor output");
-			BufferedReader br = new BufferedReader(new FileReader(outputFile));
-			while (br.ready()) {
-				String line = br.readLine();
-				String[] lparts = line.split("\t");
+				// After Semafor has been running, we read in the produced
+				// output
+				// file
+				getLogger().info("Parsing Semafor output");
+				BufferedReader br =
+						new BufferedReader(new FileReader(outputFile));
+				while (br.ready()) {
+					String line = br.readLine();
+					String[] lparts = line.split("\t");
 
-				// identify the UIMA sentence object
-				Sentence sentence =
-						sentenceList.get(Integer.valueOf(lparts[6]));
-				List<Token> tokenList =
-						JCasUtil.selectCovered(jcas, Token.class, sentence);
-				int numberOfArguments = Integer.valueOf(lparts[1]) - 1;
+					// identify the UIMA sentence object
+					Sentence sentence =
+							sentenceList.get(Integer.valueOf(lparts[6]));
+					List<Token> tokenList =
+							JCasUtil.selectCovered(jcas, Token.class, sentence);
+					int numberOfArguments = Integer.valueOf(lparts[1]) - 1;
 
-				// Get the target/evoker token
-				Token target = null, target2 = null;
-				if (lparts[4].contains("_")) {
-					String[] targetSplit = lparts[4].split("_");
-					target = tokenList.get(Integer.valueOf(targetSplit[0]));
-					target2 = tokenList.get(Integer.valueOf(targetSplit[1]));
-				} else {
-					target = tokenList.get(Integer.valueOf(lparts[4]));
+					// Get the target/evoker token
+					Token target = null, target2 = null;
+					if (lparts[4].contains("_")) {
+						String[] targetSplit = lparts[4].split("_");
+						target = tokenList.get(Integer.valueOf(targetSplit[0]));
+						target2 =
+								tokenList.get(Integer.valueOf(targetSplit[1]));
+					} else {
+						target = tokenList.get(Integer.valueOf(lparts[4]));
+					}
+
+					// Create a semantic predicate annotation
+					SemanticPredicate predicate =
+							createAnnotation(jcas, target.getBegin(),
+									(target2 == null ? target.getEnd()
+											: target2.getEnd()),
+											SemanticPredicate.class);
+					predicate.setCategory(lparts[2]);
+					predicate
+					.setArguments(new FSArray(jcas, numberOfArguments));
+
+					// Go over the arguments
+					for (int i = 0; i < numberOfArguments; i++) {
+
+						int argpos = 7 + (2 * i);
+						String fe = lparts[argpos];
+						String[] tokenRange = lparts[argpos + 1].split(":");
+						Token beginToken =
+								JCasUtil.selectCovered(jcas, Token.class,
+										sentence).get(
+												Integer.valueOf(tokenRange[0]));
+						Token endToken = beginToken;
+						if (tokenRange.length > 1)
+							endToken =
+									JCasUtil.selectCovered(jcas, Token.class,
+											sentence).get(
+											Integer.valueOf(tokenRange[1]));
+						SemanticArgument arg =
+								createAnnotation(jcas, beginToken.getBegin(),
+										endToken.getEnd(),
+										SemanticArgument.class);
+						arg.setRole(fe);
+						predicate.setArguments(i, arg);
+					}
 				}
+				br.close();
 
-				// Create a semantic predicate annotation
-				SemanticPredicate predicate =
-						createAnnotation(
-								jcas,
-								target.getBegin(),
-								(target2 == null ? target.getEnd() : target2
-										.getEnd()), SemanticPredicate.class);
-				predicate.setCategory(lparts[2]);
-				predicate.setArguments(new FSArray(jcas, numberOfArguments));
-
-				// Go over the arguments
-				for (int i = 0; i < numberOfArguments; i++) {
-
-					int argpos = 7 + (2 * i);
-					String fe = lparts[argpos];
-					String[] tokenRange = lparts[argpos + 1].split(":");
-					Token beginToken =
-							JCasUtil.selectCovered(jcas, Token.class, sentence)
-							.get(Integer.valueOf(tokenRange[0]));
-					Token endToken = beginToken;
-					if (tokenRange.length > 1)
-						endToken =
-						JCasUtil.selectCovered(jcas, Token.class,
-								sentence).get(
-										Integer.valueOf(tokenRange[1]));
-					SemanticArgument arg =
-							createAnnotation(jcas, beginToken.getBegin(),
-									endToken.getEnd(), SemanticArgument.class);
-					arg.setRole(fe);
-					predicate.setArguments(i, arg);
-				}
+				// Delete temporary directories
+				tmpdirInput.deleteOnExit();
+				tmpdirOutput.deleteOnExit();
+			} catch (Exception e) {
+				getLogger().warn("Semafor error in document " + docId, e);
 			}
-			br.close();
-
-			// Delete temporary directories
-			tmpdirInput.deleteOnExit();
-			tmpdirOutput.deleteOnExit();
 
 		} catch (IOException e) {
 			e.printStackTrace();
