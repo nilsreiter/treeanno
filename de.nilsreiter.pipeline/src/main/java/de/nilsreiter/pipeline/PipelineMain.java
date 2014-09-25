@@ -1,6 +1,7 @@
 package de.nilsreiter.pipeline;
 
 import static de.nilsreiter.pipeline.PipelineBuilder.array;
+import static de.nilsreiter.pipeline.PipelineBuilder.cwb;
 import static de.nilsreiter.pipeline.PipelineBuilder.data2;
 import static de.nilsreiter.pipeline.PipelineBuilder.xmi;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
@@ -27,6 +28,7 @@ import de.nilsreiter.pipeline.uima.event.EventAnnotator;
 import de.nilsreiter.pipeline.uima.wsd.WSDItemCompleter;
 import de.nilsreiter.pipeline.uima.wsd.WSDPostProcess;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
+import de.tudarmstadt.ukp.dkpro.core.languagetool.LanguageToolSegmenter;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordCoreferenceResolver;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
@@ -53,11 +55,11 @@ public class PipelineMain extends MainWithIODir {
 	ExternalResourceDescription mfsResource;
 
 	enum Pipeline {
-		Basic, Second, Full, Ling, Event, Shallow
+		Basic, Second, Full, Ling, Event, Shallow, SegLemma, StanfordShallow
 	};
 
 	enum ExportFormat {
-		XMI, DATA2
+		XMI, DATA2, CWB
 	}
 
 	Logger logger = LoggerFactory.getLogger(PipelineMain.class);
@@ -115,18 +117,20 @@ public class PipelineMain extends MainWithIODir {
 			pl = xmi(pl, this.getOutputDirectory());
 		if (exportFormat.contains(ExportFormat.DATA2))
 			pl = data2(pl, this.getOutputDirectory());
+		if (exportFormat.contains(ExportFormat.CWB))
+			pl = cwb(pl, this.getOutputDirectory());
 		logger.info("Running pipeline.");
 		runPipeline(getXmiCollectionReader(), array(pl));
 	}
 
 	public List<AnalysisEngineDescription> getPipeline(Pipeline pl)
 			throws ResourceInitializationException {
+		ArrayList<AnalysisEngineDescription> ae =
+				new ArrayList<AnalysisEngineDescription>();
 		switch (pl) {
 		case Ling:
 			return this.getLingPipeline();
 		case Event:
-			ArrayList<AnalysisEngineDescription> ae =
-					new ArrayList<AnalysisEngineDescription>();
 			ae.add(createEngineDescription(ClearAnnotation.class,
 					ClearAnnotation.PARAM_TYPE,
 					"de.nilsreiter.pipeline.uima.event.type.Role"));
@@ -141,6 +145,15 @@ public class PipelineMain extends MainWithIODir {
 			return ae;
 		case Full:
 			return this.getFullPipeline();
+		case SegLemma:
+			ae.add(createEngineDescription(StanfordSegmenter.class));
+			ae.add(createEngineDescription(StanfordLemmatizer.class));
+			return ae;
+		case StanfordShallow:
+			ae.add(createEngineDescription(LanguageToolSegmenter.class));
+			ae.add(createEngineDescription(StanfordLemmatizer.class));
+			ae.add(createEngineDescription(StanfordPosTagger.class));
+			return ae;
 		case Shallow:
 			return this.getShallowPipeline();
 		case Second:
@@ -198,7 +211,7 @@ public class PipelineMain extends MainWithIODir {
 		l.add(createEngineDescription(StanfordParser.class,
 				StanfordParser.PARAM_MODE,
 				StanfordParser.DependenciesMode.BASIC,
-				StanfordParser.PARAM_WRITE_CONSTITUENT, false,
+				StanfordParser.PARAM_WRITE_CONSTITUENT, true,
 				StanfordParser.PARAM_WRITE_POS, false,
 				StanfordParser.PARAM_WRITE_LEMMA, false,
 				StanfordParser.PARAM_READ_POS, true));
@@ -272,10 +285,8 @@ public class PipelineMain extends MainWithIODir {
 		ArrayList<AnalysisEngineDescription> l =
 				new ArrayList<AnalysisEngineDescription>();
 
-		l.add(createEngineDescription(StanfordSegmenter.class));
-		l.add(createEngineDescription(StanfordLemmatizer.class));
-		l.add(createEngineDescription(StanfordPosTagger.class));
-
+		l.add(createEngineDescription(LanguageToolSegmenter.class));
+		// l.add(createEngineDescription(OpenNlpPosTagger.class));
 		return l;
 	}
 }
