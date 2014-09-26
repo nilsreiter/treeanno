@@ -1,28 +1,22 @@
 package de.uniheidelberg.cl.a10.graph;
 
-import java.util.Collection;
-import java.util.Formatter;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
 import de.uniheidelberg.cl.a10.data2.Token;
-import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.graph.Edge;
 import de.uniheidelberg.cl.reiter.util.Counter;
 import edu.uci.ics.jung.algorithms.importance.Ranking;
 import edu.uci.ics.jung.graph.Graph;
 
-public class NRWalk<T extends HasDocument> implements RankingAlgorithm {
+public class NRWalk<T extends HasDocument> {
 	public NRWalk() {
 		super();
 	}
@@ -49,7 +43,7 @@ public class NRWalk<T extends HasDocument> implements RankingAlgorithm {
 
 	double averageScore = Double.NaN;
 
-	public Counter<T> doWalk(final Graph<T, Edge> graph) {
+	public Counter<T> doWalk(final Graph<T, Edge<T>> graph) {
 		Counter<T> values = new Counter<T>();
 
 		double c = 0.0;
@@ -67,22 +61,6 @@ public class NRWalk<T extends HasDocument> implements RankingAlgorithm {
 		return values;
 	}
 
-	@Override
-	public List<Ranking<?>> getRanking(final Graph<Token, Edge> graph,
-			final Counter<Token> values) {
-		List<Ranking<?>> ret = new LinkedList<Ranking<?>>();
-		for (Token token : graph.getVertices()) {
-			Ranking<Token> ra = new Ranking<Token>(0, values.get(token), token);
-			ret.add(ra);
-		}
-		return ret;
-	}
-
-	public SortedSet<Ranking<?>> getSortedSetRanking(
-			final Graph<Token, Edge> graph, final Counter<Token> values) {
-		return new TreeSet<Ranking<?>>(this.getRanking(graph, values));
-	}
-
 	public boolean isInTopNodes(final Token token,
 			final SortedSet<Ranking<?>> ranking) {
 		Iterator<Ranking<?>> iter = ranking.iterator();
@@ -98,87 +76,6 @@ public class NRWalk<T extends HasDocument> implements RankingAlgorithm {
 		return false;
 	}
 
-	public String generateTikzCode(final Collection<Document> documents,
-			final Graph<Token, Edge> graph, final Counter<Token> values,
-			final Alignment<Token> alignment) {
-
-		StringBuilder b = new StringBuilder();
-		List<Document> docs = new LinkedList<Document>(documents);
-
-		for (int doc = 0; doc < docs.size(); doc++) {
-			Document rd = docs.get(doc);
-			List<Token> tokens = new LinkedList<Token>();
-			Map<Token, Double> yValues = new HashMap<Token, Double>();
-			Map<Token, String> topCoords = new HashMap<Token, String>();
-
-			for (Token token : rd.getTokens()) {
-				if (graph.containsVertex(token)) {
-					double scaledY =
-							scale(0, values.getHighestCount(), 0, maxY,
-									values.get(token));
-					tokens.add(token);
-					yValues.put(token, scaledY);
-				}
-			}
-			boolean first = true;
-			int i = 0;
-			int orientationFactor = 1;
-			if (mirror) orientationFactor = (doc == 0 ? 1 : -1);
-			// Formatter formatter = new Formatter(b, Locale.US);
-			b.append("\\draw ");
-			if (!mirror) b.append("[").append(lineStyles[doc]).append("]");
-
-			for (Token token : tokens) {
-				double scaledX = scale(0, tokens.size(), 0, maxX, i++);
-				if (first) {
-					first = false;
-					b.append("(");
-				} else {
-					b.append(" -- (");
-				}
-				StringBuilder coordB = new StringBuilder();
-				Formatter formatter = new Formatter(coordB);
-				formatter.format("%1$3.2f, %2$3.3f", scaledX, orientationFactor
-						* yValues.get(token));
-				formatter.close();
-				String coord = coordB.toString();
-				if (this.isInTopNodes(token,
-						this.getSortedSetRanking(graph, values)))
-					topCoords.put(token, "(" + coord + ")");
-				b.append(coord);
-				b.append(')');
-			}
-
-			b.append(";\n");
-
-			for (Token token : topCoords.keySet()) {
-				b.append("\\node (");
-				b.append(token.getGlobalId().replaceAll("-", ""));
-				b.append(") at ");
-				b.append(topCoords.get(token));
-				b.append(" [right,rotate=90] {\\tiny ");
-				b.append(token.getId());
-				b.append("};\n");
-			}
-
-			b.append("\\draw ");
-			b.append("[").append(lineStyles[doc]).append("] ");
-			b.append(" (0.5,").append(orientationFactor * 0.5 + doc)
-					.append(")");
-			b.append(" to node ");
-			b.append(" [above] {\\footnotesize \\rd{");
-			b.append(this.getNumericId(rd));
-			b.append("}} node {} ");
-			b.append(" (1.5,").append(orientationFactor * 0.5 + doc)
-					.append(")");
-			b.append(";\n");
-
-		}
-		b.append("\\draw [->] (-0.2,0.0) -- (" + maxX + ",0);\n");
-		b.append("\\draw [->] (0,-0.2) -- (0," + maxY + ");\n");
-		return b.toString();
-	}
-
 	public int getNumericId(final Document rd) {
 		int numericId;
 		if (rd.getId().contains(".txt"))
@@ -188,7 +85,7 @@ public class NRWalk<T extends HasDocument> implements RankingAlgorithm {
 		return numericId;
 	}
 
-	private int step(final Graph<T, Edge> graph, final T token, final int k,
+	private int step(final Graph<T, Edge<T>> graph, final T token, final int k,
 			final Set<T> visited) {
 		List<T> neighbors = new LinkedList<T>(graph.getSuccessors(token));
 

@@ -127,10 +127,10 @@ public class GetEventScores extends RPCServlet {
 	protected Counter<Event> makeWalkScores(Alignment<Event> alignment) {
 		logger.debug("Creating graph for alignment document {}.",
 				alignment.getId());
-		UndirectedGraph<Event, Edge> graph =
-				AlignmentGraphFactory.getInstance().getUndirectedGraph(
-						alignment, alignment.getDocument(0).getEvents(),
-						alignment.getDocument(1).getEvents());
+		AlignmentGraphFactory<Event> agf = new AlignmentGraphFactory<Event>();
+		UndirectedGraph<Event, Edge<Event>> graph =
+				agf.getUndirectedGraph(alignment, alignment.getDocument(0)
+						.getEvents(), alignment.getDocument(1).getEvents());
 		logger.info("Initialising random walk algorithm with k={} and n={}.",
 				k, n);
 		NRWalk<Event> nrw = new NRWalk<Event>(k, n);
