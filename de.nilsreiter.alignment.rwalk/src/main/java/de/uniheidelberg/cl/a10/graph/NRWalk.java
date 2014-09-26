@@ -14,7 +14,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import de.uniheidelberg.cl.a10.data2.Document;
-import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.HasDocument;
 import de.uniheidelberg.cl.a10.data2.Token;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.graph.Edge;
@@ -22,7 +22,7 @@ import de.uniheidelberg.cl.reiter.util.Counter;
 import edu.uci.ics.jung.algorithms.importance.Ranking;
 import edu.uci.ics.jung.graph.Graph;
 
-public class NRWalk implements RankingAlgorithm {
+public class NRWalk<T extends HasDocument> implements RankingAlgorithm {
 	public NRWalk() {
 		super();
 	}
@@ -49,15 +49,15 @@ public class NRWalk implements RankingAlgorithm {
 
 	double averageScore = Double.NaN;
 
-	public Counter<Event> doWalk(final Graph<Event, Edge> graph) {
-		Counter<Event> values = new Counter<Event>();
+	public Counter<T> doWalk(final Graph<T, Edge> graph) {
+		Counter<T> values = new Counter<T>();
 
 		double c = 0.0;
 
 		// making random walks
 		for (int i = 0; i < n; i++) {
-			for (Event token : graph.getVertices()) {
-				int v = step(graph, token, k, new HashSet<Event>());
+			for (T token : graph.getVertices()) {
+				int v = step(graph, token, k, new HashSet<T>());
 				values.add(token, v);
 				c += v;
 				// System.err.println();
@@ -188,14 +188,13 @@ public class NRWalk implements RankingAlgorithm {
 		return numericId;
 	}
 
-	private int step(final Graph<Event, Edge> graph, final Event token,
-			final int k, final Set<Event> visited) {
-		List<Event> neighbors =
-				new LinkedList<Event>(graph.getSuccessors(token));
+	private int step(final Graph<T, Edge> graph, final T token, final int k,
+			final Set<T> visited) {
+		List<T> neighbors = new LinkedList<T>(graph.getSuccessors(token));
 
 		if (!cycles) neighbors.removeAll(visited);
 		if (neighbors.size() < 1) return 0;
-		Event nextToken = neighbors.get(random.nextInt(neighbors.size()));
+		T nextToken = neighbors.get(random.nextInt(neighbors.size()));
 
 		// System.err.print(nextToken);
 		int v =

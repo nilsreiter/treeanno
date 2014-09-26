@@ -133,7 +133,7 @@ public class GetEventScores extends RPCServlet {
 						alignment.getDocument(1).getEvents());
 		logger.info("Initialising random walk algorithm with k={} and n={}.",
 				k, n);
-		NRWalk nrw = new NRWalk(k, n);
+		NRWalk<Event> nrw = new NRWalk<Event>(k, n);
 		return nrw.doWalk(graph);
 	}
 
