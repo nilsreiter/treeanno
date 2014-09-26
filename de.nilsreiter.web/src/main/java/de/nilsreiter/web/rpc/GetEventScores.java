@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.nilsreiter.alignment.rwalk.NRWalk;
 import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
@@ -22,7 +23,6 @@ import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.graph.AlignmentGraphFactory;
 import de.uniheidelberg.cl.a10.data2.alignment.graph.Edge;
 import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentReader;
-import de.uniheidelberg.cl.a10.graph.NRWalk;
 import de.uniheidelberg.cl.reiter.util.Counter;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 

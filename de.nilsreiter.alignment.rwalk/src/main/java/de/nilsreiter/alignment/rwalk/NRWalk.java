@@ -1,4 +1,4 @@
-package de.uniheidelberg.cl.a10.graph;
+package de.nilsreiter.alignment.rwalk;
 
 import java.util.HashSet;
 import java.util.Iterator;
