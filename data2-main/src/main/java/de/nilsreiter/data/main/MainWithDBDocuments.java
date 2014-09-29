@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.util.db.DataSourceFactory;
+import de.nilsreiter.util.db.Database;
 import de.nilsreiter.util.db.impl.DatabaseDataSource_impl;
 import de.uniheidelberg.cl.a10.Main;
 import de.uniheidelberg.cl.a10.data2.Document;
@@ -25,20 +26,23 @@ public abstract class MainWithDBDocuments extends Main {
 	@Argument(usage = "A list of document ids", required = true)
 	List<String> arguments = new ArrayList<String>();
 
+	protected DBDataReader dataReader;
+	protected Database database;
+
 	public List<Document> getDocuments() throws IOException {
 
 		List<Document> docs = new ArrayList<Document>();
 
 		try {
 
-			DBDataReader dbr =
-					new DBDataReader(
-							new DatabaseDataSource_impl(
-									DataSourceFactory
-											.getDataSource(getConfiguration())));
+			database =
+					new DatabaseDataSource_impl(
+							DataSourceFactory.getDataSource(getConfiguration()));
+
+			dataReader = new DBDataReader(database);
 			for (String id : arguments) {
 				try {
-					docs.add(dbr.read(id));
+					docs.add(dataReader.read(id));
 				} catch (ValidityException e) {
 					logger.debug(e.getLocalizedMessage());
 				} catch (ParsingException e) {
