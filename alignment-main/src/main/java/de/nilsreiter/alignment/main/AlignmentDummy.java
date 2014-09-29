@@ -1,12 +1,26 @@
 package de.nilsreiter.alignment.main;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import de.nilsreiter.data.main.MainWithDBDocuments;
+import de.nilsreiter.util.db.DataSourceFactory;
+import de.nilsreiter.util.db.Database;
+import de.nilsreiter.util.db.impl.DatabaseDataSource_impl;
+import de.uniheidelberg.cl.a10.MainWithIO;
 import de.uniheidelberg.cl.a10.data2.Document;
+import de.uniheidelberg.cl.a10.data2.Event;
+import de.uniheidelberg.cl.a10.data2.Token;
+import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
+import de.uniheidelberg.cl.a10.data2.alignment.Link;
+import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
+import de.uniheidelberg.cl.a10.data2.alignment.impl.Link_impl;
+import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentReader;
+import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
+import de.uniheidelberg.cl.a10.io.DatabaseDocumentStreamProvider;
 
-public class AlignmentDummy extends MainWithDBDocuments {
+public class AlignmentDummy extends MainWithIO {
 
 	boolean pairwise = true;
 
@@ -17,12 +31,35 @@ public class AlignmentDummy extends MainWithDBDocuments {
 	}
 
 	private void run() throws IOException {
-		List<Document> docs = getDocuments();
-		for (int i = 0; i < docs.size(); i++) {
-			for (int j = i + 1; j < docs.size(); j++) {
-				System.err.println(docs.get(i).getId() + " - "
-						+ docs.get(j).getId());
+		Database database =
+				new DatabaseDataSource_impl(
+						DataSourceFactory.getDataSource(getConfiguration()));
+
+		AlignmentReader<Token> alignmentReader =
+				new AlignmentReader<Token>(new DatabaseDocumentStreamProvider(
+						database));
+
+		Alignment<Token> alignment =
+				alignmentReader.read(new FileInputStream(input));
+
+		Map<Token, Event> eventMap = new HashMap<Token, Event>();
+
+		for (Document document : alignment.getDocuments()) {
+			for (Event event : document.getEvents()) {
+				eventMap.put(event.firstToken(), event);
 			}
 		}
+		Alignment<Event> evAlignment =
+				new Alignment_impl<Event>(alignment.getId());
+		for (Link<Token> link : alignment.getAlignments()) {
+			Link<Event> evlink = new Link_impl<Event>(link.getId());
+			for (Token token : link.getElements()) {
+				evlink.add(eventMap.get(token));
+			}
+			evAlignment.addAlignment(evlink.getId(), evlink);
+		}
+		AlignmentWriter aw = new AlignmentWriter(getOutputStream());
+		aw.write(evAlignment);
 	}
+
 }
