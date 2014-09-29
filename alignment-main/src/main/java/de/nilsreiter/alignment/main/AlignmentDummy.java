@@ -18,6 +18,8 @@ import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.impl.Link_impl;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentReader;
 import de.uniheidelberg.cl.a10.data2.alignment.io.AlignmentWriter;
+import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignment;
+import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentWriter;
 import de.uniheidelberg.cl.a10.io.DatabaseDocumentStreamProvider;
 
 public class AlignmentDummy extends MainWithIO {
@@ -58,8 +60,9 @@ public class AlignmentDummy extends MainWithIO {
 			}
 			evAlignment.addAlignment(evlink.getId(), evlink);
 		}
-		AlignmentWriter aw = new AlignmentWriter(getOutputStream());
+		AlignmentWriter aw = new DBAlignmentWriter(new DBAlignment(database));
 		aw.write(evAlignment);
+		aw.close();
 	}
 
 }
