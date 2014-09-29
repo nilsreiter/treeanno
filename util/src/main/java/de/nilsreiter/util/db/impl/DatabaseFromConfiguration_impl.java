@@ -13,9 +13,13 @@ public class DatabaseFromConfiguration_impl extends AbstractDatabase {
 	public DatabaseFromConfiguration_impl(Configuration configuration)
 			throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
+		StringBuilder b = new StringBuilder();
+		b.append("jdbc:mysql://").append(
+				configuration.getString("database.host"));
+		b.append(":").append(configuration.getString("database.port"));
+		b.append("/").append(configuration.getString("database.name"));
 		connection =
-				DriverManager.getConnection(
-						configuration.getString("database.url"),
+				DriverManager.getConnection(b.toString(),
 						configuration.getString("database.username"),
 						configuration.getString("database.password"));
 	}
