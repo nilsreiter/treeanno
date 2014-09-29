@@ -25,7 +25,7 @@ import de.uniheidelberg.cl.a10.io.XMLConstants;
  */
 
 public class AlignmentReader<T extends HasDocument> extends
-AbstractLinkedXMLReader<Alignment<T>> {
+		AbstractLinkedXMLReader<Alignment<T>> {
 
 	public AlignmentReader(DataStreamProvider dsProvider) {
 		super(dsProvider);
@@ -36,10 +36,13 @@ AbstractLinkedXMLReader<Alignment<T>> {
 	}
 
 	@Override
-	protected Alignment<T> read(final Element rootElement) throws IOException {
+	protected Alignment_impl<T> read(final Element rootElement)
+			throws IOException {
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();
-		Alignment<T> ad =
-				new Alignment_impl<T>(rootElement.getAttributeValue("id"));
+		String did = "";
+		if (rootElement.getAttributeValue("id") != null)
+			did = rootElement.getAttributeValue("id");
+		Alignment_impl<T> ad = new Alignment_impl<T>(did);
 
 		if (rootElement.getAttribute(XMLConstants.TITLE) != null) {
 			ad.setTitle(rootElement.getAttributeValue(XMLConstants.TITLE));

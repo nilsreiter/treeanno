@@ -13,11 +13,12 @@ import de.nilsreiter.util.db.DBUtils;
 import de.nilsreiter.util.db.Database;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
+import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 import de.uniheidelberg.cl.a10.io.DatabaseDocumentStreamProvider;
 import de.uniheidelberg.cl.a10.io.DocumentNotFoundException;
 
 public class DBAlignmentReader<T extends HasDocument> extends
-		AlignmentReader<T> {
+AlignmentReader<T> {
 	DBAlignment database;
 
 	public DBAlignmentReader(Database db) throws SQLException {
@@ -26,7 +27,7 @@ public class DBAlignmentReader<T extends HasDocument> extends
 	}
 
 	public Alignment<T> read(String id) throws SQLException, ValidityException,
-	IOException, ParsingException {
+			IOException, ParsingException {
 
 		// System.err.println(b.toString());
 		Connection connection = database.getDatabase().getConnection();
@@ -35,7 +36,9 @@ public class DBAlignmentReader<T extends HasDocument> extends
 		ResultSet rs = stmt.executeQuery(database.getSelectStatement(id));
 		if (rs.first()) {
 			SQLXML sx = rs.getSQLXML(1);
-			Alignment<T> al = super.read(sx.getBinaryStream());
+			Alignment_impl<T> al =
+					(Alignment_impl<T>) super.read(sx.getBinaryStream());
+			al.setId(id);
 			DBUtils.closeAll(rs);
 			return al;
 		}
