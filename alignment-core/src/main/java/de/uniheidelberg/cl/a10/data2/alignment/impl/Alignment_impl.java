@@ -221,4 +221,8 @@ public class Alignment_impl<T extends HasDocument> implements Alignment<T> {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }
