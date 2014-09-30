@@ -32,7 +32,7 @@ public class DBAlignment {
 
 	public String getSelectStatement(String id) throws SQLException {
 		SQLBuilder b = new SQLBuilder();
-		b.select("xml").from(database.getTableName(table))
+		b.select("id, xml").from(database.getTableName(table))
 				.where("databaseId = '" + id + "'");
 		return b.toString();
 	}

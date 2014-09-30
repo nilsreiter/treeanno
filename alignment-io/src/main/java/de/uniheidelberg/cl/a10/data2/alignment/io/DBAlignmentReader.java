@@ -35,10 +35,11 @@ AlignmentReader<T> {
 		Statement stmt = connection.createStatement();
 		ResultSet rs = stmt.executeQuery(database.getSelectStatement(id));
 		if (rs.first()) {
-			SQLXML sx = rs.getSQLXML(1);
+			SQLXML sx = rs.getSQLXML(2);
 			Alignment_impl<T> al =
 					(Alignment_impl<T>) super.read(sx.getBinaryStream());
 			al.setId(id);
+			al.setTitle(rs.getString(1));
 			DBUtils.closeAll(rs);
 			return al;
 		}
