@@ -22,12 +22,12 @@ import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignment;
 import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentWriter;
 import de.uniheidelberg.cl.a10.io.DatabaseDocumentStreamProvider;
 
-public class AlignmentDummy extends MainWithIO {
+public class Alignment2Database extends MainWithIO {
 
 	boolean pairwise = true;
 
 	public static void main(String[] args) throws IOException {
-		AlignmentDummy ad = new AlignmentDummy();
+		Alignment2Database ad = new Alignment2Database();
 		ad.processArguments(args);
 		ad.run();
 	}
