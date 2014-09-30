@@ -28,6 +28,13 @@ public class DocumentSetMenuBar extends MenuBar {
 		mi.setNeedsDocument(true);
 		add(mi);
 
+		mi = new MenuItem();
+		mi.setName("Document Similarities");
+		mi.setHref("document-similarities");
+		mi.setJspFile("/document-similarities");
+		mi.setNeedsDocument(true);
+		add(mi);
+
 	}
 
 }

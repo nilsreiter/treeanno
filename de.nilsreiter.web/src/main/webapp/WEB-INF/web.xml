@@ -329,4 +329,12 @@
     <servlet-name>RPCMain</servlet-name>
     <url-pattern>/rpc/main</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<servlet-name>DocumentSimilarities</servlet-name>
+  	<jsp-file>/documentset/document-similarities.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>DocumentSimilarities</servlet-name>
+  	<url-pattern>/document-similarities</url-pattern>
+  </servlet-mapping>
 </web-app>
