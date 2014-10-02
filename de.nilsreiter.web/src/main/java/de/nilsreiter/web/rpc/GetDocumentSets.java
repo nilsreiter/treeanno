@@ -11,13 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.nilsreiter.web.AbstractServlet;
 import de.nilsreiter.web.beans.DocumentSetInfo;
 
 /**
  * Servlet implementation class GetDocumentSets
  */
-public class GetDocumentSets extends AbstractServlet {
+public class GetDocumentSets extends RPCServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -33,10 +32,7 @@ public class GetDocumentSets extends AbstractServlet {
 		for (DocumentSetInfo dsi : list) {
 			jsarr.put(new JSONObject(dsi));
 		}
-		response.setContentType("application/json");
-		response.getWriter().print(jsarr.toString());
-		response.getWriter().flush();
-		response.getWriter().close();
+		this.returnJSON(response, jsarr);
 	}
 
 }
