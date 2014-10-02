@@ -1,7 +1,6 @@
 package de.nilsreiter.web.rpc;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -17,9 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -72,57 +68,44 @@ public class SearchEvents extends RPCServlet {
 		List<Event[]> events = new LinkedList<Event[]>();
 		Map<Document, Map<Long, Set<Event>>> countMap =
 				new HashMap<Document, Map<Long, Set<Event>>>();
-		try {
-			documents =
-					docMan.getDocumentSetReader()
-							.read(request.getParameter("doc")).getSet();
-			for (Document document : documents) {
-				Map<Long, Set<Event>> thisMap = new HashMap<Long, Set<Event>>();
-				List<? extends Event> eventsInDocument = document.getEvents();
+		documents = getDocumentSet(request).getSet();
+		for (Document document : documents) {
+			Map<Long, Set<Event>> thisMap = new HashMap<Long, Set<Event>>();
+			List<? extends Event> eventsInDocument = document.getEvents();
 
-				for (int i = 0; i < eventsInDocument.size(); i++) {
-					Event event = eventsInDocument.get(i);
+			for (int i = 0; i < eventsInDocument.size(); i++) {
+				Event event = eventsInDocument.get(i);
 
-					int si = 0;
-					while (si < query.getLength() && query.matches(event, si)
-							&& i + si < eventsInDocument.size() - 1) {
-						si++;
-						event = eventsInDocument.get(i + si);
-					};
-					if (si == query.getLength()) {
-						Event[] hitArray =
-								new Event[window * 2 + query.getLength()];
-						int offset = i - window;
-						for (int j = i - window; j <= i + window; j++) {
-							if (j < 0)
-								hitArray[j - offset] = null;
-							else if (j >= eventsInDocument.size())
-								hitArray[j - offset] = null;
-							else
-								hitArray[j - offset] = eventsInDocument.get(j);
-						}
-						events.add(hitArray);
-
-						long perc =
-								Math.round((event.indexOf() / (double) eventsInDocument
-										.size()) * xresolution);
-						if (!thisMap.containsKey(perc))
-							thisMap.put(perc, new HashSet<Event>());
-						thisMap.get(perc).add(event);
+				int si = 0;
+				while (si < query.getLength() && query.matches(event, si)
+						&& i + si < eventsInDocument.size() - 1) {
+					si++;
+					event = eventsInDocument.get(i + si);
+				};
+				if (si == query.getLength()) {
+					Event[] hitArray =
+							new Event[window * 2 + query.getLength()];
+					int offset = i - window;
+					for (int j = i - window; j <= i + window; j++) {
+						if (j < 0)
+							hitArray[j - offset] = null;
+						else if (j >= eventsInDocument.size())
+							hitArray[j - offset] = null;
+						else
+							hitArray[j - offset] = eventsInDocument.get(j);
 					}
+					events.add(hitArray);
 
+					long perc =
+							Math.round((event.indexOf() / (double) eventsInDocument
+									.size()) * xresolution);
+					if (!thisMap.containsKey(perc))
+						thisMap.put(perc, new HashSet<Event>());
+					thisMap.get(perc).add(event);
 				}
-				countMap.put(document, thisMap);
+
 			}
-		} catch (ValidityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParsingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			countMap.put(document, thisMap);
 		}
 
 		JSONObject json = new JSONObject();
@@ -257,8 +240,8 @@ public class SearchEvents extends RPCServlet {
 						for (HasTokens shtoken : event.getArguments().get(role)) {
 							for (Token stoken : shtoken)
 								surfaceMatch |=
-								stoken.getSurface().matches(
-										roleConstraints.get(role));
+										stoken.getSurface().matches(
+												roleConstraints.get(role));
 						}
 
 						m &= surfaceMatch;
@@ -282,7 +265,7 @@ public class SearchEvents extends RPCServlet {
 
 		public void setEventSurface(String eventSurface) {
 			this.propertyConstraints
-			.put(CONSTRAINT_EVENT_SURFACE, eventSurface);
+					.put(CONSTRAINT_EVENT_SURFACE, eventSurface);
 		}
 
 		public String getEventLemma() {
