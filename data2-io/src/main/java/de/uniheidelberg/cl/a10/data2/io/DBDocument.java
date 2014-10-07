@@ -1,5 +1,6 @@
 package de.uniheidelberg.cl.a10.data2.io;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -46,7 +47,9 @@ public class DBDocument {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sb.toString());
 			if (rs.first()) {
-				return rs.getSQLXML(1).getBinaryStream();
+				// Compatibility with older versions of JDBC driver
+				return new ByteArrayInputStream(rs.getString(1).getBytes());
+				// return rs.getSQLXML(1).getBinaryStream();
 			}
 		} catch (SQLException e) {
 			throw new IOException(e);

@@ -1,10 +1,10 @@
 package de.uniheidelberg.cl.a10.data2.alignment.io;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLXML;
 import java.sql.Statement;
 
 import nu.xom.ParsingException;
@@ -35,9 +35,11 @@ AlignmentReader<T> {
 		Statement stmt = connection.createStatement();
 		ResultSet rs = stmt.executeQuery(database.getSelectStatement(id));
 		if (rs.first()) {
-			SQLXML sx = rs.getSQLXML(2);
+			byte[] arr = rs.getString(2).getBytes();
+			// SQLXML sx = rs.getSQLXML(2);
 			Alignment_impl<T> al =
-					(Alignment_impl<T>) super.read(sx.getBinaryStream());
+					(Alignment_impl<T>) super
+					.read(new ByteArrayInputStream(arr));
 			al.setId(id);
 			al.setTitle(rs.getString(1));
 			DBUtils.closeAll(rs);
