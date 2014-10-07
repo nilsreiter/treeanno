@@ -32,46 +32,7 @@
     <servlet-name>ViewEventScores</servlet-name>
     <servlet-class>de.nilsreiter.web.EventScoreLoader</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>LoadDocument</servlet-name>
-    <url-pattern>/view-document</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ViewAlignment</servlet-name>
-    <url-pattern>/view-alignment</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ViewDocumentSet</servlet-name>
-    <url-pattern>/view-document-set</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ViewEventSimilaritiesDocument</servlet-name>
-    <url-pattern>/view-event-similarities-document</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ViewEventSimilaritiesDocumentSet</servlet-name>
-    <url-pattern>/view-event-similarities-document-set</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ViewEventSimilaritiesAlignment</servlet-name>
-    <url-pattern>/view-event-similarities-alignment</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ViewEventScores</servlet-name>
-    <url-pattern>/view-event-scores</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>SelectDocument</servlet-name>
-    <url-pattern>/select-document</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>SelectAlignment</servlet-name>
-    <url-pattern>/select-alignment</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>SelectDocumentSet</servlet-name>
-    <url-pattern>/select-document-set</url-pattern>
-  </servlet-mapping>
+  
   <context-param>
     <param-name>dbhost</param-name>
     <param-value>127.0.0.1</param-value>
@@ -108,10 +69,7 @@
     <servlet-name>GetEventScores</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEventScores</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>GetEventScores</servlet-name>
-    <url-pattern>/rpc/get-event-scores</url-pattern>
-  </servlet-mapping>
+  
   <servlet>
     <servlet-name>SelectDocument</servlet-name>
     <jsp-file>/document/select.jsp</jsp-file>
@@ -130,125 +88,77 @@
     <servlet-name>GetEventSimilarities</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEventSimilarities</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>GetEventSimilarities</servlet-name>
-    <url-pattern>/rpc/get-event-similarities</url-pattern>
-  </servlet-mapping>
+  
   <servlet>
     <description></description>
     <servlet-name>GetAlignments</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetAlignments</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>GetAlignments</servlet-name>
-    <url-pattern>/rpc/get-alignments</url-pattern>
-  </servlet-mapping>
+
   <servlet>
     <description></description>
     <display-name>CreateDocumentSet</display-name>
     <servlet-name>CreateDocumentSet</servlet-name>
     <servlet-class>de.nilsreiter.web.CreateDocumentSet</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>CreateDocumentSet</servlet-name>
-    <url-pattern>/create-documentset</url-pattern>
-  </servlet-mapping>
+
   <servlet>
     <servlet-name>ViewEventSequence</servlet-name>
     <servlet-class>de.nilsreiter.web.EventSequenceLoader</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>ViewEventSequence</servlet-name>
-    <url-pattern>/view-event-sequence</url-pattern>
-  </servlet-mapping>
+ 
   <servlet>
     <description></description>
     <display-name>GetEvents</display-name>
     <servlet-name>GetEvents</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEvents</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>GetEvents</servlet-name>
-    <url-pattern>/rpc/get-events</url-pattern>
-  </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>GetDocumentSets</display-name>
     <servlet-name>GetDocumentSets</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetDocumentSets</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>GetDocumentSets</servlet-name>
-    <url-pattern>/rpc/get-document-sets</url-pattern>
-  </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>GetDocumentInfo</display-name>
     <servlet-name>GetDocumentInfo</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetDocumentInfo</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>GetDocumentInfo</servlet-name>
-    <url-pattern>/rpc/get-document-info</url-pattern>
-  </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>DeleteDocumentSet</display-name>
     <servlet-name>DeleteDocumentSet</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.DeleteDocumentSet</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>DeleteDocumentSet</servlet-name>
-    <url-pattern>/rpc/delete-document-set</url-pattern>
-  </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>GetEvent</display-name>
     <servlet-name>GetEvent</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEvent</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>GetEvent</servlet-name>
-    <url-pattern>/rpc/get-event</url-pattern>
-  </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>GetEntities</display-name>
     <servlet-name>GetEntities</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEntities</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>GetEntities</servlet-name>
-    <url-pattern>/rpc/get-entities</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>EventSearch</servlet-name>
     <jsp-file>/documentset/event-search.jsp</jsp-file>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>EventSearch</servlet-name>
-    <url-pattern>/event-search</url-pattern>
-  </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>SearchEvents</display-name>
     <servlet-name>SearchEvents</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.SearchEvents</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>SearchEvents</servlet-name>
-    <url-pattern>/rpc/search-events</url-pattern>
-  </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>GetEventClasses</display-name>
     <servlet-name>GetEventClasses</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEventClasses</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>GetEventClasses</servlet-name>
-    <url-pattern>/rpc/get-event-classes</url-pattern>
-  </servlet-mapping>
   <filter>
     <filter-name>EncodingFilter</filter-name>
     <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
@@ -258,7 +168,7 @@
     </init-param>
     <init-param>
       <param-name>ignore</param-name>
-      <param-value>true</param-value>
+      <param-value>false</param-value>
     </init-param>
   </filter>
   <filter-mapping>
@@ -330,11 +240,118 @@
     <url-pattern>/rpc/main</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>DocumentSimilarities</servlet-name>
-  	<jsp-file>/documentset/document-similarities.jsp</jsp-file>
+    <servlet-name>DocumentSimilarities</servlet-name>
+    <jsp-file>/documentset/document-similarities.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>DocumentSimilarities</servlet-name>
-  	<url-pattern>/document-similarities</url-pattern>
+    <servlet-name>DocumentSimilarities</servlet-name>
+    <url-pattern>/document-similarities</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>GetDocumentSimilarities</display-name>
+    <servlet-name>GetDocumentSimilarities</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.GetDocumentSimilarities</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetDocumentSimilarities</servlet-name>
+    <url-pattern>/rpc/get-document-similarities</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetEventScores</servlet-name>
+    <url-pattern>/rpc/get-event-scores</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LoadDocument</servlet-name>
+    <url-pattern>/view-document</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewAlignment</servlet-name>
+    <url-pattern>/view-alignment</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewDocumentSet</servlet-name>
+    <url-pattern>/view-document-set</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewEventSimilaritiesDocument</servlet-name>
+    <url-pattern>/view-event-similarities-document</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewEventSimilaritiesDocumentSet</servlet-name>
+    <url-pattern>/view-event-similarities-document-set</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewEventSimilaritiesAlignment</servlet-name>
+    <url-pattern>/view-event-similarities-alignment</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewEventScores</servlet-name>
+    <url-pattern>/view-event-scores</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SelectDocument</servlet-name>
+    <url-pattern>/select-document</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SelectAlignment</servlet-name>
+    <url-pattern>/select-alignment</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SelectDocumentSet</servlet-name>
+    <url-pattern>/select-document-set</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>CreateDocumentSet</servlet-name>
+    <url-pattern>/create-documentset</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetEventSimilarities</servlet-name>
+    <url-pattern>/rpc/get-event-similarities</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetAlignments</servlet-name>
+    <url-pattern>/rpc/get-alignments</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ViewEventSequence</servlet-name>
+    <url-pattern>/view-event-sequence</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetEvents</servlet-name>
+    <url-pattern>/rpc/get-events</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetDocumentSets</servlet-name>
+    <url-pattern>/rpc/get-document-sets</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetDocumentInfo</servlet-name>
+    <url-pattern>/rpc/get-document-info</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DeleteDocumentSet</servlet-name>
+    <url-pattern>/rpc/delete-document-set</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetEvent</servlet-name>
+    <url-pattern>/rpc/get-event</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetEntities</servlet-name>
+    <url-pattern>/rpc/get-entities</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>EventSearch</servlet-name>
+    <url-pattern>/event-search</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SearchEvents</servlet-name>
+    <url-pattern>/rpc/search-events</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetEventClasses</servlet-name>
+    <url-pattern>/rpc/get-event-classes</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
