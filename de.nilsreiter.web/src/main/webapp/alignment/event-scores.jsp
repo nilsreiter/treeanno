@@ -34,8 +34,8 @@
 <div class="content level4">
 <div class="menu">
 
-<div>k = <input id="randomwalk_k" value="5" size="2"></input></div>
-<div>n = <input id="randomwalk_n" value="10" size="2"></input></div>
+<div>k = <input id="randomwalk_k" value="3" size="2"></input></div>
+<div>n = <input id="randomwalk_n" value="20" size="2"></input></div>
 <div id="randomwalk_redraw">Redraw</div>
 </div>
 
@@ -47,8 +47,8 @@
 $( ".level4 .menu div").css("display", "inline-block");
 $( ".level4 .menu div").css("margin-right", "10px");
 
-$( "#randomwalk_k" ).spinner({min:1, max:10,step:1, value:5});
-$( "#randomwalk_n" ).spinner({min:10, max:100,step:10, value:100});
+$( "#randomwalk_k" ).spinner({min:1, max:10,step:1, value:3});
+$( "#randomwalk_n" ).spinner({min:10, max:100,step:10, value:20});
 
 $( "#randomwalk_redraw").button().click(function( event ) {
     event.preventDefault();
@@ -69,7 +69,8 @@ function redraw(n, k) {
 		$("#chart_container").show();
     	$('#chart_container').highcharts({
     	    chart: {
-        	    type: 'spline'
+        	    type: 'spline',  
+        	    zoomType: 'x'
         	},
         	title: {
         	    text: 'Event Scores'
@@ -77,9 +78,14 @@ function redraw(n, k) {
         	xAxis: { type:'linear' },
        	 	yAxis: {
             	title: { text: 'Transitions' }
-        	}, series: data['series'],
+        	}, 
+        	series: data['series'],
+        	tooltip: {
+                shared: true,
+                crosshairs: true
+            },
         	plotOptions: {
-            	spline: {
+        		spline: {
                 	dataLabels: { enabled: false },
             	}
         	},
