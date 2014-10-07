@@ -5,7 +5,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Event Search</title>
 <LINK href="css/style.css" rel="stylesheet" type="text/css" />
 <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
@@ -50,7 +49,7 @@
 	<img src="gfx/loading1.gif"/>
 </div>
 
-<form>
+<form accept-charset="UTF-8">
 <div id="eventpattern">
 <div class="eventspecifier" id="eventspec0" title="Event 0">
 <input type="hidden" name="doc" value="${param.doc}" />
@@ -180,7 +179,7 @@ var numberOfRoles = 0;
 
 		var seri = $(".eventspecifier input").serialize();
 		$( ".eventspecifier" ).dialog("close");
-		
+		// alert(seri);
 		var url = "rpc/search-events?"+seri;
 		jQuery.getJSON(url, function (data) { 
 
