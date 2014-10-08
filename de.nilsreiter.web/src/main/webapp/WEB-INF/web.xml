@@ -32,7 +32,6 @@
     <servlet-name>ViewEventScores</servlet-name>
     <servlet-class>de.nilsreiter.web.EventScoreLoader</servlet-class>
   </servlet>
-  
   <context-param>
     <param-name>dbhost</param-name>
     <param-value>127.0.0.1</param-value>
@@ -69,7 +68,6 @@
     <servlet-name>GetEventScores</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEventScores</servlet-class>
   </servlet>
-  
   <servlet>
     <servlet-name>SelectDocument</servlet-name>
     <jsp-file>/document/select.jsp</jsp-file>
@@ -88,25 +86,21 @@
     <servlet-name>GetEventSimilarities</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEventSimilarities</servlet-class>
   </servlet>
-  
   <servlet>
     <description></description>
     <servlet-name>GetAlignments</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetAlignments</servlet-class>
   </servlet>
-
   <servlet>
     <description></description>
     <display-name>CreateDocumentSet</display-name>
     <servlet-name>CreateDocumentSet</servlet-name>
     <servlet-class>de.nilsreiter.web.CreateDocumentSet</servlet-class>
   </servlet>
-
   <servlet>
     <servlet-name>ViewEventSequence</servlet-name>
     <servlet-class>de.nilsreiter.web.EventSequenceLoader</servlet-class>
   </servlet>
- 
   <servlet>
     <description></description>
     <display-name>GetEvents</display-name>
@@ -262,7 +256,7 @@
     <url-pattern>/rpc/get-event-scores</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>LoadDocument</servlet-name>
+    <servlet-name>ViewDocument</servlet-name>
     <url-pattern>/view-document</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
@@ -301,7 +295,7 @@
     <servlet-name>SelectDocumentSet</servlet-name>
     <url-pattern>/select-document-set</url-pattern>
   </servlet-mapping>
-    <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>CreateDocumentSet</servlet-name>
     <url-pattern>/create-documentset</url-pattern>
   </servlet-mapping>
@@ -353,5 +347,22 @@
     <servlet-name>GetEventClasses</servlet-name>
     <url-pattern>/rpc/get-event-classes</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <description></description>
+    <display-name>GetDocument</display-name>
+    <servlet-name>GetDocument</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.GetDocument</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetDocument</servlet-name>
+    <url-pattern>/rpc/get-document</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>ViewDocument</servlet-name>
+  	<jsp-file>/document/document2.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ViewDocument</servlet-name>
+  	<url-pattern>/view-document2</url-pattern>
+  </servlet-mapping>
 </web-app>

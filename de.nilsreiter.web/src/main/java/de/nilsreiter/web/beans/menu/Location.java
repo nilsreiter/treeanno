@@ -47,6 +47,10 @@ public class Location {
 		return area;
 	}
 
+	public Area getArea() {
+		return area;
+	}
+
 	public void setArea(Area state) {
 		this.area = state;
 	}
@@ -132,7 +136,7 @@ public class Location {
 	}
 
 	public String getOpenTarget() {
-		switch (this.getCurrentArea()) {
+		switch (this.getArea()) {
 		case Alignment:
 			return "select-alignment";
 		case Corpus:
@@ -147,7 +151,7 @@ public class Location {
 	}
 
 	public String getViewTarget() {
-		switch (this.getCurrentArea()) {
+		switch (this.getArea()) {
 		case Alignment:
 			return "view-alignment";
 		case Corpus:

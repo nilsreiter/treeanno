@@ -10,7 +10,7 @@ public class DocumentMenuBar extends MenuBar {
 		mi = new MenuItem();
 		mi.setName("View");
 		mi.setHref("view-document");
-		mi.setJspFile("/document/document.jsp");
+		mi.setJspFile("/view-document");
 		mi.setNeedsDocument(true);
 		add(mi);
 
