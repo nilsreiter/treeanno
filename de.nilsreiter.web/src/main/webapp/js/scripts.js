@@ -210,3 +210,43 @@ function init_controls(controlcontainer) {
 	});
 }
 
+function load_document(documentId, target) {
+	jQuery.getJSON("rpc/get-document?doc="+documentId, function (data) { 
+		var lastpos = 0;
+		
+		$(target).addClass(data['id']);
+		var cont = "."+data['id'];
+		for (sid in data['sentences']) {
+			var sentence = data['sentences'][sid];
+			$(cont).append('<span class="sentence '+sentence['id']+'"></span>');
+			for (tid in sentence['tl']) {
+				var tokid = sentence['tl'][tid];
+				var token = data['tokens'][tokid];
+				if (token['begin'] > lastpos) {
+					$(cont+" ."+sentence['id']).append(" ");
+				}
+				$(cont+" ."+sentence['id']).append('<span class="token '+token['id']+'">'+token['surface']+"</span>");
+				lastpos = token['end'];
+				
+				for (i in token['mentionIds']) {
+					var mentionId = token['mentionIds'][i];
+					$(cont+" ."+token['id']).addClass("mention "+mentionId);
+				}
+			}
+		}
+		
+		for (i in data['frames']) {
+			var frame = data['frames'][i];
+			for (j in frame['tl']) {
+				var tokId = frame['tl'][j];
+				$(cont+" ."+tokId).addClass("frame "+frame['id']+" "+ frame['name']);			
+			}
+		}
+		
+		for (i in data['events']) {
+			var event = data['events'][i];
+			$(cont+" ."+event['anchorId']).addClass("event " + event['class']+" "+event['id']);
+		};
+	});
+}
+
