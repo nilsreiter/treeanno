@@ -44,9 +44,12 @@
 <c:forEach var="i" begin="0" end="${arity-1}" >
 	<div class="alignmenttext surface">
 	<h1>${documents[i].id}</h1>
-	<jsp:include page="../common/document-box.jsp">
-		<jsp:param value="${i}" name="i"/>
-	</jsp:include>
+	<div class="${documents[i].id}">
+	</div>
+	<script>
+		load_document("${documents[i].id}", ".${documents[i].id}");
+	</script>
+
 	</div>
 </c:forEach>
 <div style="clear:left;"></div>
@@ -83,7 +86,7 @@ function toggleAlignments() {
 				context.lineWidth = 1;
 				offsets = new Array();
 				for (var i = 0; i < data[alId].length; i++) {
-					offsets.push($("#"+data[alId][i]).offset());
+					offsets.push($("."+data[alId][i]['d']+" ."+data[alId][i]['t']).offset());
 				};
 				context.beginPath();
 				if (offsets.length>1) {

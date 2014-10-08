@@ -12,13 +12,12 @@ import nu.xom.ValidityException;
 
 import org.json.JSONObject;
 
-import de.nilsreiter.web.AbstractServlet;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
 import de.uniheidelberg.cl.a10.data2.alignment.Link;
 import de.uniheidelberg.cl.a10.data2.alignment.io.DBAlignmentReader;
 
-public class GetAlignments extends AbstractServlet {
+public class GetAlignments extends RPCServlet {
 	DBAlignmentReader<Event> alignmentReader;
 
 	private static final long serialVersionUID = 1L;
@@ -42,18 +41,21 @@ public class GetAlignments extends AbstractServlet {
 		}
 
 		Alignment<Event> alignment;
+
 		try {
 			alignment = alignmentReader.read(request.getParameter("doc"));
 			JSONObject json = new JSONObject();
 			for (Link<Event> link : alignment.getAlignments()) {
 				for (Event event : link.getElements()) {
-					json.append(link.getId(), event.firstToken().getGlobalId());
+					JSONObject ev = new JSONObject();
+					ev.put("d", event.getRitualDocument().getId());
+					ev.put("t", event.firstToken().getId());
+					json.append(link.getId(), ev);
+					// json.append(link.getId(),
+					// event.firstToken().getGlobalId());
 				}
 			}
-			response.setContentType("application/json");
-			response.getWriter().print(json.toString());
-			response.getWriter().flush();
-			response.getWriter().close();
+			returnJSON(response, json);
 		} catch (ValidityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

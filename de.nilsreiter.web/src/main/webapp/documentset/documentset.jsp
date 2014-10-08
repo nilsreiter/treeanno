@@ -37,12 +37,14 @@
 
 <div id="alignmentcontent" class="level5 content">
 <c:forEach var="i" begin="0" end="${arity-1}" >
-	<div class="surface alignmenttext ${documents[i].id}">
+<div class="alignmenttext surface">
 	<h1>${documents[i].id}</h1>
-	<jsp:include page="../common/document-box.jsp">
-		<jsp:param value="${i}" name="i"/>
-	</jsp:include>
+	<div class="${documents[i].id}">
 	</div>
+	<script>
+		load_document("${documents[i].id}", ".${documents[i].id}");
+	</script>
+</div>
 </c:forEach>
 <div style="clear:left;"></div>
 
