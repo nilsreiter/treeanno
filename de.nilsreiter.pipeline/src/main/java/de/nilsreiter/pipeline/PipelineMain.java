@@ -55,11 +55,12 @@ public class PipelineMain extends MainWithIODir {
 	ExternalResourceDescription mfsResource;
 
 	enum Pipeline {
-		Basic, Second, Full, Ling, Event, Shallow, SegLemma, StanfordShallow
+		Basic, Second, Full, Ling, Event, Shallow, SegLemma, StanfordShallow,
+		NEFinder
 	};
 
 	enum ExportFormat {
-		XMI, DATA2, CWB
+		XMI, DATA2, CWB, TXT_NE_FILTER
 	}
 
 	Logger logger = LoggerFactory.getLogger(PipelineMain.class);
@@ -119,6 +120,8 @@ public class PipelineMain extends MainWithIODir {
 			pl = data2(pl, this.getOutputDirectory());
 		if (exportFormat.contains(ExportFormat.CWB))
 			pl = cwb(pl, this.getOutputDirectory());
+		if (exportFormat.contains(ExportFormat.TXT_NE_FILTER))
+			pl = PipelineBuilder.txt(pl, this.getOutputDirectory());
 		logger.info("Running pipeline.");
 		runPipeline(getXmiCollectionReader(), array(pl));
 	}
@@ -151,13 +154,19 @@ public class PipelineMain extends MainWithIODir {
 			return ae;
 		case StanfordShallow:
 			ae.add(createEngineDescription(LanguageToolSegmenter.class));
-			ae.add(createEngineDescription(StanfordLemmatizer.class));
 			ae.add(createEngineDescription(StanfordPosTagger.class));
+			ae.add(createEngineDescription(StanfordLemmatizer.class));
 			return ae;
 		case Shallow:
 			return this.getShallowPipeline();
 		case Second:
 			return this.getRowlandsonPipeline2();
+		case NEFinder:
+			ae.add(createEngineDescription(LanguageToolSegmenter.class));
+			ae.add(createEngineDescription(StanfordLemmatizer.class));
+			ae.add(createEngineDescription(StanfordPosTagger.class));
+			ae.add(createEngineDescription(StanfordNamedEntityRecognizer.class));
+			return ae;
 		default:
 			return this.getBasicRowlandsonPipeline();
 		}

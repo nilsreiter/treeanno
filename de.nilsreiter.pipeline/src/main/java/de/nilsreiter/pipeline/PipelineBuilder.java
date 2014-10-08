@@ -9,6 +9,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.nilsreiter.pipeline.uima.Data2Exporter;
+import de.nilsreiter.pipeline.uima.FilteredTxtExporter;
 import de.tudarmstadt.ukp.dkpro.core.io.conll.Conll2006Writer;
 import de.tudarmstadt.ukp.dkpro.core.io.imscwb.ImsCwbWriter;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
@@ -57,6 +58,15 @@ public class PipelineBuilder {
 		pipeline.add(createEngineDescription(Data2Exporter.class,
 				Data2Exporter.PARAM_OUTPUT_DIRECTORY, new File(directory,
 						"data2").getAbsolutePath()));
+		return pipeline;
+	}
+
+	public static List<AnalysisEngineDescription> txt(
+			List<AnalysisEngineDescription> pipeline, File directory)
+			throws ResourceInitializationException {
+		pipeline.add(createEngineDescription(FilteredTxtExporter.class,
+				FilteredTxtExporter.PARAM_OUTPUT_DIRECTORY, new File(directory,
+						"txt").getAbsolutePath()));
 		return pipeline;
 	}
 
