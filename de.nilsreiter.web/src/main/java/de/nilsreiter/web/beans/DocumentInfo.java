@@ -9,6 +9,8 @@ public class DocumentInfo extends ObjectInfo implements HasId {
 
 	String textBegin;
 
+	boolean open;
+
 	@Override
 	public String getId() {
 		return id;
@@ -32,6 +34,14 @@ public class DocumentInfo extends ObjectInfo implements HasId {
 
 	public void setTextBegin(String textBegin) {
 		this.textBegin = textBegin.substring(0, 50);
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
 
 }
