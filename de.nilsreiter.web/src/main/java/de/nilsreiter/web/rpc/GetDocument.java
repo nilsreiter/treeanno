@@ -1,6 +1,8 @@
 package de.nilsreiter.web.rpc;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +24,7 @@ import de.uniheidelberg.cl.a10.data2.Token;
  */
 public class GetDocument extends RPCServlet {
 	private static final long serialVersionUID = 1L;
+	Map<Document, JSONObject> jsonCache = new HashMap<Document, JSONObject>();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -32,6 +35,8 @@ public class GetDocument extends RPCServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		Document document = this.getDocument(request);
 
+		if (jsonCache.containsKey(document))
+			returnJSON(response, jsonCache.get(document));
 		JSONObject json = new JSONObject();
 		json.put("id", document.getId());
 
@@ -63,6 +68,8 @@ public class GetDocument extends RPCServlet {
 			events.put(event.getId(), JSONConversion.getEvent(event));
 		}
 		json.put("events", events);
+
+		jsonCache.put(document, json);
 
 		returnJSON(response, json);
 
