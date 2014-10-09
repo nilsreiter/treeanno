@@ -211,9 +211,13 @@ function init_controls(controlcontainer) {
 }
 
 function load_document(documentId, target) {
+	 $(".level4").prepend('<div id="loading"><img src="gfx/loading1.gif"/></div>');
+	 $(".level5").hide();
+	// $(target).addClass("bloading");
+	
 	jQuery.getJSON("rpc/get-document?doc="+documentId, function (data) { 
+		// alert("received");
 		var lastpos = 0;
-		
 		$(target).addClass(data['id']);
 		var cont = "."+data['id'];
 		for (sid in data['sentences']) {
@@ -247,6 +251,10 @@ function load_document(documentId, target) {
 			var event = data['events'][i];
 			$(cont+" ."+event['anchorId']).addClass("event " + event['class']+" "+event['id']);
 		};
+		
+		
+		$("#loading").remove();
+		 $(".level5").show();
 	});
 }
 
