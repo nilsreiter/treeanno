@@ -33,11 +33,11 @@
 <div class="menu">
 <%@ include file="../controls.html" %>
 </div>
-
-<div class="content level5">
 <div id="loading">
 	<img src="gfx/loading1.gif"/>
 </div>
+<div class="content level5">
+
 
 <c:forEach var="i" begin="0" end="${arity-1}" >
 	<div class="originaltext surface">

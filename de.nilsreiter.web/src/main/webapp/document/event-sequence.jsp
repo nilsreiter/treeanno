@@ -62,6 +62,11 @@
 </div>
 
 <script>
+
+//$(".level5").hide();
+$(".level4").prepend('<div id="loading"><img src="gfx/loading1.gif"/></div>');
+
+
 jQuery.getJSON("rpc/get-events?doc=${param.doc}", function (data) { 
 	var id = data['id'];
 	var eventClasses = new Object();
@@ -98,7 +103,9 @@ jQuery.getJSON("rpc/get-events?doc=${param.doc}", function (data) {
 		}
 	});
 	$("#sidebar > div").accordion({ header: "h2", heightStyle: "fill" });
-	
+	$("#loading").remove();
+	//$(".level5").show();
+
 })
 
 </script>
