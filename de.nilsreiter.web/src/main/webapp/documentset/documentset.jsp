@@ -54,6 +54,8 @@
 </div>
 </div>
 <script>
+jQuery.getJSON("rpc/set-area?arg=DocumentSet", function (data) { });
+	
 init_controls("div.level4 > div.menu");
 
 </script>

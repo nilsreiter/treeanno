@@ -358,11 +358,31 @@
     <url-pattern>/rpc/get-document</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>ViewDocument</servlet-name>
-  	<jsp-file>/document/document2.jsp</jsp-file>
+    <servlet-name>ViewDocument</servlet-name>
+    <jsp-file>/document/document2.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>ViewDocument</servlet-name>
-  	<url-pattern>/view-document2</url-pattern>
+    <servlet-name>ViewDocument</servlet-name>
+    <url-pattern>/view-document2</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>FileServlet</display-name>
+    <servlet-name>FileServlet</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.FileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FileServlet</servlet-name>
+    <url-pattern>/rpc/file</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SetArea</display-name>
+    <servlet-name>SetArea</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.SetArea</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SetArea</servlet-name>
+    <url-pattern>/rpc/set-area</url-pattern>
   </servlet-mapping>
 </web-app>
