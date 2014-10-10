@@ -20,6 +20,10 @@ div#loading {
 	text-align:center;
 }
 
+.bloading {
+	background-image:url(../gfx/loading1.gif);
+}
+
 div#alignmentcontent {
 	position:relative;
 }
