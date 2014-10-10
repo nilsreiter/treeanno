@@ -214,7 +214,9 @@ function load_document(documentId, target) {
 	 $(".level4").prepend('<div id="loading"><img src="gfx/loading1.gif"/></div>');
 	 $(".level5").hide();
 	// $(target).addClass("bloading");
-	
+	$("#button-highlight-frames").button({enable:false});
+	$("#button-highlight-events").button({enable:false});
+
 	jQuery.getJSON("rpc/get-document?doc="+documentId, function (data) { 
 		// alert("received");
 		var lastpos = 0;
@@ -229,7 +231,7 @@ function load_document(documentId, target) {
 				if (token['begin'] > lastpos) {
 					$(cont+" ."+sentence['id']).append(" ");
 				}
-				$(cont+" ."+sentence['id']).append('<span class="token '+token['id']+'">'+token['surface']+"</span>");
+				$(cont+" ."+sentence['id']).append('<span class="token '+token['id']+'" title="'+token['id']+'">'+token['surface']+"</span>");
 				lastpos = token['end'];
 				
 				for (i in token['mentionIds']) {
@@ -238,23 +240,26 @@ function load_document(documentId, target) {
 				}
 			}
 		}
-		
+		$("#loading").remove();
+		$(".level5").show();
+
 		for (i in data['frames']) {
 			var frame = data['frames'][i];
 			for (j in frame['tl']) {
 				var tokId = frame['tl'][j];
 				$(cont+" ."+tokId).addClass("frame "+frame['id']+" "+ frame['name']);			
+				$(cont+" ."+tokId).attr("title", $(cont+" ."+tokId).attr('title') +" " +frame['name']);			
 			}
 		}
+		$("#button-highlight-frames").button({enable:true});
 		
 		for (i in data['events']) {
 			var event = data['events'][i];
 			$(cont+" ."+event['anchorId']).addClass("event " + event['class']+" "+event['id']);
 		};
+		$("#button-highlight-events").button({enable:true});
+
 		
-		
-		$("#loading").remove();
-		 $(".level5").show();
 	});
 }
 
