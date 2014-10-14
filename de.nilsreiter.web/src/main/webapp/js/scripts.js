@@ -210,56 +210,65 @@ function init_controls(controlcontainer) {
 	});
 }
 
-function load_document(documentId, target) {
-	 $(".level4").prepend('<div id="loading"><img src="gfx/loading1.gif"/></div>');
-	 $(".level5").hide();
-	// $(target).addClass("bloading");
-	$("#button-highlight-frames").button({enable:false});
-	$("#button-highlight-events").button({enable:false});
+function load_document_html(documentId, otarget, callback) {
+	$.get('rpc/get-document?format=HTML&doc='+documentId, function(data) {
+		$(otarget).html(data);
+	});
+	callback();
+}
 
+function load_document(documentId, otarget, callback) {
+	
+	$(otarget).append('<div class="loading"><img src="gfx/loading1.gif" /></div>');
 	jQuery.getJSON("rpc/get-document?doc="+documentId, function (data) { 
 		// alert("received");
+		var target = document.createElement("div"); // $("<div></div>");
 		var lastpos = 0;
-		$(target).addClass(data['id']);
+ 		$(target).addClass(data['id']);
 		var cont = "."+data['id'];
 		for (sid in data['sentences']) {
 			var sentence = data['sentences'][sid];
-			$(cont).append('<span class="sentence '+sentence['id']+'"></span>');
+			$(target).append('<span class="sentence '+sentence['id']+'"></span>');
 			for (tid in sentence['tl']) {
 				var tokid = sentence['tl'][tid];
 				var token = data['tokens'][tokid];
+				var tokenHTML = '<span id="'+data['id']+'-'+token['id']+'" class="token '+token['id']+'" title="'+token['id']+'">'+token['surface']+"</span>";
 				if (token['begin'] > lastpos) {
-					$(cont+" ."+sentence['id']).append(" ");
+					$("span."+sentence['id'], target).append(" ").append(tokenHTML);
+				} else {
+					$("span."+sentence['id'], target).append(tokenHTML);
 				}
-				$(cont+" ."+sentence['id']).append('<span class="token '+token['id']+'" title="'+token['id']+'">'+token['surface']+"</span>");
 				lastpos = token['end'];
 				
 				for (i in token['mentionIds']) {
 					var mentionId = token['mentionIds'][i];
-					$(cont+" ."+token['id']).addClass("mention "+mentionId);
+					$("span."+token['id'], target).addClass("mention "+mentionId);
 				}
 			}
 		}
-		$("#loading").remove();
-		$(".level5").show();
-
+		// alert("tokens done.");
+		
 		for (i in data['frames']) {
 			var frame = data['frames'][i];
 			for (j in frame['tl']) {
 				var tokId = frame['tl'][j];
-				$(cont+" ."+tokId).addClass("frame "+frame['id']+" "+ frame['name']);			
-				$(cont+" ."+tokId).attr("title", $(cont+" ."+tokId).attr('title') +" " +frame['name']);			
+				$("span."+tokId, target).addClass(frame['name'] + " frame " + frame['id']);			
+				$("span."+tokId, target).attr( "title", function( i, val ) {
+					  return val + " " + frame['name'];
+				});
 			}
 		}
-		$("#button-highlight-frames").button({enable:true});
 		
 		for (i in data['events']) {
 			var event = data['events'][i];
-			$(cont+" ."+event['anchorId']).addClass("event " + event['class']+" "+event['id']);
+			$("span."+event['anchorId'], target).addClass(event['id'] + " event " + event['class']);
 		};
-		$("#button-highlight-events").button({enable:true});
 
-		
+		$(".loading", otarget).remove();
+		$(target).hide();
+		$(otarget).append(target);
+		$(target).fadeIn();
+		callback();
 	});
 }
 
