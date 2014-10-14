@@ -2,7 +2,9 @@
 	<jsp:directive.page contentType="text/html; charset=UTF-8" 
 		pageEncoding="UTF-8" session="true" import="java.util.*, de.uniheidelberg.cl.a10.data2.*"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<jsp:useBean id="location" class="de.nilsreiter.web.beans.menu.Location" scope="session">
+	<jsp:setProperty name="area" property="de.nilsreiter.web.beans.menu.Location.Area.Document" />
+</jsp:useBean>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title></title>
