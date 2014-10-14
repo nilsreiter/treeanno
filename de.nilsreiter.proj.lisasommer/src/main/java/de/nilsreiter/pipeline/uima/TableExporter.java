@@ -26,7 +26,7 @@ public class TableExporter extends JCasConsumer_ImplBase {
 	public static final String PARAM_PRINT_STAT = "Print Statistics";
 
 	@ConfigurationParameter(name = PARAM_OUTPUTDIR)
-	File outputDir;
+	String outputDir;
 
 	@ConfigurationParameter(name = PARAM_SENTENCES)
 	boolean markSentences = true;
@@ -71,8 +71,13 @@ public class TableExporter extends JCasConsumer_ImplBase {
 				fw =
 						new FileWriter(new File(this.outputDir,
 								dmd.getDocumentId() + ".stat.txt"));
-				fw.write(counter.toString());
-
+				for (String item : counter.keySet()) {
+					fw.write(item);
+					fw.write("\t");
+					fw.write(String.valueOf(counter.get(item)));
+					fw.write("\n");
+				}
+				fw.close();
 			}
 		} catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
