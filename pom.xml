@@ -91,6 +91,7 @@
   	<module>de.nilsreiter.pipeline.event</module>
   	<module>de.nilsreiter.alignment.rwalk</module>
   	<module>de.nilsreiter.pipeline.langdetect</module>
+  	<module>de.nilsreiter.proj.lisasommer</module>
   </modules>
   <dependencies>
  
