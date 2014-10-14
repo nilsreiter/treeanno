@@ -6,6 +6,7 @@ import java.util.Set;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -20,8 +21,10 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 
 public class LanguageAnnotator extends JCasAnnotator_ImplBase {
 
-	String profileDirectory =
-			"/Users/reiterns/Downloads/langdetect-03-03-2014/profiles";
+	public static final String PARAM_PROFILES_DIRECTORY = "Profiles Directory";
+
+	@ConfigurationParameter(name = PARAM_PROFILES_DIRECTORY, mandatory = true)
+	String profileDirectory = null;
 
 	Set<String> languageCandidates = new HashSet<String>();
 
@@ -30,6 +33,7 @@ public class LanguageAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context)
 			throws ResourceInitializationException {
+		super.initialize(context);
 		languageCandidates.add("de");
 		languageCandidates.add("en");
 		try {
