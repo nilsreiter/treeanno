@@ -175,6 +175,11 @@
   		</artifactId>
   		<version>1.6.2</version>
   	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter.pipeline.langdetect</groupId>
+  		<artifactId>de.nilsreiter.pipeline.langdetect</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
   <repositories>
   <repository>
