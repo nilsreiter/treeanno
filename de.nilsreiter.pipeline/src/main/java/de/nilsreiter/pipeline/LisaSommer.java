@@ -25,6 +25,9 @@ public class LisaSommer extends MainWithIODir {
 			usage = "The directory of the language profiles")
 	File languageProfilesDirectory;
 
+	@Option(name = "--sentences")
+	boolean sentences = false;
+
 	public static void main(String[] args) throws Exception {
 		LisaSommer sm = new LisaSommer();
 		sm.processArguments(args);
@@ -39,7 +42,9 @@ public class LisaSommer extends MainWithIODir {
 				LanguageAnnotator.PARAM_PROFILES_DIRECTORY,
 				this.languageProfilesDirectory));
 		ae.add(createEngineDescription(TableExporter.class,
-				TableExporter.PARAM_OUTPUTDIR, this.getOutputDirectory()));
+				TableExporter.PARAM_OUTPUTDIR, this.getOutputDirectory(),
+				TableExporter.PARAM_PRINT_STAT, true,
+				TableExporter.PARAM_SENTENCES, sentences));
 		runPipeline(
 				createReader(TextReader.class,
 						TextReader.PARAM_SOURCE_LOCATION,

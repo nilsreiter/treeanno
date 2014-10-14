@@ -15,6 +15,7 @@ import de.nilsreiter.pipeline.langdetect.type.Language;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.uniheidelberg.cl.reiter.util.Counter;
 
 public class TableExporter extends JCasConsumer_ImplBase {
 
@@ -22,11 +23,18 @@ public class TableExporter extends JCasConsumer_ImplBase {
 
 	public static final String PARAM_SENTENCES = "Mark Sentences";
 
+	public static final String PARAM_PRINT_STAT = "Print Statistics";
+
 	@ConfigurationParameter(name = PARAM_OUTPUTDIR)
 	File outputDir;
 
 	@ConfigurationParameter(name = PARAM_SENTENCES)
 	boolean markSentences = true;
+
+	@ConfigurationParameter(name = PARAM_PRINT_STAT)
+	boolean printStatistics = true;
+
+	Counter<String> counter = new Counter<String>();
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
@@ -38,8 +46,10 @@ public class TableExporter extends JCasConsumer_ImplBase {
 							new File(this.outputDir, dmd.getDocumentId()));
 			for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
 				if (markSentences) fw.write("<s>\n");
+				counter.add("Sentences");
 				for (Token token : JCasUtil.selectCovered(jcas, Token.class,
 						sentence)) {
+					counter.add("Tokens");
 					fw.write(token.getCoveredText());
 					fw.write("\t");
 					List<Language> langAnnos =
@@ -49,12 +59,21 @@ public class TableExporter extends JCasConsumer_ImplBase {
 						fw.write("\t");
 						fw.write(String.valueOf(langAnnos.get(0)
 								.getConfidence()));
+						counter.add(langAnnos.get(0).getLanguage());
 					}
 					fw.write("\n");
 				}
 				if (markSentences) fw.write("</s>");
 			}
 			fw.close();
+
+			if (printStatistics) {
+				fw =
+						new FileWriter(new File(this.outputDir,
+								dmd.getDocumentId() + ".stat.txt"));
+				fw.write(counter.toString());
+
+			}
 		} catch (IOException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
