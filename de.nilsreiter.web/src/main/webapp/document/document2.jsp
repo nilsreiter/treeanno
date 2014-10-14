@@ -21,9 +21,7 @@
 <script>
 init_controls(".level4 > .menu");
 
-jQuery(window).load(function () {
-	load_document("${param.doc}", ".originaltext");
-});
+load_document_html("${param.doc}", ".originaltext");
 
 
 </script>
