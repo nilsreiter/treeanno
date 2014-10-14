@@ -1,6 +1,5 @@
 package de.nilsreiter.pipeline;
 
-import static de.nilsreiter.pipeline.PipelineBuilder.array;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.apache.uima.fit.factory.CollectionReaderFactory.createReader;
 import static org.apache.uima.fit.pipeline.SimplePipeline.runPipeline;
@@ -8,6 +7,7 @@ import static org.apache.uima.fit.pipeline.SimplePipeline.runPipeline;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -48,8 +48,15 @@ public class LisaSommer extends MainWithIODir {
 		runPipeline(
 				createReader(TextReader.class,
 						TextReader.PARAM_SOURCE_LOCATION,
-						this.getInputDirectory(), TextReader.PARAM_LANGUAGE,
-						"de"), array(ae));
+						this.getInputDirectory() + File.separator + "*.txt",
+						TextReader.PARAM_LANGUAGE, "de"), array(ae));
 
+	}
+
+	public static AnalysisEngineDescription[] array(
+			List<AnalysisEngineDescription> pipeline) {
+		AnalysisEngineDescription[] arr =
+				new AnalysisEngineDescription[pipeline.size()];
+		return pipeline.toArray(arr);
 	}
 }
