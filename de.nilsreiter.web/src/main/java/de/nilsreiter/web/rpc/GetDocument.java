@@ -80,6 +80,7 @@ public class GetDocument extends RPCServlet {
 			int lastpos = 0;
 			for (Token token : sentence.getTokens()) {
 				Span tokenSpan = new Span();
+				tokenSpan.setId(token.getGlobalId());
 				Set<String> classes = new HashSet<String>();
 				classes.add("token");
 				classes.add(token.getId());

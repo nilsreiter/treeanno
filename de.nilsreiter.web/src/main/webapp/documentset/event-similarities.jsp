@@ -33,17 +33,20 @@
 <div class="menu">
 	<%@ include file="../controls.html" %>
 </div>
-<div id="loading">
-	<img src="gfx/loading1.gif"/>
-</div>
 
-<div id="alignmentcontent" class="content level5" >
+
+<div id="#event-similarities" class="content level5" >
 <c:forEach var="i" begin="0" end="${arity-1}" >
 	<div class="alignmenttext surface">
 	<h1>${documents[i].id}</h1>
-	<jsp:include page="../common/document-box-similarities.jsp">
-		<jsp:param value="${i}" name="i"/>
-	</jsp:include>
+	<div class="${documents[i].id}">
+	</div>
+	<script>
+		load_document_html("${documents[i].id}", ".${documents[i].id}", function() {
+			load_similarities("${param.doc}", 2);
+		});
+	</script>
+	
 	</div>
 </c:forEach>
 <div style="clear:left;"></div>
@@ -51,35 +54,40 @@
 </div>
 </div>
 </div>
+</div>
+</div>
 <script>
+var loaded = new Object();
 init_controls("div.level4 > div.menu");
 
-jQuery(".content.level5").hide();
 
-jQuery.getJSON('rpc/get-event-similarities?doctype=documentset&doc=${doc}', function (data) { 
-	for(var tokId in data) {
-		for (var type in data[tokId]) {
-			$("#"+tokId+" div.typechooser label."+type+ " input").bind("click", {'type':type,'data':data[tokId][type], 'tokId':tokId},  function (event) {
-				var type = event.data.type;
-				var tokId = event.data.tokId;
-				$("span.st"+type+" > span").unwrap();
-				$("div#sm"+type).remove();
-				if ($("#"+tokId+" div.typechooser label."+type+ " input").prop("checked")) {
-					for (var oTok in event.data.data) {
-						$("#"+oTok).wrap("<span class=\"st"+type+"\" style=\"background-color:rgba("+colors[type]+","+event.data.data[oTok]+")\"></span>");
+// if (loaded["#event-similarities"] == 1)	break;
+	
+	jQuery.getJSON('rpc/get-event-similarities?doctype=documentset&doc=${param.doc}', function (data) { 
+		for(var tokId in data) {
+			for (var type in data[tokId]) {
+				$("#"+tokId+" div.typechooser label."+type+ " input").bind("click", {'type':type,'data':data[tokId][type], 'tokId':tokId},  function (event) {
+					var type = event.data.type;
+					var tokId = event.data.tokId;
+					$("span.st"+type+" > span").unwrap();
+					$("div#sm"+type).remove();
+					if ($("#"+tokId+" div.typechooser label."+type+ " input").prop("checked")) {
+						for (var oTok in event.data.data) {
+							$("#"+oTok).wrap("<span class=\"st"+type+"\" style=\"background-color:rgba("+colors[type]+","+event.data.data[oTok]+")\"></span>");
+						}
+						$("#"+tokId).prepend("<div id=\"sm"+type+"\" class=\"sourcemarker\" style=\"background-color:rgb("+colors[type]+");\"></div>");
+						$("#sm"+type).bind("click", {type:type,tokId:tokId}, function(event) { 
+							$("#"+event.data.tokId+" div.typechooser label."+event.data.type+ " input").click();
+						});
 					}
-					$("#"+tokId).prepend("<div id=\"sm"+type+"\" class=\"sourcemarker\" style=\"background-color:rgb("+colors[type]+");\"></div>");
-					$("#sm"+type).bind("click", {type:type,tokId:tokId}, function(event) { 
-						$("#"+event.data.tokId+" div.typechooser label."+event.data.type+ " input").click();
-					});
-				}
-			});
+				});
+			}
 		}
-	}
-	$("#loading").hide();
-	jQuery(".content.level5").show();
+	});
+loaded["#event-similarities"] = 1;
 
-});
+
+
 	
 </script>
 

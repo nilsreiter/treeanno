@@ -47,7 +47,7 @@
 	<div class="${documents[i].id}">
 	</div>
 	<script>
-		load_document("${documents[i].id}", ".${documents[i].id}");
+		load_document("${documents[i].id}", ".${documents[i].id}", function() {});
 	</script>
 
 	</div>

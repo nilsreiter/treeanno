@@ -41,34 +41,7 @@
 		</div>
 	</div>
 	<div id="event-sequence"  class="content level4">
-		<div class="content level5 ${param.doc}">
-		</div>
-		<div id="sidebar">
-			<h1>Sidebar</h1>
-			<div>
-				<h2>Event Classes</h2>
-				<div>
-					<table class="eventClasses sortable">
-					<thead>
-						<tr><th>Event Class</th><th class="sorttable_numeric"># Instances</th></tr>
-					</thead>
-					<tbody></tbody>
-					<tfoot>
-						<tr><td><input type="checkbox" onchange="jQuery('#sidebar ul li input.evClassToggler').click()" />Show All</td></tr>					
-					</tfoot>
-					</table>
-				</div>
-				<h2>Entities</h2>
-				<div>
-					<table class="entities sortable">
-					<thead>
-						<tr><th>Entity Id</th><th class="sorttable_numeric"># Mentions</th></tr>
-					</thead>
-					<tbody></tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+		<%@ include file="event-sequence.html" %>
 	</div>
   <div id="event-similarities" class="content level4">
 	<div class="menu">
@@ -91,44 +64,7 @@ $( ".level3.content" ).tabs({
 		switch (ui['newPanel']['selector']) {
 		case "#event-sequence":
 			if (loaded["#event-sequence"] == 1) break;
-			jQuery.getJSON("rpc/get-events?doc=${param.doc}", function (data) { 
-				var id = data['id'];
-				var eventClasses = new Object();
-				var target = $("#event-sequence div."+id);
-				for (ev in data['events']) {
-					var event = data['events'][ev];
-			 		// alert(JSON.stringify(event));
-					if (typeof event != "undefined") {
-						target.append('<div class="'+event['id']+' event '+event['class']+'" style="overflow:auto"></div>');
-						var pos = (parseInt(event['position'] * 1000))/10;
-						$("#event-sequence #"+event['id']).append("<span>"+pos+"%</span>");
-						append_eventsvg("#event-sequence div."+event['id'], event, eventClasses);
-					}
-
-					
-				}
-				$("#sidebar table").css("font-size", "small");
-				for (evClass in eventClasses) {
-					$("#sidebar table.eventClasses tbody").append('<tr><td sorttable_customkey="'+evClass+'"><input class="evClassToggler" type="checkbox" checked="checked" onchange="jQuery(\'.event.'+evClass+'\').toggle()"/>'+evClass+" </td><td>"+eventClasses[evClass]+"</td></tr>");
-				}
-				// sorttable.makeSortable($("#sidebar table.eventClasses").get());
-				jQuery.getJSON("rpc/get-entities?doc=${param.doc}", function (data) {
-					for (entI in data['entities']) {
-						entity = data['entities'][entI];
-						var n = $("rect."+entity['id']).length;
-						if (n > 0) {
-							$("#sidebar table.entities tbody").append("<tr class=\""+entity['id']+"\"><td><input type=\"checkbox\" class=\"entityToggler "+entity['id']+"\"/>"+entity['id']+"</td><td>"+n+"</td></tr>");
-							$("input."+entity['id']).bind("change", {mentions:entity['mentionIds'],id:entity['id'],number:n},function(data) {
-								d3.selectAll("rect."+data.data['id']).classed("mentionhighlight", $(data.target).prop('checked'));
-								//jQuery("."+data.data['id']).toggleClass("mentionhighlight");
-								//$("tr."+data.data['id']).toggleClass("mentionhighlight");
-							});
-						}
-					}
-				});
-				$("#sidebar > div").accordion({ header: "h2", heightStyle: "fill" });
-				$("#loading").remove();
-			});
+			load_event_sequence("${param.doc}");
 			loaded["#event-sequence"] = 1;
 			break;
 		case "#event-similarities":
@@ -140,6 +76,7 @@ $( ".level3.content" ).tabs({
 					for (var i in functions) {
 						s += '<label class="checkbox '+functions[i]['readable']+'"><input type="checkbox" value="'+functions[i]['readable']+'"><span></span></label>'+functions[i]['readable']+'<br/>';
 					}
+					// alert(s);
 					$("#event-similarities span.event").append('<div class="typechooser">'+s+'</div>');
 					
 					jQuery.getJSON('rpc/get-event-similarities?doctype=document&doc=${param.doc}', function (data) { 

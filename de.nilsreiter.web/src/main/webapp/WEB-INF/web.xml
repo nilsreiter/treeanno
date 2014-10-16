@@ -153,6 +153,14 @@
     <servlet-name>GetEventClasses</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEventClasses</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Document</servlet-name>
+    <jsp-file>/document/document.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Document</servlet-name>
+    <url-pattern>/doc</url-pattern>
+  </servlet-mapping>
   <filter>
     <filter-name>EncodingFilter</filter-name>
     <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
@@ -384,5 +392,15 @@
   <servlet-mapping>
     <servlet-name>SetArea</servlet-name>
     <url-pattern>/rpc/set-area</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>StoreSVG</display-name>
+    <servlet-name>StoreSVG</servlet-name>
+    <servlet-class>de.nilsreiter.web.rpc.StoreSVG</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StoreSVG</servlet-name>
+    <url-pattern>/rpc/svg</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -82,6 +82,8 @@ public class AppContextListener implements ServletContextListener {
 					}
 				};
 				sc.setAttribute("simdatabase", sde);
+				sc.setAttribute("database", database);
+
 			} else {
 
 				Context initContext;
@@ -97,6 +99,7 @@ public class AppContextListener implements ServletContextListener {
 				SimilarityDatabase<Event> simdatabase =
 						new SimilarityDatabase_impl<Event>(database);
 				sc.setAttribute("simdatabase", simdatabase);
+				sc.setAttribute("database", database);
 			}
 			ServletDocumentManager sdm = new ServletDocumentManager();
 			sdm.setDatabase(database);

@@ -30,6 +30,12 @@ public abstract class AbstractServlet extends HttpServlet {
 						"docman");
 	}
 
+	protected <E extends Enum<E>> E getArgument(HttpServletRequest request,
+			Class<E> enumClass, String param, E defValue) {
+		if (request.getParameter(param) == null) return defValue;
+		return Enum.valueOf(enumClass, request.getParameter(param));
+	}
+
 	protected Location getLocation(Area area, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("location") == null) {

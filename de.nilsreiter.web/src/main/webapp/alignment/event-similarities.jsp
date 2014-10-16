@@ -31,7 +31,7 @@
 <%@ include file="../common/menu.jsp" %>
 
 
-<div class="content level4">
+<div id="event-similarities" class="content level4">
 
 <div class="menu">
 <%@ include file="../controls.html" %>

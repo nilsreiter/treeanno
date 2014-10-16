@@ -65,12 +65,84 @@ function dragmove(d) {
       .attr("x", d3.event.x)
 }
 
+function append_loadedsvg(target, event) {
+	jQuery.getJSON('rpc/svg?document='+event['documentId']+'&event='+event['id'], function (data) {
+		alert("svg");
+		alert(data['svg']);
+		//$("#event-sequence div."+event['id']).append(data['svg']);
+		var svgNode = (new DOMParser()).parseFromString(data['svg']);
+		//console.log(svgNode);
+		//alert(svgNode);
+		$(target).get().appendChild(svgNode);
+	});
+}
+
+function process_event(target, event, eventClasses) {
+	// alert(JSON.stringify(event));
+	if (typeof event != "undefined") {
+		target.append('<div class="'+event['id']+' event '+event['class']+'" style="overflow:auto"></div>');
+		var pos = (parseInt(event['position'] * 1000))/10;
+		$("#event-sequence ."+event['id']).append("<span>"+pos+"%</span>");
+		var url = 'rpc/svg?document='+event['documentId']+'&event='+event['id'];
+		// alert(url);
+		 append_eventsvg("#event-sequence div."+event['id'], event, eventClasses);
+//		jQuery.getJSON(url, {}, function (data2) {
+//			alert(data2);
+//			if (data2['error'] == 0) {
+				//$("#event-sequence div."+event['id']).append(data['svg']);
+				//var svgNode = (new DOMParser()).parseFromString(data['svg']);
+				//console.log(svgNode);
+				//alert(svgNode);
+				// $("#event-sequence div."+event['id']).get().appendChild(svgNode);						
+//			} else {
+				
+//			}
+//		});
+	}
+}
+
+function load_event_sequence(docId) {
+	jQuery.getJSON("rpc/get-events?doc="+docId, function (data) { 
+		var id = data['id'];
+		var eventClasses = new Object();
+		var target = $("#event-sequence div."+id);
+		for (ev in data['events']) {
+			var event = data['events'][ev];
+	 		process_event(target, event, eventClasses);
+		}
+		$("#sidebar table").css("font-size", "small");
+		for (evClass in eventClasses) {
+			$("#sidebar table.eventClasses tbody").append('<tr><td sorttable_customkey="'+evClass+'"><input class="evClassToggler" type="checkbox" checked="checked" onchange="jQuery(\'.event.'+evClass+'\').toggle()"/>'+evClass+" </td><td>"+eventClasses[evClass]+"</td></tr>");
+		}
+		// sorttable.makeSortable($("#sidebar table.eventClasses").get());
+		jQuery.getJSON("rpc/get-entities?doc="+docId, function (data) {
+			for (entI in data['entities']) {
+				entity = data['entities'][entI];
+				var n = $("rect."+entity['id']).length;
+				if (n > 0) {
+					$("#sidebar table.entities tbody").append("<tr class=\""+entity['id']+"\"><td><input type=\"checkbox\" class=\"entityToggler "+entity['id']+"\"/>"+entity['id']+"</td><td>"+n+"</td></tr>");
+					$("input."+entity['id']).bind("change", {mentions:entity['mentionIds'],id:entity['id'],number:n},function(data) {
+						d3.selectAll("rect."+data.data['id']).classed("mentionhighlight", $(data.target).prop('checked'));
+						//jQuery("."+data.data['id']).toggleClass("mentionhighlight");
+						//$("tr."+data.data['id']).toggleClass("mentionhighlight");
+					});
+				}
+			}
+		});
+		$("#sidebar > div").accordion({ header: "h2", heightStyle: "fill" });
+		$("#loading").remove();
+	});
+}
+
 function append_eventsvg(target, event, eventClasses) {
 	
 	if (typeof(event) == 'undefined')
-		return;
+		return;	
+	
+	
 	var svg = d3.select(target).append("svg");
 	svg.attr("height", 200);
+	svg.attr("class", event["id"]);
 	if (typeof( eventClasses[event['class']]) =='undefined')
 		eventClasses[event['class']] =1;
 	else 
@@ -141,6 +213,10 @@ function append_eventsvg(target, event, eventClasses) {
 		
 		svg.append("text").text(event['roles'][role]['name']).attr("x",left).attr("y",150).call(drag);
 	}
+	//jQuery.post('rpc/svg',
+	//	   { 'svg': (new XMLSerializer).serializeToString(svg.node()),
+	//	   	 'event': event['id'],
+	//	   	 'document': event['documentId']});
 }
 
 function eventtable(event, eventClasses) {
@@ -213,8 +289,8 @@ function init_controls(controlcontainer) {
 function load_document_html(documentId, otarget, callback) {
 	$.get('rpc/get-document?format=HTML&doc='+documentId, function(data) {
 		$(otarget).html(data);
+		callback();
 	});
-	callback();
 }
 
 function load_document(documentId, otarget, callback) {

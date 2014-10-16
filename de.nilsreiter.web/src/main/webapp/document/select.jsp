@@ -39,7 +39,7 @@ jQuery.getJSON("rpc/get-document-info", function (data) {
 		$(row).append("<td>"+data[i]['corpus']+"</td>");
 		$(row).append("<td>"+data[i]['id']+"</td>");
 		$(row).append("<td>"+data[i]['textBegin']+" ...</td>");
-		$(row).bind("click", {did:data[i]['id']}, function(data) {location.href="view-document?doc="+
+		$(row).bind("click", {did:data[i]['id']}, function(data) {location.href="doc?doc="+
 			data.data['did']});
 		$("table.filelist tbody").append(row);
 	}

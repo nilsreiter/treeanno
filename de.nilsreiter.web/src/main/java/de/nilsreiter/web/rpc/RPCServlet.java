@@ -30,4 +30,13 @@ public abstract class RPCServlet extends AbstractServlet {
 		response.getWriter().flush();
 		response.getWriter().close();
 	}
+
+	public void returnHTML(HttpServletResponse response, String htmlString)
+			throws IOException {
+		response.setContentType("text/html");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(htmlString);
+		response.getWriter().flush();
+		response.getWriter().close();
+	}
 }

@@ -30,7 +30,7 @@ public class Location {
 	@Deprecated
 	String corpus;
 
-	Area area;
+	Area area = Area.Document;
 
 	@Deprecated
 	String documentOrAlignment;
@@ -158,7 +158,7 @@ public class Location {
 			return null;
 		default:
 		case Document:
-			return "view-document";
+			return "doc";
 		case DocumentSet:
 			return "view-document-set";
 

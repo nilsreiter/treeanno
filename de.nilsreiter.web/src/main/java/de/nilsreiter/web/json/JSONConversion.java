@@ -37,6 +37,7 @@ public class JSONConversion {
 				/ event.getRitualDocument().getEvents().size());
 		eventObject.put("sentence", getSentence(event.firstToken()
 				.getSentence()));
+		eventObject.put("documentId", event.getRitualDocument().getId());
 		for (Token token : event.getTokens()) {
 			eventObject.append("token", JSONConversion.getToken(token));
 		}

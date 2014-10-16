@@ -7,11 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Document Set</title>
 <LINK href="css/style.css" rel="stylesheet" type="text/css" />
+<LINK href="css/event-similarity.css" rel="stylesheet" type="text/css" />
 <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="js/scripts.js" type="text/javascript"></script>
+<script src="js/event-similarities.js" type="text/javascript"></script>
 <script src='js/jcanvas.min.js'></script>
 <script src="js/jquery-ui/jquery-ui.min.js"></script>
 <link href="js/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+<script src="js/highcharts.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -22,41 +25,61 @@
 <%@ include file="../common/document-menu.jsp" %>
 
 
-<div class="content level3">
-<%@include file="../common/menu.jsp" %>
-
-
-<div class="content level4">
-<div class="menu">
-	<%@ include file="../controls.html" %>
-</div>
-
-
-
-
-
-<div id="alignmentcontent" class="level5 content">
-<c:forEach var="i" begin="0" end="${arity-1}" >
-<div class="alignmenttext surface">
-	<h1>${documents[i].id}</h1>
-	<div class="${documents[i].id}">
+<div class="level3 content">
+	<ul>
+		<li><a href="#view">View</a></li>
+		<li><a href="#event-similarities">Event Similarities</a></li>
+		<li><a href="#event-search">Event Search</a></li>
+	</ul>
+	<div id="view" class="content level4">
+		<div class="menu">
+			<%@ include file="../controls.html" %>
+		</div>
+		<div class="level5 content">
+		<c:forEach var="i" begin="0" end="${arity-1}" >
+			<div class="alignmenttext surface">
+				<h1>${documents[i].id}</h1>
+				<div class="${documents[i].id}"></div>
+				<script>	
+		load_document_html("${documents[i].id}", ".${documents[i].id}", function() {$("#loading").hide();});
+				</script>
+			</div>
+		</c:forEach>
+		<div style="clear:left;"></div>
+		</div>
 	</div>
-	<script>
-		load_document("${documents[i].id}", ".${documents[i].id}");
-	</script>
-</div>
-</c:forEach>
-<div style="clear:left;"></div>
-
-</div>
-</div>
+	<div id="event-similarities"  class="content level4">
+		<div class="menu">
+			<%@ include file="../controls.html" %>
+		</div>
+		<div class="content level5" >
+		<c:forEach var="i" begin="0" end="${arity-1}" >
+			<div class="alignmenttext surface">
+				<h1>${documents[i].id}</h1>
+				<div class="${documents[i].id}"></div>
+				<script>
+					load_document_html("${documents[i].id}", ".${documents[i].id}", function() {
+						load_similarities("${param.doc}", 2, "documentset");
+					});
+				</script>
+			</div>
+		</c:forEach>
+		<div style="clear:left;"></div>
+		</div>
+	</div>
+	<div id="event-search" class="content level4">
+		<%@ include file="event-search.html" %>
+	</div>
 </div>
 </div>
 </div>
 <script>
+init_controls("div.level4 > div.menu");
+
+$( ".level3.content" ).tabs();
+
 jQuery.getJSON("rpc/set-area?arg=DocumentSet", function (data) { });
 	
-init_controls("div.level4 > div.menu");
 
 </script>
 </body>

@@ -1,35 +1,35 @@
-span.token {
+#event-similarities span.token {
 	color:#999; 
 	font-size:small;
 }
 
-span.event {
+#event-similarities span.event {
 	color:#000;
 	font-size:medium;
 	position:relative;
 }
 
-.stWordNet {
+#event-similarities .stWordNet {
 	background-color:rgb(255,100,100);
 }
 
-.stFrameNet {
+#event-similarities .stFrameNet {
 	background-color:rgb(100,255,100);
 }
 
-.stVerbNet {
+#event-similarities .stVerbNet {
 	background-color:rgb(100,100,255);
 }
 
-.stArgumentText {
+#event-similarities .stArgumentText {
 	background-color:rgb(255,100,255);
 }
 
-.stGaussianDistanceSimilarity {
+#event-similarities .stGaussianDistanceSimilarity {
 	background-color:rgb(100,255,255);
 }
 
-div.typechooser {
+#event-similarities div.typechooser {
 	display:none;
 	font-size:small;
 	position:absolute;
@@ -37,14 +37,14 @@ div.typechooser {
 	left:0;
 	border:thin solid #AAA;
 	z-index:100;
-	width:100px;
+	width:170px;
 	border-radius:3px;
 	background-color:rgba(255,255,255,0.9);	
 }
 
 
-label.checkbox input[type="checkbox"] {display:none;}
-label.checkbox span {
+#event-similarities label.checkbox input[type="checkbox"] {display:none;}
+#event-similarities label.checkbox span {
     display:inline-block;
     border:2px solid #BBB;
     border-radius:10px;
@@ -55,19 +55,19 @@ label.checkbox span {
     background:#EEE;
     cursor:pointer;
 }
-label.checkbox :checked + span {
+#event-similarities label.checkbox :checked + span {
     background:#333;
 }
 
-span.event:hover div.typechooser {
+#event-similarities span.event:hover div.typechooser {
 	display:block;
 }
 
-div.typechooser:hover {
+#event-similarities div.typechooser:hover {
 	display:block;
 }
 
-div.sourcemarker{
+#event-similarities div.sourcemarker{
 	width:15px;
 	height:15px;
 	border-radius:7px;
