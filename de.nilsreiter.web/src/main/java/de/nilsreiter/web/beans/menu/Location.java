@@ -158,7 +158,7 @@ public class Location {
 			return null;
 		default:
 		case Document:
-			return "doc";
+			return "document";
 		case DocumentSet:
 			return "view-document-set";
 
