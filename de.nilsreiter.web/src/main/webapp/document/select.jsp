@@ -11,7 +11,13 @@
 	<jsp:directive.page contentType="text/html; charset=UTF-8" 
 		pageEncoding="UTF-8" session="true" import="java.util.*, de.uniheidelberg.cl.a10.data2.*"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+<sql:query var="rs" dataSource="jdbc/a10">
+select id, databaseId, corpus, text from documents
+</sql:query>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Document ${documents[0].id}</title>
@@ -41,11 +47,22 @@
 
 <div class="content level5">
 
+
 	<h1>Select Document</h1>
 	<div>
-	<table class="filelist">
-	<thead><tr><th>Id</th><th>Corpus</th><th>Name</th><th>Content</th></tr></thead>
-	<tbody></tbody>
+	<table class="filelist sortable">
+	<thead><tr><th>Id</th><th>Corpus</th><th>Name</th><th>Content</th><th>Action</th></tr></thead>
+	<tbody>
+		<c:forEach var="row" items="${rs.rows}">
+		<tr>
+    		<td>${row.databaseId}</td>
+    		<td>${row.corpus}</td>
+    		<td>${row.id}</td>
+    		<td>${fn:substring(row.text,0,50)}</td>
+    		<td><a href="document?doc=${row.id}">Open</a></td>
+		</tr>
+		</c:forEach>
+	</tbody>
 	</table>
 	</div>
 </div>
@@ -54,7 +71,7 @@
 </div>
 <script>
 $(".level5").accordion({ header: "h1", heightStyle:"content" });
-jQuery.getJSON("rpc/get-document-info", function (data) { 
+/*jQuery.getJSON("rpc/get-document-info", function (data) { 
 	for (var i in data) {
 		var row = document.createElement("tr");
 		
@@ -66,7 +83,7 @@ jQuery.getJSON("rpc/get-document-info", function (data) {
 			data.data['did']});
 		$("table.filelist tbody").append(row);
 	}
-});
+});*/
 </script>
 </body>
 </html>
