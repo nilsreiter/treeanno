@@ -138,10 +138,6 @@
     <servlet-class>de.nilsreiter.web.rpc.GetEntities</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>EventSearch</servlet-name>
-    <jsp-file>/documentset/event-search.jsp</jsp-file>
-  </servlet>
-  <servlet>
     <description></description>
     <display-name>SearchEvents</display-name>
     <servlet-name>SearchEvents</servlet-name>
@@ -153,14 +149,6 @@
     <servlet-name>GetEventClasses</servlet-name>
     <servlet-class>de.nilsreiter.web.rpc.GetEventClasses</servlet-class>
   </servlet>
-  <servlet>
-    <servlet-name>Document</servlet-name>
-    <jsp-file>/document/document.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Document</servlet-name>
-    <url-pattern>/doc</url-pattern>
-  </servlet-mapping>
   <filter>
     <filter-name>EncodingFilter</filter-name>
     <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
@@ -264,10 +252,6 @@
     <url-pattern>/rpc/get-event-scores</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>ViewDocument</servlet-name>
-    <url-pattern>/view-document</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
     <servlet-name>ViewAlignment</servlet-name>
     <url-pattern>/view-alignment</url-pattern>
   </servlet-mapping>
@@ -344,10 +328,6 @@
     <url-pattern>/rpc/get-entities</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>EventSearch</servlet-name>
-    <url-pattern>/event-search</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
     <servlet-name>SearchEvents</servlet-name>
     <url-pattern>/rpc/search-events</url-pattern>
   </servlet-mapping>
@@ -364,14 +344,6 @@
   <servlet-mapping>
     <servlet-name>GetDocument</servlet-name>
     <url-pattern>/rpc/get-document</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>ViewDocument</servlet-name>
-    <jsp-file>/document/document2.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ViewDocument</servlet-name>
-    <url-pattern>/view-document2</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
