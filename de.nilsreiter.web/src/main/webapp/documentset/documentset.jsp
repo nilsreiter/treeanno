@@ -15,6 +15,7 @@
 <script src="js/jquery-ui/jquery-ui.min.js"></script>
 <link href="js/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 <script src="js/highcharts.js" type="text/javascript"></script>
+<script src="js/modules/heatmap.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -30,6 +31,7 @@
 		<li><a href="#view">View</a></li>
 		<li><a href="#event-similarities">Event Similarities</a></li>
 		<li><a href="#event-search">Event Search</a></li>
+		<li><a href="#document-similarities">Document Similarities</a>
 	</ul>
 	<div id="view" class="content level4">
 		<div class="menu">
@@ -69,6 +71,27 @@
 	</div>
 	<div id="event-search" class="content level4">
 		<%@ include file="event-search.html" %>
+	</div>
+	<div id="document-similarities" class="content level4">
+		<div class="menu">
+			<input type="checkbox" id="showValuesButton" name="showValuesButton" value="1" checked="checked">
+			<label for="showValuesButton">Show Values</label>
+		</div>
+		<div class="content level5">
+			<div id="container"></div>
+			<script>
+ load_document_similarities("${param.doc}");
+
+$('#showValuesButton').button();
+$('#showValuesButton').on("click",function () {
+	load_document_similarities("${param.doc}");
+});
+
+
+
+</script>
+
+</div>
 	</div>
 </div>
 </div>

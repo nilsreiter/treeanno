@@ -348,3 +348,69 @@ function load_document(documentId, otarget, callback) {
 	});
 }
 
+
+function load_document_similarities(docId) {
+	jQuery.getJSON('rpc/get-document-similarities?doc='+docId, function (data) { 
+
+	    $('#container').highcharts({
+
+	        chart: {
+	            type: 'heatmap',
+	            marginTop: 40,
+	            marginBottom: 40
+	        },
+
+
+	        title: {
+	            text: 'Similarity of Documents'
+	        },
+
+	        xAxis: {
+	            categories: data['list']
+	        },
+
+	        yAxis: {
+	            categories: data['list'],
+	            title: null
+	        },
+
+	        colorAxis: {
+	            min: 0,
+	            minColor: '#FFFFFF',
+	            maxColor: Highcharts.getOptions().colors[0]
+	        },
+
+	        legend: {
+	            align: 'right',
+	            layout: 'vertical',
+	            margin: 0,
+	            verticalAlign: 'top',
+	            y: 25,
+	            symbolHeight: 320
+	        },
+
+	        tooltip: {
+	            formatter: function () {
+	                //return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> sold <br><b>' +
+	                //    this.point.value + '</b> items on <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
+	            }
+	        },
+
+	        series: [{
+	            name: 'Sales per employee',
+	            borderWidth: 1,
+	            data: data['data'],
+	            dataLabels: {
+	                enabled: $("#showValuesButton").val() == 1,
+	                color: 'black',
+	                format: '{point.value:.2f}',
+	                style: {
+	                    textShadow: 'none',
+	                    HcTextStroke: null
+	                }
+	            }
+	        }]
+
+	    });
+	})
+	};
