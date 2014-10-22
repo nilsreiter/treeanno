@@ -42,7 +42,7 @@ public abstract class AbstractServlet extends HttpServlet {
 			session.setAttribute("location", new Location());
 
 		}
-		((Location) session.getAttribute("location")).setArea(area);
+		// ((Location) session.getAttribute("location")).setArea(area);
 		return (Location) session.getAttribute("location");
 
 	}

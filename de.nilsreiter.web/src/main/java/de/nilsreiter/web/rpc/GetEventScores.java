@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.alignment.rwalk.NRWalk;
-import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.Event;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
@@ -51,7 +50,7 @@ public class GetEventScores extends RPCServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		getLocation(request).setArea(Area.Alignment);
+		// getLocation(request).setArea(Area.Alignment);
 		if (request.getParameter("doc") == null) {
 			response.getWriter().print("");
 			return;

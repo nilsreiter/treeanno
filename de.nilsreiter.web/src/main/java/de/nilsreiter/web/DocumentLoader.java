@@ -14,6 +14,7 @@ import de.nilsreiter.web.beans.menu.Location;
 import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.Document;
 
+@Deprecated
 public class DocumentLoader extends AbstractServlet {
 
 	/**
@@ -26,12 +27,12 @@ public class DocumentLoader extends AbstractServlet {
 			throws IOException, ServletException {
 
 		Location location = getLocation(Area.Document, request);
-		location.setArea(Area.Document);
+		// location.setArea(Area.Document);
 		List<Document> documents = new ArrayList<Document>();
 
 		Document document = getDocument(request);
 
-		location.setCurrentObject(Area.Document, document.getId());
+		// location.setCurrentObject(Area.Document, document.getId());
 		if (document != null) documents = Arrays.asList(document);
 
 		request.setAttribute("documents", documents);

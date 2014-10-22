@@ -30,6 +30,7 @@ public class Location {
 	@Deprecated
 	String corpus;
 
+	@Deprecated
 	Area area = Area.Document;
 
 	@Deprecated
@@ -47,10 +48,12 @@ public class Location {
 		return area;
 	}
 
+	@Deprecated
 	public Area getArea() {
 		return area;
 	}
 
+	@Deprecated
 	public void setArea(Area state) {
 		this.area = state;
 	}
@@ -80,6 +83,7 @@ public class Location {
 		}
 	}
 
+	@Deprecated
 	public void setCurrentObject(Area ara, String obj) {
 		switch (ara) {
 		case Alignment:
@@ -95,7 +99,6 @@ public class Location {
 			break;
 		default:
 			break;
-
 		}
 	}
 
@@ -121,6 +124,7 @@ public class Location {
 		return getMenu(getCurrentArea());
 	}
 
+	@Deprecated
 	public MenuBar getMenu(Area area) {
 		switch (area) {
 		case Alignment:

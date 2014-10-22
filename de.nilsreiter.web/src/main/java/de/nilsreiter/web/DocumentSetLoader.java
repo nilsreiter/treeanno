@@ -8,13 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.nilsreiter.web.beans.menu.Location;
-import de.nilsreiter.web.beans.menu.Location.Area;
 import de.uniheidelberg.cl.a10.data2.DocumentSet;
 
 /**
  * Servlet implementation class AlignmentLoader
  */
+
 public class DocumentSetLoader extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -33,8 +32,6 @@ public class DocumentSetLoader extends AbstractServlet {
 		}
 		DocumentSet documentset = getDocumentSet(request);
 
-		((Location) request.getSession().getAttribute("location"))
-				.setArea(Area.DocumentSet);
 		if (documentset != null) {
 			request.setAttribute("documents", documentset.getSet());
 			request.setAttribute("map",
