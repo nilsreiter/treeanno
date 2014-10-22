@@ -20,7 +20,7 @@
 </head>
 <body>
 <div class="level1">
-<%@ include file="../menu/area.jsp" %>
+<%@ include file="../menu/area_DocumentSet.jsp" %>
 
 <div class="content level2">
 <%@ include file="../common/document-menu.jsp" %>

@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="level1">
-<%@ include file="../menu/area.jsp" %>
+<%@ include file="../menu/area_Alignment.jsp" %>
 
 <div class="content level2">
 <div class="menu">

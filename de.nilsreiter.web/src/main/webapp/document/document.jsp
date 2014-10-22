@@ -22,7 +22,7 @@
 <body>
 
 <div class="level1"> 
-<%@ include file="../menu/area.jsp" %>
+<%@ include file="../menu/area_Document.jsp" %>
 <div class="level2 content">
 <%@ include file="../common/document-menu.jsp" %>
 
