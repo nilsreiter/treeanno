@@ -3,6 +3,9 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" 
 		pageEncoding="UTF-8" session="true" import="java.util.*,de.uniheidelberg.cl.a10.data2.*"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%
 	if (session.getAttribute("location") == null) {
@@ -10,6 +13,9 @@
 	}
 	((Location)session.getAttribute("location")).setArea(Area.DocumentSet);
 %>
+<sql:query var="rs" dataSource="jdbc/a10">
+select id, document, documentset, creationDate from documentSets
+</sql:query>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -45,7 +51,19 @@
 <thead>
 	<tr><th>Id</th><th>Name</th><th>Created</th><th>Documents</th><th>Actions</th></tr>
 </thead>
-<tbody></tbody>
+<tbody>
+<c:forEach var="row" items="${rs.rows}">
+		<tr>
+    		<td>${row.id}</td>
+    		<td>${row.documentset}</td>
+    		<td>
+    			<script>document.write(moment("${row.creationDate}").fromNow());</script>
+    		</td>
+    		<td>${row.document}</td>
+    		<td><a href="view-document-set?doc=${row.id}">Open</a></td>
+		</tr>
+		</c:forEach>
+</tbody>
 </table>
 </div>
 
@@ -68,23 +86,6 @@
 </div>
 
 <script>
-jQuery.getJSON('rpc/get-document-sets', function (data) { 
-	for (var i in data) {
-		var row = document.createElement("tr");
-		var docset = data[i];
-		var mom = moment(docset['creationDate']);
-
-		$(row).append("<td>"+docset['databaseId']+"</td>");
-		$(row).append("<td>"+docset['id']+"</td>");
-		$(row).append("<td sorttable_customkey=\""+mom.toDate().getTime()+"\">"+mom.fromNow()+"</td>");
-		$(row).append("<td>"+docset['documentIds']+"</td>");
-		$(row).append("<td><a href=\"view-document-set?doc="+docset['databaseId']+"\">Open</a></td>");
-		
-		$("table#documentsets tbody").append(row);
-	}
-});
-
-
 jQuery.getJSON('rpc/get-document-info', function (data) { 
 	for (var i in data) {
 		var s = "<tr><td><input type=\"checkbox\" name=\"doc"+data[i]['id']+"\"/></td><td>"+data[i]['databaseId']+"</td><td>"+data[i]['corpus']+"</td><td>"+
