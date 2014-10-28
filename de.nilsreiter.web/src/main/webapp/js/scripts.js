@@ -21,7 +21,7 @@ function connect(id, color) {
 	ctx.strokeStyle = color;
 	ctx.lineWidth = 1;
 	offsets = new Array();
-	$("."+id).each(function(index, value) {
+	$("#"+id).each(function(index, value) {
 		offsets.push($(value).offset());
 	});
 	ctx.beginPath();

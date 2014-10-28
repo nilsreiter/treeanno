@@ -77,9 +77,10 @@ span.div {
 #canvascontainer {
 	height:100%;
 	background:none;
-	/* position:absolute;*/
+	position:absolute;
 	top:0px;
 	width:100%;
+	z-index:0;
 }
 
 #canvas {
@@ -212,6 +213,7 @@ table.filelist tr td {
 	margin:0;
 	padding:0;
 	border:none;
+	z-index:1;
 }
 
 .menu ul {
@@ -298,6 +300,8 @@ table.filelist tr td {
 
 .level5 {
 	background-color:white;
+	position:relative;
+	top:0;
 }
 
 /*

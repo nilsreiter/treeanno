@@ -26,22 +26,18 @@
 </div>
 
 <div class="content level3">
-<%@ include file="../common/menu.jsp" %>
-
-
-<div class="content level4">
-<div class="menu">
-	<input type="checkbox" onchange="toggleAlignments()" id="alignmentcheckbox"/><label for="alignmentcheckbox">Alignments</label>
-
-	<%@ include file="../controls.html" %>
-
-</div>
-
-
-
-
-<div id="alignmentcontent" class="level5 content">
-<c:forEach var="i" begin="0" end="${arity-1}" >
+<ul>
+	<li><a href="#view">View</a></li>
+	<li><a href="#event-similarities">Event Similarities</a></li>
+	<li><a href="#event-scores">Event Scores</a></li>
+</ul>
+<div id="view" class="content level4">
+	<div class="menu">
+		<input type="checkbox" onchange="toggleAlignments()" id="alignmentcheckbox"/><label for="alignmentcheckbox">Alignments</label>
+		<%@ include file="../controls.html" %>
+	</div>
+	<div id="alignmentcontent" class="level5 content">
+	<c:forEach var="i" begin="0" end="${arity-1}" >
 	<div class="alignmenttext surface">
 	<h1>${documents[i].id}</h1>
 	<div class="${documents[i].id}">
@@ -51,20 +47,22 @@
 	</script>
 
 	</div>
-</c:forEach>
-<div style="clear:left;"></div>
+	</c:forEach>
+	<div style="clear:left;"></div>
 
-<div id="canvascontainer">
-<canvas id="canvas"></canvas>
+	<div id="canvascontainer">
+		<canvas id="canvas"></canvas>
+	</div>
+	</div>
 </div>
-</div>
-</div>
+<div id="event-similarities">Bla</div>
+<div id="event-scores">Bla</div>
 </div>
 </div>
 </div>
 <script>
+$(".level3.content").tabs();
 init_controls("div.level4 > div.menu");
-
 function toggleAlignments() {
     var context=document.getElementById("canvas").getContext('2d');
 
@@ -80,22 +78,25 @@ function toggleAlignments() {
 		var canvasOffset = $(myCanvas).offset();
 
 		jQuery.getJSON('rpc/get-alignments?doc=${param.doc}', function (data) { 
-			var mySVG = document.getElementById("svg");
+			var context=document.getElementById("canvas").getContext('2d');
 			for (var alId in data) {
-				context.strokeStyle = "black";
-				context.lineWidth = 1;
-				offsets = new Array();
-				for (var i = 0; i < data[alId].length; i++) {
-					offsets.push($("."+data[alId][i]['d']+" ."+data[alId][i]['t']).offset());
-				};
-				context.beginPath();
-				if (offsets.length>1) {
-					for (var i = 0; i < offsets.length-1; i++) {
-						context.moveTo(offsets[i].left, offsets[i].top-canvasOffset.top);
-						context.lineTo(offsets[i+1].left, offsets[i+1].top-canvasOffset.top);
+				if (data[alId].length > 1) {
+					context.strokeStyle = "black";
+					context.lineWidth = 1;
+					offsets = new Array();
+					for (var i = 0; i < data[alId].length; i++) {
+						offsets.push($("."+data[alId][i]['d']+" ."+data[alId][i]['t']).offset());
+					};
+					// alert(JSON.stringify(offsets));
+					context.beginPath();
+					if (offsets.length>1) {
+						for (var i = 0; i < offsets.length-1; i++) {
+							context.moveTo(offsets[i].left, offsets[i].top-canvasOffset.top);
+							context.lineTo(offsets[i+1].left, offsets[i+1].top-canvasOffset.top);
+						}
 					}
-				}
 				context.stroke();
+				}
 			}
 		});
     } else {
