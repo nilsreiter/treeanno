@@ -18,6 +18,10 @@
       <id>A10</id>
       <url>http://www.nilsreiter.de</url>
     </site>
+    <repository>
+      <id>ims</id>
+      <url>http://clarin05.ims.uni-stuttgart.de/archiva/repository/ims_snapshot/</url>
+    </repository>
   </distributionManagement>
 
 <build>
@@ -138,4 +142,30 @@
 	</dependency>
   </dependencies>
 </dependencyManagement>
+ <repositories>
+    <repository>
+      <id>ims</id>
+      <name>ims</name>
+      <url>http://clarin05.ims.uni-stuttgart.de/archiva/repository/ims/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ims</id>
+      <name>ims</name>
+      <url>http://clarin05.ims.uni-stuttgart.de/archiva/repository/ims/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 </project>
