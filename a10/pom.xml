@@ -89,7 +89,6 @@
   	<module>de.nilsreiter.test</module>
   	<module>de.nilsreiter.pipeline.semafor</module>
   	<module>de.nilsreiter.legacy</module>
-  	<module>edu.cmu.cs.lti.ark</module>
   	<module>de.nilsreiter.ocr</module>
   	<module>neobio.alignment</module>
   	<module>de.nilsreiter.pipeline.event</module>
