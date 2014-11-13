@@ -7,4 +7,19 @@
   </parent>
   <groupId>de.nilsreiter.proj</groupId>
   <artifactId>de.nilsreiter.proj</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>de.nilsreiter.pipeline</groupId>
+  		<artifactId>de.nilsreiter.pipeline</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.apache.uima</groupId>
+  		<artifactId>uimafit-core</artifactId>
+  	</dependency>
+  </dependencies>
 </project>
