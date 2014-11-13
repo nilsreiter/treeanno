@@ -68,7 +68,6 @@
   	<module>alignment-similarity</module>
   	<module>alignment-util</module>
   	<module>edu.sussex.nlp.jws</module>
-  	<module>de.saar.coli.salsa.reiter.framenet</module>
   	<module>alignment-main</module>
   	<module>alignment-eval</module>
   	<module>alignment-algorithms</module>
