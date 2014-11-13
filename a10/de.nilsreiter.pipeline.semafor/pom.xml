@@ -56,16 +56,16 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
-  		<groupId>de.nilsreiter</groupId>
-  		<artifactId>edu.cmu.cs.lti.ark</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
   		<artifactId>
   			de.tudarmstadt.ukp.dkpro.core.api.metadata-asl
   		</artifactId>
   		<version>1.6.2</version>
   	</dependency>
+  	<dependency>
+  		<groupId>edu.cmu.cs.lti.ark</groupId>
+  		<artifactId>semafor</artifactId>
+  		<version>1</version>
+	</dependency>
   </dependencies>
 </project>
