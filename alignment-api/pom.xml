@@ -28,4 +28,5 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
+  <description>Interfaces and definitions for alignment data structures</description>
 </project>
