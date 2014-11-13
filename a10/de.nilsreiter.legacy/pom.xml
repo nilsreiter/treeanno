@@ -52,9 +52,9 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
-  		<groupId>de.nilsreiter</groupId>
-  		<artifactId>edu.cmu.cs.lti.ark</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
+		<groupId>edu.cmu.cs.lti.ark</groupId>
+		<artifactId>semafor</artifactId>
+		<version>1</version>
+	</dependency>
   </dependencies>
 </project>
