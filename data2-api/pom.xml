@@ -6,4 +6,5 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>data2-api</artifactId>
+  <description>Data structures representing single discourse documents</description>
 </project>
