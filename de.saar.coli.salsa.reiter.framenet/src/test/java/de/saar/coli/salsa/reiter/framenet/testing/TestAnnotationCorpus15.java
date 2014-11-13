@@ -54,10 +54,9 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 		tempdir.delete();
 	}
 
-	@Test
 	public void testAllCorpusData() throws Exception {
-		AnnotationCorpus15 ac = new AnnotationCorpus15(frameNet,
-				Logger.getAnonymousLogger());
+		AnnotationCorpus15 ac =
+				new AnnotationCorpus15(frameNet, Logger.getAnonymousLogger());
 		ac.parseWithout(new File(fnhome + "/lu"), "lu5302.xml", "lu13151.xml",
 				"lu3217.xml", "lu3914.xml", "lu5160.xml", "lu453.xml",
 				"lu9966.xml", "lu1173.xml", "lu2907.xml", "lu6752.xml",
@@ -103,8 +102,8 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 
 	@Test
 	public void testCorpusData() throws Exception {
-		AnnotationCorpus ac = new AnnotationCorpus15(frameNet,
-				Logger.getAnonymousLogger());
+		AnnotationCorpus ac =
+				new AnnotationCorpus15(frameNet, Logger.getAnonymousLogger());
 		ac.parse(new File(fnhome + "/lu"), "lu4224");
 		int lexicalUnitId = 4224;
 		assertNotNull(frameNet.getLexicalUnit(lexicalUnitId));
@@ -113,20 +112,20 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 				"COD: a container used to hold or carry things, made from interwoven strips of cane or wire",
 				ac.getAnnotation(frameNet.getLexicalUnit(lexicalUnitId))
 						.getDefinition());
-		AnnotatedLexicalUnit alu = ac.getAnnotation(frameNet
-				.getLexicalUnit(lexicalUnitId));
+		AnnotatedLexicalUnit alu =
+				ac.getAnnotation(frameNet.getLexicalUnit(lexicalUnitId));
 		assertEquals(40, alu.getSentences().size());
 		assertEquals(FN.Noun, alu.getPartOfSpeech());
 		assertEquals("Containers", alu.getFrame().getName());
-		de.saar.coli.salsa.reiter.framenet.Sentence sentence = alu
-				.getSentences().get(0);
+		de.saar.coli.salsa.reiter.framenet.Sentence sentence =
+				alu.getSentences().get(0);
 		assertEquals(15, sentence.getTokenList().size());
 		assertEquals(
 				"The Mark Wilkinson team will then install custom-made woven vegetable baskets in that space . ",
 				sentence.getText());
 		assertEquals(1, sentence.getRealizedFrames().size());
-		RealizedFrame rf = (RealizedFrame) sentence.getRealizedFrames()
-				.iterator().next();
+		RealizedFrame rf =
+				(RealizedFrame) sentence.getRealizedFrames().iterator().next();
 		assertNotNull(rf);
 		assertEquals("Containers", rf.getFrame().getName());
 		assertEquals(3, rf.getFrameElements().values().size());
@@ -199,21 +198,22 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 
 	@Test
 	public void testExport() throws Exception {
-		AnnotationCorpus15 ac = new AnnotationCorpus15(frameNet,
-				Logger.getAnonymousLogger());
+		AnnotationCorpus15 ac =
+				new AnnotationCorpus15(frameNet, Logger.getAnonymousLogger());
 		ac.parse(new File(fnhome + "/lu"), "lu4224");
 		int lexicalUnitId = 4224;
-		AnnotatedLexicalUnit alu = ac.getAnnotation(frameNet
-				.getLexicalUnit(lexicalUnitId));
+		AnnotatedLexicalUnit alu =
+				ac.getAnnotation(frameNet.getLexicalUnit(lexicalUnitId));
 		XMLExporter export = new XMLExporter(FrameNetVersion.V15);
 		// Document doc = export.asDocument((AnnotatedLexicalUnit15) alu);
 		export.writeToDirectory(ac, tempdir);
 		try {
-			AnnotationCorpus ac2 = new AnnotationCorpus15(frameNet,
-					Logger.getAnonymousLogger());
+			AnnotationCorpus ac2 =
+					new AnnotationCorpus15(frameNet,
+							Logger.getAnonymousLogger());
 			ac2.parse(new File(tempdir, "lu"), "lu4224");
-			AnnotatedLexicalUnit alu2 = ac2.getAnnotation(frameNet
-					.getLexicalUnit(lexicalUnitId));
+			AnnotatedLexicalUnit alu2 =
+					ac2.getAnnotation(frameNet.getLexicalUnit(lexicalUnitId));
 
 			// base data
 			assertEquals("Definition", alu.getDefinition(),
@@ -224,7 +224,8 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 
 			// lexemes
 			assertEquals(alu.getLexemes().size(), alu2.getLexemes().size());
-			Lexeme[] lexeme = new Lexeme[] { alu.getLexemes().get(0),
+			Lexeme[] lexeme =
+					new Lexeme[] { alu.getLexemes().get(0),
 					alu2.getLexemes().get(0) };
 			assertEquals(lexeme[0].getPartOfSpeech(),
 					lexeme[1].getPartOfSpeech());
@@ -237,19 +238,22 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 
 			// sentences
 			assertEquals(alu.getSentences().size(), alu2.getSentences().size());
-			de.saar.coli.salsa.reiter.framenet.Sentence[] sentence = new de.saar.coli.salsa.reiter.framenet.Sentence[] {
-					alu.getSentences().get(0), alu2.getSentences().get(0) };
+			de.saar.coli.salsa.reiter.framenet.Sentence[] sentence =
+					new de.saar.coli.salsa.reiter.framenet.Sentence[] {
+					alu.getSentences().get(0),
+					alu2.getSentences().get(0) };
 			assertEquals(sentence[0].getIdString(), sentence[1].getIdString());
 			assertEquals(sentence[0].getText(), sentence[1].getText());
 			assertEquals(sentence[0].getRealizedFrames().size(), sentence[1]
 					.getRealizedFrames().size());
 
 			// realized frames
-			RealizedFrame[] rf = new RealizedFrame[] {
-					(RealizedFrame) sentence[0].getRealizedFrames().iterator()
-							.next(),
-					(RealizedFrame) sentence[1].getRealizedFrames().iterator()
-							.next() };
+			RealizedFrame[] rf =
+					new RealizedFrame[] {
+					(RealizedFrame) sentence[0].getRealizedFrames()
+					.iterator().next(),
+					(RealizedFrame) sentence[1].getRealizedFrames()
+					.iterator().next() };
 			assertEquals("Realized frame, Start", rf[0].getStart(),
 					rf[1].getStart());
 			assertEquals("Realized frame, End", rf[0].getEnd(), rf[1].getEnd());
@@ -258,8 +262,9 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 			assertEquals(rf[0].getTargetString(' '), rf[1].getTargetString(' '));
 
 			// realized frame elements
-			RealizedFrameElement[] rfe = new RealizedFrameElement[] {
-					rf[0].frameElements().last(), rf[1].frameElements().last() };
+			RealizedFrameElement[] rfe =
+					new RealizedFrameElement[] { rf[0].frameElements().last(),
+					rf[1].frameElements().last() };
 			assertEquals("Realized frame element, Start", rfe[0].getStart(),
 					rfe[1].getStart());
 			assertEquals("Realized frame element, End", rfe[0].getEnd(),
@@ -281,13 +286,13 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 
 	@Test
 	public void testExportFromSTX() throws Exception {
-		SalsaTigerXML stx = new SalsaTigerXML(frameNet,
-				Logger.getAnonymousLogger());
+		SalsaTigerXML stx =
+				new SalsaTigerXML(frameNet, Logger.getAnonymousLogger());
 		stx.parse(new File(this.getClass()
 				.getResource("/SalsaTigerExample-3.xml").getFile()));
 
-		AnnotationCorpus15 ac = new AnnotationCorpus15(frameNet,
-				Logger.getAnonymousLogger());
+		AnnotationCorpus15 ac =
+				new AnnotationCorpus15(frameNet, Logger.getAnonymousLogger());
 
 		for (de.saar.coli.salsa.reiter.framenet.Sentence sentence : stx
 				.getSentences()) {
@@ -300,8 +305,9 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 		// RealizedFrame rf =
 		// stx.getSentences().get(0).getRealizedFrames().get(0);
 
-		LexicalUnit lu = frameNet.getLexicalUnit(frameNet.getFrame("Placing"),
-				"put", FN.Verb);
+		LexicalUnit lu =
+				frameNet.getLexicalUnit(frameNet.getFrame("Placing"), "put",
+						FN.Verb);
 
 		assertEquals(2, ac.getNumberOfAnnotations());
 
@@ -336,8 +342,9 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 		System.err.println(tmp.getAbsolutePath());
 		export.writeToDirectory(ac, tmp);
 		try {
-			AnnotationCorpus ac2 = new AnnotationCorpus15(frameNet,
-					Logger.getAnonymousLogger());
+			AnnotationCorpus ac2 =
+					new AnnotationCorpus15(frameNet,
+							Logger.getAnonymousLogger());
 			ac2.parse(new File(tmp, "lu"), "lu2");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -350,10 +357,10 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 
 	@Test
 	public void testNonXML() throws Exception {
-		AnnotationCorpus ac = new AnnotationCorpus15(frameNet,
-				frameNet.getLogger());
-		AnnotatedLexicalUnit15 alu = new AnnotatedLexicalUnit15(ac,
-				frameNet.getLexicalUnit(4224));
+		AnnotationCorpus ac =
+				new AnnotationCorpus15(frameNet, frameNet.getLogger());
+		AnnotatedLexicalUnit15 alu =
+				new AnnotatedLexicalUnit15(ac, frameNet.getLexicalUnit(4224));
 		alu.setName("recite.v");
 		SubCorpus15 subCorpus = new SubCorpus15(alu, "testCorpus");
 		alu.addSubCorpus(subCorpus);
@@ -364,8 +371,9 @@ public class TestAnnotationCorpus15 extends TestBase15 {
 		sentence.setId("1");
 		Iterator<IToken> tokenIterator = sentence.getTokenIterator();
 		subCorpus.addSentence(sentence);
-		RealizedFrame rf = frameNet.getFrame("Text_creation").realize(
-				sentence.getToken(new CharacterRange(0, 6)));
+		RealizedFrame rf =
+				frameNet.getFrame("Text_creation").realize(
+						sentence.getToken(new CharacterRange(0, 6)));
 		rf.addRealizedFrameElement("Text",
 				sentence.getToken(new CharacterRange(11, 17)));
 		alu.setFrame(rf.getFrame());

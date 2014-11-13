@@ -24,15 +24,16 @@ public class TestFNCorpus15 extends TestBase15 {
 
 	@Before
 	public void setUp() {
-		example1 = new File(this.getClass()
-				.getResource("/NTI__LibyaCountry1.xml").getFile());
+		example1 =
+				new File(this.getClass().getResource("/NTI__LibyaCountry1.xml")
+						.getFile());
 	}
 
 	@Test
 	public void testCorpusData() {
 		try {
-			FrameNetCorpus fnc = new FrameNetCorpus15(frameNet,
-					Logger.getAnonymousLogger());
+			FrameNetCorpus fnc =
+					new FrameNetCorpus15(frameNet, Logger.getAnonymousLogger());
 			fnc.parse(example1);
 			assertEquals(41, fnc.getSentences().size());
 			Sentence sentence = (Sentence) fnc.getSentences().get(1);
@@ -49,13 +50,14 @@ public class TestFNCorpus15 extends TestBase15 {
 			assertEquals(2, rf.getFrameElements().size());
 			assertEquals("Libya", rf.getFrameElements().get("Experiencer")
 					.getTargetString());
-			rf = (RealizedFrame) fnc.getSentences().get(2).getRealizedFrames()
-					.get(1);
+			rf =
+					(RealizedFrame) fnc.getSentences().get(2)
+							.getRealizedFrames().get(1);
 			assertEquals("Using", rf.getFrame().getName());
 
 			assertEquals(4, rf.frameElements().size());
-			RealizedFrameElement rfe_instr = rf.getFrameElements().get(
-					"Instrument");
+			RealizedFrameElement rfe_instr =
+					rf.getFrameElements().get("Instrument");
 			RealizedFrameElement rfe_role = rf.getFrameElements().get("Role");
 			assertEquals(false, rfe_instr.isNullInstantiated());
 			assertEquals(true, rfe_role.isNullInstantiated());
@@ -82,8 +84,8 @@ public class TestFNCorpus15 extends TestBase15 {
 	@Test
 	public void testTokenData() {
 		try {
-			FrameNetCorpus fnc = new FrameNetCorpus15(frameNet,
-					Logger.getAnonymousLogger());
+			FrameNetCorpus fnc =
+					new FrameNetCorpus15(frameNet, Logger.getAnonymousLogger());
 			fnc.parse(example1);
 			Sentence sent1 = (Sentence) fnc.getSentences().get(1);
 			assertEquals("steps", sent1.getToken(new CharacterRange(38, 43))
@@ -92,10 +94,12 @@ public class TestFNCorpus15 extends TestBase15 {
 			assertEquals(5, sent1.getRealizedFrames().size());
 			assertEquals("Weapon", sent1.getRealizedFrames().get(3).getFrame()
 					.getName());
-			assertEquals("weapons of mass destruction", sent1
-					.getRealizedFrames().get(3).getTargetList().toString());
-			assertEquals("weapons of mass destruction", sent1
-					.getRealizedFrames().get(3).getFrameElements()
+			assertEquals(
+					"[weapons, weapons of mass destruction, of, of mass destruction, mass, destruction]",
+					sent1.getRealizedFrames().get(3).getTargetList().toString());
+			assertEquals(
+					"[weapons, weapons of mass destruction, of, of mass destruction, mass, destruction]",
+					sent1.getRealizedFrames().get(3).getFrameElements()
 					.get("Weapon").getTarget().toString());
 
 		} catch (Exception e) {

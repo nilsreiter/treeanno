@@ -11,7 +11,7 @@ import de.saar.coli.salsa.reiter.framenet.STXExporter;
 public class TestExporter extends TestBase15 {
 
 	static String tigerXMLFile = System.getProperty("user.dir")
-			+ "/data/TigerXML.xml";
+			+ "/src/test/resources/TigerXML.xml";
 
 	@Test
 	public void testSTXExporter() throws Exception {

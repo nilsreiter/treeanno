@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.util.Iterator;
 
 import org.junit.Before;
-import org.junit.Test;
 
 import de.saar.coli.salsa.reiter.framenet.AHasTarget;
 import de.saar.coli.salsa.reiter.framenet.FNDatabaseReader15;
@@ -33,7 +32,8 @@ public class TestSalsaTigerXMLRituals {
 	// @Rule
 	// public MethodRule benchmarkRun = new BenchmarkRule();
 
-	static String example4 = "/proj/rituals/annotation/salto-repository/master/r0025_Placing_merged_jom.nl.xml";
+	static String example4 =
+			"/proj/rituals/annotation/salto-repository/master/r0025_Placing_merged_jom.nl.xml";
 	static String example6 = System.getProperty("user.dir")
 			+ "/../A10/tasks/srl/semafor/training_test_output";
 
@@ -41,20 +41,25 @@ public class TestSalsaTigerXMLRituals {
 
 	@Before
 	public void setUp() {
-		example1 = new File(this.getClass().getResource("/r0003.xml").getFile());
-		example2 = new File(this.getClass()
-				.getResource("/SalsaTigerExample-2.xml").getFile());
-		example3 = new File(this.getClass()
-				.getResource("/SalsaTigerExample-3.xml").getFile());
+		example1 =
+				new File(this.getClass().getResource("/r0003.xml").getFile());
+		example2 =
+				new File(this.getClass()
+						.getResource("/SalsaTigerExample-2.xml").getFile());
+		example3 =
+				new File(this.getClass()
+						.getResource("/SalsaTigerExample-3.xml").getFile());
 		// example4 = new File(this.getClass().getResource("").getFile());
-		example5 = new File(this.getClass().getResource("/test_0.xml")
-				.getFile());
-		example7 = new File(this.getClass()
-				.getResource("/r0009_full_annotation_merged.jom.bl.xml")
-				.getFile());
+		example5 =
+				new File(this.getClass().getResource("/test_0.xml").getFile());
+		example7 =
+				new File(
+						this.getClass()
+								.getResource(
+										"/r0009_full_annotation_merged.jom.bl.xml")
+								.getFile());
 	}
 
-	@Test
 	public void testLoading() {
 		FrameNet fn = new FrameNet();
 		fn.readData(new STXDatabaseReader(example3));
@@ -72,7 +77,6 @@ public class TestSalsaTigerXMLRituals {
 		}
 	}
 
-	@Test
 	public void testCorpusData() {
 		FrameNet fn = new FrameNet();
 		SalsaTigerXML stx = new SalsaTigerXML(fn, null);
@@ -97,7 +101,7 @@ public class TestSalsaTigerXMLRituals {
 			assertEquals(3, rf.getFrameElements().size());
 			assertEquals("he",
 					((AHasTarget) rf.getFrameElements().get("Agent"))
-							.getTargetString());
+					.getTargetString());
 			assertEquals(38, sentence.getTokenList().size());
 		} catch (FrameNotFoundException e) {
 			e.printStackTrace();
@@ -106,7 +110,6 @@ public class TestSalsaTigerXMLRituals {
 		}
 	}
 
-	@Test
 	public void testCorpusData2() {
 		FrameNet fn = new FrameNet();
 		SalsaTigerXML stx = new SalsaTigerXML(fn, null);
@@ -119,8 +122,8 @@ public class TestSalsaTigerXMLRituals {
 			assertEquals(1, stx.getSentences().get(1).getRealizedFrames()
 					.size());
 			Sentence sentence = stx.getSentences().get(1);
-			RealizedFrame rf = (RealizedFrame) sentence.getRealizedFrames()
-					.get(0);
+			RealizedFrame rf =
+					(RealizedFrame) sentence.getRealizedFrames().get(0);
 			assertEquals("puts", rf.getTarget().toString());
 			assertEquals("Placing", rf.getFrame().getName());
 			// assertEquals(0, rf.getStart());
@@ -129,8 +132,8 @@ public class TestSalsaTigerXMLRituals {
 			assertEquals("The priest", rf.getFrameElements().get("Agent")
 					.getTargetString());
 			assertEquals(9, sentence.getTokenList().size());
-			Iterator<RealizedFrameElement> rfeIter = rf.frameElements()
-					.iterator();
+			Iterator<RealizedFrameElement> rfeIter =
+					rf.frameElements().iterator();
 			RealizedFrameElement rfe = rfeIter.next();
 			assertEquals("Agent", rfe.getFrameElement().getName());
 
@@ -156,9 +159,8 @@ public class TestSalsaTigerXMLRituals {
 		}
 	}
 
-	@Test
 	public void testAllSemaforData() throws FrameNotFoundException,
-			FrameElementNotFoundException {
+	FrameElementNotFoundException {
 		FrameNet fn = new FrameNet();
 		SalsaTigerXML stx = new SalsaTigerXML(fn, null);
 
@@ -171,7 +173,6 @@ public class TestSalsaTigerXMLRituals {
 		}
 	}
 
-	@Test
 	public void testSemaforData() {
 		FrameNet fn = new FrameNet();
 		SalsaTigerXML stx = new SalsaTigerXML(fn, null);
@@ -207,14 +208,16 @@ public class TestSalsaTigerXMLRituals {
 					((AHasTarget) iter.next()).getTargetTokenRange());
 
 			sentence = stx.getSentences().get(13);
-			iter = sentence.getRealizedFrames().get(0).overtFrameElements()
-					.iterator();
+			iter =
+					sentence.getRealizedFrames().get(0).overtFrameElements()
+							.iterator();
 			assertEquals(new TokenRange(1, 1),
 					((AHasTarget) iter.next()).getTargetTokenRange());
 
 			sentence = stx.getSentences().get(0);
-			iter = sentence.getRealizedFrames().get(0).overtFrameElements()
-					.iterator();
+			iter =
+					sentence.getRealizedFrames().get(0).overtFrameElements()
+							.iterator();
 			assertEquals(new TokenRange(12, 12),
 					((AHasTarget) iter.next()).getTargetTokenRange());
 			assertEquals(new TokenRange(13, 15),
@@ -241,10 +244,9 @@ public class TestSalsaTigerXMLRituals {
 		}
 	}
 
-	@Test
 	public void testFullAnnotation() throws FrameNotFoundException,
-			FrameElementNotFoundException, FileNotFoundException,
-			SecurityException {
+	FrameElementNotFoundException, FileNotFoundException,
+	SecurityException {
 		FrameNet fn = new FrameNet();
 		fn.readData(new FNDatabaseReader15(new File("../A10/framenet-1.5"),
 				false));

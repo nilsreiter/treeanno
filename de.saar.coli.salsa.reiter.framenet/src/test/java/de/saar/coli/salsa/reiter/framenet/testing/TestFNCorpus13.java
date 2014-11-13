@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.junit.Before;
-import org.junit.Test;
 
 import de.saar.coli.salsa.reiter.framenet.FrameElementNotFoundException;
 import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
@@ -32,18 +31,18 @@ public class TestFNCorpus13 extends TestBase13 {
 		example1 = new File(url.getFile());
 	}
 
-	@Test
 	public void testCorpusData() {
 		try {
-			FrameNetCorpus fnc = new FrameNetCorpus13(frameNet,
-					Logger.getAnonymousLogger());
+			FrameNetCorpus fnc =
+					new FrameNetCorpus13(frameNet, Logger.getAnonymousLogger());
 			fnc.parse(example1);
 			assertEquals(4, fnc.getSentences().size());
 			Sentence sentence = fnc.getSentences().get(1);
 
 			assertEquals(5, sentence.getRealizedFrames().size());
-			RealizedFrame rf = (RealizedFrame) sentence.getRealizedFrames()
-					.iterator().next();
+			RealizedFrame rf =
+					(RealizedFrame) sentence.getRealizedFrames().iterator()
+							.next();
 			assertEquals("interest", rf.getTarget().toString());
 			assertEquals("Emotion_directed", rf.getFrame().getName());
 			assertEquals(16, rf.getStart());
@@ -51,15 +50,15 @@ public class TestFNCorpus13 extends TestBase13 {
 			assertEquals(2, rf.getFrameElements().size());
 			assertEquals("Libya", rf.getFrameElements().get("Experiencer")
 					.getTargetString(' '));
-			Iterator<? extends IRealizedFrame> rfIter = fnc.getSentences()
-					.get(2).getRealizedFrames().iterator();
+			Iterator<? extends IRealizedFrame> rfIter =
+					fnc.getSentences().get(2).getRealizedFrames().iterator();
 			rfIter.next();
 			rf = (RealizedFrame) rfIter.next();
 			assertEquals("Using", rf.getFrame().getName());
 
 			assertEquals(5, rf.frameElements().size());
-			RealizedFrameElement rfe_instr = rf.getFrameElements().get(
-					"Instrument");
+			RealizedFrameElement rfe_instr =
+					rf.getFrameElements().get("Instrument");
 			RealizedFrameElement rfe_role = rf.getFrameElements().get("Role");
 			assertEquals(false, rfe_instr.isNullInstantiated());
 			assertEquals(true, rfe_role.isNullInstantiated());
@@ -84,14 +83,14 @@ public class TestFNCorpus13 extends TestBase13 {
 		}
 	}
 
-	@Test
 	public void testTokenData() {
 		try {
-			FrameNetCorpus fnc = new FrameNetCorpus13(frameNet,
-					Logger.getAnonymousLogger());
+			FrameNetCorpus fnc =
+					new FrameNetCorpus13(frameNet, Logger.getAnonymousLogger());
 			fnc.parse(example1);
-			de.saar.coli.salsa.reiter.framenet.fncorpus.Sentence sent1 = (de.saar.coli.salsa.reiter.framenet.fncorpus.Sentence) fnc
-					.getSentences().get(1);
+			de.saar.coli.salsa.reiter.framenet.fncorpus.Sentence sent1 =
+					(de.saar.coli.salsa.reiter.framenet.fncorpus.Sentence) fnc
+							.getSentences().get(1);
 			System.err.println(sent1.getTokenList());
 			assertEquals(22, sent1.getTokenList().size());
 			assertEquals("steps", sent1.getToken(new CharacterRange(38, 43))

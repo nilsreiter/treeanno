@@ -10,9 +10,11 @@ import de.saar.coli.salsa.reiter.framenet.FrameNet;
 import de.saar.coli.salsa.reiter.framenet.FrameNetVersion;
 
 public abstract class TestBase15 {
-	protected static String fnhome = "/fs/tmp-local/users/reiterns/framenet-1.5";
+	protected static String fnhome =
+			"/Users/reiterns/Documents/Resources/framenet-1.5";
 	// "/Network/resources/corpora/monolingual/annotated/framenet-1.5";
-	protected static String fnhome13 = "/Network/resources/corpora/monolingual/annotated/framenet-1.3";
+	protected static String fnhome13 =
+			"/Network/resources/corpora/monolingual/annotated/framenet-1.3";
 
 	protected static String version = "1.5";
 	protected static FrameNet frameNet;
