@@ -14,7 +14,7 @@
   		<version>1</version>
   	</dependency>
   </dependencies>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
   <groupId>edu.cmu.cs.lti.ark</groupId>
   <version>1</version>
   <repositories>
