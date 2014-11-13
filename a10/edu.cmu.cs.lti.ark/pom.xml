@@ -1,6 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>semafor</artifactId>
+  <distributionManagement>
+    <repository>
+      <id>ims</id>
+      <url>http://clarin05.ims.uni-stuttgart.de/archiva/repository/ims/</url>
+    </repository>
+  </distributionManagement>
   <dependencies>
   	<dependency>
   		<groupId>de.nilsreiter.legacy</groupId>
