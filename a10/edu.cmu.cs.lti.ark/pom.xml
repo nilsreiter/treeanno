@@ -8,9 +8,9 @@
   <artifactId>edu.cmu.cs.lti.ark</artifactId>
   <dependencies>
   	<dependency>
-  		<groupId>de.nilsreiter.a10.legacy</groupId>
+  		<groupId>de.nilsreiter.legacy</groupId>
   		<artifactId>semafor-deps</artifactId>
   		<version>1</version>
-  	</dependency>
+	</dependency>
   </dependencies>
 </project>
