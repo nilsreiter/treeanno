@@ -3,7 +3,7 @@
   <groupId>de.nilsreiter.misc</groupId>
   <artifactId>de.nilsreiter.misc.mailsort</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <dependencies>
+  <dependencies> 
   	<dependency>
   		<groupId>com.sun.mail</groupId>
   		<artifactId>javax.mail</artifactId>
@@ -25,4 +25,5 @@
   		<version>4.10.0</version>
   	</dependency>
   </dependencies>
+  <packaging>pom</packaging>
 </project>
