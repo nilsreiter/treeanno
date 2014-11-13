@@ -4,7 +4,7 @@
   <distributionManagement>
     <repository>
       <id>ims</id>
-      <url>http://clarin05.ims.uni-stuttgart.de/archiva/repository/ims_snapshot/</url>
+      <url>http://clarin05.ims.uni-stuttgart.de/archiva/repository/ims/</url>
     </repository>
   </distributionManagement>
   <build>
