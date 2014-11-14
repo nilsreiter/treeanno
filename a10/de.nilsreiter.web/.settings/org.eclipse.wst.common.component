@@ -31,6 +31,9 @@
         <dependent-module archiveName="edu.sussex.nlp.jws-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/edu.sussex.nlp.jws/edu.sussex.nlp.jws">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="de.saar.coli.salsa.reiter.framenet-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/de.saar.coli.salsa.reiter.framenet/de.saar.coli.salsa.reiter.framenet">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="alignment-api-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/alignment-api/alignment-api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
