@@ -143,11 +143,7 @@
   		</artifactId>
   		<version>1.6.2</version>
   	</dependency>
-  	<dependency>
-  		<groupId>de.nilsreiter</groupId>
-  		<artifactId>de.saar.coli.salsa.reiter.framenet</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
+
   	<dependency>
   		<groupId>de.nilsreiter.pipeline.event</groupId>
   		<artifactId>de.nilsreiter.pipeline.event</artifactId>
