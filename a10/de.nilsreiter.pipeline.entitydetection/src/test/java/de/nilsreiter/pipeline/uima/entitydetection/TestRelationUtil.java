@@ -127,4 +127,13 @@ public class TestRelationUtil {
 		assertEquals(token3, RelationUtil.getLCS(jcas, token1, token2));
 
 	}
+
+	@Test
+	public void getHighestToken() {
+		Token token = JCasUtil.selectByIndex(jcas, Token.class, 5);
+		assertEquals(
+				token,
+				RelationUtil.getHighestToken(jcas,
+						JCasUtil.selectFollowing(jcas, Token.class, token, 3)));
+	}
 }
