@@ -176,6 +176,13 @@
   		<artifactId>de.nilsreiter.pipeline.langdetect</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter.pipeline.entitydetection</groupId>
+  		<artifactId>
+  			de.nilsreiter.pipeline.entitydetection
+  		</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
   <repositories>
   <repository>
