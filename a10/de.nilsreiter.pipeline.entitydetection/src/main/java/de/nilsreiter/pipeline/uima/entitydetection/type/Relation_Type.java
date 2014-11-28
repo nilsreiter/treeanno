@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.cas.AnnotationBase_Type;
 
 /** 
- * Updated by JCasGen Fri Nov 28 13:03:35 CET 2014
+ * Updated by JCasGen Fri Nov 28 13:23:14 CET 2014
  * @generated */
 public class Relation_Type extends AnnotationBase_Type {
   /** @generated 
@@ -68,7 +68,34 @@ public class Relation_Type extends AnnotationBase_Type {
       jcas.throwFeatMissing("Arguments", "de.nilsreiter.pipeline.uima.entitydetection.type.Relation");
     ll_cas.ll_setRefValue(addr, casFeatCode_Arguments, v);}
     
-  
+   /** @generated
+   * @param addr low level Feature Structure reference
+   * @param i index of item in the array
+   * @return value at index i in the array 
+   */
+  public int getArguments(int addr, int i) {
+        if (featOkTst && casFeat_Arguments == null)
+      jcas.throwFeatMissing("Arguments", "de.nilsreiter.pipeline.uima.entitydetection.type.Relation");
+    if (lowLevelTypeChecks)
+      return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Arguments), i, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_Arguments), i);
+  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Arguments), i);
+  }
+   
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param i index of item in the array
+   * @param v value to set
+   */ 
+  public void setArguments(int addr, int i, int v) {
+        if (featOkTst && casFeat_Arguments == null)
+      jcas.throwFeatMissing("Arguments", "de.nilsreiter.pipeline.uima.entitydetection.type.Relation");
+    if (lowLevelTypeChecks)
+      ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Arguments), i, v, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_Arguments), i);
+    ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Arguments), i, v);
+  }
+ 
  
   /** @generated */
   final Feature casFeat_Name;
@@ -106,7 +133,7 @@ public class Relation_Type extends AnnotationBase_Type {
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
  
-    casFeat_Arguments = jcas.getRequiredFeatureDE(casType, "Arguments", "uima.cas.FSList", featOkTst);
+    casFeat_Arguments = jcas.getRequiredFeatureDE(casType, "Arguments", "uima.cas.FSArray", featOkTst);
     casFeatCode_Arguments  = (null == casFeat_Arguments) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Arguments).getCode();
 
  

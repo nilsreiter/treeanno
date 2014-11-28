@@ -7,12 +7,13 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.FSList;
 import org.apache.uima.jcas.cas.AnnotationBase;
 
 
 /** 
- * Updated by JCasGen Fri Nov 28 13:03:35 CET 2014
+ * Updated by JCasGen Fri Nov 28 13:23:14 CET 2014
  * XML source: /Users/reiterns/Documents/Java/a10/de.nilsreiter.pipeline.entitydetection/src/main/java/de/nilsreiter/pipeline/uima/entitydetection/Entity.xml
  * @generated */
 public class Relation extends AnnotationBase {
@@ -72,19 +73,41 @@ public class Relation extends AnnotationBase {
    * @generated
    * @return value of the feature 
    */
-  public FSList getArguments() {
+  public FSArray getArguments() {
     if (Relation_Type.featOkTst && ((Relation_Type)jcasType).casFeat_Arguments == null)
       jcasType.jcas.throwFeatMissing("Arguments", "de.nilsreiter.pipeline.uima.entitydetection.type.Relation");
-    return (FSList)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments)));}
+    return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments)));}
     
   /** setter for Arguments - sets  
    * @generated
    * @param v value to set into the feature 
    */
-  public void setArguments(FSList v) {
+  public void setArguments(FSArray v) {
     if (Relation_Type.featOkTst && ((Relation_Type)jcasType).casFeat_Arguments == null)
       jcasType.jcas.throwFeatMissing("Arguments", "de.nilsreiter.pipeline.uima.entitydetection.type.Relation");
     jcasType.ll_cas.ll_setRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments, jcasType.ll_cas.ll_getFSRef(v));}    
+    
+  /** indexed getter for Arguments - gets an indexed value - 
+   * @generated
+   * @param i index in the array to get
+   * @return value of the element at index i 
+   */
+  public Entity getArguments(int i) {
+    if (Relation_Type.featOkTst && ((Relation_Type)jcasType).casFeat_Arguments == null)
+      jcasType.jcas.throwFeatMissing("Arguments", "de.nilsreiter.pipeline.uima.entitydetection.type.Relation");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments), i);
+    return (Entity)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments), i)));}
+
+  /** indexed setter for Arguments - sets an indexed value - 
+   * @generated
+   * @param i index in the array to set
+   * @param v value to set into the array 
+   */
+  public void setArguments(int i, Entity v) { 
+    if (Relation_Type.featOkTst && ((Relation_Type)jcasType).casFeat_Arguments == null)
+      jcasType.jcas.throwFeatMissing("Arguments", "de.nilsreiter.pipeline.uima.entitydetection.type.Relation");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments), i);
+    jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments), i, jcasType.ll_cas.ll_getFSRef(v));}
    
     
   //*--------------*

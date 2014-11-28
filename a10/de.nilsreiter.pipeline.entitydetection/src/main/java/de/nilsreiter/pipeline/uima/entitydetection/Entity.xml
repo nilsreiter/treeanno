@@ -38,7 +38,7 @@
         <featureDescription>
           <name>Arguments</name>
           <description/>
-          <rangeTypeName>uima.cas.FSList</rangeTypeName>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
           <elementType>de.nilsreiter.pipeline.uima.entitydetection.type.Entity</elementType>
           <multipleReferencesAllowed>false</multipleReferencesAllowed>
         </featureDescription>
