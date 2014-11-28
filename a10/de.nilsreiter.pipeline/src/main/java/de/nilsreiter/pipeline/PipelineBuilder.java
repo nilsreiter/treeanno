@@ -10,6 +10,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import de.nilsreiter.pipeline.uima.Data2Exporter;
 import de.nilsreiter.pipeline.uima.FilteredTxtExporter;
+import de.nilsreiter.pipeline.uima.entitydetection.GEXFExporter;
 import de.tudarmstadt.ukp.dkpro.core.io.conll.Conll2006Writer;
 import de.tudarmstadt.ukp.dkpro.core.io.imscwb.ImsCwbWriter;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
@@ -25,16 +26,25 @@ public class PipelineBuilder {
 
 	public static List<AnalysisEngineDescription> xmi(
 			List<AnalysisEngineDescription> pipeline, File directory)
-					throws ResourceInitializationException {
+			throws ResourceInitializationException {
 		pipeline.add(createEngineDescription(XmiWriter.class,
 				XmiWriter.PARAM_TARGET_LOCATION,
 				new File(directory, "xmi").getAbsolutePath()));
 		return pipeline;
 	}
 
+	public static List<AnalysisEngineDescription> gexf(
+			List<AnalysisEngineDescription> pipeline, File directory)
+			throws ResourceInitializationException {
+		pipeline.add(createEngineDescription(GEXFExporter.class,
+				GEXFExporter.PARAM_OUTPUT_DIRECTORY,
+				new File(directory, "gexf").getAbsolutePath()));
+		return pipeline;
+	}
+
 	public static List<AnalysisEngineDescription> conll(
 			List<AnalysisEngineDescription> pipeline, File directory)
-					throws ResourceInitializationException {
+			throws ResourceInitializationException {
 		pipeline.add(createEngineDescription(Conll2006Writer.class,
 				Conll2006Writer.PARAM_TARGET_LOCATION, new File(directory,
 						"conll").getAbsolutePath()));
@@ -43,7 +53,7 @@ public class PipelineBuilder {
 
 	public static List<AnalysisEngineDescription> cwb(
 			List<AnalysisEngineDescription> pipeline, File directory)
-					throws ResourceInitializationException {
+			throws ResourceInitializationException {
 		pipeline.add(createEngineDescription(ImsCwbWriter.class,
 				ImsCwbWriter.PARAM_TARGET_LOCATION,
 				new File(directory, "cwb").getAbsolutePath(),
@@ -55,7 +65,7 @@ public class PipelineBuilder {
 
 	public static List<AnalysisEngineDescription> data2(
 			List<AnalysisEngineDescription> pipeline, File directory)
-					throws ResourceInitializationException {
+			throws ResourceInitializationException {
 		pipeline.add(createEngineDescription(Data2Exporter.class,
 				Data2Exporter.PARAM_OUTPUT_DIRECTORY, new File(directory,
 						"data2").getAbsolutePath()));
@@ -64,7 +74,7 @@ public class PipelineBuilder {
 
 	public static List<AnalysisEngineDescription> txt(
 			List<AnalysisEngineDescription> pipeline, File directory)
-					throws ResourceInitializationException {
+			throws ResourceInitializationException {
 		pipeline.add(createEngineDescription(FilteredTxtExporter.class,
 				FilteredTxtExporter.PARAM_OUTPUT_DIRECTORY, new File(directory,
 						"txt").getAbsolutePath()));
