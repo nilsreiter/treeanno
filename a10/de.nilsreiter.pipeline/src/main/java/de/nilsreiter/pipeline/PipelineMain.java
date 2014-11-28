@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.pipeline.semafor.Semafor;
 import de.nilsreiter.pipeline.uima.ClearAnnotation;
+import de.nilsreiter.pipeline.uima.entitydetection.EntityAnnotator;
+import de.nilsreiter.pipeline.uima.entitydetection.RelationAnnotator;
 import de.nilsreiter.pipeline.uima.event.EventAnnotator;
 import de.nilsreiter.pipeline.uima.wsd.WSDItemCompleter;
 import de.nilsreiter.pipeline.uima.wsd.WSDPostProcess;
@@ -56,11 +58,11 @@ public class PipelineMain extends MainWithIODir {
 
 	enum Pipeline {
 		Basic, Second, Full, Ling, Event, Shallow, SegLemma, StanfordShallow,
-		StanfordDeep, NEFinder
+		StanfordDeep, NEFinder, EntityRelations
 	};
 
 	enum ExportFormat {
-		XMI, DATA2, CWB, TXT_NE_FILTER
+		XMI, DATA2, CWB, TXT_NE_FILTER, GEXF
 	}
 
 	Logger logger = LoggerFactory.getLogger(PipelineMain.class);
@@ -122,6 +124,8 @@ public class PipelineMain extends MainWithIODir {
 			pl = cwb(pl, this.getOutputDirectory());
 		if (exportFormat.contains(ExportFormat.TXT_NE_FILTER))
 			pl = PipelineBuilder.txt(pl, this.getOutputDirectory());
+		if (exportFormat.contains(ExportFormat.GEXF))
+			pl = PipelineBuilder.gexf(pl, this.getOutputDirectory());
 		logger.info("Running pipeline.");
 		runPipeline(getXmiCollectionReader(), array(pl));
 	}
@@ -156,6 +160,10 @@ public class PipelineMain extends MainWithIODir {
 			ae.add(createEngineDescription(LanguageToolSegmenter.class));
 			ae.add(createEngineDescription(StanfordPosTagger.class));
 			ae.add(createEngineDescription(StanfordLemmatizer.class));
+			return ae;
+		case EntityRelations:
+			ae.add(createEngineDescription(EntityAnnotator.class));
+			ae.add(createEngineDescription(RelationAnnotator.class));
 			return ae;
 		case StanfordDeep:
 			ae.add(createEngineDescription(LanguageToolSegmenter.class));
