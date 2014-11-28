@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Nov 28 10:57:04 CET 2014
+ * Updated by JCasGen Fri Nov 28 13:03:35 CET 2014
  * @generated */
 public class Entity_Type extends Annotation_Type {
   /** @generated 
@@ -93,6 +93,30 @@ public class Entity_Type extends Annotation_Type {
     ll_cas.ll_setRefValue(addr, casFeatCode_Source, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_Head;
+  /** @generated */
+  final int     casFeatCode_Head;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public int getHead(int addr) {
+        if (featOkTst && casFeat_Head == null)
+      jcas.throwFeatMissing("Head", "de.nilsreiter.pipeline.uima.entitydetection.type.Entity");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_Head);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setHead(int addr, int v) {
+        if (featOkTst && casFeat_Head == null)
+      jcas.throwFeatMissing("Head", "de.nilsreiter.pipeline.uima.entitydetection.type.Entity");
+    ll_cas.ll_setRefValue(addr, casFeatCode_Head, v);}
+    
+  
 
 
 
@@ -112,6 +136,10 @@ public class Entity_Type extends Annotation_Type {
  
     casFeat_Source = jcas.getRequiredFeatureDE(casType, "Source", "uima.cas.AnnotationBase", featOkTst);
     casFeatCode_Source  = (null == casFeat_Source) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Source).getCode();
+
+ 
+    casFeat_Head = jcas.getRequiredFeatureDE(casType, "Head", "de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token", featOkTst);
+    casFeatCode_Head  = (null == casFeat_Head) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Head).getCode();
 
   }
 }
