@@ -10,6 +10,7 @@ import de.nilsreiter.pipeline.uima.entitydetection.type.Entity;
 import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceChain;
 import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceLink;
 import de.tudarmstadt.ukp.dkpro.core.api.ner.type.NamedEntity;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 
 public class EntityAnnotator extends JCasAnnotator_ImplBase {
 
@@ -21,6 +22,8 @@ public class EntityAnnotator extends JCasAnnotator_ImplBase {
 							ne.getEnd(), Entity.class);
 			entity.setIdentifier(ne.getCoveredText());
 			entity.setSource(ne);
+			entity.setHead(RelationUtil.getHighestToken(jcas,
+					JCasUtil.selectCovered(jcas, Token.class, ne)));
 		}
 
 		// processing coreference chains
@@ -34,6 +37,9 @@ public class EntityAnnotator extends JCasAnnotator_ImplBase {
 								ne.getEnd(), Entity.class);
 				entity.setIdentifier("chain" + chainNumber);
 				entity.setSource(chain);
+				entity.setHead(RelationUtil.getHighestToken(jcas,
+						JCasUtil.selectCovered(jcas, Token.class, ne)));
+
 			} while ((ne = ne.getNext()) != null);
 			chainNumber++;
 		}
