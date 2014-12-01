@@ -9,7 +9,7 @@
   </imports>
   <types>
   	<typeDescription>
-      <name>de.nilsreiter.pipeline.uima.entitydetection.type.Entity</name>
+      <name>de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -39,7 +39,7 @@
           <name>Arguments</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>de.nilsreiter.pipeline.uima.entitydetection.type.Entity</elementType>
+          <elementType>de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention</elementType>
           <multipleReferencesAllowed>false</multipleReferencesAllowed>
         </featureDescription>
         <featureDescription>

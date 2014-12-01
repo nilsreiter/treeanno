@@ -8,7 +8,7 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 
-import de.nilsreiter.pipeline.uima.entitydetection.type.Entity;
+import de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention;
 import de.nilsreiter.pipeline.uima.entitydetection.type.Relation;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
@@ -18,11 +18,11 @@ public class RelationAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
-			Collection<Entity> entities =
-					JCasUtil.selectCovered(jcas, Entity.class, sentence);
+			Collection<EntityMention> entities =
+					JCasUtil.selectCovered(jcas, EntityMention.class, sentence);
 			if (entities.size() > 1) {
-				for (Entity ent1 : entities) {
-					for (Entity ent2 : entities) {
+				for (EntityMention ent1 : entities) {
+					for (EntityMention ent2 : entities) {
 						processPair(jcas, ent1, ent2);
 					}
 				}
@@ -30,7 +30,8 @@ public class RelationAnnotator extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	protected void processPair(JCas jcas, Entity entity1, Entity entity2) {
+	protected void processPair(JCas jcas, EntityMention entity1,
+			EntityMention entity2) {
 		if (entity1.getBegin() == entity2.getBegin()
 				&& entity1.getEnd() == entity2.getEnd()) return;
 

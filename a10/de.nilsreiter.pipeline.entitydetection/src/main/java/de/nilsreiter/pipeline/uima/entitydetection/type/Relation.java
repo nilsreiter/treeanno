@@ -13,7 +13,7 @@ import org.apache.uima.jcas.cas.AnnotationBase;
 
 
 /** 
- * Updated by JCasGen Fri Nov 28 13:23:14 CET 2014
+ * Updated by JCasGen Mon Dec 01 13:32:14 CET 2014
  * XML source: /Users/reiterns/Documents/Java/a10/de.nilsreiter.pipeline.entitydetection/src/main/java/de/nilsreiter/pipeline/uima/entitydetection/Entity.xml
  * @generated */
 public class Relation extends AnnotationBase {
@@ -92,18 +92,18 @@ public class Relation extends AnnotationBase {
    * @param i index in the array to get
    * @return value of the element at index i 
    */
-  public Entity getArguments(int i) {
+  public EntityMention getArguments(int i) {
     if (Relation_Type.featOkTst && ((Relation_Type)jcasType).casFeat_Arguments == null)
       jcasType.jcas.throwFeatMissing("Arguments", "de.nilsreiter.pipeline.uima.entitydetection.type.Relation");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments), i);
-    return (Entity)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments), i)));}
+    return (EntityMention)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments), i)));}
 
   /** indexed setter for Arguments - sets an indexed value - 
    * @generated
    * @param i index in the array to set
    * @param v value to set into the array 
    */
-  public void setArguments(int i, Entity v) { 
+  public void setArguments(int i, EntityMention v) { 
     if (Relation_Type.featOkTst && ((Relation_Type)jcasType).casFeat_Arguments == null)
       jcasType.jcas.throwFeatMissing("Arguments", "de.nilsreiter.pipeline.uima.entitydetection.type.Relation");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Relation_Type)jcasType).casFeatCode_Arguments), i);
