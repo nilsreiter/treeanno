@@ -16,6 +16,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 public class EntityAnnotator extends JCasAnnotator_ImplBase {
 
 	boolean useNamedEntities = false;
+	boolean useCoreferenceChains = true;
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
@@ -32,29 +33,32 @@ public class EntityAnnotator extends JCasAnnotator_ImplBase {
 				entity.setHead(headToken);
 			}
 
-		// processing coreference chains
-		int chainNumber = 0;
-		for (CoreferenceChain chain : JCasUtil.select(jcas,
-				CoreferenceChain.class)) {
-			CoreferenceLink ne = chain.getFirst();
-			Entity ent = new Entity(jcas);
-			String entityLabel = "";
-			do {
-				EntityMention entity =
-						AnnotationFactory.createAnnotation(jcas, ne.getBegin(),
-								ne.getEnd(), EntityMention.class);
-				entity.setIdentifier("chain" + chainNumber);
-				entity.setSource(chain);
-				entity.setHead(RelationUtil.getHighestToken(jcas,
-						JCasUtil.selectCovered(jcas, Token.class, ne)));
-				entity.setEntity(ent);
-				if (entity.getCoveredText().length() > entityLabel.length())
-					entityLabel = entity.getCoveredText();
+		if (useCoreferenceChains) {
+			// processing coreference chains
+			int chainNumber = 0;
+			for (CoreferenceChain chain : JCasUtil.select(jcas,
+					CoreferenceChain.class)) {
+				CoreferenceLink ne = chain.getFirst();
+				Entity ent = new Entity(jcas);
+				String entityLabel = "";
+				do {
+					EntityMention entity =
+							AnnotationFactory.createAnnotation(jcas,
+									ne.getBegin(), ne.getEnd(),
+									EntityMention.class);
+					entity.setIdentifier("chain" + chainNumber);
+					entity.setSource(chain);
+					entity.setHead(RelationUtil.getHighestToken(jcas,
+							JCasUtil.selectCovered(jcas, Token.class, ne)));
+					entity.setEntity(ent);
+					if (entity.getCoveredText().length() > entityLabel.length())
+						entityLabel = entity.getCoveredText();
 
-			} while ((ne = ne.getNext()) != null);
-			ent.setName(entityLabel);
-			ent.addToIndexes();
-			chainNumber++;
+				} while ((ne = ne.getNext()) != null);
+				ent.setName(entityLabel);
+				ent.addToIndexes();
+				chainNumber++;
+			}
 		}
 	}
 
