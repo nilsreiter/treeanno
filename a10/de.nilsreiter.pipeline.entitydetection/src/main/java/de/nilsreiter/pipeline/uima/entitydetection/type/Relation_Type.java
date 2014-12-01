@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.cas.AnnotationBase_Type;
 
 /** 
- * Updated by JCasGen Mon Dec 01 13:32:14 CET 2014
+ * Updated by JCasGen Mon Dec 01 13:35:29 CET 2014
  * @generated */
 public class Relation_Type extends AnnotationBase_Type {
   /** @generated 

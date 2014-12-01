@@ -13,7 +13,7 @@ import org.apache.uima.jcas.cas.AnnotationBase;
 
 
 /** 
- * Updated by JCasGen Mon Dec 01 13:32:14 CET 2014
+ * Updated by JCasGen Mon Dec 01 13:35:29 CET 2014
  * XML source: /Users/reiterns/Documents/Java/a10/de.nilsreiter.pipeline.entitydetection/src/main/java/de/nilsreiter/pipeline/uima/entitydetection/Entity.xml
  * @generated */
 public class EntityMention extends Annotation {
@@ -142,6 +142,28 @@ public class EntityMention extends Annotation {
     if (EntityMention_Type.featOkTst && ((EntityMention_Type)jcasType).casFeat_Head == null)
       jcasType.jcas.throwFeatMissing("Head", "de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention");
     jcasType.ll_cas.ll_setRefValue(addr, ((EntityMention_Type)jcasType).casFeatCode_Head, jcasType.ll_cas.ll_getFSRef(v));}    
+   
+    
+  //*--------------*
+  //* Feature: Entity
+
+  /** getter for Entity - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public Entity getEntity() {
+    if (EntityMention_Type.featOkTst && ((EntityMention_Type)jcasType).casFeat_Entity == null)
+      jcasType.jcas.throwFeatMissing("Entity", "de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention");
+    return (Entity)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((EntityMention_Type)jcasType).casFeatCode_Entity)));}
+    
+  /** setter for Entity - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setEntity(Entity v) {
+    if (EntityMention_Type.featOkTst && ((EntityMention_Type)jcasType).casFeat_Entity == null)
+      jcasType.jcas.throwFeatMissing("Entity", "de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention");
+    jcasType.ll_cas.ll_setRefValue(addr, ((EntityMention_Type)jcasType).casFeatCode_Entity, jcasType.ll_cas.ll_getFSRef(v));}    
   }
 
     

@@ -28,6 +28,11 @@
           <description/>
           <rangeTypeName>de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token</rangeTypeName>
         </featureDescription>
+      <featureDescription>
+          <name>Entity</name>
+          <description/>
+          <rangeTypeName>de.nilsreiter.pipeline.uima.entitydetection.type.Entity</rangeTypeName>
+        </featureDescription>
       </features>
     </typeDescription>
   <typeDescription>
@@ -42,6 +47,18 @@
           <elementType>de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention</elementType>
           <multipleReferencesAllowed>false</multipleReferencesAllowed>
         </featureDescription>
+        <featureDescription>
+          <name>Name</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  <typeDescription>
+      <name>de.nilsreiter.pipeline.uima.entitydetection.type.Entity</name>
+      <description/>
+      <supertypeName>uima.cas.AnnotationBase</supertypeName>
+      <features>
         <featureDescription>
           <name>Name</name>
           <description/>
