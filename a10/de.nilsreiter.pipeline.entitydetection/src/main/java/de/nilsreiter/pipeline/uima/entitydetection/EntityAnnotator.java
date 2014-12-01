@@ -6,6 +6,7 @@ import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
+import de.nilsreiter.pipeline.uima.entitydetection.type.Entity;
 import de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention;
 import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceChain;
 import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceLink;
@@ -36,6 +37,8 @@ public class EntityAnnotator extends JCasAnnotator_ImplBase {
 		for (CoreferenceChain chain : JCasUtil.select(jcas,
 				CoreferenceChain.class)) {
 			CoreferenceLink ne = chain.getFirst();
+			Entity ent = new Entity(jcas);
+			String entityLabel = "";
 			do {
 				EntityMention entity =
 						AnnotationFactory.createAnnotation(jcas, ne.getBegin(),
@@ -44,8 +47,13 @@ public class EntityAnnotator extends JCasAnnotator_ImplBase {
 				entity.setSource(chain);
 				entity.setHead(RelationUtil.getHighestToken(jcas,
 						JCasUtil.selectCovered(jcas, Token.class, ne)));
+				entity.setEntity(ent);
+				if (entity.getCoveredText().length() > entityLabel.length())
+					entityLabel = entity.getCoveredText();
 
 			} while ((ne = ne.getNext()) != null);
+			ent.setName(entityLabel);
+			ent.addToIndexes();
 			chainNumber++;
 		}
 	}
