@@ -17,13 +17,15 @@ public class EntityAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		for (NamedEntity ne : JCasUtil.select(jcas, NamedEntity.class)) {
+			Token headToken =
+					RelationUtil.getHighestToken(jcas,
+							JCasUtil.selectCovered(jcas, Token.class, ne));
 			Entity entity =
 					AnnotationFactory.createAnnotation(jcas, ne.getBegin(),
 							ne.getEnd(), Entity.class);
 			entity.setIdentifier(ne.getCoveredText());
 			entity.setSource(ne);
-			entity.setHead(RelationUtil.getHighestToken(jcas,
-					JCasUtil.selectCovered(jcas, Token.class, ne)));
+			entity.setHead(headToken);
 		}
 
 		// processing coreference chains
