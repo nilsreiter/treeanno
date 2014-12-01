@@ -11,7 +11,7 @@ import org.apache.uima.jcas.cas.AnnotationBase;
 
 
 /** 
- * Updated by JCasGen Mon Dec 01 18:22:46 CET 2014
+ * Updated by JCasGen Mon Dec 01 18:28:00 CET 2014
  * XML source: /Users/reiterns/Documents/Java/a10/de.nilsreiter.pipeline.entitydetection/src/main/java/de/nilsreiter/pipeline/uima/entitydetection/Entity.xml
  * @generated */
 public class Entity extends AnnotationBase {
@@ -106,6 +106,28 @@ public class Entity extends AnnotationBase {
     if (Entity_Type.featOkTst && ((Entity_Type)jcasType).casFeat_EntityType == null)
       jcasType.jcas.throwFeatMissing("EntityType", "de.nilsreiter.pipeline.uima.entitydetection.type.Entity");
     jcasType.ll_cas.ll_setStringValue(addr, ((Entity_Type)jcasType).casFeatCode_EntityType, v);}    
+   
+    
+  //*--------------*
+  //* Feature: Identifier
+
+  /** getter for Identifier - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public String getIdentifier() {
+    if (Entity_Type.featOkTst && ((Entity_Type)jcasType).casFeat_Identifier == null)
+      jcasType.jcas.throwFeatMissing("Identifier", "de.nilsreiter.pipeline.uima.entitydetection.type.Entity");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Entity_Type)jcasType).casFeatCode_Identifier);}
+    
+  /** setter for Identifier - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setIdentifier(String v) {
+    if (Entity_Type.featOkTst && ((Entity_Type)jcasType).casFeat_Identifier == null)
+      jcasType.jcas.throwFeatMissing("Identifier", "de.nilsreiter.pipeline.uima.entitydetection.type.Entity");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Entity_Type)jcasType).casFeatCode_Identifier, v);}    
   }
 
     
