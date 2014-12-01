@@ -38,7 +38,7 @@ public class GEXFExporter extends JCasConsumer_ImplBase {
 		Calendar date = Calendar.getInstance();
 
 		gexf.getMetadata().setLastModified(date.getTime())
-				.setCreator("Gephi.org");
+		.setCreator("Gephi.org");
 		Graph graph = gexf.getGraph();
 		graph.setDefaultEdgeType(EdgeType.UNDIRECTED).setMode(Mode.STATIC);
 
@@ -72,6 +72,9 @@ public class GEXFExporter extends JCasConsumer_ImplBase {
 				new File(outDir, JCasUtil.selectSingle(jcas,
 						DocumentMetaData.class).getDocumentId()
 						+ ".gexf");
+		if (f.exists()) {
+			f.delete();
+		}
 		Writer out;
 		try {
 			out = new FileWriter(f, false);
