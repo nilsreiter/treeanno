@@ -14,19 +14,22 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 
 public class EntityAnnotator extends JCasAnnotator_ImplBase {
 
+	boolean useNamedEntities = false;
+
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
-		for (NamedEntity ne : JCasUtil.select(jcas, NamedEntity.class)) {
-			Token headToken =
-					RelationUtil.getHighestToken(jcas,
-							JCasUtil.selectCovered(jcas, Token.class, ne));
-			Entity entity =
-					AnnotationFactory.createAnnotation(jcas, ne.getBegin(),
-							ne.getEnd(), Entity.class);
-			entity.setIdentifier(ne.getCoveredText());
-			entity.setSource(ne);
-			entity.setHead(headToken);
-		}
+		if (useNamedEntities)
+			for (NamedEntity ne : JCasUtil.select(jcas, NamedEntity.class)) {
+				Token headToken =
+						RelationUtil.getHighestToken(jcas,
+								JCasUtil.selectCovered(jcas, Token.class, ne));
+				Entity entity =
+						AnnotationFactory.createAnnotation(jcas, ne.getBegin(),
+								ne.getEnd(), Entity.class);
+				entity.setIdentifier(ne.getCoveredText());
+				entity.setSource(ne);
+				entity.setHead(headToken);
+			}
 
 		// processing coreference chains
 		int chainNumber = 0;
@@ -46,4 +49,5 @@ public class EntityAnnotator extends JCasAnnotator_ImplBase {
 			chainNumber++;
 		}
 	}
+
 }
