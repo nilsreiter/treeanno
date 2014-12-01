@@ -50,15 +50,25 @@ public class GEXFExporter extends JCasConsumer_ImplBase {
 			}
 		}
 
+		int relationNumber = 0;
 		for (Relation relation : JCasUtil.select(jcas, Relation.class)) {
 			Node n1 = nodeIndex.get(relation.getArguments(0).getIdentifier());
 			Node n2 = nodeIndex.get(relation.getArguments(1).getIdentifier());
-			n1.connectTo(n2);
+			try {
+				n1.connectTo("rel" + relationNumber++, relation.getName(), n2);
+			} catch (java.lang.IllegalArgumentException e) {
+
+			}
 		}
 
 		StaxGraphWriter graphWriter = new StaxGraphWriter();
+
+		File outDir = new File(outputDirectory);
+		if (!outDir.exists()) {
+			outDir.mkdirs();
+		}
 		File f =
-				new File(new File(outputDirectory), JCasUtil.selectSingle(jcas,
+				new File(outDir, JCasUtil.selectSingle(jcas,
 						DocumentMetaData.class).getDocumentId()
 						+ ".gexf");
 		Writer out;
