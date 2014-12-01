@@ -6,7 +6,7 @@ import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.nilsreiter.pipeline.uima.entitydetection.type.Entity;
+import de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention;
 import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceChain;
 import de.tudarmstadt.ukp.dkpro.core.api.coref.type.CoreferenceLink;
 import de.tudarmstadt.ukp.dkpro.core.api.ner.type.NamedEntity;
@@ -23,9 +23,9 @@ public class EntityAnnotator extends JCasAnnotator_ImplBase {
 				Token headToken =
 						RelationUtil.getHighestToken(jcas,
 								JCasUtil.selectCovered(jcas, Token.class, ne));
-				Entity entity =
+				EntityMention entity =
 						AnnotationFactory.createAnnotation(jcas, ne.getBegin(),
-								ne.getEnd(), Entity.class);
+								ne.getEnd(), EntityMention.class);
 				entity.setIdentifier(ne.getCoveredText());
 				entity.setSource(ne);
 				entity.setHead(headToken);
@@ -37,9 +37,9 @@ public class EntityAnnotator extends JCasAnnotator_ImplBase {
 				CoreferenceChain.class)) {
 			CoreferenceLink ne = chain.getFirst();
 			do {
-				Entity entity =
+				EntityMention entity =
 						AnnotationFactory.createAnnotation(jcas, ne.getBegin(),
-								ne.getEnd(), Entity.class);
+								ne.getEnd(), EntityMention.class);
 				entity.setIdentifier("chain" + chainNumber);
 				entity.setSource(chain);
 				entity.setHead(RelationUtil.getHighestToken(jcas,

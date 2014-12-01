@@ -22,7 +22,7 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.nilsreiter.pipeline.uima.entitydetection.type.Entity;
+import de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention;
 import de.nilsreiter.pipeline.uima.entitydetection.type.Relation;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
@@ -38,12 +38,12 @@ public class GEXFExporter extends JCasConsumer_ImplBase {
 		Calendar date = Calendar.getInstance();
 
 		gexf.getMetadata().setLastModified(date.getTime())
-		.setCreator("Gephi.org");
+				.setCreator("Gephi.org");
 		Graph graph = gexf.getGraph();
 		graph.setDefaultEdgeType(EdgeType.UNDIRECTED).setMode(Mode.STATIC);
 
 		Map<String, Node> nodeIndex = new HashMap<String, Node>();
-		for (Entity entity : JCasUtil.select(jcas, Entity.class)) {
+		for (EntityMention entity : JCasUtil.select(jcas, EntityMention.class)) {
 			if (!nodeIndex.containsKey(entity.getIdentifier())) {
 				Node eNode = graph.createNode(entity.getIdentifier());
 				nodeIndex.put(entity.getIdentifier(), eNode);
