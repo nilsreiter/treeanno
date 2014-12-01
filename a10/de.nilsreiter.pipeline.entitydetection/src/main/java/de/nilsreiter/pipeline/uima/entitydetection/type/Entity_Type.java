@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.cas.AnnotationBase_Type;
 
 /** 
- * Updated by JCasGen Mon Dec 01 13:35:29 CET 2014
+ * Updated by JCasGen Mon Dec 01 18:22:46 CET 2014
  * @generated */
 public class Entity_Type extends AnnotationBase_Type {
   /** @generated 
@@ -69,6 +69,30 @@ public class Entity_Type extends AnnotationBase_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_Name, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_EntityType;
+  /** @generated */
+  final int     casFeatCode_EntityType;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public String getEntityType(int addr) {
+        if (featOkTst && casFeat_EntityType == null)
+      jcas.throwFeatMissing("EntityType", "de.nilsreiter.pipeline.uima.entitydetection.type.Entity");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_EntityType);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setEntityType(int addr, String v) {
+        if (featOkTst && casFeat_EntityType == null)
+      jcas.throwFeatMissing("EntityType", "de.nilsreiter.pipeline.uima.entitydetection.type.Entity");
+    ll_cas.ll_setStringValue(addr, casFeatCode_EntityType, v);}
+    
+  
 
 
 
@@ -84,6 +108,10 @@ public class Entity_Type extends AnnotationBase_Type {
  
     casFeat_Name = jcas.getRequiredFeatureDE(casType, "Name", "uima.cas.String", featOkTst);
     casFeatCode_Name  = (null == casFeat_Name) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Name).getCode();
+
+ 
+    casFeat_EntityType = jcas.getRequiredFeatureDE(casType, "EntityType", "uima.cas.String", featOkTst);
+    casFeatCode_EntityType  = (null == casFeat_EntityType) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_EntityType).getCode();
 
   }
 }
