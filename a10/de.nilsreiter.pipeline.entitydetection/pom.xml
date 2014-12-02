@@ -64,6 +64,13 @@
   		<artifactId>gexf4j</artifactId>
   		<version>0.4.4-BETA</version>
   	</dependency>
-
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl
+  		</artifactId>
+  		<version>1.6.2</version>
+  		<scope>test</scope>
+  	</dependency>
   </dependencies>
 </project>
