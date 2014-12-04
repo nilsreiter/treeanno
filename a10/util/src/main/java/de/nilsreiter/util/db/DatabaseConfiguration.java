@@ -122,9 +122,12 @@ public class DatabaseConfiguration {
 
 	public static DatabaseConfiguration getDatabaseConfiguration(
 			Configuration config) {
-		return new DatabaseConfiguration(config.getString("database.host"),
-				config.getString("database.username"),
-				config.getString("database.password"),
-				config.getString("database.name"));
+		DatabaseConfiguration dbConf =
+				new DatabaseConfiguration(config.getString("database.host"),
+						config.getString("database.username"),
+						config.getString("database.password"),
+						config.getString("database.name"));
+		dbConf.setPort(config.getInt("database.port"));
+		return dbConf;
 	}
 }
