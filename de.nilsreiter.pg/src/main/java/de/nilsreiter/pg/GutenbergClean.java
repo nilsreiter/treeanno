@@ -48,6 +48,7 @@ public class GutenbergClean extends MainWithIO {
 		}
 		bos.flush();
 		bos.close();
+		br.close();
 	}
 
 }
