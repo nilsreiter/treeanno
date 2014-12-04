@@ -20,13 +20,13 @@ public class GutenbergClean extends MainWithIO {
 	char lineSeparator = '\n';
 
 	public static void main(String[] args) throws IOException {
-		GutenbergClean gc = new GutenbergClean();
+		GutenbergClean gc = new GutenbergClean('\n');
 		gc.processArguments(args);
-		gc.run();
+		gc.cleanText(gc.getInputStream(), gc.getOutputStream());
 	}
 
-	private void run() throws IOException {
-		cleanText(this.getInputStream(), this.getOutputStream());
+	public GutenbergClean(char sep) {
+		lineSeparator = sep;
 	}
 
 	public void cleanText(InputStream is, OutputStream os) throws IOException {
