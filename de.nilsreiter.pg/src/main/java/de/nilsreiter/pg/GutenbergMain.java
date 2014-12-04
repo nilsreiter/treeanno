@@ -1,5 +1,8 @@
 package de.nilsreiter.pg;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,25 +19,42 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import de.nilsreiter.util.db.DataSourceFactory;
-import de.uniheidelberg.cl.a10.MainWithIO;
+import de.uniheidelberg.cl.a10.MainWithIODir;
 
-public class GutenbergMain extends MainWithIO {
-	public static void main(String[] args) throws SQLException {
+public class GutenbergMain extends MainWithIODir {
+	DataSource dataSource;
+
+	public static void main(String[] args) throws SQLException,
+	FileNotFoundException {
 		GutenbergMain gm = new GutenbergMain();
 		gm.processArguments(args);
 		gm.run();
 	}
 
-	private void run() throws SQLException {
-		// create an empty model
+	private void run() throws SQLException, FileNotFoundException {
+
+		dataSource = DataSourceFactory.getDataSource(getConfiguration());
+
+		processDirectory(this.getInputDirectory());
+	}
+
+	private void processDirectory(File file) throws FileNotFoundException,
+	SQLException {
+		File[] files = this.getInputDirectory().listFiles();
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].isDirectory()) {
+				processDirectory(files[i]);
+			} else if (files[i].getName().endsWith(".rdf")) {
+				processFile(files[i]);
+			}
+		}
+	}
+
+	private void processFile(File file) throws FileNotFoundException,
+			SQLException {
 		Model model = ModelFactory.createDefaultModel();
 
-		// use the FileManager to find the input file
-		InputStream in = this.getInputStream();
-		if (in == null) {
-			throw new IllegalArgumentException("File: " + this.input.getName()
-					+ " not found");
-		}
+		InputStream in = new FileInputStream(file);
 
 		// read the RDF/XML file
 		model.read(in, null);
@@ -58,82 +78,90 @@ public class GutenbergMain extends MainWithIO {
 
 		}
 
-		DataSource dataSource =
-				DataSourceFactory.getDataSource(getConfiguration());
-		PreparedStatement stmt =
-				dataSource
-						.getConnection()
-						.prepareStatement(
-								"INSERT INTO Gutenberg_Meta VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		if (mainResource != null) {
+			PreparedStatement stmt =
+					dataSource
+					.getConnection()
+					.prepareStatement(
+							"INSERT INTO Gutenberg_Meta VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-		stmt.setString(1, mainResource.getURI());
+			stmt.setString(1, mainResource.getURI());
 
-		Property p = model.createProperty("http://purl.org/dc/terms/creator");
-		Resource author = model.getProperty(mainResource, p).getResource();
-		// System.err.println(author.toString());
-		p = model.createProperty("http://www.gutenberg.org/2009/pgterms/name");
+			Property p =
+					model.createProperty("http://purl.org/dc/terms/creator");
+			Resource author = model.getProperty(mainResource, p).getResource();
+			// System.err.println(author.toString());
+			p =
+					model.createProperty("http://www.gutenberg.org/2009/pgterms/name");
 
-		stmt.setString(2, model.getProperty(author, p).getObject().toString());
-		p =
-				model.createProperty("http://www.gutenberg.org/2009/pgterms/birthdate");
-		stmt.setInt(
-				3,
-				Integer.valueOf(model.getProperty(author, p).getObject()
-						.toString().substring(0, 4)));
-		p =
-				model.createProperty("http://www.gutenberg.org/2009/pgterms/deathdate");
-		stmt.setInt(
-				4,
-				Integer.valueOf(model.getProperty(author, p).getObject()
-						.toString().substring(0, 4)));
-		p = model.createProperty("http://purl.org/dc/terms/language");
-		Resource language = model.getProperty(mainResource, p).getResource();
-		p =
-				model.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#value");
+			stmt.setString(2, model.getProperty(author, p).getObject()
+					.toString());
+			p =
+					model.createProperty("http://www.gutenberg.org/2009/pgterms/birthdate");
+			stmt.setInt(
+					3,
+					Integer.valueOf(model.getProperty(author, p).getObject()
+							.toString().substring(0, 4)));
+			p =
+					model.createProperty("http://www.gutenberg.org/2009/pgterms/deathdate");
+			stmt.setInt(
+					4,
+					Integer.valueOf(model.getProperty(author, p).getObject()
+							.toString().substring(0, 4)));
+			p = model.createProperty("http://purl.org/dc/terms/language");
+			Resource language =
+					model.getProperty(mainResource, p).getResource();
+			p =
+					model.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#value");
 
-		stmt.setString(5, model.getProperty(language, p).getObject().toString()
-				.substring(0, 2));
+			stmt.setString(5, model.getProperty(language, p).getObject()
+					.toString().substring(0, 2));
 
-		stmt.setString(
-				6,
-				model.getProperty(mainResource,
-						model.getProperty("http://purl.org/dc/terms/title"))
-						.getObject().toString());
-		stmt.setString(
-				7,
-				model.getProperty(
-						mainResource,
-						model.getProperty("http://purl.org/dc/terms/description"))
-						.getObject().toString());
+			String title =
+					model.getProperty(mainResource,
+							model.getProperty("http://purl.org/dc/terms/title"))
+							.getObject().toString();
+			stmt.setString(6, title);
+			stmt.setString(
+					7,
+					model.getProperty(
+							mainResource,
+							model.getProperty("http://purl.org/dc/terms/description"))
+							.getObject().toString());
 
-		p = model.createProperty("http://purl.org/dc/terms/subject");
-		NodeIterator iterator = model.listObjectsOfProperty(mainResource, p);
-		HashSet<String> subjects = new HashSet<String>();
-		HashSet<String> lcsh = new HashSet<String>();
-		HashSet<String> lcc = new HashSet<String>();
+			p = model.createProperty("http://purl.org/dc/terms/subject");
+			NodeIterator iterator =
+					model.listObjectsOfProperty(mainResource, p);
+			HashSet<String> subjects = new HashSet<String>();
+			HashSet<String> lcsh = new HashSet<String>();
+			HashSet<String> lcc = new HashSet<String>();
 
-		Property valProp =
-				model.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#value");
-		while (iterator.hasNext()) {
-			Resource node = iterator.next().asResource();
-			if (node.hasProperty(
-					model.createProperty("http://purl.org/dc/dcam/memberOf"),
-					model.getResource("http://purl.org/dc/terms/LCSH"))) {
-				lcsh.add(model.getProperty(node, valProp).getObject()
-						.toString());
-			} else if (node.hasProperty(
-					model.createProperty("http://purl.org/dc/dcam/memberOf"),
-					model.getResource("http://purl.org/dc/terms/LCC"))) {
-				lcc.add(model.getProperty(node, valProp).getObject().toString());
-			} else
-				subjects.add(model.getProperty(node, valProp).getObject()
-						.toString());
+			Property valProp =
+					model.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#value");
+			while (iterator.hasNext()) {
+				Resource node = iterator.next().asResource();
+				if (node.hasProperty(model
+						.createProperty("http://purl.org/dc/dcam/memberOf"),
+						model.getResource("http://purl.org/dc/terms/LCSH"))) {
+					lcsh.add(model.getProperty(node, valProp).getObject()
+							.toString());
+				} else if (node.hasProperty(model
+						.createProperty("http://purl.org/dc/dcam/memberOf"),
+						model.getResource("http://purl.org/dc/terms/LCC"))) {
+					lcc.add(model.getProperty(node, valProp).getObject()
+							.toString());
+				} else
+					subjects.add(model.getProperty(node, valProp).getObject()
+							.toString());
+			}
+			stmt.setString(8, lcsh.toString());
+			stmt.setString(9, lcc.toString());
+			stmt.setString(10, subjects.toString());
+
+			stmt.execute();
+			stmt.close();
+
+			logger.info("Added {}: {}", mainResource.getURI(), title);
 		}
-		stmt.setString(8, lcsh.toString());
-		stmt.setString(9, lcc.toString());
-		stmt.setString(10, subjects.toString());
-
-		stmt.execute();
-		stmt.close();
 	}
 }
