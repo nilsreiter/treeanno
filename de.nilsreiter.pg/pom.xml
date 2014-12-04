@@ -15,5 +15,10 @@
   		<artifactId>util-main</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter</groupId>
+  		<artifactId>util</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>
