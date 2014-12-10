@@ -34,18 +34,21 @@ public class RelationAnnotator extends JCasAnnotator_ImplBase {
 			EntityMention entity2) {
 		if (entity1.getBegin() == entity2.getBegin()
 				&& entity1.getEnd() == entity2.getEnd()) return;
-		try {
-			Relation rel = new Relation(jcas);
-			rel.setArguments(new FSArray(jcas, 2));
-			rel.setArguments(0, entity1);
-			rel.setArguments(1, entity2);
 
+		Relation rel = new Relation(jcas);
+		rel.setArguments(new FSArray(jcas, 2));
+		rel.setArguments(0, entity1);
+		rel.setArguments(1, entity2);
+
+		try {
 			Token relationToken =
 					RelationUtil.getLCS(jcas, entity1.getHead(),
 							entity2.getHead());
 			rel.setName(relationToken.getLemma().getValue());
-			rel.addToIndexes();
-		} catch (NullPointerException e) {}
+		} catch (NullPointerException e) {
+			rel.setName("UNKNOWN RELATION");
+		}
+		rel.addToIndexes();
 
 	}
 
