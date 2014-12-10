@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.pipeline.semafor.Semafor;
 import de.nilsreiter.pipeline.uima.ClearAnnotation;
-import de.nilsreiter.pipeline.uima.entitydetection.EntityAnnotator;
+import de.nilsreiter.pipeline.uima.entitydetection.EntityAnnotator2;
 import de.nilsreiter.pipeline.uima.entitydetection.RelationAnnotator;
 import de.nilsreiter.pipeline.uima.event.EventAnnotator;
 import de.nilsreiter.pipeline.uima.wsd.WSDItemCompleter;
@@ -162,7 +162,7 @@ public class PipelineMain extends MainWithIODir {
 			ae.add(createEngineDescription(StanfordLemmatizer.class));
 			return ae;
 		case EntityRelations:
-			ae.add(createEngineDescription(EntityAnnotator.class));
+			ae.add(createEngineDescription(EntityAnnotator2.class));
 			ae.add(createEngineDescription(RelationAnnotator.class));
 			return ae;
 		case StanfordDeep:
