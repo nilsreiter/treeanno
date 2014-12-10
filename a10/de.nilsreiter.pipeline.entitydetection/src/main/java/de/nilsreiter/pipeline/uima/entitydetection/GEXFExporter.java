@@ -38,7 +38,7 @@ public class GEXFExporter extends JCasConsumer_ImplBase {
 		Calendar date = Calendar.getInstance();
 
 		gexf.getMetadata().setLastModified(date.getTime())
-				.setCreator("Gephi.org");
+		.setCreator("Gephi.org");
 		Graph graph = gexf.getGraph();
 		graph.setDefaultEdgeType(EdgeType.UNDIRECTED).setMode(Mode.STATIC);
 
@@ -47,7 +47,7 @@ public class GEXFExporter extends JCasConsumer_ImplBase {
 		for (Entity entity : JCasUtil.select(jcas, Entity.class)) {
 			if (!nodeIndex.containsKey(entityId)
 					&& entity.getEntityType() != null
-					&& entity.getEntityType().equalsIgnoreCase("Person")) {
+			/* && entity.getEntityType().equalsIgnoreCase("Person") */) {
 				Node eNode = graph.createNode(entity.getIdentifier());
 				nodeIndex.put(entity.getIdentifier(), eNode);
 				eNode.setLabel(entity.getName());
