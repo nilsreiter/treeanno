@@ -7,6 +7,7 @@ import org.apache.uima.fit.component.ViewTextCopierAnnotator;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Test;
 
@@ -14,6 +15,7 @@ import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 
 public class TestGoldSegmentAnnotator {
+	JCas jcas;
 
 	@Test
 	public void testGoldSegmentAnnotator()
