@@ -13,7 +13,7 @@ import org.apache.uima.jcas.cas.AnnotationBase;
 
 
 /** 
- * Updated by JCasGen Mon Dec 01 18:28:01 CET 2014
+ * Updated by JCasGen Thu Dec 11 20:54:14 CET 2014
  * XML source: /Users/reiterns/Documents/Java/a10/de.nilsreiter.pipeline.entitydetection/src/main/java/de/nilsreiter/pipeline/uima/entitydetection/Entity.xml
  * @generated */
 public class Relation extends AnnotationBase {
