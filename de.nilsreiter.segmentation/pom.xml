@@ -42,5 +42,17 @@
   		</artifactId>
   		<version>1.7.0</version>
   	</dependency>
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.io.xmi-asl
+  		</artifactId>
+  		<version>1.7.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter.pipeline.segmentation</groupId>
+  		<artifactId>de.nilsreiter.pipeline.segmentation</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>
