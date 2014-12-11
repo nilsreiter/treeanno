@@ -13,7 +13,7 @@ import org.apache.uima.jcas.cas.AnnotationBase;
 
 
 /** 
- * Updated by JCasGen Thu Dec 11 20:54:14 CET 2014
+ * Updated by JCasGen Mon Dec 01 18:28:00 CET 2014
  * XML source: /Users/reiterns/Documents/Java/a10/de.nilsreiter.pipeline.entitydetection/src/main/java/de/nilsreiter/pipeline/uima/entitydetection/Entity.xml
  * @generated */
 public class EntityMention extends Annotation {
@@ -164,50 +164,6 @@ public class EntityMention extends Annotation {
     if (EntityMention_Type.featOkTst && ((EntityMention_Type)jcasType).casFeat_Entity == null)
       jcasType.jcas.throwFeatMissing("Entity", "de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention");
     jcasType.ll_cas.ll_setRefValue(addr, ((EntityMention_Type)jcasType).casFeatCode_Entity, jcasType.ll_cas.ll_getFSRef(v));}    
-   
-    
-  //*--------------*
-  //* Feature: MentionType
-
-  /** getter for MentionType - gets 
-   * @generated
-   * @return value of the feature 
-   */
-  public String getMentionType() {
-    if (EntityMention_Type.featOkTst && ((EntityMention_Type)jcasType).casFeat_MentionType == null)
-      jcasType.jcas.throwFeatMissing("MentionType", "de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((EntityMention_Type)jcasType).casFeatCode_MentionType);}
-    
-  /** setter for MentionType - sets  
-   * @generated
-   * @param v value to set into the feature 
-   */
-  public void setMentionType(String v) {
-    if (EntityMention_Type.featOkTst && ((EntityMention_Type)jcasType).casFeat_MentionType == null)
-      jcasType.jcas.throwFeatMissing("MentionType", "de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention");
-    jcasType.ll_cas.ll_setStringValue(addr, ((EntityMention_Type)jcasType).casFeatCode_MentionType, v);}    
-   
-    
-  //*--------------*
-  //* Feature: Gender
-
-  /** getter for Gender - gets 
-   * @generated
-   * @return value of the feature 
-   */
-  public String getGender() {
-    if (EntityMention_Type.featOkTst && ((EntityMention_Type)jcasType).casFeat_Gender == null)
-      jcasType.jcas.throwFeatMissing("Gender", "de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((EntityMention_Type)jcasType).casFeatCode_Gender);}
-    
-  /** setter for Gender - sets  
-   * @generated
-   * @param v value to set into the feature 
-   */
-  public void setGender(String v) {
-    if (EntityMention_Type.featOkTst && ((EntityMention_Type)jcasType).casFeat_Gender == null)
-      jcasType.jcas.throwFeatMissing("Gender", "de.nilsreiter.pipeline.uima.entitydetection.type.EntityMention");
-    jcasType.ll_cas.ll_setStringValue(addr, ((EntityMention_Type)jcasType).casFeatCode_Gender, v);}    
   }
 
     

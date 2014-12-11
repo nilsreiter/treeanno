@@ -33,16 +33,6 @@
           <description/>
           <rangeTypeName>de.nilsreiter.pipeline.uima.entitydetection.type.Entity</rangeTypeName>
         </featureDescription>
-      <featureDescription>
-          <name>MentionType</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>Gender</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
       </features>
     </typeDescription>
   <typeDescription>
