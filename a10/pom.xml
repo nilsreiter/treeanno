@@ -96,6 +96,7 @@
   	<module>de.nilsreiter.proj.lisasommer</module>
   	<module>de.nilsreiter.proj</module>
   	<module>de.nilsreiter.pipeline.entitydetection</module>
+  	<module>de.nilsreiter.pipeline.io.qsa</module>
   </modules>
   <dependencies>
  
