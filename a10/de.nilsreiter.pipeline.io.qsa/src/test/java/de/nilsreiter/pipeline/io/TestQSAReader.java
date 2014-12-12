@@ -34,7 +34,7 @@ public class TestQSAReader {
 		writer =
 				createEngineDescription(XmiWriter.class,
 						XmiWriter.PARAM_TARGET_LOCATION,
-						"src/test/resources/data");
+						"target/test/resources/data");
 		reader =
 				createReaderDescription(QSAReader.class,
 						QSAReader.PARAM_INPUT_DIRECTORY,
@@ -43,7 +43,7 @@ public class TestQSAReader {
 
 	@Test
 	public void testReader() throws ResourceInitializationException,
-			UIMAException, IOException {
+	UIMAException, IOException {
 
 		jcas = SimplePipeline.iteratePipeline(reader, writer).iterator().next();
 
