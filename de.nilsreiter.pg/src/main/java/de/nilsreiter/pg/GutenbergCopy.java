@@ -3,6 +3,7 @@ package de.nilsreiter.pg;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class GutenbergCopy extends Main {
 	GutenbergClean cleaner;
 
 	public static void main(String[] args) throws IOException,
-			InterruptedException {
+	InterruptedException {
 		GutenbergCopy gc = new GutenbergCopy();
 		gc.processArguments(args);
 		gc.run();
@@ -39,6 +40,8 @@ public class GutenbergCopy extends Main {
 	private void run() throws IOException, InterruptedException {
 		if (!outputDirectory.exists()) outputDirectory.mkdirs();
 		tempdir = IOUtil.createTempDir("GutenbergCopy", "");
+		if (!tempdir.exists()) tempdir.mkdirs();
+
 		cleaner = new GutenbergClean('\n');
 
 		BufferedReader br = new BufferedReader(new FileReader(urlList));
@@ -51,7 +54,8 @@ public class GutenbergCopy extends Main {
 	}
 
 	protected void copyFromURL(URL url) throws IOException,
-			InterruptedException {
+	InterruptedException {
+		System.err.print(url.toString());
 		String localname = url.getFile().substring(8);
 		String remotePath = getRemotePath(localname);
 
@@ -61,12 +65,18 @@ public class GutenbergCopy extends Main {
 						new String[] {
 								"scp",
 								remoteHost + ":" + remoteRoot + remoteSeparator
-										+ remotePath,
+								+ remotePath,
 								targetFile.getAbsolutePath() });
 		proc.waitFor();
-		cleaner.cleanText(new FileInputStream(targetFile),
-				new FileOutputStream(new File(outputDirectory, localname
-						+ ".txt")));
+		System.err.print(" [copied] ");
+		try {
+			cleaner.cleanText(new FileInputStream(targetFile),
+					new FileOutputStream(new File(outputDirectory, localname
+							+ ".txt")));
+			System.err.println(" [cleaned]");
+		} catch (FileNotFoundException e) {
+			System.err.println(" [error]");
+		}
 	}
 
 	public String getRemotePath(String name) {
