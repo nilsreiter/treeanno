@@ -47,5 +47,10 @@
   		<artifactId>de.nilsreiter.pipeline.segmentation</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter.pipeline</groupId>
+  		<artifactId>de.nilsreiter.pipeline</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>
