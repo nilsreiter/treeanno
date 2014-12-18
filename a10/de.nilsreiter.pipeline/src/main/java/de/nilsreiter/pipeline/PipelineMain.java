@@ -58,7 +58,7 @@ public class PipelineMain extends MainWithIODir {
 
 	enum Pipeline {
 		Basic, Second, Full, Ling, Event, Shallow, SegLemma, StanfordShallow,
-		StanfordDeep, NEFinder, EntityRelations
+		StanfordDeep, NEFinder, EntityRelations, StanfordNEFinder
 	};
 
 	enum ExportFormat {
@@ -180,6 +180,12 @@ public class PipelineMain extends MainWithIODir {
 			return this.getRowlandsonPipeline2();
 		case NEFinder:
 			ae.add(createEngineDescription(LanguageToolSegmenter.class));
+			ae.add(createEngineDescription(StanfordLemmatizer.class));
+			ae.add(createEngineDescription(StanfordPosTagger.class));
+			ae.add(createEngineDescription(StanfordNamedEntityRecognizer.class));
+			return ae;
+		case StanfordNEFinder:
+			ae.add(createEngineDescription(StanfordSegmenter.class));
 			ae.add(createEngineDescription(StanfordLemmatizer.class));
 			ae.add(createEngineDescription(StanfordPosTagger.class));
 			ae.add(createEngineDescription(StanfordNamedEntityRecognizer.class));
