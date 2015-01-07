@@ -123,7 +123,7 @@ public class PipelineMain extends MainWithIODir {
 		if (exportFormat.contains(ExportFormat.CWB))
 			pl = cwb(pl, this.getOutputDirectory());
 		if (exportFormat.contains(ExportFormat.TXT_NE_FILTER))
-			pl = PipelineBuilder.txt(pl, this.getOutputDirectory());
+			pl = PipelineBuilder.ftxt(pl, this.getOutputDirectory());
 		if (exportFormat.contains(ExportFormat.GEXF))
 			pl = PipelineBuilder.gexf(pl, this.getOutputDirectory());
 		logger.info("Running pipeline.");
