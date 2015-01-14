@@ -12,7 +12,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Dec 05 09:53:45 CET 2014
+ * Updated by JCasGen Wed Jan 14 10:11:46 CET 2015
  * @generated */
 public class SegmentBoundary_Type extends Annotation_Type {
   /** @generated 

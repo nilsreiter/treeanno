@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Dec 05 09:53:45 CET 2014
+ * Updated by JCasGen Wed Jan 14 10:11:46 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/Segmentation.xml
  * @generated */
 public class Segment extends Annotation {
@@ -74,6 +74,26 @@ public class Segment extends Annotation {
    */
   private void readObject() {/*default - does nothing empty block */}
      
-}
+  //*--------------*
+  //* Feature: Value
+
+  /** getter for Value - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public String getValue() {
+    if (Segment_Type.featOkTst && ((Segment_Type)jcasType).casFeat_Value == null)
+      jcasType.jcas.throwFeatMissing("Value", "de.nilsreiter.pipeline.segmentation.type.Segment");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Segment_Type)jcasType).casFeatCode_Value);}
+    
+  /** setter for Value - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setValue(String v) {
+    if (Segment_Type.featOkTst && ((Segment_Type)jcasType).casFeat_Value == null)
+      jcasType.jcas.throwFeatMissing("Value", "de.nilsreiter.pipeline.segmentation.type.Segment");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Segment_Type)jcasType).casFeatCode_Value, v);}    
+  }
 
     

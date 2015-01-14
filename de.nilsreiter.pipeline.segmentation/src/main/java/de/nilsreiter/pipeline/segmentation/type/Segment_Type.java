@@ -9,10 +9,12 @@ import org.apache.uima.cas.impl.FSGenerator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.impl.FeatureImpl;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Dec 05 09:53:45 CET 2014
+ * Updated by JCasGen Wed Jan 14 10:11:46 CET 2015
  * @generated */
 public class Segment_Type extends Annotation_Type {
   /** @generated 
@@ -46,6 +48,32 @@ public class Segment_Type extends Annotation_Type {
 
 
 
+  /** @generated */
+  final Feature casFeat_Value;
+  /** @generated */
+  final int     casFeatCode_Value;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public String getValue(int addr) {
+        if (featOkTst && casFeat_Value == null)
+      jcas.throwFeatMissing("Value", "de.nilsreiter.pipeline.segmentation.type.Segment");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_Value);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setValue(int addr, String v) {
+        if (featOkTst && casFeat_Value == null)
+      jcas.throwFeatMissing("Value", "de.nilsreiter.pipeline.segmentation.type.Segment");
+    ll_cas.ll_setStringValue(addr, casFeatCode_Value, v);}
+    
+  
+
+
+
   /** initialize variables to correspond with Cas Type and Features
 	 * @generated
 	 * @param jcas JCas
@@ -54,6 +82,10 @@ public class Segment_Type extends Annotation_Type {
   public Segment_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+
+ 
+    casFeat_Value = jcas.getRequiredFeatureDE(casType, "Value", "uima.cas.String", featOkTst);
+    casFeatCode_Value  = (null == casFeat_Value) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Value).getCode();
 
   }
 }
