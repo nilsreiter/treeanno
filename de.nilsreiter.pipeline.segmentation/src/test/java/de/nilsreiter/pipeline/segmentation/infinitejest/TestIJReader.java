@@ -22,7 +22,7 @@ import de.nilsreiter.pipeline.segmentation.type.Segment;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 
-public class TestInfiniteJestCollectionReader {
+public class TestIJReader {
 
 	@Test
 	public void testText() throws ResourceInitializationException {
