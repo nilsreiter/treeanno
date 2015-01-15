@@ -22,8 +22,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.io.JCasResourceCollectionReader_ImplBas
 
 @TypeCapability(
 		outputs = { "de.nilsreiter.pipeline.segmentation.type.Segment" })
-public class IJReader extends
-		JCasResourceCollectionReader_ImplBase {
+public class IJReader extends JCasResourceCollectionReader_ImplBase {
 
 	public static final String PARAM_CREATE_BOUNDARY_ANNOTATION =
 			"Create Boundary Annotation";
@@ -33,8 +32,8 @@ public class IJReader extends
 	boolean next = true;
 
 	@ConfigurationParameter(name = PARAM_CREATE_BOUNDARY_ANNOTATION,
-			defaultValue = "true")
-	boolean createBoundaries = true;
+			defaultValue = "false")
+	boolean createBoundaries = false;
 
 	@ConfigurationParameter(name = PARAM_CREATE_SEGMENT_ANNOTATION,
 			defaultValue = "true")
@@ -84,7 +83,7 @@ public class IJReader extends
 						if (restriction.contains(rtag)
 								&& (createSegments || createBoundaries))
 							jb.add(openSegments.get(rtag), Segment.class)
-									.setValue(rtag);
+							.setValue(rtag);
 						openSegments.remove(rtag);
 					}
 				} else {
