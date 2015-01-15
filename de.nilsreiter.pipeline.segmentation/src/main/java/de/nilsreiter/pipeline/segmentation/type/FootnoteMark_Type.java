@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Fri Dec 05 09:44:09 CET 2014 */
+/* First created by JCasGen Thu Jan 15 10:25:43 CET 2015 */
 package de.nilsreiter.pipeline.segmentation.type;
 
 import org.apache.uima.jcas.JCas;
@@ -16,7 +16,7 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 /** 
  * Updated by JCasGen Thu Jan 15 10:25:43 CET 2015
  * @generated */
-public class Segment_Type extends Annotation_Type {
+public class FootnoteMark_Type extends Annotation_Type {
   /** @generated 
    * @return the generator for this type
    */
@@ -26,49 +26,47 @@ public class Segment_Type extends Annotation_Type {
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (Segment_Type.this.useExistingInstance) {
+  			 if (FootnoteMark_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = Segment_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = FootnoteMark_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new Segment(addr, Segment_Type.this);
-  			   Segment_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new FootnoteMark(addr, FootnoteMark_Type.this);
+  			   FootnoteMark_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new Segment(addr, Segment_Type.this);
+        } else return new FootnoteMark(addr, FootnoteMark_Type.this);
   	  }
     };
   /** @generated */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = Segment.typeIndexID;
+  public final static int typeIndexID = FootnoteMark.typeIndexID;
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.nilsreiter.pipeline.segmentation.type.Segment");
-
-
-
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.nilsreiter.pipeline.segmentation.type.FootnoteMark");
+ 
   /** @generated */
-  final Feature casFeat_Value;
+  final Feature casFeat_Number;
   /** @generated */
-  final int     casFeatCode_Value;
+  final int     casFeatCode_Number;
   /** @generated
    * @param addr low level Feature Structure reference
    * @return the feature value 
    */ 
-  public String getValue(int addr) {
-        if (featOkTst && casFeat_Value == null)
-      jcas.throwFeatMissing("Value", "de.nilsreiter.pipeline.segmentation.type.Segment");
-    return ll_cas.ll_getStringValue(addr, casFeatCode_Value);
+  public int getNumber(int addr) {
+        if (featOkTst && casFeat_Number == null)
+      jcas.throwFeatMissing("Number", "de.nilsreiter.pipeline.segmentation.type.FootnoteMark");
+    return ll_cas.ll_getIntValue(addr, casFeatCode_Number);
   }
   /** @generated
    * @param addr low level Feature Structure reference
    * @param v value to set 
    */    
-  public void setValue(int addr, String v) {
-        if (featOkTst && casFeat_Value == null)
-      jcas.throwFeatMissing("Value", "de.nilsreiter.pipeline.segmentation.type.Segment");
-    ll_cas.ll_setStringValue(addr, casFeatCode_Value, v);}
+  public void setNumber(int addr, int v) {
+        if (featOkTst && casFeat_Number == null)
+      jcas.throwFeatMissing("Number", "de.nilsreiter.pipeline.segmentation.type.FootnoteMark");
+    ll_cas.ll_setIntValue(addr, casFeatCode_Number, v);}
     
   
 
@@ -79,13 +77,13 @@ public class Segment_Type extends Annotation_Type {
 	 * @param jcas JCas
 	 * @param casType Type 
 	 */
-  public Segment_Type(JCas jcas, Type casType) {
+  public FootnoteMark_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
  
-    casFeat_Value = jcas.getRequiredFeatureDE(casType, "Value", "uima.cas.String", featOkTst);
-    casFeatCode_Value  = (null == casFeat_Value) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Value).getCode();
+    casFeat_Number = jcas.getRequiredFeatureDE(casType, "Number", "uima.cas.Integer", featOkTst);
+    casFeatCode_Number  = (null == casFeat_Number) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Number).getCode();
 
   }
 }
