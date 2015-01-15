@@ -32,12 +32,12 @@ public class TestInfiniteJestCollectionReader {
 		CollectionReaderDescription cr =
 				CollectionReaderFactory
 						.createReaderDescription(
-								InfiniteJestCollectionReader.class,
-								InfiniteJestCollectionReader.PARAM_SOURCE_LOCATION,
+								IJReader.class,
+								IJReader.PARAM_SOURCE_LOCATION,
 								filePath,
-								InfiniteJestCollectionReader.PARAM_CREATE_BOUNDARY_ANNOTATION,
+								IJReader.PARAM_CREATE_BOUNDARY_ANNOTATION,
 								false,
-						InfiniteJestCollectionReader.PARAM_CREATE_SEGMENT_ANNOTATION,
+						IJReader.PARAM_CREATE_SEGMENT_ANNOTATION,
 						false);
 
 		JCasIterable jcasIter = SimplePipeline.iteratePipeline(cr);
@@ -61,12 +61,12 @@ public class TestInfiniteJestCollectionReader {
 		CollectionReaderDescription cr =
 				CollectionReaderFactory
 						.createReaderDescription(
-								InfiniteJestCollectionReader.class,
-								InfiniteJestCollectionReader.PARAM_SOURCE_LOCATION,
+								IJReader.class,
+								IJReader.PARAM_SOURCE_LOCATION,
 								filePath,
-								InfiniteJestCollectionReader.PARAM_CREATE_BOUNDARY_ANNOTATION,
+								IJReader.PARAM_CREATE_BOUNDARY_ANNOTATION,
 								false,
-								InfiniteJestCollectionReader.PARAM_CREATE_SEGMENT_ANNOTATION,
+								IJReader.PARAM_CREATE_SEGMENT_ANNOTATION,
 								true);
 
 		JCasIterable jcasIter = SimplePipeline.iteratePipeline(cr);
@@ -94,8 +94,8 @@ public class TestInfiniteJestCollectionReader {
 		CollectionReader cr;
 		cr =
 				CollectionReaderFactory.createReader(
-						InfiniteJestCollectionReader.class,
-						InfiniteJestCollectionReader.PARAM_SOURCE_LOCATION,
+						IJReader.class,
+						IJReader.PARAM_SOURCE_LOCATION,
 						filePath);
 		AnalysisEngine writer =
 				AnalysisEngineFactory.createEngine(XmiWriter.class,
@@ -115,10 +115,10 @@ public class TestInfiniteJestCollectionReader {
 		CollectionReaderDescription cr =
 				CollectionReaderFactory
 						.createReaderDescription(
-								InfiniteJestCollectionReader.class,
-								InfiniteJestCollectionReader.PARAM_SOURCE_LOCATION,
+								IJReader.class,
+								IJReader.PARAM_SOURCE_LOCATION,
 								filePath,
-								InfiniteJestCollectionReader.PARAM_CREATE_BOUNDARY_ANNOTATION,
+								IJReader.PARAM_CREATE_BOUNDARY_ANNOTATION,
 								true);
 
 		JCasIterable jcasIter = SimplePipeline.iteratePipeline(cr);

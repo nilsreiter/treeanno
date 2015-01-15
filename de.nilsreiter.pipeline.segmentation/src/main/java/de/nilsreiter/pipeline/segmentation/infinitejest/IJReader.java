@@ -22,7 +22,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.io.JCasResourceCollectionReader_ImplBas
 
 @TypeCapability(
 		outputs = { "de.nilsreiter.pipeline.segmentation.type.Segment" })
-public class InfiniteJestCollectionReader extends
+public class IJReader extends
 		JCasResourceCollectionReader_ImplBase {
 
 	public static final String PARAM_CREATE_BOUNDARY_ANNOTATION =
