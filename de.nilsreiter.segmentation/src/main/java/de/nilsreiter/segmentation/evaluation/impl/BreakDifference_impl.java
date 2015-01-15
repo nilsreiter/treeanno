@@ -4,18 +4,25 @@ import java.util.List;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.segmentation.evaluation.BreakDifference;
 
 public class BreakDifference_impl implements BreakDifference {
 
+	Class<? extends Annotation> annoType;
+
+	public BreakDifference_impl(Class<? extends Annotation> annotationType) {
+		annoType = annotationType;
+	}
+
 	public double score(JCas gold, JCas silver) {
 		int length = gold.getDocumentText().length();
 
 		int sum = 0;
 		int n = 0;
-		for (SegmentBoundary sb : JCasUtil.select(gold, SegmentBoundary.class)) {
+		for (Annotation sb : JCasUtil.select(gold, annoType)) {
 			int pos = sb.getBegin();
 
 			int window = 5;

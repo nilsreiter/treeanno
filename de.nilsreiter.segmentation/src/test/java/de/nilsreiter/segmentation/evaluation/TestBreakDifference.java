@@ -9,13 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.nilsreiter.segmentation.evaluation.impl.BreakDifference_impl;
 
 public class TestBreakDifference {
 
 	JCas gold, silv;
 
-	BreakDifference bd;
+	Metric bd;
 
 	String text = "The dog barks. It is hungry.";
 
@@ -29,7 +28,9 @@ public class TestBreakDifference {
 		silv = JCasFactory.createJCas();
 		silv.setDocumentText(text);
 
-		bd = new BreakDifference_impl();
+		bd =
+				MetricFactory.getMetric(BreakDifference.class,
+				SegmentBoundary.class);
 	}
 
 	@Test
