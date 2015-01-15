@@ -30,15 +30,10 @@ public class TestInfiniteJestCollectionReader {
 				"/Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/test/resources/infinite_jest_annotated.txt";
 
 		CollectionReaderDescription cr =
-				CollectionReaderFactory
-						.createReaderDescription(
-								IJReader.class,
-								IJReader.PARAM_SOURCE_LOCATION,
-								filePath,
-								IJReader.PARAM_CREATE_BOUNDARY_ANNOTATION,
-								false,
-						IJReader.PARAM_CREATE_SEGMENT_ANNOTATION,
-						false);
+				CollectionReaderFactory.createReaderDescription(IJReader.class,
+						IJReader.PARAM_SOURCE_LOCATION, filePath,
+						IJReader.PARAM_CREATE_BOUNDARY_ANNOTATION, false,
+						IJReader.PARAM_CREATE_SEGMENT_ANNOTATION, false);
 
 		JCasIterable jcasIter = SimplePipeline.iteratePipeline(cr);
 		JCas jcas = jcasIter.iterator().next();
@@ -59,15 +54,10 @@ public class TestInfiniteJestCollectionReader {
 				"/Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/test/resources/infinite_jest_annotated.txt";
 
 		CollectionReaderDescription cr =
-				CollectionReaderFactory
-						.createReaderDescription(
-								IJReader.class,
-								IJReader.PARAM_SOURCE_LOCATION,
-								filePath,
-								IJReader.PARAM_CREATE_BOUNDARY_ANNOTATION,
-								false,
-								IJReader.PARAM_CREATE_SEGMENT_ANNOTATION,
-								true);
+				CollectionReaderFactory.createReaderDescription(IJReader.class,
+						IJReader.PARAM_SOURCE_LOCATION, filePath,
+						IJReader.PARAM_CREATE_BOUNDARY_ANNOTATION, false,
+						IJReader.PARAM_CREATE_SEGMENT_ANNOTATION, true);
 
 		JCasIterable jcasIter = SimplePipeline.iteratePipeline(cr);
 		JCas jcas = jcasIter.iterator().next();
@@ -93,10 +83,8 @@ public class TestInfiniteJestCollectionReader {
 				"/Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/test/resources/xmi/";
 		CollectionReader cr;
 		cr =
-				CollectionReaderFactory.createReader(
-						IJReader.class,
-						IJReader.PARAM_SOURCE_LOCATION,
-						filePath);
+				CollectionReaderFactory.createReader(IJReader.class,
+						IJReader.PARAM_SOURCE_LOCATION, filePath);
 		AnalysisEngine writer =
 				AnalysisEngineFactory.createEngine(XmiWriter.class,
 						XmiWriter.PARAM_TARGET_LOCATION,
@@ -113,17 +101,17 @@ public class TestInfiniteJestCollectionReader {
 				"/Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/test/resources/infinite_jest_annotated.txt";
 
 		CollectionReaderDescription cr =
-				CollectionReaderFactory
-						.createReaderDescription(
-								IJReader.class,
-								IJReader.PARAM_SOURCE_LOCATION,
-								filePath,
-								IJReader.PARAM_CREATE_BOUNDARY_ANNOTATION,
-								true);
+				CollectionReaderFactory.createReaderDescription(IJReader.class,
+						IJReader.PARAM_SOURCE_LOCATION, filePath,
+						IJReader.PARAM_CREATE_BOUNDARY_ANNOTATION, true);
 
 		JCasIterable jcasIter = SimplePipeline.iteratePipeline(cr);
 		JCas jcas = jcasIter.iterator().next();
 		JCasUtil.exists(jcas, SegmentBoundary.class);
+		SegmentBoundary b;
+
+		b = JCasUtil.selectByIndex(jcas, SegmentBoundary.class, 0);
+		assertEquals(3262, b.getBegin());
 
 	}
 }
