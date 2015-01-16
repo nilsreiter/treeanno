@@ -25,8 +25,9 @@ public class WindowDifference_impl implements WindowDifference {
 					JCasUtil.selectCovered(gold, annoType, wBegin, wEnd).size();
 			int num_silver =
 					JCasUtil.selectCovered(silver, annoType, wBegin, wEnd)
-							.size();
-			sum += Math.abs(num_gold - num_silver);
+					.size();
+			if (num_gold != num_silver) sum++;
+			// sum += Math.abs(num_gold - num_silver);
 			wBegin = wEnd + 1;
 			wEnd = wBegin + windowSize;
 		} while (wEnd <= length);
