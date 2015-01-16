@@ -10,6 +10,12 @@ import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 
+/**
+ * TODO: Verify results
+ * 
+ * @author reiterns
+ *
+ */
 public class TestWindowDifference {
 	JCas gold, silv;
 
