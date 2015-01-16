@@ -3,6 +3,19 @@
   <groupId>de.nilsreiter.pipeline.segmentation</groupId>
   <artifactId>de.nilsreiter.pipeline.segmentation</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <repositories>
+    <repository>
+      <id>ims</id>
+      <name>ims</name>
+      <url>http://clarin05.ims.uni-stuttgart.de/archiva/repository/ims/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
   <dependencies>
   	<dependency>
   		<groupId>org.apache.uima</groupId>
@@ -54,6 +67,11 @@
   			de.tudarmstadt.ukp.dkpro.core.api.anomaly-asl
   		</artifactId>
   		<version>1.7.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>edu.northwestern.morphadorner</groupId>
+  		<artifactId>edu.northwestern.morphadorner</artifactId>
+  		<version>2.0.1</version>
   	</dependency>
   </dependencies>
 </project>
