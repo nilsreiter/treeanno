@@ -3,6 +3,19 @@
   <groupId>de.nilsreiter.segmentation</groupId>
   <artifactId>de.nilsreiter.segmentation</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <repositories>
+    <repository>
+      <id>ims</id>
+      <name>ims</name>
+      <url>http://clarin05.ims.uni-stuttgart.de/archiva/repository/ims/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
   <dependencies>
   	<dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
