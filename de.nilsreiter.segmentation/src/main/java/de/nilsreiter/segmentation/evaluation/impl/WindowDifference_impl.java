@@ -1,5 +1,7 @@
 package de.nilsreiter.segmentation.evaluation.impl;
 
+import java.util.Iterator;
+
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -25,7 +27,7 @@ public class WindowDifference_impl implements WindowDifference {
 					JCasUtil.selectCovered(gold, annoType, wBegin, wEnd).size();
 			int num_silver =
 					JCasUtil.selectCovered(silver, annoType, wBegin, wEnd)
-					.size();
+							.size();
 			if (num_gold != num_silver) sum++;
 			// sum += Math.abs(num_gold - num_silver);
 			wBegin = wEnd + 1;
@@ -43,4 +45,18 @@ public class WindowDifference_impl implements WindowDifference {
 		this.windowSize = windowSize;
 	}
 
+	public boolean init(JCas gold) {
+		int pos = 0;
+		Iterator<? extends Annotation> iter = JCasUtil.iterator(gold, annoType);
+		int n = 0;
+		int length = 0;
+		while (iter.hasNext()) {
+			Annotation anno = iter.next();
+			length += anno.getBegin() - pos;
+			n++;
+			pos = anno.getBegin();
+		}
+		this.setWindowSize((int) Math.floor((double) length / (double) (n + 1)));
+		return true;
+	}
 }

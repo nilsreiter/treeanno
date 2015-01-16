@@ -45,4 +45,9 @@ public class BreakDifference_impl implements BreakDifference {
 		}
 		return ((double) sum / (double) n);
 	}
+
+	public boolean init(JCas gold) {
+		// nothing happens here
+		return true;
+	}
 }
