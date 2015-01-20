@@ -38,8 +38,19 @@ public class TestTextTilingAnnotator {
 	@Test
 	public void testTextTiling() throws Exception {
 		TextTilingAnnotator tta = new TextTilingAnnotator();
+		tta.stepSize = 10;
+		tta.windowSize = 10;
 		tta.process(jcas);
 		assertTrue(JCasUtil.exists(jcas, SegmentBoundary.class));
-	}
+		// assertEquals(147, JCasUtil.select(jcas,
+		// SegmentBoundary.class).size());
 
+		int i = 0;
+		String text = jcas.getDocumentText();
+		for (SegmentBoundary b : JCasUtil.select(jcas, SegmentBoundary.class)) {
+			System.out.println(text.substring(i, b.getBegin()));
+			System.out.println("\n\n=================\n\n");
+			i = b.getBegin();
+		}
+	}
 }
