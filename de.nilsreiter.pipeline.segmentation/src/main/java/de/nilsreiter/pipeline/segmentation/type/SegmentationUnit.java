@@ -1,6 +1,6 @@
 
 
-/* First created by JCasGen Fri Dec 05 09:53:45 CET 2014 */
+/* First created by JCasGen Thu Jan 22 12:02:01 CET 2015 */
 package de.nilsreiter.pipeline.segmentation.type;
 
 import org.apache.uima.jcas.JCas; 
@@ -14,12 +14,12 @@ import org.apache.uima.jcas.tcas.Annotation;
  * Updated by JCasGen Thu Jan 22 12:02:01 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/Segmentation.xml
  * @generated */
-public class SegmentBoundaryCandidate extends Annotation {
+public class SegmentationUnit extends Annotation {
   /** @generated
    * @ordered 
    */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = JCasRegistry.register(SegmentBoundaryCandidate.class);
+  public final static int typeIndexID = JCasRegistry.register(SegmentationUnit.class);
   /** @generated
    * @ordered 
    */
@@ -33,14 +33,14 @@ public class SegmentBoundaryCandidate extends Annotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected SegmentBoundaryCandidate() {/* intentionally empty block */}
+  protected SegmentationUnit() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
    * @param addr low level Feature Structure reference
    * @param type the type of this Feature Structure 
    */
-  public SegmentBoundaryCandidate(int addr, TOP_Type type) {
+  public SegmentationUnit(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
@@ -48,7 +48,7 @@ public class SegmentBoundaryCandidate extends Annotation {
   /** @generated
    * @param jcas JCas to which this Feature Structure belongs 
    */
-  public SegmentBoundaryCandidate(JCas jcas) {
+  public SegmentationUnit(JCas jcas) {
     super(jcas);
     readObject();   
   } 
@@ -58,7 +58,7 @@ public class SegmentBoundaryCandidate extends Annotation {
    * @param begin offset to the begin spot in the SofA
    * @param end offset to the end spot in the SofA 
   */  
-  public SegmentBoundaryCandidate(JCas jcas, int begin, int end) {
+  public SegmentationUnit(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);

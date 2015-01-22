@@ -44,5 +44,10 @@
         </featureDescription>
       </features>
     </typeDescription>
+  <typeDescription>
+      <name>de.nilsreiter.pipeline.segmentation.type.SegmentationUnit</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
   </types>
 </typeSystemDescription>

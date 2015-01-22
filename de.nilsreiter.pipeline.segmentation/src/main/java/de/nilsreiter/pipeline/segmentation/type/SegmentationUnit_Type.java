@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Fri Dec 05 09:53:45 CET 2014 */
+/* First created by JCasGen Thu Jan 22 12:02:01 CET 2015 */
 package de.nilsreiter.pipeline.segmentation.type;
 
 import org.apache.uima.jcas.JCas;
@@ -14,7 +14,7 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 /** 
  * Updated by JCasGen Thu Jan 22 12:02:01 CET 2015
  * @generated */
-public class SegmentBoundaryCandidate_Type extends Annotation_Type {
+public class SegmentationUnit_Type extends Annotation_Type {
   /** @generated 
    * @return the generator for this type
    */
@@ -24,25 +24,25 @@ public class SegmentBoundaryCandidate_Type extends Annotation_Type {
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (SegmentBoundaryCandidate_Type.this.useExistingInstance) {
+  			 if (SegmentationUnit_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = SegmentBoundaryCandidate_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = SegmentationUnit_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new SegmentBoundaryCandidate(addr, SegmentBoundaryCandidate_Type.this);
-  			   SegmentBoundaryCandidate_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new SegmentationUnit(addr, SegmentationUnit_Type.this);
+  			   SegmentationUnit_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new SegmentBoundaryCandidate(addr, SegmentBoundaryCandidate_Type.this);
+        } else return new SegmentationUnit(addr, SegmentationUnit_Type.this);
   	  }
     };
   /** @generated */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = SegmentBoundaryCandidate.typeIndexID;
+  public final static int typeIndexID = SegmentationUnit.typeIndexID;
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryCandidate");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.nilsreiter.pipeline.segmentation.type.SegmentationUnit");
 
 
 
@@ -51,7 +51,7 @@ public class SegmentBoundaryCandidate_Type extends Annotation_Type {
 	 * @param jcas JCas
 	 * @param casType Type 
 	 */
-  public SegmentBoundaryCandidate_Type(JCas jcas, Type casType) {
+  public SegmentationUnit_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
