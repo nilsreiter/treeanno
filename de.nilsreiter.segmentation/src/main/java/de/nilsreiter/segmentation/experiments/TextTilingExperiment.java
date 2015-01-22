@@ -9,6 +9,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import de.nilsreiter.pipeline.segmentation.SegmentationSubUnitAnnotator;
 import de.nilsreiter.pipeline.segmentation.SegmentationUnitAnnotator;
 import de.nilsreiter.pipeline.segmentation.morphadorner.TextTilingAnnotator;
 
@@ -35,6 +36,7 @@ public class TextTilingExperiment extends Experiment {
 			throws ResourceInitializationException {
 		return new AnalysisEngine[] {
 				createEngine(SegmentationUnitAnnotator.class),
+				createEngine(SegmentationSubUnitAnnotator.class),
 				createEngine(TextTilingAnnotator.class,
 						TextTilingAnnotator.PARAM_WINDOW_SIZE, 250,
 						TextTilingAnnotator.PARAM_STEP_SIZE, 10) };
