@@ -15,6 +15,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
+import de.nilsreiter.pipeline.segmentation.type.SegmentationSubUnit;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
@@ -24,7 +25,7 @@ import edu.northwestern.at.morphadorner.corpuslinguistics.textsegmenter.texttili
 
 @TypeCapability(
 		inputs = { "de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token",
-				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
 		outputs = { "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary" })
 public class TextTilingAnnotator extends JCasAnnotator_ImplBase {
 
@@ -49,8 +50,8 @@ public class TextTilingAnnotator extends JCasAnnotator_ImplBase {
 		for (SegmentationUnit sentence : JCasUtil.select(aJCas,
 				SegmentationUnit.class)) {
 			List<String> sentenceList = new LinkedList<String>();
-			for (Token token : JCasUtil.selectCovered(aJCas, Token.class,
-					sentence)) {
+			for (SegmentationSubUnit token : JCasUtil.selectCovered(aJCas,
+					SegmentationSubUnit.class, sentence)) {
 				sentenceList.add(token.getCoveredText());
 				annotationList.add(token);
 			}
