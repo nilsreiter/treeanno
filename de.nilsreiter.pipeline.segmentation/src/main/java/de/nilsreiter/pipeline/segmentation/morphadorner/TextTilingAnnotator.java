@@ -25,7 +25,7 @@ import edu.northwestern.at.morphadorner.corpuslinguistics.textsegmenter.texttili
 
 @TypeCapability(
 		inputs = { "de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token",
-		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
 		outputs = { "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary" })
 public class TextTilingAnnotator extends JCasAnnotator_ImplBase {
 
@@ -42,22 +42,14 @@ public class TextTilingAnnotator extends JCasAnnotator_ImplBase {
 			defaultValue = "100")
 	int windowSize = 100;
 
+	List<List<String>> tokenSurfaces = new LinkedList<List<String>>();
+
+	List<Annotation> annotationList = new LinkedList<Annotation>();
+
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
-		List<List<String>> tokenSurfaces = new LinkedList<List<String>>();
-		List<Annotation> annotationList = new LinkedList<Annotation>();
 
-		for (SegmentationUnit sentence : JCasUtil.select(aJCas,
-				SegmentationUnit.class)) {
-			List<String> sentenceList = new LinkedList<String>();
-			for (SegmentationSubUnit token : JCasUtil.selectCovered(aJCas,
-					SegmentationSubUnit.class, sentence)) {
-				sentenceList.add(token.getCoveredText());
-				annotationList.add(token);
-			}
-			tokenSurfaces.add(sentenceList);
-
-		}
+		createTokenLists(aJCas);
 
 		RawText rt = new RawText(tokenSurfaces);
 
@@ -75,6 +67,20 @@ public class TextTilingAnnotator extends JCasAnnotator_ImplBase {
 					SegmentBoundary.class);
 		}
 
+	}
+
+	protected synchronized void createTokenLists(JCas aJCas) {
+		for (SegmentationUnit sentence : JCasUtil.select(aJCas,
+				SegmentationUnit.class)) {
+			List<String> sentenceList = new LinkedList<String>();
+			for (SegmentationSubUnit token : JCasUtil.selectCovered(aJCas,
+					SegmentationSubUnit.class, sentence)) {
+				sentenceList.add(token.getCoveredText());
+				annotationList.add(token);
+			}
+			tokenSurfaces.add(sentenceList);
+
+		}
 	}
 
 	public void bla(JCas aJCas) {
