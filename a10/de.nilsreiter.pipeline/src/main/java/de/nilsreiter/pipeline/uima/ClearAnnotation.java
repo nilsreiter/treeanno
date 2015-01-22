@@ -20,8 +20,9 @@ public class ClearAnnotation extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		try {
+			@SuppressWarnings("unchecked")
 			Class<? extends Annotation> cl =
-					(Class<? extends Annotation>) Class.forName(type);
+			(Class<? extends Annotation>) Class.forName(type);
 
 			List<Annotation> annList =
 					new LinkedList<Annotation>(JCasUtil.select(jcas, cl));
