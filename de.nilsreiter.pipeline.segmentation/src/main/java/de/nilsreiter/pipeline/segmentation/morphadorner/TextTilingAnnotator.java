@@ -20,8 +20,8 @@ import edu.northwestern.at.morphadorner.corpuslinguistics.textsegmenter.struct.R
 import edu.northwestern.at.morphadorner.corpuslinguistics.textsegmenter.texttiling.TextTiling;
 
 @TypeCapability(
-		inputs = { "de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token",
-		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+		inputs = { "de.nilsreiter.pipeline.segmentation.type.SegmentationUnit",
+		"de.nilsreiter.pipeline.segmentation.type.SegmentationSubUnit" },
 		outputs = { "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary" })
 public class TextTilingAnnotator extends MASegmenter {
 
