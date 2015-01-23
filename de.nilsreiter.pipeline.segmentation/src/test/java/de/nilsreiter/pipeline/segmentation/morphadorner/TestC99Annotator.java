@@ -1,5 +1,6 @@
 package de.nilsreiter.pipeline.segmentation.morphadorner;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStreamReader;
@@ -47,6 +48,10 @@ public class TestC99Annotator {
 		anno.process(jcas);
 
 		assertTrue(JCasUtil.exists(jcas, SegmentBoundary.class));
-
+		assertEquals(36, JCasUtil.select(jcas, SegmentBoundary.class).size());
+		assertEquals("T", JCasUtil
+				.selectByIndex(jcas, SegmentBoundary.class, 0).getCoveredText());
+		assertEquals("s", JCasUtil
+				.selectByIndex(jcas, SegmentBoundary.class, 5).getCoveredText());
 	}
 }
