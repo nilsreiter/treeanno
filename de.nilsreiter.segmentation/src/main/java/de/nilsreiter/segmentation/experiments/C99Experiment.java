@@ -41,4 +41,9 @@ public class C99Experiment extends Experiment {
 						5) };
 	}
 
+	@Override
+	public String getDirectoryName() {
+		return getClass().getSimpleName();
+	}
+
 }

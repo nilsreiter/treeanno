@@ -47,7 +47,8 @@ public abstract class Experiment {
 	boolean doSegmentation = true;
 
 	public Experiment(File wDir) {
-		workingDirectory = wDir;
+		workingDirectory = new File(wDir, this.getDirectoryName());
+		if (!workingDirectory.exists()) workingDirectory.mkdirs();
 	}
 
 	public File getWorkingDirectory() {
@@ -80,8 +81,8 @@ public abstract class Experiment {
 		return new AnalysisEngine[] {
 				createEngine(ClearAnnotation.class, ClearAnnotation.PARAM_TYPE,
 						SegmentBoundary.class.getCanonicalName()),
-						createEngine(ClearAnnotation.class, ClearAnnotation.PARAM_TYPE,
-								Segment.class.getCanonicalName()) };
+				createEngine(ClearAnnotation.class, ClearAnnotation.PARAM_TYPE,
+						Segment.class.getCanonicalName()) };
 	}
 
 	protected abstract AnalysisEngine[] getSegmentation()
@@ -99,12 +100,12 @@ public abstract class Experiment {
 		return new Metric[] {
 				MetricFactory.getMetric(WindowDifference.class,
 						SegmentBoundary.class),
-				MetricFactory.getMetric(BreakDifference.class,
-						SegmentBoundary.class) };
+						MetricFactory.getMetric(BreakDifference.class,
+								SegmentBoundary.class) };
 	}
 
 	public int run() throws ResourceInitializationException, UIMAException,
-	IOException {
+			IOException {
 		int step = 1;
 		if (doInitialization) runStep(step, getInitialization());
 		step++;
@@ -149,7 +150,7 @@ public abstract class Experiment {
 			if (goldFile.exists() && goldFile.canRead()) {
 				TypeSystemDescription tsd =
 						TypeSystemDescriptionFactory
-						.createTypeSystemDescription();
+								.createTypeSystemDescription();
 				JCas silverJCas =
 						JCasFactory.createJCas(silverFile.getAbsolutePath(),
 								tsd);
@@ -201,5 +202,7 @@ public abstract class Experiment {
 		return output;
 
 	}
+
+	public abstract String getDirectoryName();
 
 }

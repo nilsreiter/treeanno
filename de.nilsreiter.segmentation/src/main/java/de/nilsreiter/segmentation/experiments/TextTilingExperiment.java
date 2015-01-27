@@ -42,4 +42,9 @@ public class TextTilingExperiment extends Experiment {
 						TextTilingAnnotator.PARAM_STEP_SIZE, 10) };
 	}
 
+	@Override
+	public String getDirectoryName() {
+		return getClass().getSimpleName();
+	}
+
 }
