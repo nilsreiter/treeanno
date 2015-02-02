@@ -3,6 +3,7 @@ package de.nilsreiter.segmentation.evaluation;
 import org.apache.uima.jcas.tcas.Annotation;
 
 import de.nilsreiter.segmentation.evaluation.impl.BreakDifference_impl;
+import de.nilsreiter.segmentation.evaluation.impl.PRF_impl;
 import de.nilsreiter.segmentation.evaluation.impl.WindowDifference_impl;
 
 public class MetricFactory {
@@ -13,6 +14,7 @@ public class MetricFactory {
 			return new BreakDifference_impl(annoClass);
 		if (mClass.equals(WindowDifference.class))
 			return new WindowDifference_impl(annoClass);
+		if (mClass.equals(PRF.class)) return new PRF_impl(annoClass);
 		return null;
 
 	}
