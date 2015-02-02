@@ -30,12 +30,13 @@ public class TestBreakDifference {
 
 		bd =
 				MetricFactory.getMetric(BreakDifference.class,
-				SegmentBoundary.class);
+						SegmentBoundary.class);
 	}
 
 	@Test
 	public void testNoSilverBreak() {
-		assertEquals(28.0, bd.score(gold, silv), 1e-5);
+		assertEquals(28.0,
+				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -43,7 +44,8 @@ public class TestBreakDifference {
 		AnnotationFactory.createAnnotation(silv, 0, 1, SegmentBoundary.class);
 		AnnotationFactory.createAnnotation(silv, text.length() - 1,
 				text.length(), SegmentBoundary.class);
-		assertEquals(6.0, bd.score(gold, silv), 1e-5);
+		assertEquals(6.0,
+				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -52,7 +54,8 @@ public class TestBreakDifference {
 			AnnotationFactory.createAnnotation(silv, i, i + 1,
 					SegmentBoundary.class);
 		}
-		assertEquals(0.0, bd.score(gold, silv), 1e-5);
+		assertEquals(0.0,
+				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -60,6 +63,7 @@ public class TestBreakDifference {
 		AnnotationFactory.createAnnotation(silv, 5, 6, SegmentBoundary.class);
 		AnnotationFactory.createAnnotation(silv, 20, 21, SegmentBoundary.class);
 
-		assertEquals(0.0, bd.score(gold, silv), 1e-5);
+		assertEquals(0.0,
+				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 }
