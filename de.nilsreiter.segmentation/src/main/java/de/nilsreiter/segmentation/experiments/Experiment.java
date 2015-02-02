@@ -115,7 +115,8 @@ public abstract class Experiment {
 
 		Metric[] metrics = getMetrics();
 
-		Map<String, List<Double>> scores = runEvaluation(step, metrics);
+		Map<String, List<Map<String, Double>>> scores =
+				runEvaluation(step, metrics);
 		System.out.print("File");
 		for (Metric m : metrics) {
 			System.out.print("\t");
@@ -129,8 +130,8 @@ public abstract class Experiment {
 
 	}
 
-	public Map<String, List<Double>> runEvaluation(int step, Metric... metrics)
-			throws UIMAException, IOException {
+	public Map<String, List<Map<String, Double>>> runEvaluation(int step,
+			Metric... metrics) throws UIMAException, IOException {
 		File silverDirectory =
 				new File(this.getWorkingDirectory(), String.valueOf(step));
 		File goldDirectory;
@@ -140,7 +141,8 @@ public abstract class Experiment {
 		else
 			goldDirectory = originalInputDirectory.getParentFile();
 
-		Map<String, List<Double>> scores = new HashMap<String, List<Double>>();
+		Map<String, List<Map<String, Double>>> scores =
+				new HashMap<String, List<Map<String, Double>>>();
 		for (File silverFile : silverDirectory.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".xmi");
@@ -157,7 +159,8 @@ public abstract class Experiment {
 				JCas goldJCas =
 						JCasFactory.createJCas(goldFile.getAbsolutePath(), tsd);
 
-				LinkedList<Double> results = new LinkedList<Double>();
+				LinkedList<Map<String, Double>> results =
+						new LinkedList<Map<String, Double>>();
 				for (Metric metric : metrics) {
 					results.add(metric.score(goldJCas, silverJCas));
 				}

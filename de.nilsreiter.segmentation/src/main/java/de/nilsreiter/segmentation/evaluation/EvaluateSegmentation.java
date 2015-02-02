@@ -1,6 +1,7 @@
 package de.nilsreiter.segmentation.evaluation;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.fit.factory.JCasFactory;
@@ -41,9 +42,9 @@ public class EvaluateSegmentation extends Main {
 		default:
 			metric = MetricFactory.getMetric(WindowDifference.class, annoType);
 		}
-		double score = Double.NaN;
+		Map<String, Double> score = null;
 		if (metric.init(goldJCas)) score = metric.score(goldJCas, silverJCas);
-		System.out.println(score);
+		System.out.println(score.toString());
 
 	}
 }

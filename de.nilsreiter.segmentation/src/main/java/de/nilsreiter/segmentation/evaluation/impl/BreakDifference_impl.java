@@ -1,6 +1,8 @@
 package de.nilsreiter.segmentation.evaluation.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -17,7 +19,7 @@ public class BreakDifference_impl implements BreakDifference {
 		annoType = annotationType;
 	}
 
-	public double score(JCas gold, JCas silver) {
+	public Map<String, Double> score(JCas gold, JCas silver) {
 		int length = gold.getDocumentText().length();
 
 		int sum = 0;
@@ -43,7 +45,9 @@ public class BreakDifference_impl implements BreakDifference {
 			sum += distance;
 			n++;
 		}
-		return ((double) sum / (double) n);
+		HashMap<String, Double> res = new HashMap<String, Double>();
+		res.put(this.getClass().getSimpleName(), ((double) sum / (double) n));
+		return res;
 	}
 
 	public boolean init(JCas gold) {

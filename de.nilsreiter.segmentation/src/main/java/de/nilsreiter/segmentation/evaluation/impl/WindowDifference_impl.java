@@ -1,6 +1,8 @@
 package de.nilsreiter.segmentation.evaluation.impl;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -17,7 +19,7 @@ public class WindowDifference_impl implements WindowDifference {
 		annoType = annotationType;
 	}
 
-	public double score(JCas gold, JCas silver) {
+	public Map<String, Double> score(JCas gold, JCas silver) {
 		int wBegin = 0;
 		int wEnd = wBegin + windowSize;
 		int length = gold.getDocumentText().length();
@@ -33,8 +35,10 @@ public class WindowDifference_impl implements WindowDifference {
 			wBegin = wEnd + 1;
 			wEnd = wBegin + windowSize;
 		} while (wEnd <= length);
-
-		return (double) sum / (double) (length - windowSize);
+		Map<String, Double> res = new HashMap<String, Double>();
+		res.put(getClass().getSimpleName(), (double) sum
+				/ (double) (length - windowSize));
+		return res;
 	}
 
 	public int getWindowSize() {
