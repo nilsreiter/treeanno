@@ -47,11 +47,13 @@ public class PRF_impl implements PRF {
 	}
 
 	public Map<String, Double> score(JCas gold, JCas silver) {
-
-		if (JCasUtil.select(gold, annotationClass).size() != JCasUtil.select(
-				silver, annotationClass).size()) {
+		int goldNumber = JCasUtil.select(gold, annotationClass).size();
+		int silverNumber = JCasUtil.select(silver, annotationClass).size();
+		if (goldNumber != silverNumber) {
 			logger.error("Number of annotations not matching.");
-			throw new RuntimeException("Number of annotations not matching.");
+			throw new RuntimeException(
+					"Number of annotations not matching (gold: " + goldNumber
+					+ ", silver: " + silverNumber + ").");
 		}
 		// int fp = 0, fn = 0;
 		Counter<String> tp = new Counter<String>();
