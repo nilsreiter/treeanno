@@ -22,7 +22,6 @@ import cc.mallet.topics.TopicAssignment;
 import cc.mallet.types.Alphabet;
 import cc.mallet.types.FeatureSequence;
 import cc.mallet.types.InstanceList;
-import cc.mallet.types.LabelSequence;
 import de.nilsreiter.pipeline.segmentation.type.Segment;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 
@@ -94,17 +93,17 @@ public class NarrativeDisentanglement extends JCasAnnotator_ImplBase {
 				JCasUtil.iterator(aJCas, SegmentationUnit.class);
 		Object[][] topWords = model.getTopWords(l);
 		for (int i = 0; i < model.getData().size(); i++) {
+			double[] topicDistribution = model.getTopicProbabilities(i);
 			TopicAssignment ta = model.getData().get(i);
 
 			SegmentationUnit current = iterator.next();
 			FeatureSequence tokens = (FeatureSequence) ta.instance.getData();
-			LabelSequence topics = ta.topicSequence;
 
 			int topic = -1;
 			double val = Double.NEGATIVE_INFINITY;
-			for (int j = 0; j < topics.getLength(); j++) {
-				if (topics.getLabelAtPosition(j).getBestValue() > val) {
-					val = topics.getLabelAtPosition(j).getBestValue();
+			for (int j = 0; j < topicDistribution.length; j++) {
+				if (topicDistribution[j] > val) {
+					val = topicDistribution[j];
 					topic = j;
 				}
 			}
@@ -121,8 +120,8 @@ public class NarrativeDisentanglement extends JCasAnnotator_ImplBase {
 				}
 				if (contained) {
 					AnnotationFactory
-							.createAnnotation(aJCas, current.getBegin(),
-									current.getEnd(), Segment.class).setValue(
+					.createAnnotation(aJCas, current.getBegin(),
+							current.getEnd(), Segment.class).setValue(
 									String.valueOf(topic));
 					System.err.println("Assigning topic " + topic);
 				}
