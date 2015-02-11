@@ -8,13 +8,14 @@ import de.nilsreiter.segmentation.evaluation.impl.WindowDifference_impl;
 
 public class MetricFactory {
 
-	public static Metric getMetric(Class<? extends Metric> mClass,
+	@SuppressWarnings("unchecked")
+	public static <T extends Metric> T getMetric(Class<T> mClass,
 			Class<? extends Annotation> annoClass) {
 		if (mClass.equals(BreakDifference.class))
-			return new BreakDifference_impl(annoClass);
+			return (T) new BreakDifference_impl(annoClass);
 		if (mClass.equals(WindowDifference.class))
-			return new WindowDifference_impl(annoClass);
-		if (mClass.equals(PRF.class)) return new PRF_impl(annoClass);
+			return (T) new WindowDifference_impl(annoClass);
+		if (mClass.equals(PRF.class)) return (T) new PRF_impl(annoClass);
 		return null;
 
 	}
