@@ -13,16 +13,20 @@ public class ParagraphAnnotator extends JCasAnnotator_ImplBase {
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		String text = jcas.getDocumentText();
 
+		int paragraphs = 0;
 		int index = 0, oldindex = 0;
 		do {
 			index = text.indexOf("\n\n", oldindex);
 			if (index >= 0) {
 				AnnotationFactory.createAnnotation(jcas, oldindex, index,
 						Paragraph.class);
+				paragraphs++;
 				oldindex = index + 2;
 			}
 		} while (index >= 0);
 		AnnotationFactory.createAnnotation(jcas, oldindex, text.length(),
 				Paragraph.class);
+		paragraphs++;
+		getLogger().info("Annotated " + paragraphs + " paragraphs");
 	}
 }
