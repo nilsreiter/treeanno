@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -22,8 +23,6 @@ import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.pipeline.segmentation.type.Segment;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
@@ -41,7 +40,7 @@ import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 
 public abstract class Experiment {
 
-	Logger logger = LoggerFactory.getLogger(getClass());
+	Logger logger = java.util.logging.Logger.getLogger(getClass().getName());
 
 	File workingDirectory;
 
@@ -88,8 +87,8 @@ public abstract class Experiment {
 		return new AnalysisEngine[] {
 				createEngine(ClearAnnotation.class, ClearAnnotation.PARAM_TYPE,
 						SegmentBoundary.class.getCanonicalName()),
-				createEngine(ClearAnnotation.class, ClearAnnotation.PARAM_TYPE,
-						Segment.class.getCanonicalName()) };
+						createEngine(ClearAnnotation.class, ClearAnnotation.PARAM_TYPE,
+								Segment.class.getCanonicalName()) };
 	}
 
 	protected abstract AnalysisEngine[] getSegmentation()
@@ -107,12 +106,12 @@ public abstract class Experiment {
 		return new Metric[] {
 				MetricFactory.getMetric(WindowDifference.class,
 						SegmentBoundary.class),
-						MetricFactory.getMetric(BreakDifference.class,
-								SegmentBoundary.class) };
+				MetricFactory.getMetric(BreakDifference.class,
+						SegmentBoundary.class) };
 	}
 
 	public int run() throws ResourceInitializationException, UIMAException,
-			IOException {
+	IOException {
 		int step = 1;
 		if (doInitialization) runStep(step, getInitialization());
 		step++;
@@ -170,12 +169,7 @@ public abstract class Experiment {
 		File silverDirectory =
 				new File(this.getWorkingDirectory(), String.valueOf(step));
 		File goldDirectory = new File(this.getWorkingDirectory(), "gold");
-		/*
-		 * File originalInputDirectory = new File(this.getInputDirectoryName());
-		 * if (originalInputDirectory.isDirectory()) goldDirectory =
-		 * originalInputDirectory; else goldDirectory =
-		 * originalInputDirectory.getParentFile();
-		 */
+
 		Map<String, List<Map<String, Double>>> scores =
 				new HashMap<String, List<Map<String, Double>>>();
 		for (File silverFile : silverDirectory.listFiles(new FilenameFilter() {
@@ -187,7 +181,7 @@ public abstract class Experiment {
 			if (goldFile.exists() && goldFile.canRead()) {
 				TypeSystemDescription tsd =
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription();
+						.createTypeSystemDescription();
 				JCas silverJCas =
 						JCasFactory.createJCas(silverFile.getAbsolutePath(),
 								tsd);
@@ -197,6 +191,7 @@ public abstract class Experiment {
 				LinkedList<Map<String, Double>> results =
 						new LinkedList<Map<String, Double>>();
 				for (Metric metric : metrics) {
+					metric.init(goldJCas);
 					results.add(metric.score(goldJCas, silverJCas));
 				}
 				scores.put(goldFile.getName(), results);
@@ -227,6 +222,7 @@ public abstract class Experiment {
 				createEngine(XmiWriter.class, XmiWriter.PARAM_TARGET_LOCATION,
 						output.getAbsolutePath());
 
+		logger.info("Running step " + step);
 		// Run the pipeline
 		String inp =
 				(input.isDirectory() ? input.getAbsolutePath() + "/*.xmi"
