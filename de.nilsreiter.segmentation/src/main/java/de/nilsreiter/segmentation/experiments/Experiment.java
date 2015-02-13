@@ -15,12 +15,15 @@ import java.util.Map;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.component.NoOpAnnotator;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.nilsreiter.pipeline.segmentation.type.Segment;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
@@ -37,6 +40,9 @@ import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 
 public abstract class Experiment {
+
+	Logger logger = LoggerFactory.getLogger(getClass());
+
 	File workingDirectory;
 
 	String inputDirectoryName;
@@ -45,6 +51,7 @@ public abstract class Experiment {
 	boolean doInitialization = true;
 	boolean doProcessing = true;
 	boolean doSegmentation = true;
+	boolean doGoldChain = true;
 
 	public Experiment(File wDir) {
 		workingDirectory = new File(wDir, this.getDirectoryName());
@@ -113,6 +120,11 @@ public abstract class Experiment {
 		step++;
 		if (doSegmentation) runStep(step, getSegmentation());
 
+		if (doGoldChain)
+			processGold(getGoldChain());
+		else
+			processGold(new AnalysisEngine[] { createEngine(NoOpAnnotator.class) });
+
 		Metric[] metrics = getMetrics();
 
 		Map<String, List<Map<String, Double>>> scores =
@@ -130,10 +142,8 @@ public abstract class Experiment {
 
 	}
 
-	public Map<String, List<Map<String, Double>>> runEvaluation(int step,
-			Metric... metrics) throws UIMAException, IOException {
-		File silverDirectory =
-				new File(this.getWorkingDirectory(), String.valueOf(step));
+	protected void processGold(AnalysisEngine[] goldChain)
+			throws UIMAException, IOException {
 		File goldDirectory;
 		File originalInputDirectory = new File(this.getInputDirectoryName());
 		if (originalInputDirectory.isDirectory())
@@ -141,6 +151,31 @@ public abstract class Experiment {
 		else
 			goldDirectory = originalInputDirectory.getParentFile();
 
+		AnalysisEngine[] ae = Arrays.copyOf(goldChain, goldChain.length + 1);
+		ae[ae.length - 1] =
+				createEngine(XmiWriter.class, XmiWriter.PARAM_TARGET_LOCATION,
+						new File(getWorkingDirectory(), "gold"));
+		SimplePipeline.runPipeline(
+				createReader(XmiReader.class, XmiReader.PARAM_SOURCE_LOCATION,
+						goldDirectory.getAbsolutePath() + "/*.xmi"), ae);
+	}
+
+	protected AnalysisEngine[] getGoldChain()
+			throws ResourceInitializationException {
+		return new AnalysisEngine[] { createEngine(NoOpAnnotator.class) };
+	};
+
+	public Map<String, List<Map<String, Double>>> runEvaluation(int step,
+			Metric... metrics) throws UIMAException, IOException {
+		File silverDirectory =
+				new File(this.getWorkingDirectory(), String.valueOf(step));
+		File goldDirectory = new File(this.getWorkingDirectory(), "gold");
+		/*
+		 * File originalInputDirectory = new File(this.getInputDirectoryName());
+		 * if (originalInputDirectory.isDirectory()) goldDirectory =
+		 * originalInputDirectory; else goldDirectory =
+		 * originalInputDirectory.getParentFile();
+		 */
 		Map<String, List<Map<String, Double>>> scores =
 				new HashMap<String, List<Map<String, Double>>>();
 		for (File silverFile : silverDirectory.listFiles(new FilenameFilter() {
