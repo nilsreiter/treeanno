@@ -1,6 +1,7 @@
 package de.nilsreiter.pipeline.segmentation.topicmodeling;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
@@ -99,6 +100,9 @@ public class NarrativeDisentanglement extends JCasAnnotator_ImplBase {
 			SegmentationUnit current = iterator.next();
 			FeatureSequence tokens = (FeatureSequence) ta.instance.getData();
 
+			getLogger().debug(
+					"Topic distribution for segment " + i + ": "
+							+ Arrays.toString(topicDistribution));
 			int topic = -1;
 			double val = Double.NEGATIVE_INFINITY;
 			for (int j = 0; j < topicDistribution.length; j++) {
@@ -120,10 +124,11 @@ public class NarrativeDisentanglement extends JCasAnnotator_ImplBase {
 				}
 				if (contained) {
 					AnnotationFactory
-					.createAnnotation(aJCas, current.getBegin(),
-							current.getEnd(), Segment.class).setValue(
+							.createAnnotation(aJCas, current.getBegin(),
+									current.getEnd(), Segment.class).setValue(
 									String.valueOf(topic));
-					System.err.println("Assigning topic " + topic);
+					getLogger().debug(
+							"Assigning topic " + topic + " to segment " + i);
 				}
 			}
 		}
