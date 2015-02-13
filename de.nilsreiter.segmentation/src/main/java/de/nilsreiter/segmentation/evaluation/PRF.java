@@ -14,4 +14,8 @@ public interface PRF extends Metric {
 	void setAverage(Average avg);
 
 	Average getAverage();
+
+	boolean isClassWise();
+
+	void setClassWise(boolean classWise);
 }
