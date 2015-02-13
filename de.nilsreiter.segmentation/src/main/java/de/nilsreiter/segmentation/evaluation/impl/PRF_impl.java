@@ -1,7 +1,9 @@
 package de.nilsreiter.segmentation.evaluation.impl;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.CASRuntimeException;
@@ -19,7 +21,7 @@ import de.uniheidelberg.cl.reiter.util.Counter;
 public class PRF_impl implements PRF {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
-
+	boolean classWise = false;
 	String featureName = "Value";
 	Feature feature;
 	Class<? extends Annotation> annotationClass;
@@ -37,6 +39,7 @@ public class PRF_impl implements PRF {
 									annotationClass.getCanonicalName()),
 							featureName);
 		} catch (CASRuntimeException e) {
+			logger.debug(e.getLocalizedMessage());
 			e.printStackTrace();
 			return false;
 		} catch (CASException e) {
@@ -59,41 +62,55 @@ public class PRF_impl implements PRF {
 		Counter<String> tp = new Counter<String>();
 		Counter<String> fp = new Counter<String>();
 		Counter<String> fn = new Counter<String>();
+		Set<String> categories = new HashSet<String>();
 		for (Annotation goldAnno : JCasUtil.select(gold, annotationClass)) {
 			Annotation silverAnno =
 					JCasUtil.selectCovered(silver, annotationClass,
 							goldAnno.getBegin(), goldAnno.getEnd()).get(0);
-			String fs_gold = goldAnno.getStringValue(feature);
-			String fs_silver = silverAnno.getStringValue(feature);
-			if (fs_gold.equals(fs_silver)) {
-				tp.add(fs_gold.toString());
+
+			String fs_gold = null, fs_silver = null;
+			fs_gold = goldAnno.getStringValue(feature);
+			fs_silver = silverAnno.getStringValue(feature);
+			categories.add(String.valueOf(fs_gold));
+			if ((fs_gold == null && fs_silver == null)
+					|| (fs_gold != null && fs_gold.equals(fs_silver))) {
+				tp.add(String.valueOf(fs_gold));
 			} else {
-				fp.add(fs_silver.toString());
-				fn.add(fs_gold.toString());
+				fp.add(String.valueOf(fs_silver));
+				fn.add(String.valueOf(fs_gold));
 			}
 		}
+		Map<String, Double> res;
 		switch (average) {
 		case Macro:
 			// TODO: Implement
 			return null;
 		default:
-			return getMicroAverage(tp, fp, fn);
+			res = getMicroAverage(tp, fp, fn);
 		}
+		if (isClassWise()) for (String c : categories) {
+				res.putAll(getPRF(tp.get(c), fp.get(c), fn.get(c), c + "_"));
+			}
+		return res;
+	}
+
+	Map<String, Double> getPRF(int tp, int fp, int fn, String prefix) {
+		Map<String, Double> result = new HashMap<String, Double>();
+		double prec = (double) tp / ((double) (tp + fp));
+		double rec = (double) tp / ((double) (tp + fn));
+		double f = (2 * prec * rec) / (prec + rec);
+		result.put(prefix + Strings.PRECISION, prec);
+		result.put(prefix + Strings.RECALL, rec);
+		result.put(prefix + Strings.FSCORE, f);
+		return result;
 	}
 
 	Map<String, Double> getMicroAverage(Counter<String> tpc,
 			Counter<String> fpc, Counter<String> fnc) {
-		Map<String, Double> result = new HashMap<String, Double>();
 
 		int tp = sum(tpc), fp = sum(fpc), fn = sum(fnc);
+		return getPRF(tp, fp, fn, "_");
 
-		double prec = (double) tp / ((double) (tp + fp));
-		double rec = (double) tp / ((double) (tp + fn));
-		double f = (2 * prec * rec) / (prec + rec);
-		result.put(Strings.PRECISION, prec);
-		result.put(Strings.RECALL, rec);
-		result.put(Strings.FSCORE, f);
-		return result;
 	}
 
 	public String getFeatureName() {
@@ -126,6 +143,14 @@ public class PRF_impl implements PRF {
 			i += o;
 		}
 		return i;
+	}
+
+	public boolean isClassWise() {
+		return classWise;
+	}
+
+	public void setClassWise(boolean classWise) {
+		this.classWise = classWise;
 	}
 
 }
