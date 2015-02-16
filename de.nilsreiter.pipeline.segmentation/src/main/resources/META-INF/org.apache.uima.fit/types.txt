@@ -1,1 +1,2 @@
 classpath*:de/nilsreiter/pipeline/segmentation/Segmentation.xml
+classpath*:de/nilsreiter/pipeline/segmentation/clauselevel/CL.xml

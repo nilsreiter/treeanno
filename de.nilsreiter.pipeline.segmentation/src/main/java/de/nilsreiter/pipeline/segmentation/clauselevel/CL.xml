@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>Segmentation</name>
+  <description/>
+  <version>0.2</version>
+  <vendor>Nils Reiter</vendor>
+  <imports>
+    <import name="desc.type.LexicalUnits"/>
+  </imports>
+  <types>
+    <typeDescription>
+      <name>de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>Govenor</name>
+          <description/>
+          <rangeTypeName>de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>Token</name>
+          <description/>
+          <rangeTypeName>de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>Dependents</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel</elementType>
+          <multipleReferencesAllowed>false</multipleReferencesAllowed>
+        </featureDescription>
+        <featureDescription>
+          <name>Relation</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>
