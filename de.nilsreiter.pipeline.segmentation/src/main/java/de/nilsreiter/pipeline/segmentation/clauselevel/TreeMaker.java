@@ -45,6 +45,11 @@ public class TreeMaker extends JCasAnnotator_ImplBase {
 				for (int i = 0; i < lis.size(); i++)
 					gov.setDependents(i, lis.get(i));
 			}
+
+			for (DepRel dr : JCasUtil.selectCovered(jcas, DepRel.class,
+					sentence)) {
+				if (dr.getRelation() == null) dr.setRelation("root");
+			}
 		}
 	}
 
