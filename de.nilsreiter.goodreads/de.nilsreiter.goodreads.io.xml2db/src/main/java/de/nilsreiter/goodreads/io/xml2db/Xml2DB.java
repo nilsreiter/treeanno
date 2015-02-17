@@ -43,53 +43,56 @@ public class Xml2DB {
 	}
 
 	public synchronized boolean readBook(int bookId)
-			throws InterruptedException, ValidityException, ParsingException,
-			IOException, SQLException {
+			throws InterruptedException, ValidityException, IOException,
+			SQLException {
 		boolean r = true;
 		logger.info("Processing book id " + bookId);
-		for (int page = 1; page < this.getPages(); page++) {
-			// long timestamp = System.currentTimeMillis();
-			URL url =
-					new URL(
-							"https",
-							"www.goodreads.com",
-							443,
-							"/book/show/"
-									+ bookId
-									+ "?format=xml&key=XGb9Cp3QPbvL4eRz3WfyA&text_only=true&page="
-									+ page);
-			logger.fine("Accessing URL " + url.toString());
-
-			r &= this.readStream(url.openStream());
-
-			logger.fine("Stored url info in database.");
-			Thread.sleep(1000l);
-		}
-		return r;
-	}
-
-	public boolean readStream(InputStream is) throws ValidityException,
-			IOException, SQLException {
 		try {
-			Builder xBuilder = new Builder();
-			Document doc = xBuilder.build(is);
+			for (int page = 1; page < this.getPages(); page++) {
+				// long timestamp = System.currentTimeMillis();
+				URL url =
+						new URL(
+								"https",
+								"www.goodreads.com",
+								443,
+								"/book/show/"
+										+ bookId
+										+ "?format=xml&key=XGb9Cp3QPbvL4eRz3WfyA&text_only=true&page="
+										+ page);
+				logger.fine("Accessing URL " + url.toString());
 
-			Element rootElement = doc.getRootElement();
-			// 1. Detect response type (by checking what method was asked
-			String method =
-					rootElement.getChildElements("Request").get(0)
-							.getChildElements("method").get(0).getValue();
-			if (method.equals("book_show"))
-				return this.parseResponseBookShow(rootElement);
+				InputStream is = url.openStream();
+				r &= this.readStream(is);
+
+				logger.fine("Stored url info in database.");
+				is.close();
+				Thread.sleep(1000l);
+			}
 		} catch (ParsingException e) {
 			logger.severe(e.getLocalizedMessage());
 			return false;
-		}
+		};
+		return r;
+	}
+
+	public boolean readStream(InputStream is) throws IOException, SQLException,
+	ParsingException {
+		Builder xBuilder = new Builder();
+		Document doc = xBuilder.build(is);
+
+		Element rootElement = doc.getRootElement();
+		// 1. Detect response type (by checking what method was asked
+		String method =
+				rootElement.getChildElements("Request").get(0)
+						.getChildElements("method").get(0).getValue();
+		if (method.equals("book_show"))
+			return this.parseResponseBookShow(rootElement);
+
 		return true;
 	}
 
 	public boolean readFile(File xmlFile) throws ValidityException,
-	FileNotFoundException, ParsingException, IOException, SQLException {
+			FileNotFoundException, ParsingException, IOException, SQLException {
 		return readStream(new FileInputStream(xmlFile));
 	}
 
@@ -263,8 +266,8 @@ public class Xml2DB {
 	}
 
 	public static void main(String[] args) throws ValidityException,
-	FileNotFoundException, ParsingException, IOException,
-	CmdLineException, InterruptedException, SQLException {
+			FileNotFoundException, ParsingException, IOException,
+			CmdLineException, InterruptedException, SQLException {
 
 		OptionBeans op = new Xml2DB.OptionBeans();
 		CmdLineParser cmd = new CmdLineParser(op);
