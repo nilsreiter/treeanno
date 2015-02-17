@@ -69,7 +69,7 @@ public class Xml2DB {
 	}
 
 	public boolean readStream(InputStream is) throws ValidityException,
-			ParsingException, IOException, SQLException {
+	ParsingException, IOException, SQLException {
 		Builder xBuilder = new Builder();
 		Document doc = xBuilder.build(is);
 
@@ -77,14 +77,14 @@ public class Xml2DB {
 		// 1. Detect response type (by checking what method was asked
 		String method =
 				rootElement.getChildElements("Request").get(0)
-						.getChildElements("method").get(0).getValue();
+				.getChildElements("method").get(0).getValue();
 		if (method.equals("book_show"))
 			return this.parseResponseBookShow(rootElement);
 		return true;
 	}
 
 	public boolean readFile(File xmlFile) throws ValidityException,
-			FileNotFoundException, ParsingException, IOException, SQLException {
+	FileNotFoundException, ParsingException, IOException, SQLException {
 		return readStream(new FileInputStream(xmlFile));
 	}
 
@@ -258,8 +258,8 @@ public class Xml2DB {
 	}
 
 	public static void main(String[] args) throws ValidityException,
-			FileNotFoundException, ParsingException, IOException,
-			CmdLineException, InterruptedException, SQLException {
+	FileNotFoundException, ParsingException, IOException,
+	CmdLineException, InterruptedException, SQLException {
 
 		OptionBeans op = new Xml2DB.OptionBeans();
 		CmdLineParser cmd = new CmdLineParser(op);
@@ -274,7 +274,7 @@ public class Xml2DB {
 
 		Xml2DB xml2db = new Xml2DB(dataSource);
 		xml2db.setPages(op.pages);
-		xml2db.setSkip_review_exists(true);
+		xml2db.setSkip_review_exists(false);
 		for (int book = op.bookStart; book < op.books; book++) {
 			xml2db.readBook(book);
 		}
