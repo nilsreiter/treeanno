@@ -47,6 +47,7 @@ public class Xml2DB {
 			SQLException {
 		boolean r = true;
 		logger.info("Processing book id " + bookId);
+		InputStream is = null;
 		try {
 			for (int page = 1; page < this.getPages(); page++) {
 				// long timestamp = System.currentTimeMillis();
@@ -61,7 +62,7 @@ public class Xml2DB {
 										+ page);
 				logger.fine("Accessing URL " + url.toString());
 
-				InputStream is = url.openStream();
+				is = url.openStream();
 				r &= this.readStream(is);
 
 				logger.fine("Stored url info in database.");
@@ -71,6 +72,8 @@ public class Xml2DB {
 		} catch (ParsingException e) {
 			logger.severe(e.getLocalizedMessage());
 			return false;
+		} finally {
+			if (is != null) is.close();
 		};
 		return r;
 	}
