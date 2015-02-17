@@ -1,6 +1,8 @@
 package de.nilsreiter.goodreads.api;
 
-public interface Review {
+import java.io.Serializable;
+
+public interface Review extends Serializable {
 	int getId();
 
 	int getGoodReadsId();

@@ -1,6 +1,8 @@
 package de.nilsreiter.goodreads.api;
 
-public interface User {
+import java.io.Serializable;
+
+public interface User extends Serializable {
 	int getId();
 
 	int getGoodReadsId();
