@@ -1,0 +1,1647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoodreadsResponse>
+  <Request>
+    <authentication>true</authentication>
+      <key><![CDATA[XGb9Cp3QPbvL4eRz3WfyA]]></key>
+    <method><![CDATA[book_show]]></method>
+  </Request>
+  <book>
+  <id>50</id>
+  <title>Hatchet (Brian&apos;s Saga, #1)</title>
+  <isbn><![CDATA[0689840926]]></isbn>
+  <isbn13><![CDATA[9780689840920]]></isbn13>
+  <asin><![CDATA[]]></asin>
+  <image_url>https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png</image_url>
+  <small_image_url>https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png</small_image_url>
+  <publication_year>2000</publication_year>
+  <publication_month>4</publication_month>
+  <publication_day>1</publication_day>
+  <publisher>Atheneum Books for Young Readers: Richard Jackson Books</publisher>
+  <language_code>eng</language_code>
+  <is_ebook>false</is_ebook>
+  <description><![CDATA[<p>Since it was first published in 1987, the story of thirteen-year-old Brian Robeson's survival following a plane crash has become a modern classic. Stranded in the desolate wilderness, Brian uses his instincts and his hatchet to stay alive for fifty-four harrowing days. </p><p> This twentieth-anniversary edition of <em>Hatchet</em> contains a new introduction and sidebar commentary by Gary Paulsen, written especially for this volume. Drew Willis's detailed pen-and-ink illustrations complement the descriptions in the text and add a new dimension to the book. This handsome edition of the Newbery Honor book will be treasured by <em>Hatchet</em> fans as well as by readers encountering Brian's unforgettable story for the first time.</p>]]></description>
+  <work>
+  <best_book_id type="integer">50</best_book_id>
+  <books_count type="integer">71</books_count>
+  <default_chaptering_book_id type="integer" nil="true"/>
+  <default_description_language_code nil="true"/>
+  <desc_user_id type="integer">13235258</desc_user_id>
+  <id type="integer">1158125</id>
+  <media_type>book</media_type>
+  <original_language_id type="integer" nil="true"/>
+  <original_publication_day type="integer">30</original_publication_day>
+  <original_publication_month type="integer">9</original_publication_month>
+  <original_publication_year type="integer">1987</original_publication_year>
+  <original_title>Hatchet</original_title>
+  <rating_dist>5:43278|4:51624|3:43300|2:16583|1:8746|total:163531</rating_dist>
+  <ratings_count type="integer">163531</ratings_count>
+  <ratings_sum type="integer">594698</ratings_sum>
+  <reviews_count type="integer">199997</reviews_count>
+  <text_reviews_count type="integer">7261</text_reviews_count>
+</work>
+  <average_rating>3.64</average_rating>
+  <num_pages><![CDATA[208]]></num_pages>
+  <format><![CDATA[Hardcover]]></format>
+  <edition_information><![CDATA[]]></edition_information>
+  <ratings_count><![CDATA[157707]]></ratings_count>
+  <text_reviews_count><![CDATA[6527]]></text_reviews_count>
+  <url><![CDATA[https://www.goodreads.com/book/show/50.Hatchet]]></url>
+  <link><![CDATA[https://www.goodreads.com/book/show/50.Hatchet]]></link>
+  <authors>
+<author>
+<id>18</id>
+<name>Gary Paulsen</name>
+<role></role>
+<image_url>
+<![CDATA[https://d.gr-assets.com/authors/1309159225p5/18.jpg]]>
+</image_url>
+<small_image_url>
+<![CDATA[https://d.gr-assets.com/authors/1309159225p2/18.jpg]]>
+</small_image_url>
+<link><![CDATA[https://www.goodreads.com/author/show/18.Gary_Paulsen]]></link>
+<average_rating>3.71</average_rating>
+<ratings_count>262684</ratings_count>
+<text_reviews_count>17846</text_reviews_count>
+</author>
+</authors>
+
+    <reviews start="1" end="29" total="3000" api_blocked_count="1">
+        <review>
+  <id>1153472</id>
+      <user>
+    <id>80369</id>
+    <name>Rachel</name>
+    <location>The United States</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/80369-rachel]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1392269562p3/80369.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1392269562p2/80369.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>1</rating>
+  <votes>130</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for><![CDATA[No one.  This is the worst book I have ever read.]]></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Thu May 10 18:56:30 -0700 2007</date_added>
+  <date_updated>Wed Dec 25 21:14:22 -0800 2013</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[So when I was in the 7th grade, Mrs. Randall (formerly Sr. Mary Randall, an ex-nun) FORCED this pile of garbage upon me and the rest of my unsuspecting classmates.  I was an advanced reader and it was a relatively short, easy to swallow book but it took me FOREVER TO READ IT.  because it was THAT FUCKING BORING.  It's about this stupid snot of a kid whose parents are getting divorced (mom and dad broke up! boo-hoo :'( i'm scarred for life now!)  and somehow his plane goes down in the wilderness of <strong>Canada</strong> (which I can admit is the scariest fucking thing I can possibly think of.  I'd rather be faced with the zombie apocalypse or a gang of mass murdering rapists than being stuck in the middle of <strong>Canada</strong>)  so snot-face has to learn to survive on his own.  He has a hatchet that his mom gave him (though I really can't say what possessed her to give her poor no-one-wants-me warning signs of future school shootings son a HATCHET, but she does) and he eventually stops crying and figures out how to pick berries and chop trees.  Or saplings.  Or something.  I don't know.  All I know is, this is the worst book EVER.  UGH.  And Mrs. "Ex-Nun" Randall made us watch the MOVIE, too.   it was TORTURE.]]>
+  </body>
+  <comments_count>178</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/1153472]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/1153472]]></link>
+</review>
+
+        <review>
+  <id>60516108</id>
+      <user>
+    <id>45618</id>
+    <name>karen</name>
+    <location>Woodside, NY</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/45618-karen]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1422500311p3/45618.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1422500311p2/45618.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>69</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="teen-faves" exclusive="false" review_shelf_id="30737359" sortable="false" />
+    <shelf name="and-so-this-is-grad-school" exclusive="false" review_shelf_id="77679162" sortable="false" />
+    <shelf name="favorites" exclusive="false" review_shelf_id="87236552" sortable="false" />
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Sun Jun 21 09:47:23 -0700 2009</date_added>
+  <date_updated>Wed Jul 09 13:51:17 -0700 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[yes yes yes!! thank you to all the goodreaders who recommended this to me after my love for island of the blue dolphins became known. it turns out i love survival stories!! with teens!! and i wish i could say i never tore my eyes from the page and read this in an hour, but i have been having a distractedish day today; emailing my dad for fathers day (everyone: call your dads!! or if they are at work, email-chat them!) and then there was a fire across the street from me (which is my number one all time fear) and the people in the building are so casual about it - there are two fire trucks in the street, and firefighters swarming everywhere, and i look in the windows and in two different apartments, there are people just sitting and watching and smoking cigarettes. what is wrong with them?? dont they care that their building is on fire?? dont they feel the fear i feel?? did they light their cigarettes from their blazing belongings and treasures?? i dont understand their stoicism in the face of fire. but you know who loves fire?? brian. he uses it to survive in the wilderness. seamless segue back into the review. its great. i could read 400 more pages of this story. and despite my own fears of the fire leaping across the street to consume me and my beloved books, i could still engage in his plight: when he d the h in the w (clever code prevents spoilers) - i actually gasped out loud. and there were several times when he overcame a particular setback that i smiled. i totally cared about this character. i would love more survivaly stories, if anyones got 'em.]]>
+  </body>
+  <comments_count>197</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/60516108]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/60516108]]></link>
+</review>
+
+        <review>
+  <id>6419963</id>
+      <user>
+    <id>393075</id>
+    <name>Daniel</name>
+    <location>Naperville, IL</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/393075-daniel-lowder]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1250017824p3/393075.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1250017824p2/393075.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>1</rating>
+  <votes>25</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Mon Jan 01 00:00:00 -0800 1990</read_at>
+  <date_added>Tue Sep 18 21:19:15 -0700 2007</date_added>
+  <date_updated>Tue Sep 18 21:25:20 -0700 2007</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[What I learned from Hatchet:<br /><br />1. If you see a man grimacing in pain, it could be a heart attack.  If this man is the pilot of a charter prop plane that you're flying alone in, you could be fucked.<br /><br />2. If you eat mysterious berries, they just might give you severe diarrhea.  And, having just been marooned in a plane crash, you could lack the proper facilities to expel the diarrhea within.  So, you could end up shitting your brains out in a cave.  Since the tender age of 9, when I glanced upon the pages of this book, I have had a fear in regards to shitting in the wild.  Fuck you, Gary Paulsen.]]>
+  </body>
+  <comments_count>7</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/6419963]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/6419963]]></link>
+</review>
+
+        <review>
+  <id>8340741</id>
+      <user>
+    <id>178887</id>
+    <name>Max</name>
+    <location>Dover, MA</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/178887-max-stone]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1198416585p3/178887.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1198416585p2/178887.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>4</rating>
+  <votes>11</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Sat Sep 01 00:00:00 -0700 2007</read_at>
+  <date_added>Sun Oct 28 03:45:19 -0700 2007</date_added>
+  <date_updated>Sun Oct 28 03:52:44 -0700 2007</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[(fwiw this is a book I read my kids aged 6-10)<br /><br />I'd give this book 3.5 stars if I could.  Basically the stuff which makes it a classic and is indeed very good is the adventure/survival stuff (he is the sole survivor of a plane crash deep in the woods and has nothing but a hatchet).  Both the details of what he is doing to survive, and the psychological changes he goes through in his attempt to survive are believable, interesting, and illuminating.<br /><br />There is a second thread in the book which is him processing his parents' divorce and in particular "the secret" which is that even before the divorce he saw his mother kissing some other guy.  I wanted to retch every time this stuff came up.  I found it much less believable and also generally an intrusion into the main story.  I tried to think of some deep connection between the divorce / "the secret" and his survival which enabled readers to make connections and learn things about one or the other that they otherwise would not have been able to, but I really couldn't.  <br /><br />Survival part gets 4.5 stars; his relationship with his parents gets 1.5 stars (my overall is 3.5 because the survival stuff is dominant).  <br /><br />]]>
+  </body>
+  <comments_count>2</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/8340741]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/8340741]]></link>
+</review>
+
+        <review>
+  <id>617709555</id>
+      <user>
+    <id>6316460</id>
+    <name>Becky</name>
+    <location>Omaha, NE</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/6316460-becky]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1414789010p3/6316460.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1414789010p2/6316460.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>8</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="from-my-youth" exclusive="false" review_shelf_id="428012429" sortable="false" />
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Fri May 17 06:16:24 -0700 2013</date_added>
+  <date_updated>Fri May 17 06:20:58 -0700 2013</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[I.love.this.book.<br /><br />Seriously, I read this maybe in fourth grade? It was definitly in elementary school, because I remember it was at the same time that we we doing "survival skills"* in Girl Scouts. Not that I ever wanted to be trapped by myself in the wilderness, but I spent a lot of my time in my backyard pretending to find flint with my sister, and starting imaginary fires to keep warm. In winter we dug ourselves igloos. I always went camping with my parents, so this book started a lot of Q&amp;A's with them about what to do if I get lost in the woods (Hint, No. 1 is STAY WHERE YOU ARE!). Any ways, its a great read for an elementary kid, and everyone should read it.<br /><br /><br />* This was put in quotation marks because it was a total joke. I had been looking forward to these skills for quite some time, finally girl scouts was going to teach me what I wanted! Instead of knives they handed us popsicle sticks. For the love of God CUB SCOUTS get real knives. This was followed shortly on the heels of an outdoor cooking class where none of us were allowed near the fire. Basically we made banana boats, and then the instructor put the boats in and out of the coals for us. We learned how to build a fire with coals, not tinder. Agh. It was at this point that I decided Girl Scouts was NOT for me.]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/617709555]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/617709555]]></link>
+</review>
+
+        <review>
+  <id>11544139</id>
+      <user>
+    <id>78433</id>
+    <name>Henry</name>
+    <location>Los Angeles, CA</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/78433-henry]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1283182311p3/78433.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1283182311p2/78433.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>3</rating>
+  <votes>8</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for><![CDATA[boys and tomboys the world over (and any adult counterpart suffering nostalgia)]]></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Sat Dec 01 00:00:00 -0800 2007</read_at>
+  <date_added>Thu Jan 03 11:08:28 -0800 2008</date_added>
+  <date_updated>Wed Jul 09 13:51:04 -0700 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[My first foray into childhood favorites for one unlikely-to-succeed purpose: converting my brother from books about Harry Potter to books about anything else, in the world. Any suggestions?<br /><br />When I first read Hatchet, at around ten or twelve, I devoured it time and time again. The idea of learning wilderness survival with nothing but a hatchet and my own wits prickled the pores of my baby-smooth chest with visions of man-hair, tufts and tufts of it, more than I knew what to do with, for after finishing a book about a boy-turned-man's hard-earned survival in the rugged wilderness surely I myself would become a man (I confess to having the same thought at least once when re-reading it at twenty-seven). <br /><br />The book itself holds up as a taut, economically told story, no real flourishes to speak of, and yet when my brother read the first chapter, he woke me up to tell me it was weird. I tried to tease him with upcoming action beat - "there's a plane crash in the next chapter," I told him, at which point he went downstairs to play Super Mario Galaxy. ]]>
+  </body>
+  <comments_count>2</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/11544139]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/11544139]]></link>
+</review>
+
+        <review>
+  <id>1467488</id>
+      <user>
+    <id>84023</id>
+    <name>Keely</name>
+    <location>Albany, NY</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/84023-keely]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1274333636p3/84023.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1274333636p2/84023.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>2</rating>
+  <votes>7</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="contemporary-fiction" exclusive="false" review_shelf_id="419666" sortable="false" />
+    <shelf name="america" exclusive="false" review_shelf_id="69421854" sortable="false" />
+    <shelf name="childhood" exclusive="false" review_shelf_id="590343" sortable="false" />
+    <shelf name="reviewed" exclusive="false" review_shelf_id="29878246" sortable="false" />
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Sat May 26 22:33:17 -0700 2007</date_added>
+  <date_updated>Sat Jun 02 22:44:49 -0700 2007</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[Gary Paulsen writes in only two emotions: fine and vomit-y. Someone may want to tell him that there are other ways to provoke a response in a reader than going right for the gut, so to speak. This book could have done with some fear and suspense, perhaps some gratification, depression, or joy. I do not mind a tragedy, nor do I balk at watching the man beaten down. I am a fan of Chekhov's. <br /><br />If your idea of suspense is mosquito bites on your nipples, meet your Stephen King.]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/1467488]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/1467488]]></link>
+</review>
+
+        <review>
+  <id>483213814</id>
+      <user>
+    <id>13862757</id>
+    <name>Shruti</name>
+    <location></location>
+    <link><![CDATA[https://www.goodreads.com/user/show/13862757-shruti-s]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1365091230p3/13862757.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1365091230p2/13862757.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>5</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Sat Dec 22 14:24:22 -0800 2012</date_added>
+  <date_updated>Thu Jan 10 16:03:51 -0800 2013</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[HATCHET by Gary Paulsen <br /><br />Brain doesn't think his life will ever be the same after his parents get divorced but his life is about to take an even bigger twist as the plain he is on crashes into Canadian wilderness.  alone in the wild, stranded on a piece of jutting out land Brain will try his hardest to survive.  Throughout the  book I admired his constant positive attitude even when he felt like giving up  because without it he would have been dead.  It was amazing to read about  the number of ways Brain used his hatchet or how a hatchet can be used.  Brian used the tool to create fire, to make more tools, and use it for hunting. <br /><br />When Brain tried to hunt fish, he would fail and have to try again and tweak or adapt his tool or his approach before he could get a meal.   This made me think about how we must have evolved from millions of years ago.  The caveman had to apply the same process of making mistakes and  learning from them, trying new things to get a meal.  We now have our meals prepared and available in ready-to-eat packets in our modern world. <br />the interesting thing about the book was that even though it did not put me at the edge of my seat I could not put the book down.  <br />If you liked "Escape under the forever sky" you very lightly will like "Hatchet".  ]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/483213814]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/483213814]]></link>
+</review>
+
+        <review>
+  <id>102061407</id>
+      <user>
+    <id>111921</id>
+    <name>Madeline</name>
+    <location>Decatur, GA</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/111921-madeline]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1220803522p3/111921.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1220803522p2/111921.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>5</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="all-time-favorites" exclusive="false" review_shelf_id="56589034" sortable="false" />
+    <shelf name="kids-and-young-adult" exclusive="false" review_shelf_id="56589035" sortable="false" />
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Sun May 09 21:59:21 -0700 2010</date_added>
+  <date_updated>Sun May 09 22:01:29 -0700 2010</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[Friggin' awesome. My 3rd grade teacher read this book aloud to my class, a chapter a day, and I remember being absolutely enthralled every single day. She read it to us right before first recess, so whenever that day's chapter ended with a cliffhanger we had the whole recess to discuss what we thought was going to happen next (and act out our own renditions of the time Brian got attacked by a bear). ]]>
+  </body>
+  <comments_count>11</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/102061407]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/102061407]]></link>
+</review>
+
+        <review>
+  <id>638138181</id>
+      <user>
+    <id>6971227</id>
+    <name>David</name>
+    <location>Brighton, MA</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/6971227-david]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1417527585p3/6971227.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1417527585p2/6971227.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>1</rating>
+  <votes>4</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="young-adult-childrens" exclusive="false" review_shelf_id="444758980" sortable="false" />
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Sun Apr 14 00:00:00 -0700 2002</read_at>
+  <date_added>Mon Jun 10 12:49:19 -0700 2013</date_added>
+  <date_updated>Fri Feb 07 05:38:33 -0800 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[So when I added this, I vaguely recalled the title, and I swear, I have definitely read it, but what I thought it was about was a boy being stuck under the snow following an avalanche (it turns out the book I was thinking of is apty named <em>Avalanche</em> by Arthur Roth) but anyway, that's not what it is about, and I really don't remember this book at all.<br /><br /><em>Hatchet</em> I definitely read in middle school at the instruction of my librarian (we had a sort of once-weekly class in the library to introduce us to the already anachronistic card catalog, and maybe to encourage us to read). It strikes me now as one of those "boy books" and was sort of offered to me as an alternative to Babysitters' Club or Nancy Drew, maybe. It's strange now, because it undervalues literature very much to say that some is suited to boys, and others to girls (which is to say nothing of our society's pathetic need to classify and categorize). Based on my vague and unreliable memory (and the description gleaned from amazon), here are the reasons why you should have your son, nephew, homeless male orphan read <em>Hatchet</em>:<br /><br />1) It is the story about a boy named Brian. Brian is a great boy name (maybe you've considered it for your tot?), and everything he does (probably) exudes the same brand of outdoorsy masculinity that you want your little Timmy, Tommy or Teddy to adopt as an adolescent and adult.<br />2) It takes place outside. What better way to encourage kids to go outside than to have them sit inside and read a book about a boy who is outside?<br />3) There is a hatchet, presumably. Whether little Johnny has that lumberjack vibe, or that investment banker gone Sarsgaard-murder-house vibe, certainly it will be important to introduce them to the concept of the hatchet. A very useful tool that almost no one uses, as far as I know.<br />4) The plot evidently features a plane crash, wherein Brian must be the lone survivor. Very likely to happen. Also, surely all the characters in this book are male, what better way to introduce your young one to a realistic view of the world than to immerse them in world dominated completely by a young boy and some owls, or something. (also see: <em>Lord of the Flies</em>)<br />5. This 20th anniversary edition features a great commentary by the author, Gary Paulson. Even though your little brat probably won't read this (why would he?), it will give his ego the small boost for the illusion of having read a book a little longer than he actually did).<br />6. This is the first installation of a SAGA. For one, "saga" is reminiscent to me of the Nordic mythos, which seems to be the most supporting of the idealized male image. It also means there are multiple volumes following our intrepid Brian. What more could you want? Why invest in Boy Scouts when you could drop a pile of Brian books in your kid's lap and turn him into a man, while saving all that time and money?<br /><br />Get it! So good!]]>
+  </body>
+  <comments_count>2</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/638138181]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/638138181]]></link>
+</review>
+
+        <review>
+  <id>46403943</id>
+      <user>
+    <id>922250</id>
+    <name>Sara</name>
+    <location>Newark, DE</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/922250-sara]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1233546012p3/922250.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1233546012p2/922250.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>4</votes>
+  <spoiler_flag>true</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="young-readers" exclusive="false" review_shelf_id="22456373" sortable="false" />
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by>Steven Wren</recommended_by>
+  <started_at></started_at>
+  <read_at>Sat Feb 14 00:00:00 -0800 2009</read_at>
+  <date_added>Sun Feb 15 07:44:47 -0800 2009</date_added>
+  <date_updated>Wed Jul 09 13:53:26 -0700 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[My step-brother Steven, who isn't much of a reader, told me this was his favorite book of all time, and the only one he read more than once.   Every time I see him, he asks if I have read it yet.  So Steven, this is for you.<br /><br />This book is about a boy who learns perspective the hard way, by surviving on his own in the Canadian wilderness after the pilot of the small plane he was on has a heart attack.  While the boy Brian is the only major character in the book, common literary roles are filled in interesting ways. The villains are despair and "The Secret" (his discovery of his mothers affair which was the cause of his parents divorce).   The first he overcomes, the second becomes unimportant.  The <a href="http://www.goodreads.com/book/show/50.Hatchet" title="Hatchet by Gary Paulsen">Hatchet</a> I think, may be my favorite character.  Its roles as sidekick and mentor are well established as Brian depends on it for his survival.  I look forward to the literary discussion I will have with my step-brother, and maybe he will even become  interested in reading again.  I can always hope... :-)]]>
+  </body>
+  <comments_count>1</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/46403943]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/46403943]]></link>
+</review>
+
+        <review>
+  <id>426931343</id>
+      <user>
+    <id>1711431</id>
+    <name>Eric_W</name>
+    <location>Forreston, IL</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/1711431-eric-w]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1404647129p3/1711431.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1404647129p2/1711431.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>3</rating>
+  <votes>3</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="miscellaneous" exclusive="false" review_shelf_id="281481504" sortable="false" />
+</shelves>
+
+  <recommended_for><![CDATA[anyone who liked Swiss Family Robinson]]></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Wed Oct 03 00:00:00 -0700 2012</read_at>
+  <date_added>Wed Oct 03 08:04:35 -0700 2012</date_added>
+  <date_updated>Sat Oct 13 11:47:13 -0700 2012</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[As many of you might know, I abhor the YA designation, believing it to be a form of segregation that simply makes it a target for the Comstockians of the world, witness recent calls for YA books to be more wholesome and less dark. That many so-called YA titles deal with issues that should be of concern to teens seems of little concern to those who want to prevent their sixteen-year-olds from reading about what they experience everyday.  The YA designation, I suspect, has, in the past, steered many adult readers away from books so designated, not wanting to be seen as stooping below their level. (I use young adult and adult only in their chronological sense, certainly not from the standpoint of maturity level.)<br /><br />Our reading club decided to discuss a couple of books that had been enjoyed by some of our members from that standpoint. We chose two:  Hatchet and <a href="http://www.goodreads.com/book/show/11969802.Waiting_to_Forget" title="Waiting to Forget by Sheila Kelly Welch">Waiting to Forget</a> (review to follow), each in its own way a survival novel, both in a wilderness, but one made of trees, the other of people. <br /><br />The differences are substantial with Waiting to Forget much more adult both in content and style. Hatchet is a great story for 10 year-olds (and young 60 year-olds) about a young boy (age thirteen) being sent to his father in Canada following a nasty divorce. The pilot of the single engined plane dies of a heart attack, and young Brian must find a way to stay alive in the wilderness (a remarkably non-hostile environment with the exception of a moose and tornado) with only a hatchet fortuitously given to him by his mother for survival.  The book is told in third-person from Brian’s perspective so it’s hardly a spoiler to say young Brian, a very smart kid, indeed, survives by using his wits and, fortuitously, the hatchet given to him by his mother as a present before he left to visit his father.<br /><br />It's a good survival story although some of the elements like "the Secret" were peripheral and distracted from the story line.  The Epilogue was totally unnecessary and redundant, I thought.  The last line before it would have made a perfect ending.  My understanding is that Paulson followed up with the success of Hatchet with a couple of sequels.<br /><br />As I read this enjoyable little book, I wondered if Paulson had become enamored of Tom Brown who achieved some fame as being a great “tracker” and wilderness expert. Raised in the Jersey Pine Barrens, he was ostensibly the grandson of an Apache named “Stalking Wolf.”(I'm not kidding.)  Brown wrote several pieces on wilderness survival for Mother Jones in the eighties.  I remember several nature types on the faculty asking me to order his books many years ago, although the luster seemed to tarnish some when it was learned Brown was fond of smoking.<br /><br />Looking up Tom Brown for this review I discovered he has capitalized on his knowledge. <a href="http://www.trackertrail.com/tombrown/controversies/cult.html" target="_blank" rel="nofollow">http://www.trackertrail.com/tombrown/...</a><br /><br />Tom Brown books:  <a href="http://www.goodreads.com/book/show/2642931.Tom_Brown_s_Field_guide_to_wilderness_survival" title="Tom Brown's Field guide to wilderness survival by Tom Brown Jr.">Tom Brown's Field guide to wilderness survival</a> and <a href="http://www.goodreads.com/book/show/7154395.Tracker" title="Tracker by Tom Brown Jr.">Tracker</a> and <a href="http://www.goodreads.com/book/show/380614.Tom_Brown_s_Field_Guide_To_Living_With_The_Earth" title="Tom Brown's Field Guide To Living With The Earth by Tom Brown Jr.">Tom Brown's Field Guide To Living With The Earth</a>]]>
+  </body>
+  <comments_count>2</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/426931343]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/426931343]]></link>
+</review>
+
+        <review>
+  <id>759504822</id>
+      <user>
+    <id>2285690</id>
+    <name>Melissa</name>
+    <location>The United States</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/2285690-melissa-wehunt]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1319427149p3/2285690.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1319427149p2/2285690.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>3</rating>
+  <votes>3</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at>Thu Nov 07 00:00:00 -0800 2013</started_at>
+  <read_at>Fri Nov 08 14:44:45 -0800 2013</read_at>
+  <date_added>Thu Nov 07 19:36:58 -0800 2013</date_added>
+  <date_updated>Wed Jul 09 13:52:21 -0700 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[I probably should have read this years ago, but it is (literally) checked out whenever I go to find myself a copy. I finally got my eaudiobook...I was so excited...afterall, teachers assign this book ALL THE TIME! And kids/teens seem to love it. So... my expectations <em>may have been a tad high.</em> With that in mind, here are my pros/cons:<br /><br /><strong>Pros-</strong><br />1. Survival Story...that's always fun and interesting<br />2. Would make a great (and easy) discussion book...which is probably why teachers love it<br />3. Book that works for boys <br /><br /><strong>Cons-</strong><br />1. The stuff about divorce and his cheating mother. I don't know, it bugged me. I get why it's in there...that Brian needs to work through it and think before he acts and all the super obvious lessons that Paulsen beats over our heads...but it felt obvious and out of place to me. I would have like it more if it had been worked into the story better...like maybe revealing the 'secret' as he was dealing with survival. <br />2. The things that make it a good discussion book...All the obvious lessons! This isn't really fair to complain about. It's not Paulsen's fault I'm a full grown adult reading a kids book. But I am, and I found it tiresome and a bit eye-rolly. Is that a word? ;) <br />3. The reader. Couldn't stand him. And the quality of the recording was weird. So, about 2/3 of the way through (I had a copy sitting at the ref desk waiting for a teen to pick it up), I read the rest of it. Much better. ]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/759504822]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/759504822]]></link>
+</review>
+
+        <review>
+  <id>45290078</id>
+      <user>
+    <id>307208</id>
+    <name>Lucy</name>
+    <location>The United States</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/307208-lucy]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1233177432p3/307208.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1233177432p2/307208.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>3</rating>
+  <votes>3</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Tue Mar 24 00:00:00 -0700 2009</read_at>
+  <date_added>Tue Feb 03 14:51:06 -0800 2009</date_added>
+  <date_updated>Thu Apr 09 12:47:44 -0700 2009</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[For the last few months, I have been going into my son's classroom and reading with a small group for an hour. This is exactly my kind of volunteering. We each take turns reading aloud and when the hour is up, we mark our place for the next week.<br /><br />Our group, which contained five boys and myself, read The Hatchet, a book about 13 year-old Brian Robeson, who survives in the Canadian wilderness for months after the airplane he was traveling in to visit his father crashes - in large part because he has in his possession a hatchet given to him by his mother.<br /><br />I was very impressed with those 8 and 9 year-old attention spans because, after the initial crash, which is quite exciting, the book moves at a snails pace. There are lots and lots of details about Brian building a shelter and the process in which he finds food (from berries, eggs, fish to finally game meat) and Brian's own inner dialogue about what his fate will be. I particularly enjoyed the fact that the author, Gary Paulsen, uses a technique of repeating emphasis words regularly throughout paragraphs that the boys were able to pick up as a unique to that author writing style. It was so fun to discuss those kinds of things with these bright boys. Paulsen also included plenty of vomiting, diarrhea, animal attacks and other bits of danger to completely hook his young readers.<br /><br />I admit to being a tad worried about the theme of divorce and The Secret (which turned out to be that Brian saw his mother kissing another man in a car), but was relieved to discover that it wasn't the emphasis of the book and even my sheltered and innocent son seemed able to handle these mature ideas.<br /><br />I'm not as sure girls of the same age would like it, but The Hatchet was a hit with my 8 year old. Plus, mom liked it too.]]>
+  </body>
+  <comments_count>5</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/45290078]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/45290078]]></link>
+</review>
+
+        <review>
+  <id>1100163459</id>
+      <user>
+    <id>33565915</id>
+    <name>Danm</name>
+    <location></location>
+    <link><![CDATA[https://www.goodreads.com/user/show/33565915-danm]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1408926395p3/33565915.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1408926395p2/33565915.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>4</rating>
+  <votes>3</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Fri Nov 07 12:59:05 -0800 2014</date_added>
+  <date_updated>Thu Dec 11 10:02:12 -0800 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[Solid book with a great last line, a last line that means much more than the words indicate on the surface. Since this was a classic, I was surprised to find several spelling and grammatical errors, but that's not the reason for the four stars opposed to five stars. The book was good, but it didn't blow me away. However, I would recommend it for any young reader. I read it because my son picked it up from the library. ]]>
+  </body>
+  <comments_count>2</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/1100163459]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/1100163459]]></link>
+</review>
+
+        <review>
+  <id>118326234</id>
+      <user>
+    <id>4190786</id>
+    <name>John</name>
+    <location></location>
+    <link><![CDATA[https://www.goodreads.com/user/show/4190786-john]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1283319511p3/4190786.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1283319511p2/4190786.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>4</rating>
+  <votes>3</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Mon Aug 23 21:20:11 -0700 2010</date_added>
+  <date_updated>Wed Jul 09 13:51:27 -0700 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[When Brian's plane crash lands in the Canadian wilderness, Brian must learn to survive in the forest all by himself with only his clothes and a hatchet given to him by his mum...<br /><br />I wouldn't say this was the best book I've read but I wouldn't say it was one of the worst. This book gives you that feel that 'you're all alone in an unknown place with who knows what kind of dangers there may be'. And yes, it did make me a little scared. But despite the rather, in my opinion, boring ending of the book, it is nonetheless still a good book.]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/118326234]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/118326234]]></link>
+</review>
+
+        <review>
+  <id>78758128</id>
+      <user>
+    <id>2958079</id>
+    <name>Ms. Foley</name>
+    <location>Austin, TX</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/2958079-ms-foley]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1289506116p3/2958079.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1289506116p2/2958079.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>3</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Mon Nov 23 11:47:34 -0800 2009</date_added>
+  <date_updated>Mon Nov 23 11:48:16 -0800 2009</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[I love outdoor survival stories!  If you liked this, you should try "Julie of the Wolves" or "Island of the Blue Dolphins."]]>
+  </body>
+  <comments_count>3</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/78758128]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/78758128]]></link>
+</review>
+
+        <review>
+  <id>1103044243</id>
+      <user>
+    <id>33782710</id>
+    <name>Sarah</name>
+    <location>The United States</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/33782710-sarah]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1417183154p3/33782710.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1417183154p2/33782710.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>2</votes>
+  <spoiler_flag>true</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at>Wed Nov 12 00:00:00 -0800 2014</started_at>
+  <read_at>Thu Dec 18 00:00:00 -0800 2014</read_at>
+  <date_added>Mon Nov 10 17:35:37 -0800 2014</date_added>
+  <date_updated>Thu Dec 18 19:22:09 -0800 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[WARNING: SPOILERS!!! Hands down amazing. I read this book for my English class and my teacher couldn't have picked a better book! I loved all of the plot twists. Like when Brain dropped the ha hey in the lake. That killed me. Also when the tornado hit. That was UNEXPECTED! What so blew me away was the Secret. I couldn't BELIEVE Brain's mother cheated. But what happens to their relationship? Is Brain going to tell his mom he knows? Will he tell his Dad?! I know that there is a squeal, but I WANTED TO KNOW! I didn't really like the ending either. It's like "Let me fend for myself for over 3 months." Then it's like "This is amazing! I found a survival pack with everything I need to survive!" *plane shows up* Come on really. Also, I know Brain is " New Brain" but he was starving for a LONG time and when the pilot shows up, he offers him something to eat. I mean, that was nice and all but I would have been like " LETS LEAVE NOW!!!!!!" Plus it ends in bad spot. Gary should have added another chapter showing how Brain gets home and how his mother reacts. Over all this book was one of the best I've ever read. ]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/1103044243]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/1103044243]]></link>
+</review>
+
+        <review>
+  <id>764714250</id>
+      <user>
+    <id>25635703</id>
+    <name>Marshall</name>
+    <location>Charlottetown, PE, Canada</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/25635703-marshall-jones]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1393250208p3/25635703.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1393250208p2/25635703.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Thu Nov 14 08:33:18 -0800 2013</date_added>
+  <date_updated>Mon Feb 24 07:09:06 -0800 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[Brian is on a journey across the Canadian forest, on a flight to visit his father. As Brian is on his way to the airport his mom had gave him a pocket hatchet for his trip. On the flight the pilot of the two seat plane started to feel a bit strange and having pains and letting off choking body odors. He was having a heart attack. The pilot had past out and Brian has to take over and steer the plane safley to the ground but insted he safley crashed the plane in the Canadian wilderness. He is now alone. <br />He has nobody.<br />From this point it is just a survival game for Brian, hunting for food and chopping trees for shelter and salvaging any materials from the the crashed plane to stay alive. Brian soon then encounters a big black bear but lucky for Brian he does not go near him. <br />After weeks of staying alive in the wildness alone he manages to get rescued my a search party sent my his father.<br />Hes alive.<br /><br />I really enjoyed reading this book it was very excited and interesting.<br />i would highly recommend this book to anyone that enjoys ready very realistic books.]]>
+  </body>
+  <comments_count>2</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/764714250]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/764714250]]></link>
+</review>
+
+        <review>
+  <id>9704186</id>
+      <user>
+    <id>648686</id>
+    <name>Josh</name>
+    <location>Taylor, MI</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/648686-josh-fugate]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1209577993p3/648686.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1209577993p2/648686.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>4</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for>everyone</recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Thu Nov 29 07:32:01 -0800 2007</date_added>
+  <date_updated>Mon Jan 14 18:29:41 -0800 2008</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[The noval Hatchet is one of my favorite books of all time. This is a fictional adventure book. It is about a boy named Brian Robeson. After finding out about the divorce of his parents, he is emotionaly damaged. On his way to the airport, to visit his father, Brians mother gives him a gift. The gift was a hatchet, a very well crafted hatchet. On the plane to his father's house he experiences the fear of all. Brian and the piolet are the only ones on the plane. The piolet has a heart attack and they crash into a lake. Now it's all about survival. Brian saves himself from the sinking boat and pulls himself to land. This is were now he must hunt, build, and plan for survival. <br />This was an amazingly successful noval. I knew from the start that I was going to love this book. What worked for me was the author had me wondering how Brian was going to survive alone, and stay emotionally stable. I thought that it was cool how he built a place to live and stay secure. I also wondered how he made hunting supplies and caught fish, and killed animals so he could eat. What didn't work for me was when he found out about his parents divorce and kept repeating the words, "The Secret" and everyone knew that the secret was the divorse. The theme of this noval was survival, that's all Brian wanted, was to survive. The point of view for Hatchet is third person, Brian is telling the story. The mood of this noval is the want to live, and a hopeful mood. <br />]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/9704186]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/9704186]]></link>
+</review>
+
+        <review>
+  <id>46241947</id>
+      <user>
+    <id>2028724</id>
+    <name>Nathan</name>
+    <location>Fort Mill, SC</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/2028724-nathan-simpson]]></link>
+
+    <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/user/m_111x148-e08b4682eea7088f8cdfd67c131d51cd.png]]></image_url>
+    <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/user/m_50x66-82093808bca726cb3249a493fbd3bd0f.png]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="book-club" exclusive="false" review_shelf_id="22360704" sortable="false" />
+</shelves>
+
+  <recommended_for><![CDATA[Everyone who likes survival books]]></recommended_for>
+  <recommended_by>Slef-recomended</recommended_by>
+  <started_at></started_at>
+  <read_at>Wed Feb 04 00:00:00 -0800 2009</read_at>
+  <date_added>Fri Feb 13 10:21:04 -0800 2009</date_added>
+  <date_updated>Sun Feb 15 09:45:19 -0800 2009</date_updated>
+  <read_count>1</read_count>
+  <body>
+      <![CDATA[The Story sets off in a single engine plane, Brian Robenson the main character sitting in the cockpit beside a pilot that he does not know the name to. Brian is hurting down ddep inside when the story flashbacks to a memory when he saw his mother with another guy at the mall, there is more to the story but that is all Brian's recollection to the flashback at that moment. A few weeks later his mother demands for a divorce. Soon he is forced to leave on plane to see his father in Cananada. Right before he boards his plane, his mother, gives him a gift. A hatchet which foreshadows the events to come. He does not know it at the time but that hatchet would count on his survival. Then suddenly the pilot has a heart attack and dies. Brian then takes control of the plane with the few short lessons he had before the Pilot died, and his failed emmergency contact, he crashes the plane in a lake. There is a sudden feeling that Brian has when he crashes that will determine if he lives or dies. He feels reborn. He feels alive.]]>
+  </body>
+  <comments_count>2</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/46241947]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/46241947]]></link>
+</review>
+
+        <review>
+  <id>8285887</id>
+      <user>
+    <id>557453</id>
+    <name>Matt</name>
+    <location>The United States</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/557453-matt-hewelt]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1192720867p3/557453.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1192720867p2/557453.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>2</votes>
+  <spoiler_flag>true</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for>ANYONE!</recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Sat Jun 01 00:00:00 -0700 2002</read_at>
+  <date_added>Fri Oct 26 12:46:15 -0700 2007</date_added>
+  <date_updated>Mon Jan 14 08:49:28 -0800 2008</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[This was a book about a boy named Brian who is going to visit his father in Canada. On the way, he is co-piloting a small plane in which he is learning the ropes of flying. As soon as everything seems content and quiet, the pilot of the plane has a heart attack. Now, Brian lands the plane and has to survive with the only thing he has, a hatchet that his mother gave to him. Brian spends about a month and a half having adventures alone in the wilderness until he is finally rescued. There are a few sequels to this book that I really reccomend you checking out.<br /><br />The genre of this book is and adventure fiction with sparce moments of suspense and action. The language in this book was at a lower reading level, but it didn't take away from the effectiveness of description the author used. Brian was a dynamic character because he changed alot throughout the story and had to adapt to the circumstances presented before him. The theme of this book is don't underestimate yourself, because you never know what you can accomplish without trying. Brian had to try many new things he wasn't used to doing in this book, but he adapted sucessfully. The type of person that would enjoy this book is someone who enjoys fiction books about survival/wilderness. This book would also be good for someone who likes to learn about others experiences and struggles.]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/8285887]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/8285887]]></link>
+</review>
+
+        <review>
+  <id>6581485</id>
+      <user>
+    <id>313517</id>
+    <name>Jeane</name>
+    <location>Boston, MA</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/313517-jeane]]></link>
+
+    <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/user/f_111x148-8060b12280b2aec7543bafb574ee8422.png]]></image_url>
+    <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/user/f_50x66-6a03a5c12233c941481992b82eea8d23.png]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>3</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="yaliteraturejournal" exclusive="false" review_shelf_id="2281514" sortable="false" />
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Sat Sep 01 00:00:00 -0700 2007</read_at>
+  <date_added>Fri Sep 21 19:37:25 -0700 2007</date_added>
+  <date_updated>Wed Jul 09 13:51:01 -0700 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[<strong>Paulsen, Gary (1987).  <em>Hatchet</em>.  New York: Aladdin Paperbacks. 186 pages.</strong><br /><br /><strong>Summary and Evaluation</strong>:  One summer day thirteen year-old Brian Robeson sets off on a journey to visit his father in northern Canada.  Not long into the flight the unthinkable happens -- the plane crashes in the Canadian wilderness and Brian, the lone survivor, is faced with having to survive on his own with only one possession, a hatchet.  Through this ordeal Brian learns important life skills including patience, thoughtfulness, courage, and "tough hope".  It also becomes a time for him to reflect on and work through the "secret" that has destroyed his family.<br /><br />As I read this novel, I imagined living the same experiences right alongside Brian.  I found myself trying to figure out how I would solve the problems Brian encounters -- the need for food, shelter, warmth, and protection.  Needless to say, I probably wouldn't have made it past the first few days.  The action in <em>Hatchet</em> is fast-paced with a new crisis around each turn, easily holding the reader's interest.  This is a story that celebrates human ingenuity, determination, and courage in the face of conflict and prompts the reader to reflect on how much our society takes for granted.  I almost regret saying this because of the gender stereotyping implications, but this is a novel I would recommend to young boys because of it's action and problem-solving elements.  But as a member of the opposite sex I also enjoyed this novel because of these same things.<br /><br /><strong>Booktalk Hook</strong>:  Assuming a small group I would start by asking several members of the audience what one item they would want with them if they were stranded without hope of rescue.  This would then lead into a discussion about the book including a summary of the plot and a short reading starting with "Stupid, he thought" on pg. 161 through "And he had dropped it" on pg. 162.]]>
+  </body>
+  <comments_count>1</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/6581485]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/6581485]]></link>
+</review>
+
+        <review>
+  <id>966212301</id>
+      <user>
+    <id>24452068</id>
+    <name>Khang</name>
+    <location>Summerside, PE, Canada</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/24452068-khang-tran]]></link>
+
+    <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/user/m_111x148-e08b4682eea7088f8cdfd67c131d51cd.png]]></image_url>
+    <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/user/m_50x66-82093808bca726cb3249a493fbd3bd0f.png]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="3rd-term" exclusive="false" review_shelf_id="715562083" sortable="false" />
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Mon Jan 01 00:00:00 -0800 2001</read_at>
+  <date_added>Fri Jun 13 08:11:18 -0700 2014</date_added>
+  <date_updated>Fri Jun 13 08:17:49 -0700 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[In this amazing book hatchet, Brian is on a journey to his dads house. But first he has to go across the Canadian forest by plane. It was in the summer when Brian got a chance to visit his father, little did he know, the pilot had a heart attack during the flight. Brian was in shock when the pilot died right in front of him. Was this the last moment of Brian's life? <br /><br />This book is so good, its a thrill to read.<br />I recommend this book to you young up and coming readers.<br />This is a realistic fiction book.<br /><br />]]>
+  </body>
+  <comments_count>4</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/966212301]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/966212301]]></link>
+</review>
+
+        <review>
+  <id>102401695</id>
+      <user>
+    <id>2880979</id>
+    <name>Lauren</name>
+    <location>The United States</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/2880979-lauren-ciccarelli]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1273715622p3/2880979.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1273715622p2/2880979.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>1</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Tue May 11 21:37:39 -0700 2010</date_added>
+  <date_updated>Tue May 11 21:44:37 -0700 2010</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[When my fourth grade teacher decided to read a chapter a day to my class she always said "let's see what Hatchet's up to" &amp; we'd all crowd around to see if he'd been poisoned by berries or hacked his body parts off for nourishment.<br /><br />First off, the kid's name isn't Hatchet, which I still think would have made the book much better. At least it'd have some character, which is lacking in a huge way. The hatchet came from his mother, as a gift, right before his plane went down in the Canadian wilderness. No really, mom didn't plan that..?<br /><br />There's a lot of repetitiveness going on, both in the story &amp; in Paulsen's writing which work against hearing it aloud. Growing up far outside of the wilderness, my preteen angst kicked in &amp; I tuned out most of the book's survivalist techniques thinking I'd never, ever need them.<br /><br />Maybe I would have liked it had I read it myself, but the story &amp; plot are still unappealing enough to keep me from wasting my time. ]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/102401695]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/102401695]]></link>
+</review>
+
+        <review>
+  <id>81301702</id>
+      <user>
+    <id>3052554</id>
+    <name>Steve</name>
+    <location>Halifax, NS, Canada</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/3052554-steve-vernon]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1261070443p3/3052554.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1261070443p2/3052554.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Thu Dec 17 10:27:29 -0800 2009</date_added>
+  <date_updated>Thu Dec 17 11:16:18 -0800 2009</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[A few years ago my stepson Connor asked for a copy of this book for Christmas. I hunted it up in a bookstore and decided to give it a read before wrapping it up. Then I had to go back to the bookstore and by another copy because there was no way I was going to let this one get off my book shelf.<br /><br />Hatchet is my all-time favorite YA novel. I admire the precision and no-words-wasted approach that Paulsen demonstrates with his prose. He cuts right to the bone and steps the action up fast.<br /><br />The story is a simple one. The young protagonist is lost in the north woods with nothing but a hatchet to survive with. It is a good old-fashioned yarn that will entertain and enlighten both young and old alike. I don't have enough thumbs to give this book all of the thumbs up it truly deserves. Hunt up a copy for any kid on your gift-buying list and make sure you buy a copy for yourself.<br /><br />Yours in storytelling,<br /><br /><br />Steve Vernon]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/81301702]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/81301702]]></link>
+</review>
+
+        <review>
+  <id>9943003</id>
+      <user>
+    <id>659380</id>
+    <name>Nichole</name>
+    <location>Spokane, WA</location>
+    <link><![CDATA[https://www.goodreads.com/user/show/659380-nichole-sedler]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1196806639p3/659380.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1196806639p2/659380.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>0</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="realistic-fiction" exclusive="false" review_shelf_id="3689361" sortable="false" />
+    <shelf name="chapter" exclusive="false" review_shelf_id="3689814" sortable="false" />
+</shelves>
+
+  <recommended_for>4th-7th</recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at>Mon Jan 01 00:00:00 -0800 2007</read_at>
+  <date_added>Tue Dec 04 13:58:54 -0800 2007</date_added>
+  <date_updated>Tue Dec 04 16:53:38 -0800 2007</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[<br /><br /><br />Written by Gary Paulsen, published by Atheneum/Richard Jackson Books, 1987.<br /><br />Summary:  A story about a young boy whose family is torn apart by divorce.  He travels on a prop plane to see his dad in Canada but during the flight, the pilot suffers a heart attack and dies.  Brian crashes the plane into a lake and amazingly survives the crash.  The novel follows his transformation through surviving 54 days in the wilderness before he is rescued. <br /><br />Response:  I loved this story.  I think intermediate elementary students would be captured by the realistic, dramatic turn of events and by the unlikely hero of Brian.  <br /><br />Possible Units:  I think this would be a great book for Lit Circles or even to read as a class.  There is so much you could do with this book.  Language Arts, Character Education, Cause and Effect lessons, etc.  ]]>
+  </body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/9943003]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/9943003]]></link>
+</review>
+
+        <review>
+  <id>736453000</id>
+      <user>
+    <id>24021736</id>
+    <name>Evan</name>
+    <location></location>
+    <link><![CDATA[https://www.goodreads.com/user/show/24021736-evan]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1381366827p3/24021736.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1381366827p2/24021736.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>5</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at>Mon Oct 07 00:00:00 -0700 2013</started_at>
+  <read_at>Wed Oct 16 00:00:00 -0700 2013</read_at>
+  <date_added>Mon Oct 07 16:38:23 -0700 2013</date_added>
+  <date_updated>Wed Oct 16 18:05:30 -0700 2013</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[Hatchet, by Gary Paulsen was an amazing novel. Brian, a teenager who had no idea of what he was doing had to survive in the forest by himself without anything except for a hatchet and clothes! I did not enjoy that at the end of the book, Brian finally decides to go into the plane! He found, a survival kit with tools, food, and sleeping bags! Why did he not go into the plane in the first place?<br /><br />The theme of the book was very easy to figure out, never give up. Brian did not stop during his whole "journey" in the forest. He just kept on going and thinking positive. He was very close to giving up when he had failed to get food and when he ate the gut berries. In conclusion, Hatchet had few flaws, but was a great novel!]]>
+  </body>
+  <comments_count>2</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/736453000]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/736453000]]></link>
+</review>
+
+        <review>
+  <id>467496713</id>
+      <user>
+    <id>12455059</id>
+    <name>Lily</name>
+    <location></location>
+    <link><![CDATA[https://www.goodreads.com/user/show/12455059-lily]]></link>
+
+    <image_url><![CDATA[https://d.gr-assets.com/users/1408649111p3/12455059.jpg]]></image_url>
+    <small_image_url><![CDATA[https://d.gr-assets.com/users/1408649111p2/12455059.jpg]]></small_image_url>
+
+  </user>
+
+
+
+  <rating>1</rating>
+  <votes>2</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+
+  
+
+<shelves>
+  <shelf name="read" exclusive="true" />
+
+    <shelf name="read-for-school" exclusive="false" review_shelf_id="565006864" sortable="false" />
+    <shelf name="never-ever-read-this-i-hate-it" exclusive="false" review_shelf_id="452338318" sortable="false" />
+</shelves>
+
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at>Sat Dec 01 00:00:00 -0800 2012</started_at>
+  <read_at>Tue Dec 25 00:00:00 -0800 2012</read_at>
+  <date_added>Sat Dec 01 07:48:12 -0800 2012</date_added>
+  <date_updated>Tue Sep 09 18:02:21 -0700 2014</date_updated>
+  <read_count></read_count>
+  <body>
+      <![CDATA[If I could rate it 0 stars, I would. The only reason I read this is for school. Trust me, I wouldn't have if Mrs. Jones (not her real name), my fifth grade teacher hadn't made me. It's just so repetitive. Every chapter, excluding the first few and the last, are the same thing: he wakes up, looks for food, runs into some animal, get's hurt and then this "secret" thing that they keep bringing up? Seriously, just mention it once and move on, Paulsen. Anyway, I hated this book. Luckily, I'll never have to read the sequel... (Que forshaddow-y music)]]>
+  </body>
+  <comments_count>3</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/467496713]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/467496713]]></link>
+</review>
+
+    </reviews>
+  <popular_shelves>
+      <shelf name="to-read" count="18512"/>
+      <shelf name="young-adult" count="1685"/>
+      <shelf name="fiction" count="1140"/>
+      <shelf name="currently-reading" count="1125"/>
+      <shelf name="favorites" count="630"/>
+      <shelf name="adventure" count="627"/>
+      <shelf name="ya" count="486"/>
+      <shelf name="classics" count="486"/>
+      <shelf name="childrens" count="471"/>
+      <shelf name="survival" count="434"/>
+  </popular_shelves>
+  <book_links>
+    <book_link>
+  <id>28</id>
+  <name>WorldCat</name>
+  <link>https://www.goodreads.com/book_link/follow/28</link>
+</book_link>
+
+  </book_links>
+  <series_works>
+    <series_work>
+<id>268218</id>
+<user_position>1</user_position>
+<series>
+<id>62223</id>
+<title>
+<![CDATA[
+    Brian's Saga
+]]>
+</title>
+<description>
+<![CDATA[
+]]>
+</description>
+<note>
+<![CDATA[
+]]>
+</note>
+<series_works_count>8</series_works_count>
+<primary_work_count>5</primary_work_count>
+<numbered>true</numbered>
+</series>
+
+</series_work>
+
+  </series_works>
+  <similar_books>
+          <book>
+<id>77100</id>
+<title><![CDATA[On the Far Side of the Mountain (Mountain, #2)]]></title>
+<isbn>0141312416</isbn>
+<isbn13>9780141312415</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.83</average_rating>
+<ratings_count>5109</ratings_count>
+<authors>
+  <author>
+    <id>23509</id>
+    <name>Jean Craighead George</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>124245</id>
+<title>The Black Pearl</title>
+<isbn>0440228867</isbn>
+<isbn13>9780440228868</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.44</average_rating>
+<ratings_count>3275</ratings_count>
+<authors>
+  <author>
+    <id>4999</id>
+    <name>Scott O&apos;Dell</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>3638</id>
+<title><![CDATA[The Wish Giver: Three Tales of Coven Tree]]></title>
+<isbn>0064401685</isbn>
+<isbn13>9780064401685</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.79</average_rating>
+<ratings_count>1362</ratings_count>
+<authors>
+  <author>
+    <id>2495</id>
+    <name>Bill Brittain</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>142976</id>
+<title>The Great Fire</title>
+<isbn>0439203074</isbn>
+<isbn13>9780439203074</isbn13>
+<small_image_url><![CDATA[https://d.gr-assets.com/books/1360058127s/142976.jpg]]></small_image_url>
+<image_url><![CDATA[https://d.gr-assets.com/books/1360058127m/142976.jpg]]></image_url>
+<average_rating>3.82</average_rating>
+<ratings_count>1105</ratings_count>
+<authors>
+  <author>
+    <id>20468</id>
+    <name>Jim Murphy</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>826885</id>
+<title>American Boys Handy Book</title>
+<isbn>0879234490</isbn>
+<isbn13>9780879234492</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.95</average_rating>
+<ratings_count>572</ratings_count>
+<authors>
+  <author>
+    <id>1527190</id>
+    <name>Daniel Carter Beard</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>876034</id>
+<title><![CDATA[Dragonwings (Golden Mountain Chronicles, #5)]]></title>
+<isbn>0064400859</isbn>
+<isbn13>9780064400855</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.51</average_rating>
+<ratings_count>2124</ratings_count>
+<authors>
+  <author>
+    <id>14199</id>
+    <name>Laurence Yep</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>163465</id>
+<title>The Great Gilly Hopkins</title>
+<isbn>0435124773</isbn>
+<isbn13>9780435124779</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.82</average_rating>
+<ratings_count>12017</ratings_count>
+<authors>
+  <author>
+    <id>1949</id>
+    <name>Katherine Paterson</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>1025223</id>
+<title>Shipwreck (Island, #1)</title>
+<isbn>0439164567</isbn>
+<isbn13>9780439164566</isbn13>
+<small_image_url><![CDATA[https://d.gr-assets.com/books/1360057717s/1025223.jpg]]></small_image_url>
+<image_url><![CDATA[https://d.gr-assets.com/books/1360057717m/1025223.jpg]]></image_url>
+<average_rating>3.78</average_rating>
+<ratings_count>3363</ratings_count>
+<authors>
+  <author>
+    <id>2130</id>
+    <name>Gordon Korman</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>11824</id>
+<title>The Whipping Boy</title>
+<isbn>0060521228</isbn>
+<isbn13>9780060521226</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.52</average_rating>
+<ratings_count>13479</ratings_count>
+<authors>
+  <author>
+    <id>7536</id>
+    <name>Sid Fleischman</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>438131</id>
+<title>Incident at Hawk&apos;s Hill</title>
+<isbn>0316209481</isbn>
+<isbn13>9780316209489</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.96</average_rating>
+<ratings_count>1426</ratings_count>
+<authors>
+  <author>
+    <id>59419</id>
+    <name>Allan W. Eckert</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>18553</id>
+<title>The Cay (The Cay, #1)</title>
+<isbn>044022912X</isbn>
+<isbn13>9780440229124</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.71</average_rating>
+<ratings_count>19907</ratings_count>
+<authors>
+  <author>
+    <id>11164</id>
+    <name>Theodore Taylor</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>186457</id>
+<title><![CDATA[The Fledgling (Hall Family Chronicles #4)]]></title>
+<isbn>0590434519</isbn>
+<isbn13>9780590434515</isbn13>
+<small_image_url><![CDATA[https://d.gr-assets.com/books/1327215220s/186457.jpg]]></small_image_url>
+<image_url><![CDATA[https://d.gr-assets.com/books/1327215220m/186457.jpg]]></image_url>
+<average_rating>3.78</average_rating>
+<ratings_count>1378</ratings_count>
+<authors>
+  <author>
+    <id>83378</id>
+    <name>Jane Langton</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>808470</id>
+<title>Far North</title>
+<isbn>0060540966</isbn>
+<isbn13>9780060540968</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.88</average_rating>
+<ratings_count>842</ratings_count>
+<authors>
+  <author>
+    <id>44589</id>
+    <name>Will Hobbs</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>39963</id>
+<title><![CDATA[A Long Way from Chicago (A Long Way from Chicago, #1)]]></title>
+<isbn>0142401102</isbn>
+<isbn13>9780142401101</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.90</average_rating>
+<ratings_count>22522</ratings_count>
+<authors>
+  <author>
+    <id>22414</id>
+    <name>Richard Peck</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>207569</id>
+<title>The Sign of the Beaver</title>
+<isbn>0440779030</isbn>
+<isbn13>9780440779032</isbn13>
+<small_image_url><![CDATA[https://d.gr-assets.com/books/1362166273s/207569.jpg]]></small_image_url>
+<image_url><![CDATA[https://d.gr-assets.com/books/1362166273m/207569.jpg]]></image_url>
+<average_rating>3.69</average_rating>
+<ratings_count>17594</ratings_count>
+<authors>
+  <author>
+    <id>7549</id>
+    <name>Elizabeth George Speare</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>279626</id>
+<title>Graven Images</title>
+<isbn>0763627755</isbn>
+<isbn13>9780763627751</isbn13>
+<small_image_url><![CDATA[https://d.gr-assets.com/books/1320485024s/279626.jpg]]></small_image_url>
+<image_url><![CDATA[https://d.gr-assets.com/books/1320485024m/279626.jpg]]></image_url>
+<average_rating>3.59</average_rating>
+<ratings_count>286</ratings_count>
+<authors>
+  <author>
+    <id>67810</id>
+    <name>Paul Fleischman</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>1661506</id>
+<title>Journey Outside</title>
+<isbn>0140305882</isbn>
+<isbn13>9780140305883</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.48</average_rating>
+<ratings_count>99</ratings_count>
+<authors>
+  <author>
+    <id>236137</id>
+    <name>Mary Q. Steele</name>
+  </author>
+</authors>
+</book>
+          <book>
+<id>278264</id>
+<title>Wringer</title>
+<isbn>0060739487</isbn>
+<isbn13>9780060739485</isbn13>
+<small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+<image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+<average_rating>3.61</average_rating>
+<ratings_count>8473</ratings_count>
+<authors>
+  <author>
+    <id>12696</id>
+    <name>Jerry Spinelli</name>
+  </author>
+</authors>
+</book>
+  </similar_books>
+</book>
+
+</GoodreadsResponse>
