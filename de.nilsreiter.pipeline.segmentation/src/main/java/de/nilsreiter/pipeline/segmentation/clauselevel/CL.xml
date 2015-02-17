@@ -37,5 +37,17 @@
         </featureDescription>
       </features>
     </typeDescription>
+  <typeDescription>
+      <name>de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>Tense</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
   </types>
 </typeSystemDescription>

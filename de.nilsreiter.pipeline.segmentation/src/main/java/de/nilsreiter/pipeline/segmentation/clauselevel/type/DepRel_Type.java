@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Feb 12 18:27:18 CET 2015
+ * Updated by JCasGen Mon Feb 16 11:38:56 CET 2015
  * @generated */
 public class DepRel_Type extends Annotation_Type {
   /** @generated 
@@ -127,7 +127,7 @@ public class DepRel_Type extends Annotation_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Dependents), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_Dependents), i);
-	return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Dependents), i);
+  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Dependents), i);
   }
    
   /** @generated
