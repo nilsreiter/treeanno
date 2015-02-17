@@ -1,4 +1,4 @@
-package de.nilsreiter.goodreads.core;
+package de.nilsreiter.goodreads.api;
 
 public interface User {
 	int getId();

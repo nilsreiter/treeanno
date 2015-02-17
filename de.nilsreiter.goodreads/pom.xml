@@ -7,6 +7,7 @@
   <modules>
   	<module>de.nilsreiter.goodreads.core</module>
   	<module>de.nilsreiter.goodreads.io.xml2db</module>
+  	<module>de.nilsreiter.goodreads.api</module>
   </modules>
   <dependencies>
   	<dependency>

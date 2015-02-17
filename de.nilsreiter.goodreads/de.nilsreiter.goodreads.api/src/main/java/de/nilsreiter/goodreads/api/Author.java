@@ -1,4 +1,4 @@
-package de.nilsreiter.goodreads.core;
+package de.nilsreiter.goodreads.api;
 
 import java.util.List;
 
