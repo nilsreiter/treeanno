@@ -64,7 +64,7 @@ public class NarrativeDisentanglement extends JCasAnnotator_ImplBase {
 
 		// Run the model for 50 iterations and stop (this is for testing only,
 		// for real applications, use 1000 to 2000 iterations)
-		model.setNumIterations(100);
+		model.setNumIterations(1000);
 		try {
 			getLogger().log(Level.INFO, "Now estimating parameters.");
 			model.estimate();
@@ -85,7 +85,7 @@ public class NarrativeDisentanglement extends JCasAnnotator_ImplBase {
 			 * System.out.println(out); }
 			 */
 		} catch (Exception e) {
-			e.printStackTrace();
+			getLogger().warn(e.getLocalizedMessage());
 			throw new AnalysisEngineProcessException(e);
 		}
 		// The data alphabet maps word IDs to strings
@@ -111,22 +111,22 @@ public class NarrativeDisentanglement extends JCasAnnotator_ImplBase {
 					topic = j;
 				}
 			}
-
+			Segment segment =
+					AnnotationFactory
+							.createAnnotation(aJCas, current.getBegin(),
+									current.getEnd(), Segment.class);
 			if (val > 1.0 / k) {
 				boolean contained = false;
 				for (int position = 0; position < tokens.getLength(); position++) {
 					String w =
 							(String) dataAlphabet.lookupObject(tokens
 									.getIndexAtPosition(position));
-					if (ArrayUtils.contains(topWords[topic], w)) {
+					if (ArrayUtils.contains(topWords[topic], w.toLowerCase())) {
 						contained = true;
 					}
 				}
 				if (contained) {
-					AnnotationFactory
-							.createAnnotation(aJCas, current.getBegin(),
-									current.getEnd(), Segment.class).setValue(
-									String.valueOf(topic));
+					segment.setValue(String.valueOf(topic));
 					getLogger().debug(
 							"Assigning topic " + topic + " to segment " + i);
 				}
