@@ -6,5 +6,22 @@
   <packaging>pom</packaging>
   <modules>
   	<module>de.nilsreiter.goodreads.core</module>
+  	<module>de.nilsreiter.goodreads.io.xml2db</module>
   </modules>
+  <dependencies>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<scope>test</scope>
+  	</dependency>
+  </dependencies>
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>junit</groupId>
+  			<artifactId>junit</artifactId>
+  			<version>4.12</version>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
 </project>
