@@ -2,7 +2,6 @@ package de.nilsreiter.pipeline.segmentation.clauselevel;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -15,38 +14,156 @@ import org.apache.uima.jcas.JCas;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.nilsreiter.pipeline.segmentation.clauselevel.TenseIdentifier.Tense;
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordParser;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 
 public class TestTenseIdentifier {
-	JCas jcas;
 	AnalysisEngine[] pipeline;
 
 	@Before
 	public void setUp() throws UIMAException, IOException {
-		jcas = JCasFactory.createJCas();
-		jcas.setDocumentText("He works.");
-		jcas.setDocumentLanguage("en");
 
 		pipeline =
 				new AnalysisEngine[] {
-						createEngine(StanfordSegmenter.class),
-						createEngine(StanfordParser.class,
-								StanfordParser.PARAM_MODE, "TREE"),
+				createEngine(StanfordSegmenter.class),
+				createEngine(StanfordParser.class,
+						StanfordParser.PARAM_MODE, "TREE"),
 						createEngine(TreeMaker.class),
 						createEngine(PrepareClauseAnnotations.class),
 						createEngine(TenseIdentifier.class) };
 	}
 
+	public JCas getJCas(String text) throws UIMAException {
+		JCas jcas = JCasFactory.createJCas();
+		jcas.setDocumentText(text);
+		jcas.setDocumentLanguage("en");
+		return jcas;
+	}
+
+	@Test
+	public void testPresentPerfectProgressive() throws UIMAException {
+		JCas jcas = getJCas("He has been working.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Present_Perfect_Progressive.toString(),
+					clause.getTense());
+		}
+	}
+
+	@Test
+	public void testSimplePastPerfect() throws UIMAException {
+		JCas jcas = getJCas("He had worked.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Simple_Past_Perfect.toString(),
+					clause.getTense());
+		}
+	}
+
 	@Test
 	public void testSimplePresent() throws UIMAException {
-		jcas = JCasFactory.createJCas();
-		jcas.setDocumentText("He works.");
-		jcas.setDocumentLanguage("en");
+		JCas jcas = getJCas("He works.");
 		SimplePipeline.runPipeline(jcas, pipeline);
-		assertTrue(JCasUtil.exists(jcas, Clause.class));
-		Clause clause = JCasUtil.select(jcas, Clause.class).iterator().next();
-		assertEquals("Simple_Present", clause.getTense());
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Simple_Present.toString(), clause.getTense());
+		}
 	}
+
+	@Test
+	public void testPresentProgressive() throws UIMAException {
+		JCas jcas = getJCas("He is working. He is going to the supermarket.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Present_Progressive.toString(),
+					clause.getTense());
+		}
+	}
+
+	@Test
+	public void testSimplePast() throws UIMAException {
+		JCas jcas = getJCas("He worked.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Simple_Past.toString(), clause.getTense());
+		}
+	}
+
+	@Test
+	public void testPastProgressive() throws UIMAException {
+		JCas jcas = getJCas("He was working.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Past_Progressive.toString(), clause.getTense());
+		}
+	}
+
+	@Test
+	public void testPresentPerfect() throws UIMAException {
+		JCas jcas = getJCas("He has worked.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Present_Perfect.toString(), clause.getTense());
+		}
+	}
+
+	@Test
+	public void testPastPerfectProgressive() throws UIMAException {
+		JCas jcas = getJCas("He had been working.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Past_Perfect_Progressive.toString(),
+					clause.getTense());
+		}
+	}
+
+	@Test
+	public void testWillFuture() throws UIMAException {
+		JCas jcas = getJCas("He will work.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Will_Future.toString(), clause.getTense());
+		}
+	}
+
+	@Test
+	public void testGoingToFuture() throws UIMAException {
+		JCas jcas = getJCas("He is going to work.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.going_to_Future.toString(), clause.getTense());
+		}
+	}
+
+	@Test
+	public void testFutureProgressive() throws UIMAException {
+		JCas jcas = getJCas("He will be working.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Future_Progressive.toString(), clause.getTense());
+		}
+	}
+
+	@Test
+	public void testSimpleFuturePerfect() throws UIMAException {
+		JCas jcas = getJCas("He will have worked.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Simple_Future_Perfect.toString(),
+					clause.getTense());
+		}
+	}
+
+	@Test
+	public void testFuturePerfectProgressive() throws UIMAException {
+		JCas jcas =
+				getJCas("He'll have been working. He will have been working.");
+		SimplePipeline.runPipeline(jcas, pipeline);
+		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
+			assertEquals(Tense.Future_Perfect_Progressive.toString(),
+					clause.getTense());
+		}
+	}
+
 }
