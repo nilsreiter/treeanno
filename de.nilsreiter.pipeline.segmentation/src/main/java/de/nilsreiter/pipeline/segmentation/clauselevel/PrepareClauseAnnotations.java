@@ -10,7 +10,7 @@ import de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause;
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel;
 
 public class PrepareClauseAnnotations extends JCasAnnotator_ImplBase {
-	String patternDependencyType = "^(root|ccomp)$";
+	String patternDependencyType = "^(root|ccomp|advcl)$";
 
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
