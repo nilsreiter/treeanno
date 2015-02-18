@@ -188,6 +188,11 @@
   		<artifactId>de.nilsreiter.pipeline.segmentation</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>weka</groupId>
+  		<artifactId>weka</artifactId>
+  		<version>3.6.12</version>
+  	</dependency>
   </dependencies>
   <repositories>
   <repository>
