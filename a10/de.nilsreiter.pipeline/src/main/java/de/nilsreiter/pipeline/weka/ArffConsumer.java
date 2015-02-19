@@ -27,6 +27,17 @@ import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
+/**
+ * A UIMA component to generate a Weka-compatible arff-file from a set of
+ * {@link weka.core.Instances}, based on an annotation type that has to be
+ * specified. Features of type {@code uima.cas.String}, {@code uima.cas.Double}
+ * and {@code uima.cas.Integer} are converted into string resp. numeric
+ * features. This component generates a single arff file for the entire corpus,
+ * which also means the entire Instances object has to fit into the memory.
+ * 
+ * @author reiterns
+ *
+ */
 public class ArffConsumer extends JCasConsumer_ImplBase {
 
 	public static final String PARAM_ANNOTATION_TYPE = "Annotation Type";
@@ -34,17 +45,31 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 	public static final String PARAM_OUTPUT_FILE = "Output File";
 	public static final String PARAM_CLASS_FEATURE = "Class Feature";
 
+	/**
+	 * The annotation type to use for instances.
+	 */
 	@ConfigurationParameter(name = PARAM_ANNOTATION_TYPE, mandatory = true)
 	String annotationType =
 			de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause.class
 					.getCanonicalName();
 
-	@ConfigurationParameter(name = PARAM_DATASET_NAME, mandatory = false)
+	/**
+	 * A name for the data set.
+	 */
+	@ConfigurationParameter(name = PARAM_DATASET_NAME, mandatory = false,
+			defaultValue = "Data Set")
 	String datasetName = "Data Set";
 
+	/**
+	 * The output file name
+	 */
 	@ConfigurationParameter(name = PARAM_OUTPUT_FILE)
 	String outputFile;
 
+	/**
+	 * Which feature is the class feature? It will be the last feature in the
+	 * generated file.
+	 */
 	@ConfigurationParameter(name = PARAM_CLASS_FEATURE, mandatory = true)
 	String classFeatureName;
 
@@ -144,6 +169,9 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 
 	}
 
+	/**
+	 * Prints the arff file using {@link weka.core.Instances#toString()}.
+	 */
 	@Override
 	public void collectionProcessComplete()
 			throws AnalysisEngineProcessException {
