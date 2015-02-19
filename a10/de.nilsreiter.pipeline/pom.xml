@@ -189,8 +189,8 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
-  		<groupId>weka</groupId>
-  		<artifactId>weka</artifactId>
+  		<groupId>nz.ac.waikato.cms.weka</groupId>
+  		<artifactId>weka-stable</artifactId>
   		<version>3.6.12</version>
   	</dependency>
   </dependencies>
