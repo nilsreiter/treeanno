@@ -44,8 +44,9 @@ public class TestArffConsumer {
 	}
 
 	@Test
-	public void testArffConsumer() throws AnalysisEngineProcessException,
-	ResourceInitializationException, IOException {
+	public void testArffConsumerClassAssignment()
+			throws AnalysisEngineProcessException,
+			ResourceInitializationException, IOException {
 		File tempFile = File.createTempFile("weka", ".arff");
 		SimplePipeline.runPipeline(
 				jcas,
@@ -53,18 +54,63 @@ public class TestArffConsumer {
 						ArffConsumer.PARAM_ANNOTATION_TYPE,
 						Weka.class.getCanonicalName(),
 						ArffConsumer.PARAM_OUTPUT_FILE,
-						tempFile.getAbsolutePath()));
+						tempFile.getAbsolutePath(),
+						ArffConsumer.PARAM_CLASS_FEATURE, "Feature2"));
 
 		ArffLoader al = new ArffLoader();
 		al.setFile(tempFile);
 		Instances instances = al.getDataSet();
+		System.out.println(instances.toString());
+		instances.setClassIndex(instances.numAttributes() - 1);
 		assertEquals(2, instances.numInstances());
 		assertEquals(4, instances.numAttributes());
+		assertEquals("Feature2", instances.classAttribute().name());
+		Instance inst;
+		inst = instances.instance(0);
+		assertEquals("F1", inst.toString(0));
+		assertEquals(15f, inst.value(3), 1e-5);
+		assertEquals(3.3, inst.value(1), 1e-5);
+		assertEquals("F7", inst.toString(2));
+		inst = instances.instance(1);
+		assertEquals("F12", inst.toString(0));
+		assertEquals(2, inst.value(3), 1e-5);
+		assertEquals(2.2, inst.value(1), 1e-5);
+		assertEquals("F42", inst.toString(2));
+		tempFile.delete();
+	}
+
+	@Test
+	public void testArffConsumer() throws AnalysisEngineProcessException,
+			ResourceInitializationException, IOException {
+		File tempFile = File.createTempFile("weka", ".arff");
+		SimplePipeline.runPipeline(
+				jcas,
+				createEngineDescription(ArffConsumer.class,
+						ArffConsumer.PARAM_ANNOTATION_TYPE,
+						Weka.class.getCanonicalName(),
+						ArffConsumer.PARAM_OUTPUT_FILE,
+						tempFile.getAbsolutePath(),
+						ArffConsumer.PARAM_CLASS_FEATURE, "Feature4"));
+
+		ArffLoader al = new ArffLoader();
+		al.setFile(tempFile);
+		Instances instances = al.getDataSet();
+		System.out.println(instances.toString());
+		instances.setClassIndex(instances.numAttributes() - 1);
+		assertEquals(2, instances.numInstances());
+		assertEquals(4, instances.numAttributes());
+		assertEquals("Feature4", instances.classAttribute().name());
 		Instance inst;
 		inst = instances.instance(0);
 		assertEquals("F1", inst.toString(0));
 		assertEquals(15f, inst.value(1), 1e-5);
 		assertEquals(3.3, inst.value(2), 1e-5);
+		assertEquals("F7", inst.toString(3));
+		inst = instances.instance(1);
+		assertEquals("F12", inst.toString(0));
+		assertEquals(2, inst.value(1), 1e-5);
+		assertEquals(2.2, inst.value(2), 1e-5);
+		assertEquals("F42", inst.toString(3));
 		tempFile.delete();
 	}
 

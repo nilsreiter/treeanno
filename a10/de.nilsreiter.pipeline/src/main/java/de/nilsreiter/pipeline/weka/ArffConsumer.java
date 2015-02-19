@@ -32,6 +32,7 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 	public static final String PARAM_ANNOTATION_TYPE = "Annotation Type";
 	public static final String PARAM_DATASET_NAME = "Dataset Name";
 	public static final String PARAM_OUTPUT_FILE = "Output File";
+	public static final String PARAM_CLASS_FEATURE = "Class Feature";
 
 	@ConfigurationParameter(name = PARAM_ANNOTATION_TYPE, mandatory = true)
 	String annotationType =
@@ -43,6 +44,9 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 
 	@ConfigurationParameter(name = PARAM_OUTPUT_FILE)
 	String outputFile;
+
+	@ConfigurationParameter(name = PARAM_CLASS_FEATURE, mandatory = true)
+	String classFeatureName;
 
 	Instances instances;
 
@@ -60,6 +64,7 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory.createTypeSystemDescription();
 		typeDescription = tsd.getType(annotationType);
+		Attribute classAttribute = null;
 
 		if (typeDescription == null)
 			throw new ResourceInitializationException(
@@ -70,14 +75,10 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 		for (int i = 0; i < fds.length; i++) {
 			Attribute attr = null;
 			FeatureDescription fd = fds[i];
-			String rangeTypeName = fd.getRangeTypeName();
-			if (rangeTypeName.equals("uima.cas.String")) {
-				attr = new Attribute(fd.getName(), (FastVector) null);
-
-			} else if (rangeTypeName.equals("uima.cas.Integer")) {
-				attr = new Attribute(fd.getName());
-			} else if (rangeTypeName.equals("uima.cas.Double")) {
-				attr = new Attribute(fd.getName());
+			if (fd.getName().equals(classFeatureName)) {
+				classAttribute = makeAttribute(fd);
+			} else {
+				attr = makeAttribute(fd);
 			}
 			if (attr != null) {
 				attributes.addElement(attr);
@@ -85,8 +86,23 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 			}
 		}
 
+		attributes.addElement(classAttribute);
+		attributeMap.put(classFeatureName, f);
 		instances = new Instances(datasetName, attributes, 0);
+	}
 
+	protected Attribute makeAttribute(FeatureDescription fd) {
+		String rangeTypeName = fd.getRangeTypeName();
+
+		Attribute attr = null;
+		if (rangeTypeName.equals("uima.cas.String")) {
+			attr = new Attribute(fd.getName(), (FastVector) null);
+		} else if (rangeTypeName.equals("uima.cas.Integer")) {
+			attr = new Attribute(fd.getName());
+		} else if (rangeTypeName.equals("uima.cas.Double")) {
+			attr = new Attribute(fd.getName());
+		}
+		return attr;
 	}
 
 	@SuppressWarnings("unchecked")
