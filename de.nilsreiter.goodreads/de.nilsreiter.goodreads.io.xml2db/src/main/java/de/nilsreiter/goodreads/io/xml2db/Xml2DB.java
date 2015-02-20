@@ -72,6 +72,9 @@ public class Xml2DB {
 		} catch (ParsingException e) {
 			logger.severe(e.getLocalizedMessage());
 			return false;
+		} catch (IOException e) {
+			logger.severe(e.getLocalizedMessage());
+			return false;
 		} finally {
 			if (is != null) is.close();
 		};
@@ -79,7 +82,7 @@ public class Xml2DB {
 	}
 
 	public boolean readStream(InputStream is) throws IOException, SQLException,
-	ParsingException {
+			ParsingException {
 		Builder xBuilder = new Builder();
 		Document doc = xBuilder.build(is);
 
@@ -87,7 +90,7 @@ public class Xml2DB {
 		// 1. Detect response type (by checking what method was asked
 		String method =
 				rootElement.getChildElements("Request").get(0)
-						.getChildElements("method").get(0).getValue();
+				.getChildElements("method").get(0).getValue();
 		if (method.equals("book_show"))
 			return this.parseResponseBookShow(rootElement);
 
@@ -95,7 +98,7 @@ public class Xml2DB {
 	}
 
 	public boolean readFile(File xmlFile) throws ValidityException,
-			FileNotFoundException, ParsingException, IOException, SQLException {
+	FileNotFoundException, ParsingException, IOException, SQLException {
 		return readStream(new FileInputStream(xmlFile));
 	}
 
@@ -269,8 +272,8 @@ public class Xml2DB {
 	}
 
 	public static void main(String[] args) throws ValidityException,
-			FileNotFoundException, ParsingException, IOException,
-			CmdLineException, InterruptedException, SQLException {
+	FileNotFoundException, ParsingException, IOException,
+	CmdLineException, InterruptedException, SQLException {
 
 		OptionBeans op = new Xml2DB.OptionBeans();
 		CmdLineParser cmd = new CmdLineParser(op);
