@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Feb 20 08:23:43 CET 2015
+ * Updated by JCasGen Fri Feb 20 08:25:39 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/clauselevel/CL.xml
  * @generated */
 public class ClauseStart extends Annotation {
@@ -118,6 +118,28 @@ public class ClauseStart extends Annotation {
     if (ClauseStart_Type.featOkTst && ((ClauseStart_Type)jcasType).casFeat_AfterTense == null)
       jcasType.jcas.throwFeatMissing("AfterTense", "de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart");
     jcasType.ll_cas.ll_setStringValue(addr, ((ClauseStart_Type)jcasType).casFeatCode_AfterTense, v);}    
+   
+    
+  //*--------------*
+  //* Feature: SegmentStart
+
+  /** getter for SegmentStart - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public boolean getSegmentStart() {
+    if (ClauseStart_Type.featOkTst && ((ClauseStart_Type)jcasType).casFeat_SegmentStart == null)
+      jcasType.jcas.throwFeatMissing("SegmentStart", "de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart");
+    return jcasType.ll_cas.ll_getBooleanValue(addr, ((ClauseStart_Type)jcasType).casFeatCode_SegmentStart);}
+    
+  /** setter for SegmentStart - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setSegmentStart(boolean v) {
+    if (ClauseStart_Type.featOkTst && ((ClauseStart_Type)jcasType).casFeat_SegmentStart == null)
+      jcasType.jcas.throwFeatMissing("SegmentStart", "de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart");
+    jcasType.ll_cas.ll_setBooleanValue(addr, ((ClauseStart_Type)jcasType).casFeatCode_SegmentStart, v);}    
   }
 
     

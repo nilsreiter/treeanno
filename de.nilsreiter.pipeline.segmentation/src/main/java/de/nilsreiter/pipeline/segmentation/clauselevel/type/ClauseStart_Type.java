@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Feb 20 08:23:43 CET 2015
+ * Updated by JCasGen Fri Feb 20 08:25:39 CET 2015
  * @generated */
 public class ClauseStart_Type extends Annotation_Type {
   /** @generated 
@@ -93,6 +93,30 @@ public class ClauseStart_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_AfterTense, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_SegmentStart;
+  /** @generated */
+  final int     casFeatCode_SegmentStart;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public boolean getSegmentStart(int addr) {
+        if (featOkTst && casFeat_SegmentStart == null)
+      jcas.throwFeatMissing("SegmentStart", "de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart");
+    return ll_cas.ll_getBooleanValue(addr, casFeatCode_SegmentStart);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setSegmentStart(int addr, boolean v) {
+        if (featOkTst && casFeat_SegmentStart == null)
+      jcas.throwFeatMissing("SegmentStart", "de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart");
+    ll_cas.ll_setBooleanValue(addr, casFeatCode_SegmentStart, v);}
+    
+  
 
 
 
@@ -112,6 +136,10 @@ public class ClauseStart_Type extends Annotation_Type {
  
     casFeat_AfterTense = jcas.getRequiredFeatureDE(casType, "AfterTense", "uima.cas.String", featOkTst);
     casFeatCode_AfterTense  = (null == casFeat_AfterTense) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_AfterTense).getCode();
+
+ 
+    casFeat_SegmentStart = jcas.getRequiredFeatureDE(casType, "SegmentStart", "uima.cas.Boolean", featOkTst);
+    casFeatCode_SegmentStart  = (null == casFeat_SegmentStart) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_SegmentStart).getCode();
 
   }
 }
