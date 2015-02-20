@@ -17,6 +17,12 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.api.syntax.type.dependency.Dependency;
 
+/**
+ * Adds a real dependency tree using the DepRel annotation type
+ * 
+ * @author reiterns
+ *
+ */
 public class TreeMaker extends JCasAnnotator_ImplBase {
 
 	@Override

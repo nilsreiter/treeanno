@@ -14,6 +14,12 @@ import de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause;
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 
+/**
+ * Identifies clauses by looking at some dependency relations
+ * 
+ * @author reiterns
+ *
+ */
 public class PrepareClauseAnnotations extends JCasAnnotator_ImplBase {
 	String patternDependencyType = "^(root|ccomp|advcl)$";
 
