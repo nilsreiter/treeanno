@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Feb 20 07:57:02 CET 2015
+ * Updated by JCasGen Fri Feb 20 07:58:59 CET 2015
  * @generated */
 public class Clause_Type extends Annotation_Type {
   /** @generated 
@@ -69,6 +69,57 @@ public class Clause_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_Tense, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_Extent;
+  /** @generated */
+  final int     casFeatCode_Extent;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public int getExtent(int addr) {
+        if (featOkTst && casFeat_Extent == null)
+      jcas.throwFeatMissing("Extent", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_Extent);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setExtent(int addr, int v) {
+        if (featOkTst && casFeat_Extent == null)
+      jcas.throwFeatMissing("Extent", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause");
+    ll_cas.ll_setRefValue(addr, casFeatCode_Extent, v);}
+    
+   /** @generated
+   * @param addr low level Feature Structure reference
+   * @param i index of item in the array
+   * @return value at index i in the array 
+   */
+  public int getExtent(int addr, int i) {
+        if (featOkTst && casFeat_Extent == null)
+      jcas.throwFeatMissing("Extent", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause");
+    if (lowLevelTypeChecks)
+      return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Extent), i, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_Extent), i);
+  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Extent), i);
+  }
+   
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param i index of item in the array
+   * @param v value to set
+   */ 
+  public void setExtent(int addr, int i, int v) {
+        if (featOkTst && casFeat_Extent == null)
+      jcas.throwFeatMissing("Extent", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause");
+    if (lowLevelTypeChecks)
+      ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Extent), i, v, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_Extent), i);
+    ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Extent), i, v);
+  }
+ 
 
 
 
@@ -84,6 +135,10 @@ public class Clause_Type extends Annotation_Type {
  
     casFeat_Tense = jcas.getRequiredFeatureDE(casType, "Tense", "uima.cas.String", featOkTst);
     casFeatCode_Tense  = (null == casFeat_Tense) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Tense).getCode();
+
+ 
+    casFeat_Extent = jcas.getRequiredFeatureDE(casType, "Extent", "uima.cas.FSArray", featOkTst);
+    casFeatCode_Extent  = (null == casFeat_Extent) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Extent).getCode();
 
   }
 }

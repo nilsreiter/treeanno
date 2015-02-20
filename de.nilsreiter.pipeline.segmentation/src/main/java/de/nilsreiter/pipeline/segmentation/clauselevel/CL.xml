@@ -35,13 +35,6 @@
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
-      <featureDescription>
-          <name>Extent</name>
-          <description/>
-          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token</elementType>
-          <multipleReferencesAllowed>false</multipleReferencesAllowed>
-        </featureDescription>
       </features>
     </typeDescription>
   <typeDescription>
@@ -53,6 +46,13 @@
           <name>Tense</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      <featureDescription>
+          <name>Extent</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token</elementType>
+          <multipleReferencesAllowed>false</multipleReferencesAllowed>
         </featureDescription>
       </features>
     </typeDescription>
