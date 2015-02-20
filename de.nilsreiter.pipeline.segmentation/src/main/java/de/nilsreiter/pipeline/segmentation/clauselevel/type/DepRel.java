@@ -13,7 +13,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Mon Feb 16 11:38:55 CET 2015
+ * Updated by JCasGen Fri Feb 20 07:57:02 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/clauselevel/CL.xml
  * @generated */
 public class DepRel extends Annotation {
@@ -186,6 +186,50 @@ public class DepRel extends Annotation {
     if (DepRel_Type.featOkTst && ((DepRel_Type)jcasType).casFeat_Relation == null)
       jcasType.jcas.throwFeatMissing("Relation", "de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel");
     jcasType.ll_cas.ll_setStringValue(addr, ((DepRel_Type)jcasType).casFeatCode_Relation, v);}    
+   
+    
+  //*--------------*
+  //* Feature: Extent
+
+  /** getter for Extent - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public FSArray getExtent() {
+    if (DepRel_Type.featOkTst && ((DepRel_Type)jcasType).casFeat_Extent == null)
+      jcasType.jcas.throwFeatMissing("Extent", "de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel");
+    return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((DepRel_Type)jcasType).casFeatCode_Extent)));}
+    
+  /** setter for Extent - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setExtent(FSArray v) {
+    if (DepRel_Type.featOkTst && ((DepRel_Type)jcasType).casFeat_Extent == null)
+      jcasType.jcas.throwFeatMissing("Extent", "de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel");
+    jcasType.ll_cas.ll_setRefValue(addr, ((DepRel_Type)jcasType).casFeatCode_Extent, jcasType.ll_cas.ll_getFSRef(v));}    
+    
+  /** indexed getter for Extent - gets an indexed value - 
+   * @generated
+   * @param i index in the array to get
+   * @return value of the element at index i 
+   */
+  public Token getExtent(int i) {
+    if (DepRel_Type.featOkTst && ((DepRel_Type)jcasType).casFeat_Extent == null)
+      jcasType.jcas.throwFeatMissing("Extent", "de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((DepRel_Type)jcasType).casFeatCode_Extent), i);
+    return (Token)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((DepRel_Type)jcasType).casFeatCode_Extent), i)));}
+
+  /** indexed setter for Extent - sets an indexed value - 
+   * @generated
+   * @param i index in the array to set
+   * @param v value to set into the array 
+   */
+  public void setExtent(int i, Token v) { 
+    if (DepRel_Type.featOkTst && ((DepRel_Type)jcasType).casFeat_Extent == null)
+      jcasType.jcas.throwFeatMissing("Extent", "de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((DepRel_Type)jcasType).casFeatCode_Extent), i);
+    jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((DepRel_Type)jcasType).casFeatCode_Extent), i, jcasType.ll_cas.ll_getFSRef(v));}
   }
 
     
