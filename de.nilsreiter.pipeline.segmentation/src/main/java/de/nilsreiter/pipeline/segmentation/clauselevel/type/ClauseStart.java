@@ -1,25 +1,25 @@
 
 
-/* First created by JCasGen Fri Feb 20 08:20:38 CET 2015 */
+/* First created by JCasGen Fri Feb 20 08:23:20 CET 2015 */
 package de.nilsreiter.pipeline.segmentation.clauselevel.type;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryCandidate;
+import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Feb 20 08:20:38 CET 2015
+ * Updated by JCasGen Fri Feb 20 08:23:43 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/clauselevel/CL.xml
  * @generated */
-public class Candidate extends SegmentBoundaryCandidate {
+public class ClauseStart extends Annotation {
   /** @generated
    * @ordered 
    */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = JCasRegistry.register(Candidate.class);
+  public final static int typeIndexID = JCasRegistry.register(ClauseStart.class);
   /** @generated
    * @ordered 
    */
@@ -33,14 +33,14 @@ public class Candidate extends SegmentBoundaryCandidate {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected Candidate() {/* intentionally empty block */}
+  protected ClauseStart() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
    * @param addr low level Feature Structure reference
    * @param type the type of this Feature Structure 
    */
-  public Candidate(int addr, TOP_Type type) {
+  public ClauseStart(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
@@ -48,7 +48,7 @@ public class Candidate extends SegmentBoundaryCandidate {
   /** @generated
    * @param jcas JCas to which this Feature Structure belongs 
    */
-  public Candidate(JCas jcas) {
+  public ClauseStart(JCas jcas) {
     super(jcas);
     readObject();   
   } 
@@ -58,7 +58,7 @@ public class Candidate extends SegmentBoundaryCandidate {
    * @param begin offset to the begin spot in the SofA
    * @param end offset to the end spot in the SofA 
   */  
-  public Candidate(JCas jcas, int begin, int end) {
+  public ClauseStart(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);
@@ -84,18 +84,18 @@ public class Candidate extends SegmentBoundaryCandidate {
    * @return value of the feature 
    */
   public String getBeforeTense() {
-    if (Candidate_Type.featOkTst && ((Candidate_Type)jcasType).casFeat_BeforeTense == null)
-      jcasType.jcas.throwFeatMissing("BeforeTense", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Candidate");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Candidate_Type)jcasType).casFeatCode_BeforeTense);}
+    if (ClauseStart_Type.featOkTst && ((ClauseStart_Type)jcasType).casFeat_BeforeTense == null)
+      jcasType.jcas.throwFeatMissing("BeforeTense", "de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((ClauseStart_Type)jcasType).casFeatCode_BeforeTense);}
     
   /** setter for BeforeTense - sets  
    * @generated
    * @param v value to set into the feature 
    */
   public void setBeforeTense(String v) {
-    if (Candidate_Type.featOkTst && ((Candidate_Type)jcasType).casFeat_BeforeTense == null)
-      jcasType.jcas.throwFeatMissing("BeforeTense", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Candidate");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Candidate_Type)jcasType).casFeatCode_BeforeTense, v);}    
+    if (ClauseStart_Type.featOkTst && ((ClauseStart_Type)jcasType).casFeat_BeforeTense == null)
+      jcasType.jcas.throwFeatMissing("BeforeTense", "de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart");
+    jcasType.ll_cas.ll_setStringValue(addr, ((ClauseStart_Type)jcasType).casFeatCode_BeforeTense, v);}    
    
     
   //*--------------*
@@ -106,18 +106,18 @@ public class Candidate extends SegmentBoundaryCandidate {
    * @return value of the feature 
    */
   public String getAfterTense() {
-    if (Candidate_Type.featOkTst && ((Candidate_Type)jcasType).casFeat_AfterTense == null)
-      jcasType.jcas.throwFeatMissing("AfterTense", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Candidate");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Candidate_Type)jcasType).casFeatCode_AfterTense);}
+    if (ClauseStart_Type.featOkTst && ((ClauseStart_Type)jcasType).casFeat_AfterTense == null)
+      jcasType.jcas.throwFeatMissing("AfterTense", "de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((ClauseStart_Type)jcasType).casFeatCode_AfterTense);}
     
   /** setter for AfterTense - sets  
    * @generated
    * @param v value to set into the feature 
    */
   public void setAfterTense(String v) {
-    if (Candidate_Type.featOkTst && ((Candidate_Type)jcasType).casFeat_AfterTense == null)
-      jcasType.jcas.throwFeatMissing("AfterTense", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Candidate");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Candidate_Type)jcasType).casFeatCode_AfterTense, v);}    
+    if (ClauseStart_Type.featOkTst && ((ClauseStart_Type)jcasType).casFeat_AfterTense == null)
+      jcasType.jcas.throwFeatMissing("AfterTense", "de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart");
+    jcasType.ll_cas.ll_setStringValue(addr, ((ClauseStart_Type)jcasType).casFeatCode_AfterTense, v);}    
   }
 
     

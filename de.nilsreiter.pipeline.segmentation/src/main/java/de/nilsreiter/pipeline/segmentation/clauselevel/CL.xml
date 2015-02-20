@@ -6,7 +6,6 @@
   <vendor>Nils Reiter</vendor>
   <imports>
     <import name="desc.type.LexicalUnits"/>
-  <import name="de.nilsreiter.pipeline.segmentation.Segmentation"/>
   </imports>
   <types>
     <typeDescription>
@@ -63,9 +62,9 @@
       </features>
     </typeDescription>
   <typeDescription>
-      <name>de.nilsreiter.pipeline.segmentation.clauselevel.type.Candidate</name>
+      <name>de.nilsreiter.pipeline.segmentation.clauselevel.type.ClauseStart</name>
       <description/>
-      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryCandidate</supertypeName>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
           <name>BeforeTense</name>
