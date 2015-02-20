@@ -13,7 +13,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Feb 20 07:58:59 CET 2015
+ * Updated by JCasGen Fri Feb 20 08:15:36 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/clauselevel/CL.xml
  * @generated */
 public class Clause extends Annotation {
@@ -142,6 +142,28 @@ public class Clause extends Annotation {
       jcasType.jcas.throwFeatMissing("Extent", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Clause_Type)jcasType).casFeatCode_Extent), i);
     jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Clause_Type)jcasType).casFeatCode_Extent), i, jcasType.ll_cas.ll_getFSRef(v));}
+   
+    
+  //*--------------*
+  //* Feature: Head
+
+  /** getter for Head - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public DepRel getHead() {
+    if (Clause_Type.featOkTst && ((Clause_Type)jcasType).casFeat_Head == null)
+      jcasType.jcas.throwFeatMissing("Head", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause");
+    return (DepRel)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Clause_Type)jcasType).casFeatCode_Head)));}
+    
+  /** setter for Head - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setHead(DepRel v) {
+    if (Clause_Type.featOkTst && ((Clause_Type)jcasType).casFeat_Head == null)
+      jcasType.jcas.throwFeatMissing("Head", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause");
+    jcasType.ll_cas.ll_setRefValue(addr, ((Clause_Type)jcasType).casFeatCode_Head, jcasType.ll_cas.ll_getFSRef(v));}    
   }
 
     

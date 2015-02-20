@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Feb 20 07:58:59 CET 2015
+ * Updated by JCasGen Fri Feb 20 08:15:36 CET 2015
  * @generated */
 public class Clause_Type extends Annotation_Type {
   /** @generated 
@@ -120,6 +120,30 @@ public class Clause_Type extends Annotation_Type {
     ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_Extent), i, v);
   }
  
+ 
+  /** @generated */
+  final Feature casFeat_Head;
+  /** @generated */
+  final int     casFeatCode_Head;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public int getHead(int addr) {
+        if (featOkTst && casFeat_Head == null)
+      jcas.throwFeatMissing("Head", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_Head);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setHead(int addr, int v) {
+        if (featOkTst && casFeat_Head == null)
+      jcas.throwFeatMissing("Head", "de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause");
+    ll_cas.ll_setRefValue(addr, casFeatCode_Head, v);}
+    
+  
 
 
 
@@ -139,6 +163,10 @@ public class Clause_Type extends Annotation_Type {
  
     casFeat_Extent = jcas.getRequiredFeatureDE(casType, "Extent", "uima.cas.FSArray", featOkTst);
     casFeatCode_Extent  = (null == casFeat_Extent) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Extent).getCode();
+
+ 
+    casFeat_Head = jcas.getRequiredFeatureDE(casType, "Head", "de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel", featOkTst);
+    casFeatCode_Head  = (null == casFeat_Head) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Head).getCode();
 
   }
 }

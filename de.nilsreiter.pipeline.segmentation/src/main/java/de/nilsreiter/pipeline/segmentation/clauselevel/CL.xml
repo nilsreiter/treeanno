@@ -54,6 +54,11 @@
           <elementType>de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token</elementType>
           <multipleReferencesAllowed>false</multipleReferencesAllowed>
         </featureDescription>
+      <featureDescription>
+          <name>Head</name>
+          <description/>
+          <rangeTypeName>de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel</rangeTypeName>
+        </featureDescription>
       </features>
     </typeDescription>
   </types>
