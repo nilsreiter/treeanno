@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Feb 20 08:15:36 CET 2015
+ * Updated by JCasGen Fri Feb 20 08:20:38 CET 2015
  * @generated */
 public class DepRel_Type extends Annotation_Type {
   /** @generated 
