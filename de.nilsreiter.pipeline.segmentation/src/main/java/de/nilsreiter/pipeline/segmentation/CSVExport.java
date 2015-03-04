@@ -31,19 +31,34 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		LinkedList<Sentence> window = new LinkedList<Sentence>();
+		LinkedList<Sentence> pref = new LinkedList<Sentence>();
+		LinkedList<Sentence> post = new LinkedList<Sentence>();
 		File oFile =
 				new File(new File(outputDirectoryName), JCasUtil.selectSingle(
-						jcas, DocumentMetaData.class).getDocumentId());
+						jcas, DocumentMetaData.class).getDocumentId()
+						+ ".csv");
 		Writer writer;
+		int id = 0;
 		try {
 			writer = new FileWriter(oFile);
+			writer.write("Id,Prefix,Sentence,Postfix\n");
 			for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
 
 				window.add(sentence);
-				if (window.size() > prefixSize + 1)
-					processWindow(window, writer);
+
+				if (id > (prefixSize * 2 - 1) && window.size() > prefixSize + 1)
+					processWindow(window, writer, id);
 				if (window.size() > prefixSize * 2 + 1) window.pop();
+				id++;
 			}
+
+			while (!window.isEmpty()) {
+				if (id > prefixSize * 2 && window.size() > prefixSize + 1)
+					processWindow(window, writer, id);
+				window.pop();
+				id++;
+			}
+
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -52,9 +67,11 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 
 	}
 
-	protected void processWindow(List<Sentence> window, Writer os)
+	protected void processWindow(List<Sentence> window, Writer os, int id)
 			throws IOException {
 		int i = 0;
+		os.write(String.valueOf(id));
+		os.write(",");
 		StringBuilder b = new StringBuilder();
 		for (; i < prefixSize && i < window.size(); i++) {
 			b.append(window.get(i).getCoveredText());
@@ -67,7 +84,7 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 					.getCoveredText()));
 		os.write(",");
 		b = new StringBuilder();
-		for (; i < window.size(); i++) {
+		for (i++; i < window.size(); i++) {
 			b.append(window.get(i).getCoveredText());
 			b.append(" ");
 		}
