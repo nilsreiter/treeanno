@@ -31,8 +31,6 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		LinkedList<Sentence> window = new LinkedList<Sentence>();
-		LinkedList<Sentence> pref = new LinkedList<Sentence>();
-		LinkedList<Sentence> post = new LinkedList<Sentence>();
 		File oFile =
 				new File(new File(outputDirectoryName), JCasUtil.selectSingle(
 						jcas, DocumentMetaData.class).getDocumentId()
