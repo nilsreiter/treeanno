@@ -20,6 +20,7 @@ public class MakeCrowdData {
 	static File outputDirectory = new File(
 			"/Users/reiterns/Documents/SegNarr/CrowdFlower/exp1/csv");
 
+	// TODO: Prepare an XMI file that can be imported easily
 	public static void main(String[] args)
 			throws ResourceInitializationException, UIMAException, IOException {
 		SimplePipeline.runPipeline(CollectionReaderFactory
@@ -27,12 +28,12 @@ public class MakeCrowdData {
 						TextReader.PARAM_LANGUAGE, "en",
 						TextReader.PARAM_SOURCE_LOCATION,
 						inputDirectory.getAbsolutePath() + File.separatorChar
-								+ "*.txt"), AnalysisEngineFactory
-				.createEngineDescription(StanfordSegmenter.class),
-						AnalysisEngineFactory.createEngineDescription(CSVExport.class,
-						CSVExport.PARAM_OUTPUT_DIRECTORY,
-						outputDirectory.getAbsolutePath(),
-								CSVExport.PARAM_PREFIX_SIZE, 10));
+						+ "*.txt"), AnalysisEngineFactory
+						.createEngineDescription(StanfordSegmenter.class),
+				AnalysisEngineFactory.createEngineDescription(CSVExport.class,
+								CSVExport.PARAM_OUTPUT_DIRECTORY,
+								outputDirectory.getAbsolutePath(),
+						CSVExport.PARAM_PREFIX_SIZE, 10));
 	}
 
 }
