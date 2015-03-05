@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Jan 22 20:51:36 CET 2015
+ * Updated by JCasGen Thu Mar 05 09:32:02 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/Segmentation.xml
  * @generated */
 public class Segment extends Annotation {

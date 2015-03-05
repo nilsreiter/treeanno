@@ -9,6 +9,13 @@
       <name>de.nilsreiter.pipeline.segmentation.type.SegmentBoundary</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
+    <features>
+        <featureDescription>
+          <name>Confidence</name>
+          <description/>
+          <rangeTypeName>uima.cas.Double</rangeTypeName>
+        </featureDescription>
+      </features>
     </typeDescription>
     <typeDescription>
       <name>de.nilsreiter.pipeline.segmentation.type.Segment</name>

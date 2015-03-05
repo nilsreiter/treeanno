@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Jan 22 20:51:36 CET 2015
+ * Updated by JCasGen Thu Mar 05 09:33:17 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/Segmentation.xml
  * @generated */
 public class SegmentBoundary extends Annotation {
@@ -74,6 +74,26 @@ public class SegmentBoundary extends Annotation {
    */
   private void readObject() {/*default - does nothing empty block */}
      
-}
+  //*--------------*
+  //* Feature: Confidence
+
+  /** getter for Confidence - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public double getConfidence() {
+    if (SegmentBoundary_Type.featOkTst && ((SegmentBoundary_Type)jcasType).casFeat_Confidence == null)
+      jcasType.jcas.throwFeatMissing("Confidence", "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary");
+    return jcasType.ll_cas.ll_getDoubleValue(addr, ((SegmentBoundary_Type)jcasType).casFeatCode_Confidence);}
+    
+  /** setter for Confidence - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setConfidence(double v) {
+    if (SegmentBoundary_Type.featOkTst && ((SegmentBoundary_Type)jcasType).casFeat_Confidence == null)
+      jcasType.jcas.throwFeatMissing("Confidence", "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary");
+    jcasType.ll_cas.ll_setDoubleValue(addr, ((SegmentBoundary_Type)jcasType).casFeatCode_Confidence, v);}    
+  }
 
     

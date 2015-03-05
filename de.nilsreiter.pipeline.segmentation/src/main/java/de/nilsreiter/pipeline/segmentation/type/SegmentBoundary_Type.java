@@ -9,10 +9,12 @@ import org.apache.uima.cas.impl.FSGenerator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.impl.FeatureImpl;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Jan 22 20:51:36 CET 2015
+ * Updated by JCasGen Thu Mar 05 09:33:17 CET 2015
  * @generated */
 public class SegmentBoundary_Type extends Annotation_Type {
   /** @generated 
@@ -46,6 +48,32 @@ public class SegmentBoundary_Type extends Annotation_Type {
 
 
 
+  /** @generated */
+  final Feature casFeat_Confidence;
+  /** @generated */
+  final int     casFeatCode_Confidence;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public double getConfidence(int addr) {
+        if (featOkTst && casFeat_Confidence == null)
+      jcas.throwFeatMissing("Confidence", "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary");
+    return ll_cas.ll_getDoubleValue(addr, casFeatCode_Confidence);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setConfidence(int addr, double v) {
+        if (featOkTst && casFeat_Confidence == null)
+      jcas.throwFeatMissing("Confidence", "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary");
+    ll_cas.ll_setDoubleValue(addr, casFeatCode_Confidence, v);}
+    
+  
+
+
+
   /** initialize variables to correspond with Cas Type and Features
 	 * @generated
 	 * @param jcas JCas
@@ -54,6 +82,10 @@ public class SegmentBoundary_Type extends Annotation_Type {
   public SegmentBoundary_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+
+ 
+    casFeat_Confidence = jcas.getRequiredFeatureDE(casType, "Confidence", "uima.cas.Double", featOkTst);
+    casFeatCode_Confidence  = (null == casFeat_Confidence) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Confidence).getCode();
 
   }
 }
