@@ -30,6 +30,9 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
+		String docId =
+				JCasUtil.selectSingle(jcas, DocumentMetaData.class)
+						.getDocumentId();
 		LinkedList<Sentence> window = new LinkedList<Sentence>();
 		File oFile =
 				new File(new File(outputDirectoryName), JCasUtil.selectSingle(
@@ -39,20 +42,20 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 		int id = 0;
 		try {
 			writer = new FileWriter(oFile);
-			writer.write("Id,Prefix,Sentence,Postfix\n");
+			writer.write("Document,Id,Prefix,Sentence,Postfix\n");
 			for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
 
 				window.add(sentence);
 
 				if (id > (prefixSize * 2 - 1) && window.size() > prefixSize + 1)
-					processWindow(window, writer, id);
+					processWindow(window, writer, id, docId);
 				if (window.size() > prefixSize * 2 + 1) window.pop();
 				id++;
 			}
 
 			while (!window.isEmpty()) {
 				if (id > prefixSize * 2 && window.size() > prefixSize + 1)
-					processWindow(window, writer, id);
+					processWindow(window, writer, id, docId);
 				window.pop();
 				id++;
 			}
@@ -65,22 +68,31 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 
 	}
 
-	protected void processWindow(List<Sentence> window, Writer os, int id)
-			throws IOException {
+	protected void processWindow(List<Sentence> window, Writer os, int id,
+			String docId) throws IOException {
 		int i = 0;
-		os.write(String.valueOf(id));
-		os.write(",");
+
+		// Document id and sentence id
 		StringBuilder b = new StringBuilder();
+		b.append(docId).append(',').append(String.valueOf(id)).append(',');
+		os.write(b.toString());
+
+		// pre-context
+		b = new StringBuilder();
 		for (; i < prefixSize && i < window.size(); i++) {
 			b.append(window.get(i).getCoveredText());
 			b.append(" ");
 		}
+
+		// the target sentence
 		StringEscapeUtils.escapeCsv(os, clean(b.toString()));
 		os.write(",");
 		if (i < window.size())
 			StringEscapeUtils.escapeCsv(os, clean(window.get(i)
 					.getCoveredText()));
 		os.write(",");
+
+		// post-context
 		b = new StringBuilder();
 		for (i++; i < window.size(); i++) {
 			b.append(window.get(i).getCoveredText());
