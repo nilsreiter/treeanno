@@ -24,24 +24,28 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 @TypeCapability(
 		inputs = {
 				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence",
-		"de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData" },
+				"de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData" },
 		outputs = { "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary" })
 public class AddCFAnnotations extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_INPUT_DIRECTORY = "Input Directory";
-
 	public static final String PARAM_FIXATION = "Fixation";
+	public static final String PARAM_THRESHOLD = "Threshold";
+
 	@ConfigurationParameter(name = PARAM_INPUT_DIRECTORY)
 	String inputDirectory;
 
 	@ConfigurationParameter(name = PARAM_FIXATION, mandatory = false)
 	int fixation = -11;
 
+	@ConfigurationParameter(name = PARAM_THRESHOLD, mandatory = false)
+	float threshold = 0.0f;
+
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		String docId =
 				JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-				.getDocumentId();
+						.getDocumentId();
 		if (docId.endsWith(".txt"))
 			docId = docId.substring(0, docId.length() - 4);
 
@@ -60,11 +64,12 @@ public class AddCFAnnotations extends JCasAnnotator_ImplBase {
 					Double confidence = Double.valueOf(csvRecord.get(6));
 					String clazz = csvRecord.get(5);
 
-					if (clazz.equalsIgnoreCase("starts a new new unit")) {
+					if (clazz.equalsIgnoreCase("starts a new new unit")
+							&& confidence > threshold) {
 						Sentence sent = sentences.get(id + fixation);
 						getLogger().info(
 								"UIMA sentence: " + sent.getCoveredText()
-								+ "\nCSV sentence: " + sentenceSurface);
+										+ "\nCSV sentence: " + sentenceSurface);
 
 						AnnotationFactory.createAnnotation(jcas,
 								sent.getBegin(), sent.getEnd(),
