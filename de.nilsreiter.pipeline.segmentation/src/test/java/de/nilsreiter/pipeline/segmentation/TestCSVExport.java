@@ -41,17 +41,18 @@ public class TestCSVExport {
 				AnalysisEngineFactory.createEngine(StanfordSegmenter.class));
 	};
 
+	// TODO: Make more meaningful test
 	@Test
 	public void testCSVExport() throws AnalysisEngineProcessException,
 	ResourceInitializationException, IOException {
 		File tempdir =
 				Files.createTempDirectory("test", new FileAttribute[0])
 						.toFile();
-		System.err.println(tempdir);
 		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory
 				.createEngineDescription(CSVExport.class,
 						CSVExport.PARAM_OUTPUT_DIRECTORY,
 						tempdir.getAbsolutePath(), CSVExport.PARAM_PREFIX_SIZE,
 						3));
+		tempdir.deleteOnExit();
 	}
 }
