@@ -6,7 +6,7 @@ package de.nilsreiter.pipeline.segmentation.clauselevel;
  * @author reiterns
  *
  */
-enum EnglishTense {
+public enum EnglishTense {
 	/**
 	 * base form
 	 */
