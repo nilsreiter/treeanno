@@ -18,37 +18,6 @@
   </repositories>
   <dependencies>
   	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
-  		<artifactId>dkpro-tc</artifactId>
-  		<version>0.6.0</version>
-  		<type>pom</type>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
-  		<artifactId>dkpro-tc-weka</artifactId>
-  		<version>0.6.0</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
-  		<artifactId>dkpro-tc-core</artifactId>
-  		<version>0.6.0</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
-  		<artifactId>dkpro-tc-features</artifactId>
-  		<version>0.6.0</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
-  		<artifactId>dkpro-tc-api</artifactId>
-  		<version>0.6.0</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
-  		<artifactId>dkpro-tc-api-features</artifactId>
-  		<version>0.6.0</version>
-  	</dependency>
-  	<dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
   		<artifactId>
   			de.tudarmstadt.ukp.dkpro.core.io.xmi-asl
