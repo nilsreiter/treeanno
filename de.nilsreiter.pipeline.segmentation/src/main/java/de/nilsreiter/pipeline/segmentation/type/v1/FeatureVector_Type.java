@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Mar 06 09:31:00 CET 2015
+ * Updated by JCasGen Fri Mar 06 09:39:01 CET 2015
  * @generated */
 public class FeatureVector_Type extends Annotation_Type {
   /** @generated 
@@ -93,6 +93,30 @@ public class FeatureVector_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_CurrentTense, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_NewSegment;
+  /** @generated */
+  final int     casFeatCode_NewSegment;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public boolean getNewSegment(int addr) {
+        if (featOkTst && casFeat_NewSegment == null)
+      jcas.throwFeatMissing("NewSegment", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    return ll_cas.ll_getBooleanValue(addr, casFeatCode_NewSegment);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setNewSegment(int addr, boolean v) {
+        if (featOkTst && casFeat_NewSegment == null)
+      jcas.throwFeatMissing("NewSegment", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    ll_cas.ll_setBooleanValue(addr, casFeatCode_NewSegment, v);}
+    
+  
 
 
 
@@ -112,6 +136,10 @@ public class FeatureVector_Type extends Annotation_Type {
  
     casFeat_CurrentTense = jcas.getRequiredFeatureDE(casType, "CurrentTense", "uima.cas.String", featOkTst);
     casFeatCode_CurrentTense  = (null == casFeat_CurrentTense) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_CurrentTense).getCode();
+
+ 
+    casFeat_NewSegment = jcas.getRequiredFeatureDE(casType, "NewSegment", "uima.cas.Boolean", featOkTst);
+    casFeatCode_NewSegment  = (null == casFeat_NewSegment) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_NewSegment).getCode();
 
   }
 }

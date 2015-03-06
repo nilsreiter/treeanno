@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Mar 06 09:31:00 CET 2015
+ * Updated by JCasGen Fri Mar 06 09:39:01 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/Segmentation.xml
  * @generated */
 public class FeatureVector extends Annotation {
@@ -118,6 +118,28 @@ public class FeatureVector extends Annotation {
     if (FeatureVector_Type.featOkTst && ((FeatureVector_Type)jcasType).casFeat_CurrentTense == null)
       jcasType.jcas.throwFeatMissing("CurrentTense", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
     jcasType.ll_cas.ll_setStringValue(addr, ((FeatureVector_Type)jcasType).casFeatCode_CurrentTense, v);}    
+   
+    
+  //*--------------*
+  //* Feature: NewSegment
+
+  /** getter for NewSegment - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public boolean getNewSegment() {
+    if (FeatureVector_Type.featOkTst && ((FeatureVector_Type)jcasType).casFeat_NewSegment == null)
+      jcasType.jcas.throwFeatMissing("NewSegment", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    return jcasType.ll_cas.ll_getBooleanValue(addr, ((FeatureVector_Type)jcasType).casFeatCode_NewSegment);}
+    
+  /** setter for NewSegment - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setNewSegment(boolean v) {
+    if (FeatureVector_Type.featOkTst && ((FeatureVector_Type)jcasType).casFeat_NewSegment == null)
+      jcasType.jcas.throwFeatMissing("NewSegment", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    jcasType.ll_cas.ll_setBooleanValue(addr, ((FeatureVector_Type)jcasType).casFeatCode_NewSegment, v);}    
   }
 
     
