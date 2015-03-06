@@ -61,5 +61,22 @@
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
+  <typeDescription>
+      <name>de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>PreviousTense</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>CurrentTense</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
   </types>
 </typeSystemDescription>
