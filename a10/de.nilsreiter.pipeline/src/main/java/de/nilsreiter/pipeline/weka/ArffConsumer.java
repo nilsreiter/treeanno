@@ -126,6 +126,8 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 			attr = new Attribute(fd.getName());
 		} else if (rangeTypeName.equals("uima.cas.Double")) {
 			attr = new Attribute(fd.getName());
+		} else if (rangeTypeName.equals("uima.cas.Boolean")) {
+			attr = new Attribute(fd.getName());
 		}
 		return attr;
 	}
@@ -148,9 +150,14 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 			for (Feature feature : type.getFeatures()) {
 				if (feature.getDomain().equals(type)) {
 					if (feature.getRange().getName().equals("uima.cas.String")) {
-						instance.setValue(
-								attributeMap.get(feature.getShortName()),
-								anno.getFeatureValueAsString(feature));
+						if (anno == null
+								|| anno.getFeatureValueAsString(feature) == null) {
+							instance.setMissing(attributeMap.get(feature
+									.getShortName()));
+						} else
+							instance.setValue(
+									attributeMap.get(feature.getShortName()),
+									anno.getFeatureValueAsString(feature));
 					} else if (feature.getRange().getName()
 							.equals("uima.cas.Integer")) {
 						instance.setValue(
@@ -161,6 +168,11 @@ public class ArffConsumer extends JCasConsumer_ImplBase {
 						instance.setValue(
 								attributeMap.get(feature.getShortName()),
 								anno.getDoubleValue(feature));
+					} else if (feature.getRange().getName()
+							.equals("uima.cas.Boolean")) {
+						instance.setValue(
+								attributeMap.get(feature.getShortName()),
+								(anno.getBooleanValue(feature) ? 1 : 0));
 					}
 				}
 			}
