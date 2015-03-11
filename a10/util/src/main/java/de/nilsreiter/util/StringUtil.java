@@ -72,4 +72,9 @@ public class StringUtil {
 		String r = buf.toString();
 		return r.substring(0, r.length() - delimiter.length());
 	}
+
+	public static String toString(Object obj) {
+		if (obj == null) return "null";
+		return obj.toString();
+	}
 }
