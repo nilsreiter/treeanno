@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause;
+import de.nilsreiter.pipeline.tense.EnglishTense;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordParser;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 

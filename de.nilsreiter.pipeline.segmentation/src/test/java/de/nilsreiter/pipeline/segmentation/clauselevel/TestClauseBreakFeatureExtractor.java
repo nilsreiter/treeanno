@@ -25,23 +25,23 @@ public class TestClauseBreakFeatureExtractor {
 	public void setUp() throws UIMAException, IOException {
 		jcas =
 				JCasFactory
-						.createJCas(
-								"/Users/reiterns/Documents/Workspace/Segmentation Corpus/corpus/en/Genette1.txt.xmi",
-								TypeSystemDescriptionFactory
-										.createTypeSystemDescription());
+				.createJCas(
+						"/Users/reiterns/Documents/Workspace/Segmentation Corpus/corpus/en/Genette1.txt.xmi",
+						TypeSystemDescriptionFactory
+						.createTypeSystemDescription());
 
 		SimplePipeline.runPipeline(
 				jcas,
 				createEngine(StanfordSegmenter.class),
 				createEngine(StanfordParser.class, StanfordParser.PARAM_MODE,
 						"TREE"), createEngine(TreeMaker.class),
-				createEngine(PrepareClauseAnnotations.class),
-				createEngine(TenseIdentifier.class));
+						createEngine(PrepareClauseAnnotations.class),
+						createEngine(TenseIdentifier.class));
 	}
 
 	@Test
 	public void testSegmenter() throws AnalysisEngineProcessException,
-			ResourceInitializationException {
+	ResourceInitializationException {
 		SimplePipeline.runPipeline(jcas,
 				createEngine(ClauseBreakFeatureExtractor.class));
 	}

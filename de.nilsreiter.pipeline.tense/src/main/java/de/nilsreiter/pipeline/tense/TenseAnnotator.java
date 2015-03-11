@@ -11,7 +11,6 @@ import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.nilsreiter.pipeline.segmentation.clauselevel.EnglishTense;
 import de.nilsreiter.pipeline.tense.type.Tense;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;

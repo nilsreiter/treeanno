@@ -14,7 +14,6 @@ import org.apache.uima.jcas.JCas;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.nilsreiter.pipeline.segmentation.clauselevel.EnglishTense;
 import de.nilsreiter.pipeline.tense.type.Tense;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;

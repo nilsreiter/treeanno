@@ -1,4 +1,4 @@
-package de.nilsreiter.pipeline.segmentation.clauselevel;
+package de.nilsreiter.pipeline.tense;
 
 /**
  * source: http://www.englisch-hilfen.de/en/grammar/english_tenses.htm

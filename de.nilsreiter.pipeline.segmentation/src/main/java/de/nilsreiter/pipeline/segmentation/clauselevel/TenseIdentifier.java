@@ -10,6 +10,7 @@ import org.apache.uima.jcas.JCas;
 
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause;
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel;
+import de.nilsreiter.pipeline.tense.EnglishTense;
 
 public class TenseIdentifier extends JCasAnnotator_ImplBase {
 
