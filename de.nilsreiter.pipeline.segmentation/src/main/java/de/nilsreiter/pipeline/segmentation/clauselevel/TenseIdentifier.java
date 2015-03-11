@@ -10,7 +10,7 @@ import org.apache.uima.jcas.JCas;
 
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause;
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel;
-import de.nilsreiter.pipeline.tense.EnglishTense;
+import de.nilsreiter.pipeline.tense.EnglishTenseAspect;
 
 public class TenseIdentifier extends JCasAnnotator_ImplBase {
 
@@ -24,12 +24,12 @@ public class TenseIdentifier extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	protected EnglishTense getTense(DepRel dr) {
+	protected EnglishTenseAspect getTense(DepRel dr) {
 		List<DepRel> aux = ClauseUtil.getDependents(dr, "aux");
 		String posValue = dr.getToken().getPos().getPosValue();
 		if (aux.isEmpty()) {
-			if (posValue.matches("^VB[PZ]$")) return EnglishTense.Simple_Present;
-			if (posValue.matches("^VBD$")) return EnglishTense.Simple_Past;
+			if (posValue.matches("^VB[PZ]$")) return EnglishTenseAspect.Simple_Present;
+			if (posValue.matches("^VBD$")) return EnglishTenseAspect.Simple_Past;
 		} else if (aux.size() == 1) {
 			String auxPosValue = aux.get(0).getToken().getPos().getPosValue();
 			// String auxSurface = aux.get(0).getToken().getCoveredText();
@@ -38,19 +38,19 @@ public class TenseIdentifier extends JCasAnnotator_ImplBase {
 					if (dr.getCoveredText().matches("going")) {
 						DepRel xcomp = ClauseUtil.getDependent(dr, "xcomp");
 						if (xcomp != null) {
-							return EnglishTense.going_to_Future;
+							return EnglishTenseAspect.going_to_Future;
 						}
 					}
-					return EnglishTense.Present_Progressive;
+					return EnglishTenseAspect.Present_Progressive;
 				}
-				if (auxPosValue.matches("VBD")) return EnglishTense.Past_Progressive;
+				if (auxPosValue.matches("VBD")) return EnglishTenseAspect.Past_Progressive;
 			} else if (posValue.matches("^VBN$")) {
 				if (auxPosValue.matches("^VB[PZ]$"))
-					return EnglishTense.Present_Perfect;
+					return EnglishTenseAspect.Present_Perfect;
 				if (auxPosValue.matches("^VBD$"))
-					return EnglishTense.Simple_Past_Perfect;
+					return EnglishTenseAspect.Simple_Past_Perfect;
 			} else if (posValue.matches("^VB$")) {
-				if (auxPosValue.matches("MD")) return EnglishTense.Will_Future;
+				if (auxPosValue.matches("MD")) return EnglishTenseAspect.Will_Future;
 			}
 		} else if (aux.size() == 2) {
 			String aux0PosValue = aux.get(0).getToken().getPos().getPosValue();
@@ -58,17 +58,17 @@ public class TenseIdentifier extends JCasAnnotator_ImplBase {
 			if (posValue.matches("^VBG$")) {
 				if (aux0PosValue.matches("^VB[PZ]$")
 						&& aux1PosValue.matches("^VBN$"))
-					return EnglishTense.Present_Perfect_Progressive;
+					return EnglishTenseAspect.Present_Perfect_Progressive;
 				if (aux0PosValue.matches("^VBD$")
 						&& aux1PosValue.matches("^VBN$"))
-					return EnglishTense.Past_Perfect_Progressive;
+					return EnglishTenseAspect.Past_Perfect_Progressive;
 				if (aux0PosValue.matches("^MD$")
 						&& aux1PosValue.matches("^VB$"))
-					return EnglishTense.Future_Progressive;
+					return EnglishTenseAspect.Future_Progressive;
 			} else if (posValue.matches("^VBN$")) {
 				if (aux0PosValue.matches("^MD$")
 						&& aux1PosValue.matches("^VB$"))
-					return EnglishTense.Simple_Future_Perfect;
+					return EnglishTenseAspect.Simple_Future_Perfect;
 			}
 		} else if (aux.size() == 3) {
 			if (posValue.matches("^VBG$")) {
@@ -78,9 +78,9 @@ public class TenseIdentifier extends JCasAnnotator_ImplBase {
 						.matches("^VB$")
 						&& aux.get(2).getToken().getPos().getPosValue()
 						.matches("^VBN$"))
-					return EnglishTense.Future_Perfect_Progressive;
+					return EnglishTenseAspect.Future_Perfect_Progressive;
 			}
 		}
-		return EnglishTense.Unknown;
+		return EnglishTenseAspect.Unknown;
 	}
 }

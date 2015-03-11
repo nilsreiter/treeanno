@@ -21,7 +21,7 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
-			Counter<EnglishTense> tc = new Counter<EnglishTense>();
+			Counter<EnglishTenseAspect> tc = new Counter<EnglishTenseAspect>();
 
 			List<List<POS>> posPatterns = new LinkedList<List<POS>>();
 			List<POS> poss = new LinkedList<POS>();
@@ -36,10 +36,10 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 			}
 
 			for (List<POS> l : posPatterns) {
-				EnglishTense t = getTense(l);
+				EnglishTenseAspect t = getTense(l);
 				if (t != null) tc.add(t);
 			}
-			Pair<Integer, Set<EnglishTense>> res = tc.getMax();
+			Pair<Integer, Set<EnglishTenseAspect>> res = tc.getMax();
 			if (res.getSecond().size() == 1) {
 				Tense tenseAnnotation =
 						AnnotationFactory.createAnnotation(jcas,
@@ -51,14 +51,14 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	EnglishTense getTense(List<POS> posList) {
+	EnglishTenseAspect getTense(List<POS> posList) {
 		if (posList.isEmpty()) return null;
 		String posValue = posList.get(posList.size() - 1).getPosValue();
 
 		if (posList.size() == 1) {
 			if (posValue.matches("^VB[PZ]$"))
-				return EnglishTense.Simple_Present;
-			if (posValue.matches("^VBD$")) return EnglishTense.Simple_Past;
+				return EnglishTenseAspect.Simple_Present;
+			if (posValue.matches("^VBD$")) return EnglishTenseAspect.Simple_Past;
 		} else if (posList.size() == 2) {
 			String auxPosValue = posList.get(0).getPosValue();
 			// String auxSurface = aux.get(0).getToken().getCoveredText();
@@ -69,17 +69,17 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 					 * = ClauseUtil.getDependent(dr, "xcomp"); if (xcomp !=
 					 * null) { return EnglishTense.going_to_Future; } }
 					 */
-					return EnglishTense.Present_Progressive;
+					return EnglishTenseAspect.Present_Progressive;
 				}
 				if (auxPosValue.matches("VBD"))
-					return EnglishTense.Past_Progressive;
+					return EnglishTenseAspect.Past_Progressive;
 			} else if (posValue.matches("^VBN$")) {
 				if (auxPosValue.matches("^VB[PZ]$"))
-					return EnglishTense.Present_Perfect;
+					return EnglishTenseAspect.Present_Perfect;
 				if (auxPosValue.matches("^VBD$"))
-					return EnglishTense.Simple_Past_Perfect;
+					return EnglishTenseAspect.Simple_Past_Perfect;
 			} else if (posValue.matches("^VB$")) {
-				if (auxPosValue.matches("MD")) return EnglishTense.Will_Future;
+				if (auxPosValue.matches("MD")) return EnglishTenseAspect.Will_Future;
 			}
 		} else if (posList.size() == 3) {
 			String aux0PosValue = posList.get(0).getPosValue();
@@ -87,28 +87,28 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 			if (posValue.matches("^VBG$")) {
 				if (aux0PosValue.matches("^VB[PZ]$")
 						&& aux1PosValue.matches("^VBN$"))
-					return EnglishTense.Present_Perfect_Progressive;
+					return EnglishTenseAspect.Present_Perfect_Progressive;
 				if (aux0PosValue.matches("^VBD$")
 						&& aux1PosValue.matches("^VBN$"))
-					return EnglishTense.Past_Perfect_Progressive;
+					return EnglishTenseAspect.Past_Perfect_Progressive;
 				if (aux0PosValue.matches("^MD$")
 						&& aux1PosValue.matches("^VB$"))
-					return EnglishTense.Future_Progressive;
+					return EnglishTenseAspect.Future_Progressive;
 			} else if (posValue.matches("^VBN$")) {
 				if (aux0PosValue.matches("^MD$")
 						&& aux1PosValue.matches("^VB$"))
-					return EnglishTense.Simple_Future_Perfect;
+					return EnglishTenseAspect.Simple_Future_Perfect;
 			}
 		} else if (posList.size() == 3) {
 			if (posValue.matches("^VBG$")) {
 				if (posList.get(0).getPosValue().matches("^MD$")
 						&& posList.get(1).getPosValue().matches("^VB$")
 						&& posList.get(2).getPosValue().matches("^VBN$"))
-					return EnglishTense.Future_Perfect_Progressive;
+					return EnglishTenseAspect.Future_Perfect_Progressive;
 			}
 		}
 
-		return EnglishTense.Unknown;
+		return EnglishTenseAspect.Unknown;
 	}
 
 }

@@ -6,7 +6,7 @@ package de.nilsreiter.pipeline.tense;
  * @author reiterns
  *
  */
-public enum EnglishTense {
+public enum EnglishTenseAspect {
 	/**
 	 * base form
 	 */

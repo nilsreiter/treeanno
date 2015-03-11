@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause;
-import de.nilsreiter.pipeline.tense.EnglishTense;
+import de.nilsreiter.pipeline.tense.EnglishTenseAspect;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordParser;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 
@@ -47,7 +47,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He has been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Present_Perfect_Progressive.toString(),
+			assertEquals(EnglishTenseAspect.Present_Perfect_Progressive.toString(),
 					clause.getTense());
 		}
 	}
@@ -57,7 +57,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He had worked.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Simple_Past_Perfect.toString(),
+			assertEquals(EnglishTenseAspect.Simple_Past_Perfect.toString(),
 					clause.getTense());
 		}
 	}
@@ -67,7 +67,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He works.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Simple_Present.toString(), clause.getTense());
+			assertEquals(EnglishTenseAspect.Simple_Present.toString(), clause.getTense());
 		}
 	}
 
@@ -76,7 +76,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He is working. He is going to the supermarket.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Present_Progressive.toString(),
+			assertEquals(EnglishTenseAspect.Present_Progressive.toString(),
 					clause.getTense());
 		}
 	}
@@ -86,7 +86,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He worked.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Simple_Past.toString(), clause.getTense());
+			assertEquals(EnglishTenseAspect.Simple_Past.toString(), clause.getTense());
 		}
 	}
 
@@ -95,7 +95,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He was working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Past_Progressive.toString(), clause.getTense());
+			assertEquals(EnglishTenseAspect.Past_Progressive.toString(), clause.getTense());
 		}
 	}
 
@@ -104,7 +104,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He has worked.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Present_Perfect.toString(), clause.getTense());
+			assertEquals(EnglishTenseAspect.Present_Perfect.toString(), clause.getTense());
 		}
 	}
 
@@ -113,7 +113,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He had been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Past_Perfect_Progressive.toString(),
+			assertEquals(EnglishTenseAspect.Past_Perfect_Progressive.toString(),
 					clause.getTense());
 		}
 	}
@@ -123,7 +123,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He will work.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Will_Future.toString(), clause.getTense());
+			assertEquals(EnglishTenseAspect.Will_Future.toString(), clause.getTense());
 		}
 	}
 
@@ -132,7 +132,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He is going to work.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.going_to_Future.toString(), clause.getTense());
+			assertEquals(EnglishTenseAspect.going_to_Future.toString(), clause.getTense());
 		}
 	}
 
@@ -141,7 +141,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He will be working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Future_Progressive.toString(), clause.getTense());
+			assertEquals(EnglishTenseAspect.Future_Progressive.toString(), clause.getTense());
 		}
 	}
 
@@ -150,7 +150,7 @@ public class TestTenseIdentifier {
 		JCas jcas = getJCas("He will have worked.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Simple_Future_Perfect.toString(),
+			assertEquals(EnglishTenseAspect.Simple_Future_Perfect.toString(),
 					clause.getTense());
 		}
 	}
@@ -161,7 +161,7 @@ public class TestTenseIdentifier {
 				getJCas("He'll have been working. He will have been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Clause clause : JCasUtil.select(jcas, Clause.class)) {
-			assertEquals(EnglishTense.Future_Perfect_Progressive.toString(),
+			assertEquals(EnglishTenseAspect.Future_Perfect_Progressive.toString(),
 					clause.getTense());
 		}
 	}
