@@ -101,5 +101,10 @@
   		<artifactId>util-main</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>de.nilsreiter.pipeline.tense</groupId>
+  		<artifactId>de.nilsreiter.pipeline.tense</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>
