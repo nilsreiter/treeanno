@@ -1,5 +1,5 @@
 package de.nilsreiter.pipeline.tense;
 
-public enum Aspect {
+public enum EAspect {
 	NONE, PROGRESSIVE, PERFECTIVE
 }

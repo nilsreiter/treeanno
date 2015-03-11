@@ -1,5 +1,5 @@
 package de.nilsreiter.pipeline.tense;
 
-public enum Tense {
+public enum ETense {
 	PAST, PRESENT, FUTURE
 }

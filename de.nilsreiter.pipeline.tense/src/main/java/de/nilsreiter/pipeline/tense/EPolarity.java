@@ -1,5 +1,5 @@
 package de.nilsreiter.pipeline.tense;
 
-public enum Polarity {
+public enum EPolarity {
 	POS, NEG
 }
