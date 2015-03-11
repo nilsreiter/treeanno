@@ -16,7 +16,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.uniheidelberg.cl.reiter.util.Counter;
 
-public class TenseAnnotator extends JCasAnnotator_ImplBase {
+public class TenseAspectAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {

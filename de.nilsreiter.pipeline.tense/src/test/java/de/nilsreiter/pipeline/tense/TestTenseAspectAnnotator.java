@@ -18,7 +18,7 @@ import de.nilsreiter.pipeline.tense.type.Tense;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 
-public class TestTenseAnnotator {
+public class TestTenseAspectAnnotator {
 	AnalysisEngine[] pipeline;
 
 	@Before
@@ -27,7 +27,7 @@ public class TestTenseAnnotator {
 		pipeline =
 				new AnalysisEngine[] { createEngine(StanfordSegmenter.class),
 						createEngine(StanfordPosTagger.class),
-				createEngine(TenseAnnotator.class) };
+				createEngine(TenseAspectAnnotator.class) };
 	}
 
 	public JCas getJCas(String text) throws UIMAException {
