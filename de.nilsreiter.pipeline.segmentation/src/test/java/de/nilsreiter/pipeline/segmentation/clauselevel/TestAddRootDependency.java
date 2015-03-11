@@ -53,7 +53,7 @@ public class TestAddRootDependency {
 
 	@Test
 	public void testAddRootDependency() throws AnalysisEngineProcessException,
-			ResourceInitializationException {
+	ResourceInitializationException {
 		assertTrue(JCasUtil.exists(jcas, Dependency.class));
 		SimplePipeline.runPipeline(jcas, createEngine(AddRootDependency.class));
 		assertTrue(JCasUtil.exists(jcas, Dependency.class));
