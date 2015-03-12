@@ -102,9 +102,9 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
-  		<groupId>de.nilsreiter.pipeline.tense</groupId>
-  		<artifactId>de.nilsreiter.pipeline.tense</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
+  		<groupId>de.nilsreiter.pipeline</groupId>
+  		<artifactId>tense</artifactId>
+  		<version>0.0.2-SNAPSHOT</version>
   	</dependency>
   </dependencies>
 </project>
