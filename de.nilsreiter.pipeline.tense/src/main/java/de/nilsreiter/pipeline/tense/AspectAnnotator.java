@@ -2,6 +2,7 @@ package de.nilsreiter.pipeline.tense;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.math3.util.Pair;
@@ -11,7 +12,7 @@ import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.nilsreiter.pipeline.tense.type.Tense;
+import de.nilsreiter.pipeline.tense.type.Aspect;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.uniheidelberg.cl.reiter.util.Counter;
@@ -41,12 +42,12 @@ public class AspectAnnotator extends JCasAnnotator_ImplBase {
 			}
 			Pair<Integer, Set<EAspect>> res = tc.getMax();
 			if (res.getSecond().size() == 1) {
-				Tense tenseAnnotation =
+				Aspect tenseAnnotation =
 						AnnotationFactory.createAnnotation(jcas,
 								sentence.getBegin(), sentence.getEnd(),
-								Tense.class);
-				tenseAnnotation.setTense(res.getSecond().iterator().next()
-						.toString());
+								Aspect.class);
+				tenseAnnotation.setAspect(Objects.toString(res.getSecond()
+						.iterator().next()));
 			}
 		}
 	}

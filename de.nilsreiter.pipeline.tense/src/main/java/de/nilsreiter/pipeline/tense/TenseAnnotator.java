@@ -7,16 +7,20 @@ import java.util.Set;
 import org.apache.commons.math3.util.Pair;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
 import de.nilsreiter.pipeline.tense.type.Tense;
-import de.nilsreiter.util.StringUtil;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.uniheidelberg.cl.reiter.util.Counter;
 
+@TypeCapability(inputs = {
+		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
+		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+		outputs = { "de.nilsreiter.pipeline.tense.type.Tense" })
 public class TenseAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
@@ -46,8 +50,8 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 						AnnotationFactory.createAnnotation(jcas,
 								sentence.getBegin(), sentence.getEnd(),
 								Tense.class);
-				tenseAnnotation.setTense(StringUtil.toString(res.getSecond()
-						.iterator().next()));
+				tenseAnnotation.setTense(java.util.Objects.toString(res
+						.getSecond().iterator().next()));
 			}
 		}
 	}
