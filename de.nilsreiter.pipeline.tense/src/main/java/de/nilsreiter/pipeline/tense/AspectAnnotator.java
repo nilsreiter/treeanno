@@ -8,6 +8,7 @@ import java.util.Set;
 import org.apache.commons.math3.util.Pair;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -17,6 +18,10 @@ import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.uniheidelberg.cl.reiter.util.Counter;
 
+@TypeCapability(inputs = {
+		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
+"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+outputs = { "de.nilsreiter.pipeline.tense.type.Aspect" })
 public class AspectAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
