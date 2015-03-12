@@ -27,8 +27,8 @@ public class TestAspectAnnotator {
 
 		pipeline =
 				new AnalysisEngine[] { createEngine(StanfordSegmenter.class),
-						createEngine(StanfordPosTagger.class),
-				createEngine(TenseAspectAnnotator.class) };
+				createEngine(StanfordPosTagger.class),
+						createEngine(AspectAnnotator.class) };
 	}
 
 	public JCas getJCas(String text) throws UIMAException {
