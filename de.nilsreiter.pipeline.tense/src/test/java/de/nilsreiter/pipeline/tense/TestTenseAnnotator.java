@@ -2,6 +2,7 @@ package de.nilsreiter.pipeline.tense;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -42,6 +43,8 @@ public class TestTenseAnnotator {
 		JCas jcas =
 				getJCas("He has been working. He works. He is working. He is going to the supermarket. He has worked.");
 		SimplePipeline.runPipeline(jcas, pipeline);
+		assertTrue(JCasUtil.exists(jcas, Tense.class));
+
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
 			assertEquals(ETense.PRESENT.toString(), clause.getTense());
 		}
@@ -52,6 +55,8 @@ public class TestTenseAnnotator {
 		JCas jcas =
 				getJCas("He had worked. He worked. He was working. He had been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
+		assertTrue(JCasUtil.exists(jcas, Tense.class));
+
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
 			assertEquals(ETense.PAST.toString(), clause.getTense());
 		}
@@ -62,6 +67,8 @@ public class TestTenseAnnotator {
 		JCas jcas =
 				getJCas("He will work. He is going to work. He will be working. He will have worked. He'll have been working. He will have been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
+		assertTrue(JCasUtil.exists(jcas, Tense.class));
+
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
 			assertEquals(clause.getCoveredText(), ETense.FUTURE.toString(),
 					clause.getTense());

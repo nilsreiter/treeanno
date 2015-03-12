@@ -2,6 +2,7 @@ package de.nilsreiter.pipeline.tense;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -43,6 +44,8 @@ public class TestAspectAnnotator {
 		JCas jcas =
 				getJCas("He had worked. He has worked. He will have worked.");
 		SimplePipeline.runPipeline(jcas, pipeline);
+		assertTrue(JCasUtil.exists(jcas, Aspect.class));
+
 		for (Aspect clause : JCasUtil.select(jcas, Aspect.class)) {
 			assertEquals(clause.getCoveredText(),
 					StringUtil.toString(EAspect.PERFECTIVE), clause.getAspect());
@@ -54,6 +57,8 @@ public class TestAspectAnnotator {
 		JCas jcas =
 				getJCas("He worked. He works. He will work. He is going to work.");
 		SimplePipeline.runPipeline(jcas, pipeline);
+		assertTrue(JCasUtil.exists(jcas, Aspect.class));
+
 		for (Aspect clause : JCasUtil.select(jcas, Aspect.class)) {
 			assertEquals(clause.getCoveredText(), EAspect.NONE.toString(),
 					clause.getAspect());
@@ -65,6 +70,8 @@ public class TestAspectAnnotator {
 		JCas jcas =
 				getJCas("He was working. He is working. He is going to the supermarket. He will be working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
+		assertTrue(JCasUtil.exists(jcas, Aspect.class));
+
 		for (Aspect clause : JCasUtil.select(jcas, Aspect.class)) {
 			assertEquals(clause.getCoveredText(),
 					EAspect.PROGRESSIVE.toString(), clause.getAspect());
@@ -76,6 +83,7 @@ public class TestAspectAnnotator {
 		JCas jcas =
 				getJCas("He had been working. He has been working. He'll have been working. He will have been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
+		assertTrue(JCasUtil.exists(jcas, Aspect.class));
 		for (Aspect clause : JCasUtil.select(jcas, Aspect.class)) {
 			assertEquals(EAspect.PERFECTIVE_PROGRESSIVE.toString(),
 					clause.getAspect());
