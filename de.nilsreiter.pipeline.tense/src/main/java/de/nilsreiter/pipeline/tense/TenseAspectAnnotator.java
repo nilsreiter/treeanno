@@ -16,6 +16,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.uniheidelberg.cl.reiter.util.Counter;
 
+@Deprecated
 public class TenseAspectAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
@@ -58,7 +59,8 @@ public class TenseAspectAnnotator extends JCasAnnotator_ImplBase {
 		if (posList.size() == 1) {
 			if (posValue.matches("^VB[PZ]$"))
 				return EnglishTenseAspect.Simple_Present;
-			if (posValue.matches("^VBD$")) return EnglishTenseAspect.Simple_Past;
+			if (posValue.matches("^VBD$"))
+				return EnglishTenseAspect.Simple_Past;
 		} else if (posList.size() == 2) {
 			String auxPosValue = posList.get(0).getPosValue();
 			// String auxSurface = aux.get(0).getToken().getCoveredText();
@@ -79,7 +81,8 @@ public class TenseAspectAnnotator extends JCasAnnotator_ImplBase {
 				if (auxPosValue.matches("^VBD$"))
 					return EnglishTenseAspect.Simple_Past_Perfect;
 			} else if (posValue.matches("^VB$")) {
-				if (auxPosValue.matches("MD")) return EnglishTenseAspect.Will_Future;
+				if (auxPosValue.matches("MD"))
+					return EnglishTenseAspect.Will_Future;
 			}
 		} else if (posList.size() == 3) {
 			String aux0PosValue = posList.get(0).getPosValue();

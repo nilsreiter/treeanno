@@ -18,6 +18,7 @@ import de.nilsreiter.pipeline.tense.type.Tense;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 
+@Deprecated
 public class TestTenseAspectAnnotator {
 	AnalysisEngine[] pipeline;
 
@@ -26,8 +27,8 @@ public class TestTenseAspectAnnotator {
 
 		pipeline =
 				new AnalysisEngine[] { createEngine(StanfordSegmenter.class),
-						createEngine(StanfordPosTagger.class),
-				createEngine(TenseAspectAnnotator.class) };
+				createEngine(StanfordPosTagger.class),
+						createEngine(TenseAspectAnnotator.class) };
 	}
 
 	public JCas getJCas(String text) throws UIMAException {
@@ -42,7 +43,8 @@ public class TestTenseAspectAnnotator {
 		JCas jcas = getJCas("He has been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
-			assertEquals(EnglishTenseAspect.Present_Perfect_Progressive.toString(),
+			assertEquals(
+					EnglishTenseAspect.Present_Perfect_Progressive.toString(),
 					clause.getTense());
 		}
 	}
@@ -82,7 +84,8 @@ public class TestTenseAspectAnnotator {
 		JCas jcas = getJCas("He worked.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
-			assertEquals(EnglishTenseAspect.Simple_Past.toString(), clause.getTense());
+			assertEquals(EnglishTenseAspect.Simple_Past.toString(),
+					clause.getTense());
 		}
 	}
 
@@ -111,7 +114,8 @@ public class TestTenseAspectAnnotator {
 		JCas jcas = getJCas("He had been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
-			assertEquals(EnglishTenseAspect.Past_Perfect_Progressive.toString(),
+			assertEquals(
+					EnglishTenseAspect.Past_Perfect_Progressive.toString(),
 					clause.getTense());
 		}
 	}
@@ -121,7 +125,8 @@ public class TestTenseAspectAnnotator {
 		JCas jcas = getJCas("He will work.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
-			assertEquals(EnglishTenseAspect.Will_Future.toString(), clause.getTense());
+			assertEquals(EnglishTenseAspect.Will_Future.toString(),
+					clause.getTense());
 		}
 	}
 
@@ -161,7 +166,8 @@ public class TestTenseAspectAnnotator {
 				getJCas("He'll have been working. He will have been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
-			assertEquals(EnglishTenseAspect.Future_Perfect_Progressive.toString(),
+			assertEquals(
+					EnglishTenseAspect.Future_Perfect_Progressive.toString(),
 					clause.getTense());
 		}
 	}
