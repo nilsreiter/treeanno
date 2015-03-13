@@ -58,4 +58,13 @@ public class TestQSAReader {
 		assertEquals("I", p.getCoveredText());
 		assertEquals("person21", p.getEntityId());
 	}
+
+	@Test
+	public void testReaderEntireQSC() throws UIMAException, IOException {
+		reader =
+				createReaderDescription(QSAReader.class,
+						QSAReader.PARAM_INPUT_DIRECTORY,
+						"/Users/reiterns/Desktop/corpora-DH/Columbia_QSA_Corpus_1.01");
+		SimplePipeline.runPipeline(reader, writer);
+	}
 }
