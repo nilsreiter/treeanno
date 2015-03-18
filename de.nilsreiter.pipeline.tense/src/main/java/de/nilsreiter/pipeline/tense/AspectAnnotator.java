@@ -20,8 +20,8 @@ import de.uniheidelberg.cl.reiter.util.Counter;
 
 @TypeCapability(inputs = {
 		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
-"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
-outputs = { "de.nilsreiter.pipeline.tense.type.Aspect" })
+		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+		outputs = { "de.nilsreiter.pipeline.tense.type.Aspect" })
 public class AspectAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
@@ -62,7 +62,7 @@ public class AspectAnnotator extends JCasAnnotator_ImplBase {
 		String posValue = posList.get(posList.size() - 1).getPosValue();
 
 		if (posList.size() == 1) {
-			return EAspect.NONE;
+			return null;
 		} else if (posList.size() == 2) {
 			String auxPosValue = posList.get(0).getPosValue();
 			// String auxSurface = aux.get(0).getToken().getCoveredText();
@@ -80,7 +80,7 @@ public class AspectAnnotator extends JCasAnnotator_ImplBase {
 				if (auxPosValue.matches("^VB[PZ]$")) return EAspect.PERFECTIVE;
 				if (auxPosValue.matches("^VBD$")) return EAspect.PERFECTIVE;
 			} else if (posValue.matches("^VB$")) {
-				if (auxPosValue.matches("MD")) return EAspect.NONE;
+				if (auxPosValue.matches("MD")) return null;
 			}
 		} else if (posList.size() == 3) {
 			String aux0PosValue = posList.get(0).getPosValue();
