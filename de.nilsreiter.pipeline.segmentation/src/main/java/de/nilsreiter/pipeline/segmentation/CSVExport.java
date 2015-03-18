@@ -28,6 +28,8 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 	@ConfigurationParameter(name = PARAM_PREFIX_SIZE)
 	int prefixSize = 10;
 
+	int postfixSize = prefixSize;
+
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		String docId =
@@ -43,19 +45,23 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 		try {
 			writer = new FileWriter(oFile);
 			writer.write("Document,Id,Prefix,Sentence,Postfix\n");
+
 			for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
 
 				window.add(sentence);
-
-				if (id > (prefixSize * 2 - 1) && window.size() > prefixSize + 1)
-					processWindow(window, writer, id, docId);
+				int pos =
+						(id < prefixSize * 2 + 1 ? id - prefixSize
+								: prefixSize + 1);
+				if (window.size() > prefixSize)
+					processWindow(window, writer, id, docId, pos);
 				if (window.size() > prefixSize * 2 + 1) window.pop();
+
 				id++;
 			}
 
 			while (!window.isEmpty()) {
 				if (id > prefixSize * 2 && window.size() > prefixSize + 1)
-					processWindow(window, writer, id, docId);
+					processWindow(window, writer, id, docId, prefixSize + 1);
 				window.pop();
 				id++;
 			}
@@ -69,7 +75,7 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 	}
 
 	protected void processWindow(List<Sentence> window, Writer os, int id,
-			String docId) throws IOException {
+			String docId, int pos) throws IOException {
 		int i = 0;
 
 		// Document id and sentence id
@@ -79,7 +85,7 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 
 		// pre-context
 		b = new StringBuilder();
-		for (; i < prefixSize && i < window.size(); i++) {
+		for (; i < pos && i < window.size(); i++) {
 			b.append(window.get(i).getCoveredText());
 			b.append(" ");
 		}
@@ -88,7 +94,7 @@ public class CSVExport extends JCasAnnotator_ImplBase {
 		StringEscapeUtils.escapeCsv(os, clean(b.toString()));
 		os.write(",");
 		if (i < window.size())
-			StringEscapeUtils.escapeCsv(os, clean(window.get(i)
+			StringEscapeUtils.escapeCsv(os, clean(window.get(pos)
 					.getCoveredText()));
 		os.write(",");
 
