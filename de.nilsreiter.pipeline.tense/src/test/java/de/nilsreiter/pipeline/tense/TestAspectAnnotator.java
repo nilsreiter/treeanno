@@ -2,6 +2,7 @@ package de.nilsreiter.pipeline.tense;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.nilsreiter.pipeline.tense.type.Aspect;
+import de.nilsreiter.pipeline.tense.type.Progressive;
 import de.nilsreiter.util.StringUtil;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
@@ -28,8 +30,8 @@ public class TestAspectAnnotator {
 
 		pipeline =
 				new AnalysisEngine[] { createEngine(StanfordSegmenter.class),
-				createEngine(StanfordPosTagger.class),
-						createEngine(AspectAnnotator.class) };
+						createEngine(StanfordPosTagger.class),
+				createEngine(AspectAnnotator.class) };
 	}
 
 	public JCas getJCas(String text) throws UIMAException {
@@ -54,25 +56,25 @@ public class TestAspectAnnotator {
 
 	@Test
 	public void testNone() throws UIMAException {
-		JCas jcas =
-				getJCas("He worked. He works. He will work. He is going to work.");
+		JCas jcas = getJCas("He worked. He works. He will work. ");
 		SimplePipeline.runPipeline(jcas, pipeline);
-		assertTrue(JCasUtil.exists(jcas, Aspect.class));
+		assertFalse(JCasUtil.exists(jcas, Aspect.class));
 
 		for (Aspect clause : JCasUtil.select(jcas, Aspect.class)) {
-			assertEquals(clause.getCoveredText(), EAspect.NONE.toString(),
-					clause.getAspect());
+			System.err.println(clause.getAspect() + "  "
+					+ clause.getCoveredText());
 		}
+
 	}
 
 	@Test
 	public void testProgressive() throws UIMAException {
 		JCas jcas =
-				getJCas("He was working. He is working. He is going to the supermarket. He will be working.");
+				getJCas("He was working. He is working. He is going to work. He is going to the supermarket. He will be working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
-		assertTrue(JCasUtil.exists(jcas, Aspect.class));
+		assertTrue(JCasUtil.exists(jcas, Progressive.class));
 
-		for (Aspect clause : JCasUtil.select(jcas, Aspect.class)) {
+		for (Aspect clause : JCasUtil.select(jcas, Progressive.class)) {
 			assertEquals(clause.getCoveredText(),
 					EAspect.PROGRESSIVE.toString(), clause.getAspect());
 		}

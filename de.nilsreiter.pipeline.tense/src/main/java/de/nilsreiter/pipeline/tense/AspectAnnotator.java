@@ -14,14 +14,17 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
 import de.nilsreiter.pipeline.tense.type.Aspect;
+import de.nilsreiter.pipeline.tense.type.Perfective;
+import de.nilsreiter.pipeline.tense.type.PerfectiveProgressive;
+import de.nilsreiter.pipeline.tense.type.Progressive;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.uniheidelberg.cl.reiter.util.Counter;
 
 @TypeCapability(inputs = {
 		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
-		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
-		outputs = { "de.nilsreiter.pipeline.tense.type.Aspect" })
+"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+outputs = { "de.nilsreiter.pipeline.tense.type.Aspect" })
 public class AspectAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
@@ -46,13 +49,34 @@ public class AspectAnnotator extends JCasAnnotator_ImplBase {
 				if (t != null) tc.add(t);
 			}
 			Pair<Integer, Set<EAspect>> res = tc.getMax();
+
 			if (res.getSecond().size() == 1) {
-				Aspect tenseAnnotation =
-						AnnotationFactory.createAnnotation(jcas,
-								sentence.getBegin(), sentence.getEnd(),
-								Aspect.class);
-				tenseAnnotation.setAspect(Objects.toString(res.getSecond()
-						.iterator().next()));
+				EAspect asp = res.getSecond().iterator().next();
+				Aspect tenseAnnotation = null;
+				switch (asp) {
+				case PERFECTIVE:
+					tenseAnnotation =
+					AnnotationFactory.createAnnotation(jcas,
+							sentence.getBegin(), sentence.getEnd(),
+							Perfective.class);
+					break;
+				case PERFECTIVE_PROGRESSIVE:
+					tenseAnnotation =
+							AnnotationFactory.createAnnotation(jcas,
+									sentence.getBegin(), sentence.getEnd(),
+									PerfectiveProgressive.class);
+					break;
+				case PROGRESSIVE:
+					tenseAnnotation =
+					AnnotationFactory.createAnnotation(jcas,
+							sentence.getBegin(), sentence.getEnd(),
+							Progressive.class);
+					break;
+				default:
+					return;
+
+				}
+				tenseAnnotation.setAspect(Objects.toString(asp));
 			}
 		}
 	}

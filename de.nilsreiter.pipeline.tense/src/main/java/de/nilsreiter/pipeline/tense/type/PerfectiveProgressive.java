@@ -1,6 +1,6 @@
 
 
-/* First created by JCasGen Wed Mar 18 17:54:17 CET 2015 */
+/* First created by JCasGen Wed Mar 18 18:01:16 CET 2015 */
 package de.nilsreiter.pipeline.tense.type;
 
 import org.apache.uima.jcas.JCas; 
@@ -13,12 +13,12 @@ import org.apache.uima.jcas.cas.TOP_Type;
  * Updated by JCasGen Wed Mar 18 18:16:14 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.tense/src/main/java/de/nilsreiter/pipeline/tense/Tense.xml
  * @generated */
-public class Future extends Tense {
+public class PerfectiveProgressive extends Aspect {
   /** @generated
    * @ordered 
    */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = JCasRegistry.register(Future.class);
+  public final static int typeIndexID = JCasRegistry.register(PerfectiveProgressive.class);
   /** @generated
    * @ordered 
    */
@@ -32,14 +32,14 @@ public class Future extends Tense {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected Future() {/* intentionally empty block */}
+  protected PerfectiveProgressive() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
    * @param addr low level Feature Structure reference
    * @param type the type of this Feature Structure 
    */
-  public Future(int addr, TOP_Type type) {
+  public PerfectiveProgressive(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
@@ -47,7 +47,7 @@ public class Future extends Tense {
   /** @generated
    * @param jcas JCas to which this Feature Structure belongs 
    */
-  public Future(JCas jcas) {
+  public PerfectiveProgressive(JCas jcas) {
     super(jcas);
     readObject();   
   } 
@@ -57,7 +57,7 @@ public class Future extends Tense {
    * @param begin offset to the begin spot in the SofA
    * @param end offset to the end spot in the SofA 
   */  
-  public Future(JCas jcas, int begin, int end) {
+  public PerfectiveProgressive(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);

@@ -11,7 +11,7 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
 /** 
- * Updated by JCasGen Wed Mar 18 17:54:17 CET 2015
+ * Updated by JCasGen Wed Mar 18 18:16:14 CET 2015
  * @generated */
 public class Past_Type extends Tense_Type {
   /** @generated 

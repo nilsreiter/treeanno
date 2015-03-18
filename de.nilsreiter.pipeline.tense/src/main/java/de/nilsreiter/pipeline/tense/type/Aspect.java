@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Wed Mar 11 14:56:11 CET 2015
+ * Updated by JCasGen Wed Mar 18 18:16:14 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.tense/src/main/java/de/nilsreiter/pipeline/tense/Tense.xml
  * @generated */
 public class Aspect extends Annotation {

@@ -10,7 +10,7 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Wed Mar 18 17:54:17 CET 2015
+ * Updated by JCasGen Wed Mar 18 18:16:14 CET 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.tense/src/main/java/de/nilsreiter/pipeline/tense/Tense.xml
  * @generated */
 public class Past extends Tense {

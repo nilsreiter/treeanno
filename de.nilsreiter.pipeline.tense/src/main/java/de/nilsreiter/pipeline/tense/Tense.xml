@@ -2,7 +2,7 @@
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>Tense</name>
   <description/>
-  <version>1</version>
+  <version>2</version>
   <vendor>Nils Reiter</vendor>
   <types>
   	<typeDescription>
@@ -55,6 +55,21 @@
       <name>de.nilsreiter.pipeline.tense.type.Future</name>
       <description/>
       <supertypeName>de.nilsreiter.pipeline.tense.type.Tense</supertypeName>
+    </typeDescription>
+  <typeDescription>
+      <name>de.nilsreiter.pipeline.tense.type.Perfective</name>
+      <description/>
+      <supertypeName>de.nilsreiter.pipeline.tense.type.Aspect</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.nilsreiter.pipeline.tense.type.Progressive</name>
+      <description/>
+      <supertypeName>de.nilsreiter.pipeline.tense.type.Aspect</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.nilsreiter.pipeline.tense.type.PerfectiveProgressive</name>
+      <description/>
+      <supertypeName>de.nilsreiter.pipeline.tense.type.Aspect</supertypeName>
     </typeDescription>
   </types>
 </typeSystemDescription>

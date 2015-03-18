@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Wed Mar 18 17:54:17 CET 2015 */
+/* First created by JCasGen Wed Mar 18 18:01:16 CET 2015 */
 package de.nilsreiter.pipeline.tense.type;
 
 import org.apache.uima.jcas.JCas;
@@ -13,7 +13,7 @@ import org.apache.uima.cas.Type;
 /** 
  * Updated by JCasGen Wed Mar 18 18:16:14 CET 2015
  * @generated */
-public class Present_Type extends Tense_Type {
+public class PerfectiveProgressive_Type extends Aspect_Type {
   /** @generated 
    * @return the generator for this type
    */
@@ -23,25 +23,25 @@ public class Present_Type extends Tense_Type {
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (Present_Type.this.useExistingInstance) {
+  			 if (PerfectiveProgressive_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = Present_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = PerfectiveProgressive_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new Present(addr, Present_Type.this);
-  			   Present_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new PerfectiveProgressive(addr, PerfectiveProgressive_Type.this);
+  			   PerfectiveProgressive_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new Present(addr, Present_Type.this);
+        } else return new PerfectiveProgressive(addr, PerfectiveProgressive_Type.this);
   	  }
     };
   /** @generated */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = Present.typeIndexID;
+  public final static int typeIndexID = PerfectiveProgressive.typeIndexID;
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.nilsreiter.pipeline.tense.type.Present");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.nilsreiter.pipeline.tense.type.PerfectiveProgressive");
 
 
 
@@ -50,7 +50,7 @@ public class Present_Type extends Tense_Type {
 	 * @param jcas JCas
 	 * @param casType Type 
 	 */
-  public Present_Type(JCas jcas, Type casType) {
+  public PerfectiveProgressive_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
