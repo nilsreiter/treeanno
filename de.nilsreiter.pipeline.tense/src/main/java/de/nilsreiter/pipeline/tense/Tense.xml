@@ -41,5 +41,20 @@
         </featureDescription>
       </features>
     </typeDescription>
+  <typeDescription>
+      <name>de.nilsreiter.pipeline.tense.type.Past</name>
+      <description/>
+      <supertypeName>de.nilsreiter.pipeline.tense.type.Tense</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.nilsreiter.pipeline.tense.type.Present</name>
+      <description/>
+      <supertypeName>de.nilsreiter.pipeline.tense.type.Tense</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>de.nilsreiter.pipeline.tense.type.Future</name>
+      <description/>
+      <supertypeName>de.nilsreiter.pipeline.tense.type.Tense</supertypeName>
+    </typeDescription>
   </types>
 </typeSystemDescription>

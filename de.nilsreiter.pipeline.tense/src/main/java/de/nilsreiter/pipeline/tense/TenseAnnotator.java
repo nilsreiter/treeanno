@@ -12,6 +12,9 @@ import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
+import de.nilsreiter.pipeline.tense.type.Future;
+import de.nilsreiter.pipeline.tense.type.Past;
+import de.nilsreiter.pipeline.tense.type.Present;
 import de.nilsreiter.pipeline.tense.type.Tense;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
@@ -19,8 +22,8 @@ import de.uniheidelberg.cl.reiter.util.Counter;
 
 @TypeCapability(inputs = {
 		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
-		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
-		outputs = { "de.nilsreiter.pipeline.tense.type.Tense" })
+"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+outputs = { "de.nilsreiter.pipeline.tense.type.Tense" })
 public class TenseAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
@@ -46,12 +49,30 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 			}
 			Pair<Integer, Set<ETense>> res = tc.getMax();
 			if (res.getSecond().size() == 1) {
-				Tense tenseAnnotation =
-						AnnotationFactory.createAnnotation(jcas,
-								sentence.getBegin(), sentence.getEnd(),
-								Tense.class);
-				tenseAnnotation.setTense(java.util.Objects.toString(res
-						.getSecond().iterator().next()));
+
+				Tense tenseAnnotation;
+				ETense t = res.getSecond().iterator().next();
+				switch (t) {
+				case PAST:
+					tenseAnnotation =
+							AnnotationFactory.createAnnotation(jcas,
+									sentence.getBegin(), sentence.getEnd(),
+									Past.class);
+					break;
+				case FUTURE:
+					tenseAnnotation =
+					AnnotationFactory.createAnnotation(jcas,
+							sentence.getBegin(), sentence.getEnd(),
+							Future.class);
+					break;
+				default:
+					tenseAnnotation =
+					AnnotationFactory.createAnnotation(jcas,
+							sentence.getBegin(), sentence.getEnd(),
+							Present.class);
+				}
+
+				tenseAnnotation.setTense(java.util.Objects.toString(t));
 			}
 		}
 	}
