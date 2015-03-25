@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Mar 06 09:39:01 CET 2015
+ * Updated by JCasGen Wed Mar 25 16:55:48 CET 2015
  * @generated */
 public class FeatureVector_Type extends Annotation_Type {
   /** @generated 
@@ -117,6 +117,102 @@ public class FeatureVector_Type extends Annotation_Type {
     ll_cas.ll_setBooleanValue(addr, casFeatCode_NewSegment, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_PreviousAspect;
+  /** @generated */
+  final int     casFeatCode_PreviousAspect;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public String getPreviousAspect(int addr) {
+        if (featOkTst && casFeat_PreviousAspect == null)
+      jcas.throwFeatMissing("PreviousAspect", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_PreviousAspect);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setPreviousAspect(int addr, String v) {
+        if (featOkTst && casFeat_PreviousAspect == null)
+      jcas.throwFeatMissing("PreviousAspect", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    ll_cas.ll_setStringValue(addr, casFeatCode_PreviousAspect, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_CurrentAspect;
+  /** @generated */
+  final int     casFeatCode_CurrentAspect;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public String getCurrentAspect(int addr) {
+        if (featOkTst && casFeat_CurrentAspect == null)
+      jcas.throwFeatMissing("CurrentAspect", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_CurrentAspect);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setCurrentAspect(int addr, String v) {
+        if (featOkTst && casFeat_CurrentAspect == null)
+      jcas.throwFeatMissing("CurrentAspect", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    ll_cas.ll_setStringValue(addr, casFeatCode_CurrentAspect, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_TimeAdverb;
+  /** @generated */
+  final int     casFeatCode_TimeAdverb;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public String getTimeAdverb(int addr) {
+        if (featOkTst && casFeat_TimeAdverb == null)
+      jcas.throwFeatMissing("TimeAdverb", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_TimeAdverb);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setTimeAdverb(int addr, String v) {
+        if (featOkTst && casFeat_TimeAdverb == null)
+      jcas.throwFeatMissing("TimeAdverb", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    ll_cas.ll_setStringValue(addr, casFeatCode_TimeAdverb, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_TimeNoun;
+  /** @generated */
+  final int     casFeatCode_TimeNoun;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public String getTimeNoun(int addr) {
+        if (featOkTst && casFeat_TimeNoun == null)
+      jcas.throwFeatMissing("TimeNoun", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_TimeNoun);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setTimeNoun(int addr, String v) {
+        if (featOkTst && casFeat_TimeNoun == null)
+      jcas.throwFeatMissing("TimeNoun", "de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector");
+    ll_cas.ll_setStringValue(addr, casFeatCode_TimeNoun, v);}
+    
+  
 
 
 
@@ -140,6 +236,22 @@ public class FeatureVector_Type extends Annotation_Type {
  
     casFeat_NewSegment = jcas.getRequiredFeatureDE(casType, "NewSegment", "uima.cas.Boolean", featOkTst);
     casFeatCode_NewSegment  = (null == casFeat_NewSegment) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_NewSegment).getCode();
+
+ 
+    casFeat_PreviousAspect = jcas.getRequiredFeatureDE(casType, "PreviousAspect", "uima.cas.String", featOkTst);
+    casFeatCode_PreviousAspect  = (null == casFeat_PreviousAspect) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_PreviousAspect).getCode();
+
+ 
+    casFeat_CurrentAspect = jcas.getRequiredFeatureDE(casType, "CurrentAspect", "uima.cas.String", featOkTst);
+    casFeatCode_CurrentAspect  = (null == casFeat_CurrentAspect) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_CurrentAspect).getCode();
+
+ 
+    casFeat_TimeAdverb = jcas.getRequiredFeatureDE(casType, "TimeAdverb", "uima.cas.String", featOkTst);
+    casFeatCode_TimeAdverb  = (null == casFeat_TimeAdverb) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_TimeAdverb).getCode();
+
+ 
+    casFeat_TimeNoun = jcas.getRequiredFeatureDE(casType, "TimeNoun", "uima.cas.String", featOkTst);
+    casFeatCode_TimeNoun  = (null == casFeat_TimeNoun) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_TimeNoun).getCode();
 
   }
 }
