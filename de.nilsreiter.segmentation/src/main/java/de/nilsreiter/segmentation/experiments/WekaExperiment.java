@@ -78,9 +78,9 @@ public abstract class WekaExperiment {
 				createEngineDescription(ClearAnnotation.class,
 						ClearAnnotation.PARAM_TYPE,
 						SegmentBoundary.class.getCanonicalName()),
-						createEngineDescription(ClearAnnotation.class,
-								ClearAnnotation.PARAM_TYPE,
-								Segment.class.getCanonicalName()) };
+				createEngineDescription(ClearAnnotation.class,
+						ClearAnnotation.PARAM_TYPE,
+						Segment.class.getCanonicalName()) };
 	}
 
 	protected AnalysisEngineDescription[] getArffConversion()
@@ -102,7 +102,7 @@ public abstract class WekaExperiment {
 	}
 
 	public int run() throws ResourceInitializationException, UIMAException,
-	IOException {
+			IOException {
 		int step = 1;
 		if (doInitialization) runStep(step, getInitialization());
 		step++;
@@ -120,7 +120,7 @@ public abstract class WekaExperiment {
 
 	abstract void runExperiment();
 
-	protected abstract AnalysisEngineDescription getFeatureExtraction()
+	protected abstract AnalysisEngineDescription[] getFeatureExtraction()
 			throws ResourceInitializationException;
 
 	public File runStep(int step, AnalysisEngineDescription... engines)
