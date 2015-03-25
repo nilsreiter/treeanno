@@ -43,7 +43,7 @@ public class TestQSAReader {
 
 	@Test
 	public void testReader() throws ResourceInitializationException,
-	UIMAException, IOException {
+			UIMAException, IOException {
 
 		jcas = SimplePipeline.iteratePipeline(reader, writer).iterator().next();
 
@@ -57,6 +57,7 @@ public class TestQSAReader {
 		QSAPerson p = JCasUtil.selectByIndex(jcas, QSAPerson.class, 0);
 		assertEquals("I", p.getCoveredText());
 		assertEquals("person21", p.getEntityId());
+		assertEquals("en", jcas.getDocumentLanguage());
 	}
 
 	@Test

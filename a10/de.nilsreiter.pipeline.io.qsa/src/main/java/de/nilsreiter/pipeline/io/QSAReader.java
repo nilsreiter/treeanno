@@ -101,11 +101,13 @@ public class QSAReader extends JCasCollectionReader_ImplBase {
 			this.processNode(builder, node);
 
 		}
-		builder.close();
 		DocumentMetaData meta =
 				AnnotationFactory.createAnnotation(jCas, 0,
 						builder.getPosition(), DocumentMetaData.class);
 		meta.setDocumentId(file.getName());
+		builder.close();
+		jCas.setDocumentLanguage("en");
+
 	}
 
 	protected void processNode(JCasBuilder b, Node node) {
