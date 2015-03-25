@@ -15,7 +15,7 @@ import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.kohsuke.args4j.Option;
 
-import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
+import de.nilsreiter.pipeline.io.TextReader;
 import de.uniheidelberg.cl.a10.MainWithIODir;
 
 public class Txt2Xmi extends MainWithIODir {
