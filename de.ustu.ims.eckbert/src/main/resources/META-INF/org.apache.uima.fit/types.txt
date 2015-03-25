@@ -1,0 +1,1 @@
+classpath*:de/nilsreiter/segmentation/main/eckbert/typesystem.xml
