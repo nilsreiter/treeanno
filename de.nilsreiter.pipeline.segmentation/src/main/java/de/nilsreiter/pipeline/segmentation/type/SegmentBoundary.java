@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Mar 05 09:33:17 CET 2015
+ * Updated by JCasGen Tue Apr 07 11:06:50 CEST 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/Segmentation.xml
  * @generated */
 public class SegmentBoundary extends Annotation {
@@ -94,6 +94,28 @@ public class SegmentBoundary extends Annotation {
     if (SegmentBoundary_Type.featOkTst && ((SegmentBoundary_Type)jcasType).casFeat_Confidence == null)
       jcasType.jcas.throwFeatMissing("Confidence", "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary");
     jcasType.ll_cas.ll_setDoubleValue(addr, ((SegmentBoundary_Type)jcasType).casFeatCode_Confidence, v);}    
+   
+    
+  //*--------------*
+  //* Feature: Level
+
+  /** getter for Level - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public int getLevel() {
+    if (SegmentBoundary_Type.featOkTst && ((SegmentBoundary_Type)jcasType).casFeat_Level == null)
+      jcasType.jcas.throwFeatMissing("Level", "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary");
+    return jcasType.ll_cas.ll_getIntValue(addr, ((SegmentBoundary_Type)jcasType).casFeatCode_Level);}
+    
+  /** setter for Level - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setLevel(int v) {
+    if (SegmentBoundary_Type.featOkTst && ((SegmentBoundary_Type)jcasType).casFeat_Level == null)
+      jcasType.jcas.throwFeatMissing("Level", "de.nilsreiter.pipeline.segmentation.type.SegmentBoundary");
+    jcasType.ll_cas.ll_setIntValue(addr, ((SegmentBoundary_Type)jcasType).casFeatCode_Level, v);}    
   }
 
     
