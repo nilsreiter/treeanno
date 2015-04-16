@@ -9,9 +9,3 @@ div#artifact {
 	border:thin solid black;
 	padding:5px;
 }
-div.clear {
-	clear:both;
-}
-span.annotation {
-	background-color:yellow;
-}
