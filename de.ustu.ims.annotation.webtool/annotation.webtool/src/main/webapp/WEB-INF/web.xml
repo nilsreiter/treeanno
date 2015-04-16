@@ -1,0 +1,62 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>de.ustu.creta.annotation.webtool</display-name>
+  
+  <servlet>
+  	<servlet-name>AnnotatorJSRoot</servlet-name>
+  	<display-name>AnnotatorJSRoot</display-name>
+  	<description></description>
+  	<servlet-class>de.ustu.creta.annotation.webtool.AnnotatorJSRoot</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AnnotatorJSIndex</servlet-name>
+  	<display-name>AnnotatorJSIndex</display-name>
+  	<description></description>
+  	<servlet-class>de.ustu.creta.annotation.webtool.AnnotatorJSIndex</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AnnotatorJSRead</servlet-name>
+  	<display-name>AnnotatorJSRead</display-name>
+  	<description></description>
+  	<servlet-class>de.ustu.creta.annotation.webtool.AnnotatorJSRead</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>TextLoader</servlet-name>
+  	<display-name>TextLoader</display-name>
+  	<description></description>
+  	<servlet-class>de.ustu.creta.annotation.webtool.TextLoader</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>ListAnnotatedStrings</servlet-name>
+  	<display-name>ListAnnotatedStrings</display-name>
+  	<description></description>
+  	<servlet-class>de.ustu.creta.annotation.webtool.ListAnnotatedStrings</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>AnnotatorJSRoot</servlet-name>
+  	<url-pattern>/annotatorjs</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AnnotatorJSIndex</servlet-name>
+  	<url-pattern>/annotatorjs/annotations</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AnnotatorJSRead</servlet-name>
+  	<url-pattern>/annotatorjs/annotations/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>TextLoader</servlet-name>
+  	<url-pattern>/text/load</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ListAnnotatedStrings</servlet-name>
+  	<url-pattern>/dev/list</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>/index.html</welcome-file>
+  </welcome-file-list>
+</web-app>
