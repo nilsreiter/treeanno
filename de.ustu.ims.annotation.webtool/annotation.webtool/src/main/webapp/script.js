@@ -24,6 +24,7 @@ function login() {
 	var username = $("#form_username").val();
 	jQuery.getJSON("annotatorjs/document/"+docid, function(data) {
 		$("#artifact").append(data['text']);
+		document.title = data['title'];
 		var ann = $('#artifact').annotator();
 		ann.annotator('addPlugin', 'Unsupported');
 		ann.annotator('addPlugin', 'Store', {
