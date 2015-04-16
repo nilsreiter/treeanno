@@ -57,4 +57,5 @@ public class AnnotatorJSIndex extends HttpServlet {
 		response.getWriter().flush();
 		response.getWriter().close();
 	}
+
 }

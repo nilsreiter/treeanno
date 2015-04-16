@@ -22,6 +22,11 @@
   	<display-name>AnnotatorJSRead</display-name>
   	<description></description>
   	<servlet-class>de.ustu.creta.annotation.webtool.AnnotatorJSRead</servlet-class>
+  	<init-param>
+		<param-name>readonly</param-name>
+		<param-value>false</param-value>
+	</init-param>
+	<load-on-startup>1</load-on-startup>
   </servlet>
   <servlet>
   	<servlet-name>TextLoader</servlet-name>
