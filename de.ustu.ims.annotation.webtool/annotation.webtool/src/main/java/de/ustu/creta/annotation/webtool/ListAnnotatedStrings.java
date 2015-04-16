@@ -33,11 +33,7 @@ public class ListAnnotatedStrings extends HttpServlet {
 			obj.put(TempStatic.text.substring(start, end));
 		}
 
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/json");
-		response.getWriter().print(obj.toString());
-		response.getWriter().flush();
-		response.getWriter().close();
+		Util.returnJSON(response, obj);
 	}
 
 }

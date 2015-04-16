@@ -33,10 +33,8 @@ public class AnnotatorJSRoot extends HttpServlet {
 		JSONObject obj = new JSONObject();
 		obj.put("name", "Annotator Store API");
 		obj.put("version", "2.0.0");
-		response.setContentType("text/json");
-		response.getWriter().print(obj.toString());
-		response.getWriter().flush();
-		response.getWriter().close();
+
+		Util.returnJSON(response, obj);
 	}
 
 }

@@ -36,11 +36,7 @@ public class AnnotatorJSIndex extends HttpServlet {
 		for (JSONObject obj2 : TempStatic.annotations.values()) {
 			obj.put(obj2);
 		}
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/json");
-		response.getWriter().print(obj.toString());
-		response.getWriter().flush();
-		response.getWriter().close();
+		Util.returnJSON(response, obj);
 	}
 
 	/**

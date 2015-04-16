@@ -45,11 +45,7 @@ public class TextLoader extends HttpServlet {
 
 		object.put("text", TempStatic.text);
 
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/json");
-		response.getWriter().print(object.toString());
-		response.getWriter().flush();
-		response.getWriter().close();
+		Util.returnJSON(response, object);
 	}
 
 }
