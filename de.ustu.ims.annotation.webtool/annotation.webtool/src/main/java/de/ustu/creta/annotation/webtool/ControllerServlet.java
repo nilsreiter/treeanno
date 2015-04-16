@@ -11,10 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.jcas.JCas;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
 /**
  * Servlet implementation class ControllerServlet
@@ -84,12 +87,16 @@ public class ControllerServlet extends HttpServlet {
 					new FileInputStream(new File(
 							"/Users/reiterns/Desktop/Der Blonde Eckbert.txt")),
 					"UTF-8").trim());
+			DocumentMetaData dmd =
+					AnnotationFactory
+							.createAnnotation(jcas, 0, jcas.getDocumentText()
+									.length(), DocumentMetaData.class);
+			dmd.setDocumentTitle("Der Blonde Eckbert");
 			TempStatic.documents.put(docId, jcas);
 			TempStatic.annotations
-					.put(docId, new HashMap<String, JSONObject>());
-			JSONObject object = new JSONObject();
-			object.put("text", jcas.getDocumentText());
-			Util.returnJSON(response, object);
+			.put(docId, new HashMap<String, JSONObject>());
+
+			Util.returnJSON(response, new JCasConverter().getJSONObject(jcas));
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			e.printStackTrace(response.getWriter());
