@@ -19,13 +19,15 @@ function init(t) {
 }
 
 function login() {
+	var docid = "doc01";
 	$( this ).dialog( "close" );
 	var username = $("#form_username").val();
-	jQuery.getJSON("text/load", function(data) {
+	jQuery.getJSON("annotatorjs/document/"+docid, function(data) {
 		$("#artifact").append(data['text']);
 		var ann = $('#artifact').annotator();
+		ann.annotator('addPlugin', 'Unsupported');
 		ann.annotator('addPlugin', 'Store', {
-			prefix: 'annotatorjs'
+			prefix: 'annotatorjs/document/'+docid
 		});
 		ann.annotator('addPlugin', 'Permissions', {
 		  user: username,
