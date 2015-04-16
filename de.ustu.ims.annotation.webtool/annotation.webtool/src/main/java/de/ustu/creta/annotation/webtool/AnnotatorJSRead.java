@@ -13,6 +13,7 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class AnnotatorJSRead
  */
+@Deprecated
 public class AnnotatorJSRead extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +32,7 @@ public class AnnotatorJSRead extends HttpServlet {
 		String s = request.getPathInfo().substring(1);
 
 		if (TempStatic.annotations.containsKey(s)) {
-			JSONObject obj = TempStatic.annotations.get(s);
+			JSONObject obj = TempStatic.annotations.get(null).get(s);
 			Util.returnJSON(response, obj);
 		} else {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -49,7 +50,7 @@ public class AnnotatorJSRead extends HttpServlet {
 			JSONObject newAnno = new JSONObject(s);
 			String[] path = request.getPathInfo().split("/");
 			String id = path[path.length - 1];
-			JSONObject oldAnno = TempStatic.annotations.get(id);
+			JSONObject oldAnno = TempStatic.annotations.get(null).get(id);
 			for (Object okey : newAnno.keySet()) {
 				String key = (String) okey;
 				oldAnno.put(key, newAnno.get(key));

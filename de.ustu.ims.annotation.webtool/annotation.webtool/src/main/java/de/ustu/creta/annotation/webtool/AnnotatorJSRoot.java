@@ -12,6 +12,7 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class AnnotatorJSRoot
  */
+@Deprecated
 public class AnnotatorJSRoot extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

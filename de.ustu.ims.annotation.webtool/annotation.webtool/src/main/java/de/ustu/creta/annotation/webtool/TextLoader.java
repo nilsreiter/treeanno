@@ -15,6 +15,7 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class TextLoader
  */
+@Deprecated
 public class TextLoader extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

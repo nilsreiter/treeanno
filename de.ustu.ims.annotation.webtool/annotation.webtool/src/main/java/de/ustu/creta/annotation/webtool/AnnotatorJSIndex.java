@@ -14,6 +14,7 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class AnnotatorJSIndex
  */
+@Deprecated
 public class AnnotatorJSIndex extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +34,7 @@ public class AnnotatorJSIndex extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		JSONArray obj = new JSONArray();
-		for (JSONObject obj2 : TempStatic.annotations.values()) {
+		for (JSONObject obj2 : TempStatic.annotations.get(null).values()) {
 			obj.put(obj2);
 		}
 		Util.returnJSON(response, obj);
@@ -50,10 +51,10 @@ public class AnnotatorJSIndex extends HttpServlet {
 		JSONObject obj = new JSONObject(s);
 		String id = "anno" + TempStatic.index++;
 		obj.put("id", id);
-		TempStatic.annotations.put(id, obj);
+		TempStatic.annotations.get(null).put(id, obj);
 
 		response.setStatus(HttpServletResponse.SC_SEE_OTHER);
-		response.setHeader("Location", "annotations/" + id);
+		response.setHeader("Location", request.getPathInfo() + id);
 		response.getWriter().flush();
 		response.getWriter().close();
 	}
