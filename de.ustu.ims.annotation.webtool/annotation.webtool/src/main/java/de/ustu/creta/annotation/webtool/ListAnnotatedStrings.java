@@ -13,6 +13,7 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class ListAnnotatedStrings
  */
+@Deprecated
 public class ListAnnotatedStrings extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -25,7 +26,7 @@ public class ListAnnotatedStrings extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		JSONArray obj = new JSONArray();
 		int d = -15;
-		for (JSONObject object : TempStatic.annotations.values()) {
+		for (JSONObject object : TempStatic.annotations.get(null).values()) {
 			JSONObject rangeObj =
 					(JSONObject) ((JSONArray) object.get("ranges")).get(0);
 			int start = rangeObj.getInt("startOffset") + d;
