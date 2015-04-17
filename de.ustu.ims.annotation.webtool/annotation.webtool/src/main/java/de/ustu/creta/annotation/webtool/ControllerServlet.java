@@ -3,7 +3,7 @@ package de.ustu.creta.annotation.webtool;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
+import de.ustu.creta.annotation.webtool.beans.TextDocument;
 
 /**
  * Servlet implementation class ControllerServlet
@@ -60,7 +61,7 @@ public class ControllerServlet extends HttpServlet {
 			// return a list of annotations for the document
 			if (area.equalsIgnoreCase("annotations")) {
 				JSONArray obj = new JSONArray();
-				for (JSONObject obj2 : TempStatic.annotations.get(docId)
+				for (JSONObject obj2 : getDocument(path[1]).getAnnotations()
 						.values()) {
 					obj.put(obj2);
 				}
@@ -69,8 +70,8 @@ public class ControllerServlet extends HttpServlet {
 			return;
 		}
 		// return a single annotation (if it exists)
-		if (TempStatic.annotations.get(docId).containsKey(annoId)) {
-			JSONObject obj = TempStatic.annotations.get(docId).get(annoId);
+		if (getDocument(path[1]).getAnnotations().containsKey(annoId)) {
+			JSONObject obj = getDocument(path[1]).getAnnotations().get(annoId);
 			Util.returnJSON(response, obj);
 		} else {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -89,12 +90,19 @@ public class ControllerServlet extends HttpServlet {
 					"UTF-8").trim());
 			DocumentMetaData dmd =
 					AnnotationFactory
-							.createAnnotation(jcas, 0, jcas.getDocumentText()
-									.length(), DocumentMetaData.class);
+					.createAnnotation(jcas, 0, jcas.getDocumentText()
+							.length(), DocumentMetaData.class);
 			dmd.setDocumentTitle("Der Blonde Eckbert");
-			TempStatic.documents.put(docId, jcas);
-			TempStatic.annotations
-			.put(docId, new HashMap<String, JSONObject>());
+
+			TextDocument td = new TextDocument();
+			td.setJcas(jcas);
+			td.setId(docId);
+
+			@SuppressWarnings("unchecked")
+			Map<String, TextDocument> documentMap =
+			(Map<String, TextDocument>) this.getServletContext()
+			.getAttribute("documents");
+			documentMap.put(docId, td);
 
 			Util.returnJSON(response, new JCasConverter().getJSONObject(jcas));
 		} catch (Exception e) {
@@ -118,7 +126,7 @@ public class ControllerServlet extends HttpServlet {
 		JSONObject obj = new JSONObject(s);
 		String id = "anno" + TempStatic.index++;
 		obj.put("id", id);
-		TempStatic.annotations.get(path[1]).put(id, obj);
+		getDocument(path[1]).getAnnotations().put(id, obj);
 
 		response.setStatus(HttpServletResponse.SC_SEE_OTHER);
 		response.setHeader("Location", request.getRequestURL().toString() + "/"
@@ -141,7 +149,7 @@ public class ControllerServlet extends HttpServlet {
 		if (request.getContentType().contains("application/json")) {
 			JSONObject newAnno = new JSONObject(s);
 			String id = path[path.length - 1];
-			JSONObject oldAnno = TempStatic.annotations.get(path[1]).get(id);
+			JSONObject oldAnno = getDocument(path[1]).getAnnotations().get(id);
 			for (Object okey : newAnno.keySet()) {
 				String key = (String) okey;
 				oldAnno.put(key, newAnno.get(key));
@@ -164,10 +172,16 @@ public class ControllerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String[] path = request.getPathInfo().split("/");
 		if (path.length > 3) {
-			TempStatic.annotations.get(path[1]).remove(path[3]);
+			getDocument(path[1]).getAnnotations().remove(path[3]);
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			response.setContentLength(0);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected TextDocument getDocument(String docId) {
+		return ((Map<String, TextDocument>) this.getServletContext()
+				.getAttribute("documents")).get(docId);
 	}
 
 }
