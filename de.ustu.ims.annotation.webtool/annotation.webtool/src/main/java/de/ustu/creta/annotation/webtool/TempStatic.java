@@ -13,7 +13,4 @@ public class TempStatic {
 
 	static int index = 0;
 
-	@Deprecated
-	static String text;
-
 }
