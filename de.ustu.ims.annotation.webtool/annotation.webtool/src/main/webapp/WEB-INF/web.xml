@@ -4,6 +4,9 @@
 
 <web-app>
   <display-name>de.ustu.creta.annotation.webtool</display-name>
+  <listener>
+  	<listener-class>de.ustu.creta.annotation.webtool.AppContextListener</listener-class>
+  </listener>
   
 
   <servlet>
