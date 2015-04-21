@@ -1,6 +1,7 @@
 package de.nilsreiter.segmentation.evaluation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.factory.JCasFactory;
@@ -30,6 +31,12 @@ public class TestSegmentationSimilarity {
 		bd =
 				MetricFactory.getMetric(SegmentationSimilarity.class,
 						SegmentBoundary.class);
+
+	}
+
+	@Test
+	public void testInit() {
+		assertTrue(bd.init(gold));
 	}
 
 	@Test
