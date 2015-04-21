@@ -18,7 +18,7 @@ public class MetricFactory {
 			return (T) new WindowDifference_impl(annoClass);
 		if (mClass.equals(PRF.class)) return (T) new PRF_impl(annoClass);
 		if (mClass.equals(SegmentationSimilarity.class))
-			return (T) new SegmentationSimilarity_impl();
+			return (T) new SegmentationSimilarity_impl(annoClass);
 		return null;
 
 	}
