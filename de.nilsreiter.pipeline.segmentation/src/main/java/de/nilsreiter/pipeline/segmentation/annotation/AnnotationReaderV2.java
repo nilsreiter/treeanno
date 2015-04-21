@@ -22,7 +22,7 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 	@ConfigurationParameter(name = PARAM_DIRECTORY_NAME)
 	String directoryPathName;
 
-	@ConfigurationParameter(name = PARAM_FILE_SUFFIX)
+	@ConfigurationParameter(name = PARAM_FILE_SUFFIX, mandatory = false)
 	String fileSuffix = ".txt";
 
 	@Override
@@ -42,6 +42,7 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 				throw new AnalysisEngineProcessException(e);
 			}
 		} else {
+			getLogger().info(file.getName() + " can not be read.");
 			throw new AnalysisEngineProcessException();
 		}
 
@@ -54,11 +55,11 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 			char lev;
 			if (ind > 0) {
 				lev = contents.charAt(ind + 2);
-				String pre =
-						contents.substring((ind - l < 0 ? 0 : ind - l), ind)
-								.trim();
+				// String pre =
+				// contents.substring((ind - l < 0 ? 0 : ind - l), ind)
+				// .trim();
 				String post = contents.substring(ind + 4, ind + l).trim();
-				int textPre = text.indexOf(pre);
+				// int textPre = text.indexOf(pre);
 				int textPost = text.indexOf(post);
 				SegmentBoundary sb =
 						AnnotationFactory.createAnnotation(jcas, textPost,
