@@ -11,7 +11,6 @@ import de.ustu.creta.annotation.webtool.beans.TextDocument;
 public class AppContextListener implements ServletContextListener {
 
 	public void contextDestroyed(ServletContextEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
