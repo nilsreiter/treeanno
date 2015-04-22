@@ -2,6 +2,7 @@ package de.nilsreiter.segmentation.evaluation;
 
 import org.apache.uima.jcas.tcas.Annotation;
 
+import de.nilsreiter.segmentation.evaluation.impl.BoundarySimilarity_impl;
 import de.nilsreiter.segmentation.evaluation.impl.BreakDifference_impl;
 import de.nilsreiter.segmentation.evaluation.impl.PRF_impl;
 import de.nilsreiter.segmentation.evaluation.impl.SegmentationSimilarity_impl;
@@ -19,6 +20,8 @@ public class MetricFactory {
 		if (mClass.equals(PRF.class)) return (T) new PRF_impl(annoClass);
 		if (mClass.equals(SegmentationSimilarity.class))
 			return (T) new SegmentationSimilarity_impl(annoClass);
+		if (mClass.equals(BoundarySimilarity.class))
+			return (T) new BoundarySimilarity_impl(annoClass);
 		return null;
 
 	}
