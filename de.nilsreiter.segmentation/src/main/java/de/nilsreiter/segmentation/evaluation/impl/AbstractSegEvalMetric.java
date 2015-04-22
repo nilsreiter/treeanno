@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.python.core.PyInteger;
 import org.python.core.PyObject;
@@ -30,6 +32,33 @@ public abstract class AbstractSegEvalMetric {
 		} finally {
 			IOUtils.closeQuietly(interpreter);
 		}
+	}
+
+	PyTuple getMassTuple(JCas jcas, Class<? extends Annotation> boundaryType,
+			Class<? extends Annotation> potBoundaries) {
+		Collection<? extends Annotation> boundaries =
+				JCasUtil.select(jcas, boundaryType);
+
+		PyInteger[] silverMasses = new PyInteger[boundaries.size() + 1];
+		int i = 0;
+		Annotation prevAnno = null;
+		for (Annotation anno : boundaries) {
+			if (i == 0) {
+				silverMasses[i++] =
+						new PyInteger(JCasUtil.selectPreceding(potBoundaries,
+								anno, Integer.MAX_VALUE).size());
+			} else {
+				silverMasses[i++] =
+						new PyInteger(JCasUtil.selectBetween(potBoundaries,
+								prevAnno, anno).size());
+			}
+			prevAnno = anno;
+		}
+		silverMasses[i] =
+				new PyInteger(JCasUtil.selectFollowing(potBoundaries, prevAnno,
+						Integer.MAX_VALUE).size());
+
+		return new PyTuple(silverMasses);
 	}
 
 	PyTuple getMassTuple(Collection<? extends Annotation> annotations,
