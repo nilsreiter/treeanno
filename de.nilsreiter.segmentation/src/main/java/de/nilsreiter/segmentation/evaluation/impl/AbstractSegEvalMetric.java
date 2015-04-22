@@ -7,6 +7,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.python.core.PyDictionary;
 import org.python.core.PyInteger;
 import org.python.core.PyObject;
 import org.python.core.PyTuple;
@@ -79,6 +80,17 @@ public abstract class AbstractSegEvalMetric {
 		interpreter.set("seg2", seg2);
 
 		interpreter.exec("result = " + function + "(seg1, seg2)");
+		PyObject obj = interpreter.get("result");
+		return obj.asDouble();
+	}
+
+	double getPyFunctionValueFromDictionary(PyTuple seg1, PyTuple seg2,
+			String function) {
+		PyDictionary dict =
+				new PyDictionary(new PyObject[] { new PyInteger(1), seg1,
+						new PyInteger(2), seg2 });
+		interpreter.set("dataset", dict);
+		interpreter.exec("result = " + function + "(dataset)");
 		PyObject obj = interpreter.get("result");
 		return obj.asDouble();
 	}
