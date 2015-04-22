@@ -6,6 +6,7 @@ import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.jcas.JCas;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
@@ -18,6 +19,12 @@ public class TestFleissKappaBoundarySimilarity_Tokens {
 	FleissKappaBoundarySimilarity bd;
 
 	String text = "The dog barks. It is hungry.";
+
+	@BeforeClass
+	public static void setUpClass() {
+		System.setProperty("python.path",
+				"src/main/resources/python/segeval-2.0.11");
+	}
 
 	@Before
 	public void setUp() throws Exception {

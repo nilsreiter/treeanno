@@ -1,7 +1,6 @@
 package de.nilsreiter.segmentation.evaluation.impl;
 
 import java.util.Collection;
-import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.fit.util.JCasUtil;
@@ -20,11 +19,8 @@ public abstract class AbstractSegEvalMetric {
 	protected boolean ensureInterpreter() {
 		try {
 			if (interpreter == null) {
-				Properties props = new Properties();
-				props.setProperty(
-						"python.path",
-						"/Users/reiterns/Documents/Java/de.nilsreiter.segmentation/src/main/resources/python/segeval-2.0.11");
-				PythonInterpreter.initialize(props, props, new String[0]);
+				PythonInterpreter.initialize(System.getProperties(),
+						System.getProperties(), new String[0]);
 				interpreter = new PythonInterpreter();
 				interpreter.exec("import segeval");
 			}
