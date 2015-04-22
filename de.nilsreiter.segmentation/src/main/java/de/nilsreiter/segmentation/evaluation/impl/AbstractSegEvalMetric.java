@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.python.core.PyFloat;
 import org.python.core.PyInteger;
 import org.python.core.PyTuple;
 import org.python.util.PythonInterpreter;
@@ -42,6 +43,13 @@ public abstract class AbstractSegEvalMetric {
 		}
 		silverMasses[i++] = new PyInteger(length - index);
 		return new PyTuple(silverMasses);
+	}
+
+	double getPyFunctionValue(PyTuple seg1, PyTuple seg2, String function) {
+		interpreter.set("seg1", seg1);
+		interpreter.set("seg2", seg2);
+		PyFloat obj = interpreter.eval(function + "(seg1, seg2)").__float__();
+		return obj.asDouble();
 	}
 
 }

@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.python.core.PyFloat;
 import org.python.core.PyTuple;
 
 import de.nilsreiter.segmentation.evaluation.SegmentationSimilarity;
@@ -35,15 +34,11 @@ implements SegmentationSimilarity {
 		PyTuple silverTuple =
 				getMassTuple(JCasUtil.select(silver, annoType), silver
 						.getDocumentText().length());
-		interpreter.set("seg1", goldTuple);
-		interpreter.set("seg2", silverTuple);
-		interpreter.exec("print seg1");
-		PyFloat obj =
-				interpreter.eval("segeval.segmentation_similarity(seg1, seg2)")
-				.__float__();
 
 		Map<String, Double> r = new HashMap<String, Double>();
-		r.put(getClass().getSimpleName(), obj.asDouble());
+		r.put(getClass().getSimpleName(),
+				getPyFunctionValue(goldTuple, silverTuple,
+						"segeval.segmentation_similarity"));
 		return r;
 	}
 
