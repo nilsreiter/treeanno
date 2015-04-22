@@ -10,6 +10,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.python.core.PyDictionary;
 import org.python.core.PyInteger;
 import org.python.core.PyObject;
+import org.python.core.PyString;
 import org.python.core.PyTuple;
 import org.python.util.PythonInterpreter;
 
@@ -40,26 +41,31 @@ public abstract class AbstractSegEvalMetric {
 		Collection<? extends Annotation> boundaries =
 				JCasUtil.select(jcas, boundaryType);
 
-		PyInteger[] silverMasses = new PyInteger[boundaries.size() + 1];
+		PyInteger[] masses = new PyInteger[boundaries.size() + 1];
 		int i = 0;
 		Annotation prevAnno = null;
 		for (Annotation anno : boundaries) {
 			if (i == 0) {
-				silverMasses[i++] =
+				masses[i++] =
 						new PyInteger(JCasUtil.selectPreceding(potBoundaries,
 								anno, Integer.MAX_VALUE).size());
 			} else {
-				silverMasses[i++] =
+				masses[i++] =
 						new PyInteger(JCasUtil.selectBetween(potBoundaries,
 								prevAnno, anno).size() + 1);
 			}
 			prevAnno = anno;
 		}
-		silverMasses[i] =
-				new PyInteger(JCasUtil.selectFollowing(potBoundaries, prevAnno,
-						Integer.MAX_VALUE).size() + 1);
 
-		return new PyTuple(silverMasses);
+		if (prevAnno == null) {
+			masses[i] =
+					new PyInteger(JCasUtil.select(jcas, potBoundaries).size());
+		} else
+			masses[i] =
+			new PyInteger(JCasUtil.selectFollowing(potBoundaries,
+					prevAnno, Integer.MAX_VALUE).size() + 1);
+
+		return new PyTuple(masses);
 	}
 
 	PyTuple getMassTuple(Collection<? extends Annotation> annotations,
@@ -87,8 +93,10 @@ public abstract class AbstractSegEvalMetric {
 	double getPyFunctionValueFromDictionary(PyTuple seg1, PyTuple seg2,
 			String function) {
 		PyDictionary dict =
-				new PyDictionary(new PyObject[] { new PyInteger(1), seg1,
-						new PyInteger(2), seg2 });
+				new PyDictionary(new PyObject[] {
+						new PyString("data"),
+						new PyDictionary(new PyObject[] { new PyInteger(1),
+								seg1, new PyInteger(2), seg2 }) });
 		interpreter.set("dataset", dict);
 		interpreter.exec("result = " + function + "(dataset)");
 		PyObject obj = interpreter.get("result");
