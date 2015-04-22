@@ -50,13 +50,13 @@ public abstract class AbstractSegEvalMetric {
 			} else {
 				silverMasses[i++] =
 						new PyInteger(JCasUtil.selectBetween(potBoundaries,
-								prevAnno, anno).size());
+								prevAnno, anno).size() + 1);
 			}
 			prevAnno = anno;
 		}
 		silverMasses[i] =
 				new PyInteger(JCasUtil.selectFollowing(potBoundaries, prevAnno,
-						Integer.MAX_VALUE).size());
+						Integer.MAX_VALUE).size() + 1);
 
 		return new PyTuple(silverMasses);
 	}
