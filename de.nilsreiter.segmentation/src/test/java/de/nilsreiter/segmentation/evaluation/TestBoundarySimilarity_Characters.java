@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 
-public class TestBoundarySimilarity {
+public class TestBoundarySimilarity_Characters {
 
 	JCas gold, silv;
 
