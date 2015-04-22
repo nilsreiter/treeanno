@@ -18,8 +18,9 @@ import de.nilsreiter.segmentation.evaluation.MetricFactory;
 
 public class CompareSegmentation {
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws ClassNotFoundException,
-			UIMAException, IOException {
+	UIMAException, IOException {
 		Options options = CliFactory.parseArguments(Options.class, args);
 
 		Class<? extends Metric> metricClass;
@@ -37,9 +38,9 @@ public class CompareSegmentation {
 
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
-						.createTypeSystemDescriptionFromPath(new File(options
-								.getInputFile1().getParentFile(),
-								"typesystem.xml").toURI().toString());
+				.createTypeSystemDescriptionFromPath(new File(options
+						.getInputFile1().getParentFile(),
+						"typesystem.xml").toURI().toString());
 
 		JCas jcas1 =
 				JCasFactory.createJCas(options.getInputFile1()
