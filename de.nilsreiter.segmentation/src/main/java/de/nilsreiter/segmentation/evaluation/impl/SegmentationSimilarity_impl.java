@@ -15,7 +15,8 @@ import org.python.util.PythonInterpreter;
 
 import de.nilsreiter.segmentation.evaluation.SegmentationSimilarity;
 
-public class SegmentationSimilarity_impl implements SegmentationSimilarity {
+public class SegmentationSimilarity_impl extends AbstractSegEvalMetric
+		implements SegmentationSimilarity {
 	Class<? extends Annotation> annoType;
 	PythonInterpreter interpreter = null;
 
@@ -87,7 +88,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		interpreter.exec("print seg1");
 		PyFloat obj =
 				interpreter.eval("segeval.segmentation_similarity(seg1, seg2)")
-				.__float__();
+						.__float__();
 
 		Map<String, Double> r = new HashMap<String, Double>();
 		r.put(getClass().getSimpleName(), obj.asDouble());
