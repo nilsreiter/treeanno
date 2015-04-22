@@ -56,7 +56,7 @@ public class CompareSegmentation {
 	}
 
 	public interface Options {
-		@Option(defaultValue = "WindowDifference")
+		@Option(defaultValue = "FleissKappaBoundarySimilarity")
 		String getMetric();
 
 		@Option
