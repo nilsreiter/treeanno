@@ -21,8 +21,6 @@ public abstract class AbstractSegEvalMetric {
 						"/Users/reiterns/Documents/Java/de.nilsreiter.segmentation/src/main/resources/python/segeval-2.0.11");
 				PythonInterpreter.initialize(props, props, new String[0]);
 				interpreter = new PythonInterpreter();
-				// interpreter.exec("import sys");
-				// interpreter.exec("print sys.path");
 				interpreter.exec("import segeval");
 			}
 			return true;
