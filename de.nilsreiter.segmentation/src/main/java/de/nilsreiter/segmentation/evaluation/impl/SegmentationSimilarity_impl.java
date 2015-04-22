@@ -23,6 +23,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 			Class<? extends Annotation> annotationType) {
 
 		annoType = annotationType;
+		ensureInterpreter();
 	}
 
 	public boolean init(JCas gold) {
