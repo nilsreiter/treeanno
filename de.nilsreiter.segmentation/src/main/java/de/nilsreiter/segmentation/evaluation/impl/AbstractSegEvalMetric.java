@@ -1,8 +1,12 @@
 package de.nilsreiter.segmentation.evaluation.impl;
 
+import java.util.Collection;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.uima.jcas.tcas.Annotation;
+import org.python.core.PyInteger;
+import org.python.core.PyTuple;
 import org.python.util.PythonInterpreter;
 
 public abstract class AbstractSegEvalMetric {
@@ -27,6 +31,19 @@ public abstract class AbstractSegEvalMetric {
 		} finally {
 			IOUtils.closeQuietly(interpreter);
 		}
+	}
+
+	PyTuple getMassTuple(Collection<? extends Annotation> annotations,
+			int length) {
+		PyInteger[] silverMasses = new PyInteger[annotations.size() + 1];
+		int index = 0;
+		int i = 0;
+		for (Annotation anno : annotations) {
+			silverMasses[i++] = new PyInteger(anno.getBegin() - index);
+			index = anno.getBegin();
+		}
+		silverMasses[i++] = new PyInteger(length - index);
+		return new PyTuple(silverMasses);
 	}
 
 }
