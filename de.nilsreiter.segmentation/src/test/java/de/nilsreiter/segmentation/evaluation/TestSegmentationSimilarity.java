@@ -41,7 +41,7 @@ public class TestSegmentationSimilarity {
 
 	@Test
 	public void testNoSilverBreak() {
-		assertEquals(28.0,
+		assertEquals(0.92592,
 				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 }
