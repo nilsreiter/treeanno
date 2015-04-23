@@ -7,12 +7,12 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.segmentation.evaluation.Metric;
 import de.nilsreiter.segmentation.evaluation.MetricFactory;
 
@@ -33,8 +33,11 @@ public class CompareSegmentation {
 							+ options.getMetric());
 		}
 		metricClass = (Class<? extends Metric>) clazz;
-		Metric metric =
-				MetricFactory.getMetric(metricClass, SegmentBoundary.class);
+		Class<? extends Annotation> boundaryType =
+				(Class<? extends Annotation>) Class
+				.forName("de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel"
+								+ options.getBoundaryLevel());
+		Metric metric = MetricFactory.getMetric(metricClass, boundaryType);
 
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
@@ -51,6 +54,7 @@ public class CompareSegmentation {
 						.getAbsolutePath(), tsd);
 
 		metric.init(jcas1);
+
 		System.out.println(metric.score(jcas1, jcas2).get(
 				metric.getClass().getSimpleName()));
 	}
@@ -64,5 +68,8 @@ public class CompareSegmentation {
 
 		@Option
 		File getInputFile2();
+
+		@Option
+		int getBoundaryLevel();
 	}
 }
