@@ -15,6 +15,8 @@ import com.lexicalscope.jewel.cli.Option;
 
 import de.nilsreiter.segmentation.evaluation.Metric;
 import de.nilsreiter.segmentation.evaluation.MetricFactory;
+import de.nilsreiter.segmentation.evaluation.PotentialBoundarySettable;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 
 public class CompareSegmentation {
 
@@ -36,8 +38,16 @@ public class CompareSegmentation {
 		Class<? extends Annotation> boundaryType =
 				(Class<? extends Annotation>) Class
 				.forName("de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel"
-								+ options.getBoundaryLevel());
+						+ options.getBoundaryLevel());
 		Metric metric = MetricFactory.getMetric(metricClass, boundaryType);
+
+		if (options.getPotentialBoundaries()) {
+			if (PotentialBoundarySettable.class.isAssignableFrom(metric
+					.getClass())) {
+				((PotentialBoundarySettable) metric)
+						.setPotentialBoundaryType(Token.class);
+			}
+		}
 
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
@@ -69,7 +79,10 @@ public class CompareSegmentation {
 		@Option
 		File getInputFile2();
 
-		@Option
+		@Option(shortName = "bl")
 		int getBoundaryLevel();
+
+		@Option(shortName = "pb")
+		boolean getPotentialBoundaries();
 	}
 }
