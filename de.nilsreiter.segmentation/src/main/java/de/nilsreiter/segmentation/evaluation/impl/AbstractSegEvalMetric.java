@@ -12,6 +12,8 @@ import org.python.core.PyString;
 import org.python.core.PyTuple;
 import org.python.util.PythonInterpreter;
 
+import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
+
 public abstract class AbstractSegEvalMetric {
 	PythonInterpreter interpreter = null;
 
@@ -30,6 +32,7 @@ public abstract class AbstractSegEvalMetric {
 		} finally {}
 	}
 
+	@Deprecated
 	PyTuple getMassTuple(JCas jcas, Class<? extends Annotation> boundaryType,
 			Class<? extends Annotation> potBoundaries) {
 		Collection<? extends Annotation> boundaries =
@@ -37,27 +40,68 @@ public abstract class AbstractSegEvalMetric {
 
 		PyInteger[] masses = new PyInteger[boundaries.size() + 1];
 		int i = 0;
+		int begin = 0, end = jcas.getDocumentText().length();
 		Annotation prevAnno = null;
+		Collection<? extends Annotation> coll;
 		for (Annotation anno : boundaries) {
-			if (i == 0) {
-				masses[i++] =
-						new PyInteger(JCasUtil.selectPreceding(potBoundaries,
-								anno, Integer.MAX_VALUE).size());
+			if (prevAnno == null) {
+				coll =
+						JCasUtil.selectPreceding(potBoundaries, anno,
+								Integer.MAX_VALUE);
 			} else {
-				masses[i++] =
-						new PyInteger(JCasUtil.selectBetween(potBoundaries,
-								prevAnno, anno).size() + 1);
+				coll = JCasUtil.selectBetween(potBoundaries, prevAnno, anno);
 			}
+			System.err.println(i + ": " + coll.toString());
+			masses[i++] = new PyInteger(coll.size());
 			prevAnno = anno;
 		}
 
 		if (prevAnno == null) {
-			masses[i] =
-					new PyInteger(JCasUtil.select(jcas, potBoundaries).size());
+			coll = JCasUtil.select(jcas, potBoundaries);
 		} else
-			masses[i] =
-					new PyInteger(JCasUtil.selectFollowing(potBoundaries,
-							prevAnno, Integer.MAX_VALUE).size() + 1);
+			coll =
+					JCasUtil.selectFollowing(potBoundaries, prevAnno,
+							Integer.MAX_VALUE);
+		System.err.println(i + ": " + coll.toString());
+		masses[i] = new PyInteger(coll.size());
+
+		return new PyTuple(masses);
+	}
+
+	public PyTuple getMassTuple(JCas jcas,
+			Class<? extends Annotation> boundaryType) {
+		Collection<? extends Annotation> boundaries =
+				JCasUtil.select(jcas, boundaryType);
+
+		PyInteger[] masses = new PyInteger[boundaries.size() + 1];
+		int i = 0, end = jcas.getDocumentText().length();
+		Annotation prevAnno = null;
+		Collection<? extends Annotation> coll;
+		for (Annotation anno : boundaries) {
+			if (prevAnno == null) {
+				coll =
+						JCasUtil.selectPreceding(SegmentationUnit.class, anno,
+								Integer.MAX_VALUE);
+			} else {
+				coll =
+						JCasUtil.selectBetween(SegmentationUnit.class,
+								prevAnno, anno);
+			}
+			System.err.println(i + ": " + coll.toString());
+			masses[i++] = new PyInteger(coll.size());
+			prevAnno = anno;
+		}
+		coll = null;
+		if (prevAnno == null) {
+			coll = JCasUtil.select(jcas, SegmentationUnit.class);
+		} else
+			coll =
+					JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
+							new Annotation(jcas, end, end));
+		if (coll != null) {
+			System.err.println(i + ": " + coll.toString());
+			masses[i] = new PyInteger(coll.size());
+		}
 
 		return new PyTuple(masses);
 	}
