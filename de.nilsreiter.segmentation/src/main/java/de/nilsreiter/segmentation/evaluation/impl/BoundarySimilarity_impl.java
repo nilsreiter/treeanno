@@ -8,12 +8,12 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.python.core.PyTuple;
 
+import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.nilsreiter.segmentation.evaluation.BoundarySimilarity;
 
 public class BoundarySimilarity_impl extends AbstractSegEvalMetric implements
-		BoundarySimilarity {
+BoundarySimilarity {
 	Class<? extends Annotation> annoType;
-	Class<? extends Annotation> potentialBoundaryType = null;
 
 	public BoundarySimilarity_impl(Class<? extends Annotation> annotationType) {
 		annoType = annotationType;
@@ -27,32 +27,26 @@ public class BoundarySimilarity_impl extends AbstractSegEvalMetric implements
 	public Map<String, Double> score(JCas gold, JCas silver) {
 		ensureInterpreter();
 		PyTuple goldTuple, silverTuple;
-		if (potentialBoundaryType == null) {
+		if (JCasUtil.exists(gold, SegmentationUnit.class)
+				&& JCasUtil.exists(silver, SegmentationUnit.class)) {
+			goldTuple = getMassTuple(gold, annoType);
+			silverTuple = getMassTuple(silver, annoType);
+		} else {
 			goldTuple =
 					getMassTuple(JCasUtil.select(gold, annoType), gold
 							.getDocumentText().length());
 			silverTuple =
 					getMassTuple(JCasUtil.select(silver, annoType), silver
 							.getDocumentText().length());
-		} else {
-			goldTuple = getMassTuple(gold, annoType, potentialBoundaryType);
-			silverTuple = getMassTuple(silver, annoType, potentialBoundaryType);
 		}
+		System.err.println("goldTuple = " + goldTuple);
+		System.err.println("silverTuple = " + silverTuple);
 
 		Map<String, Double> r = new HashMap<String, Double>();
 		r.put(getClass().getSimpleName(),
 				getPyFunctionValue(goldTuple, silverTuple,
 						"segeval.boundary_similarity"));
 		return r;
-	}
-
-	public Class<? extends Annotation> getPotentialBoundaryType() {
-		return potentialBoundaryType;
-	}
-
-	public void setPotentialBoundaryType(
-			Class<? extends Annotation> potentialBoundaryType) {
-		this.potentialBoundaryType = potentialBoundaryType;
 	}
 
 }
