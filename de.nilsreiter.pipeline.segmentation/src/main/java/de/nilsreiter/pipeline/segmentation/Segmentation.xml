@@ -108,5 +108,20 @@
         </featureDescription>
       </features>
     </typeDescription>
+	  <typeDescription>
+      <name>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1</name>
+      <description/>
+      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundary</supertypeName>
+    </typeDescription>
+	  <typeDescription>
+      <name>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2</name>
+      <description/>
+      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1</supertypeName>
+    </typeDescription>
+	  <typeDescription>
+      <name>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3</name>
+      <description/>
+      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2</supertypeName>
+    </typeDescription>
   </types>
 </typeSystemDescription>
