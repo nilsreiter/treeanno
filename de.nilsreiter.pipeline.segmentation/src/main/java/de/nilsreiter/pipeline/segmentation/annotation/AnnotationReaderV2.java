@@ -12,7 +12,6 @@ import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3;
@@ -59,13 +58,8 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 			char lev;
 			if (ind > 0) {
 				lev = contents.charAt(ind + 2);
-				// String pre =
-				// contents.substring((ind - l < 0 ? 0 : ind - l), ind)
-				// .trim();
 				String post = contents.substring(ind + 4, ind + l).trim();
-				// int textPre = text.indexOf(pre);
 				int textPost = text.indexOf(post);
-				SegmentBoundary sb;
 				int level = Character.getNumericValue(lev);
 				switch (lev) {
 				case '1':
