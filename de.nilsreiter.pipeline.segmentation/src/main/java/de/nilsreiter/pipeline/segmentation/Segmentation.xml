@@ -111,17 +111,17 @@
 	  <typeDescription>
       <name>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1</name>
       <description/>
-      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundary</supertypeName>
+      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2</supertypeName>
     </typeDescription>
 	  <typeDescription>
       <name>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2</name>
       <description/>
-      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1</supertypeName>
+      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3</supertypeName>
     </typeDescription>
 	  <typeDescription>
       <name>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3</name>
       <description/>
-      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2</supertypeName>
+      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundary</supertypeName>
     </typeDescription>
   </types>
 </typeSystemDescription>

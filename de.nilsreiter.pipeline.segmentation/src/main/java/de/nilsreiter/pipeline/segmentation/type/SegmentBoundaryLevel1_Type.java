@@ -11,9 +11,9 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
 /** 
- * Updated by JCasGen Thu Apr 23 09:53:45 CEST 2015
+ * Updated by JCasGen Thu Apr 23 18:14:56 CEST 2015
  * @generated */
-public class SegmentBoundaryLevel1_Type extends SegmentBoundary_Type {
+public class SegmentBoundaryLevel1_Type extends SegmentBoundaryLevel2_Type {
   /** @generated 
    * @return the generator for this type
    */

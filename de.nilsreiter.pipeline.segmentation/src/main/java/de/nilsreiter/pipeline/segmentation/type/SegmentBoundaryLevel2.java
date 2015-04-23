@@ -10,10 +10,10 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Thu Apr 23 09:53:45 CEST 2015
+ * Updated by JCasGen Thu Apr 23 18:14:56 CEST 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/Segmentation.xml
  * @generated */
-public class SegmentBoundaryLevel2 extends SegmentBoundaryLevel1 {
+public class SegmentBoundaryLevel2 extends SegmentBoundaryLevel3 {
   /** @generated
    * @ordered 
    */
