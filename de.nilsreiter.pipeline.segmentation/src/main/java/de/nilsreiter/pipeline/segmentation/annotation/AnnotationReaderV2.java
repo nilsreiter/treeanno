@@ -42,8 +42,9 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 				throw new AnalysisEngineProcessException(e);
 			}
 		} else {
-			getLogger().info(file.getName() + " can not be read.");
-			throw new AnalysisEngineProcessException();
+			getLogger().info(file.getName() + " can not be read. Skipping.");
+			return;
+			// throw new AnalysisEngineProcessException();
 		}
 
 		int pos = 0;
