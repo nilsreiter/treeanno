@@ -13,6 +13,9 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
+import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1;
+import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2;
+import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
 public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
@@ -62,11 +65,26 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 				String post = contents.substring(ind + 4, ind + l).trim();
 				// int textPre = text.indexOf(pre);
 				int textPost = text.indexOf(post);
-				SegmentBoundary sb =
-						AnnotationFactory.createAnnotation(jcas, textPost,
-								textPost + 1, SegmentBoundary.class);
-				if (Character.isDigit(lev))
-					sb.setLevel(Character.getNumericValue(lev));
+				SegmentBoundary sb;
+				int level = Character.getNumericValue(lev);
+				switch (lev) {
+				case '1':
+					AnnotationFactory.createAnnotation(jcas, textPost,
+							textPost + 1, SegmentBoundaryLevel1.class)
+							.setLevel(level);
+					break;
+				case '2':
+					AnnotationFactory.createAnnotation(jcas, textPost,
+							textPost + 1, SegmentBoundaryLevel2.class)
+							.setLevel(level);
+					break;
+				case '3':
+					AnnotationFactory.createAnnotation(jcas, textPost,
+							textPost + 1, SegmentBoundaryLevel3.class)
+							.setLevel(level);
+					break;
+				}
+
 				pos = ind + 1;
 			}
 		} while (ind > 0);
