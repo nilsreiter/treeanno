@@ -11,7 +11,7 @@ import org.python.core.PyTuple;
 import de.nilsreiter.segmentation.evaluation.FleissKappaBoundarySimilarity;
 
 public class FleissKappaBoundarySimilarity_impl extends AbstractSegEvalMetric
-		implements FleissKappaBoundarySimilarity {
+implements FleissKappaBoundarySimilarity {
 	Class<? extends Annotation> annoType;
 	Class<? extends Annotation> potentialBoundaryType = null;
 
@@ -26,7 +26,9 @@ public class FleissKappaBoundarySimilarity_impl extends AbstractSegEvalMetric
 	}
 
 	public Map<String, Double> score(JCas gold, JCas silver) {
-		ensureInterpreter();
+		if (!ensureInterpreter()) {
+			return new HashMap<String, Double>();
+		};
 		PyTuple goldTuple, silverTuple;
 		if (potentialBoundaryType == null) {
 			goldTuple =
