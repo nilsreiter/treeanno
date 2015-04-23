@@ -2,7 +2,6 @@ package de.nilsreiter.segmentation.evaluation.impl;
 
 import java.util.Collection;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -26,10 +25,9 @@ public abstract class AbstractSegEvalMetric {
 			}
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
-		} finally {
-			IOUtils.closeQuietly(interpreter);
-		}
+		} finally {}
 	}
 
 	PyTuple getMassTuple(JCas jcas, Class<? extends Annotation> boundaryType,
@@ -58,8 +56,8 @@ public abstract class AbstractSegEvalMetric {
 					new PyInteger(JCasUtil.select(jcas, potBoundaries).size());
 		} else
 			masses[i] =
-			new PyInteger(JCasUtil.selectFollowing(potBoundaries,
-					prevAnno, Integer.MAX_VALUE).size() + 1);
+					new PyInteger(JCasUtil.selectFollowing(potBoundaries,
+							prevAnno, Integer.MAX_VALUE).size() + 1);
 
 		return new PyTuple(masses);
 	}
