@@ -9,9 +9,10 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.python.core.PyTuple;
 
 import de.nilsreiter.segmentation.evaluation.FleissKappaBoundarySimilarity;
+import de.nilsreiter.segmentation.evaluation.PotentialBoundarySettable;
 
 public class FleissKappaBoundarySimilarity_impl extends AbstractSegEvalMetric
-implements FleissKappaBoundarySimilarity {
+implements FleissKappaBoundarySimilarity, PotentialBoundarySettable {
 	Class<? extends Annotation> annoType;
 	Class<? extends Annotation> potentialBoundaryType = null;
 
