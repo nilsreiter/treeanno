@@ -48,6 +48,7 @@ public class FleissKappaBoundarySimilarity_impl extends AbstractSegEvalMetric
 		}
 
 		System.err.println("goldTuple = " + goldTuple);
+		System.err.println("silverTuple = " + silverTuple);
 		Map<String, Double> r = new HashMap<String, Double>();
 		r.put(getClass().getSimpleName(),
 				getPyFunctionValueFromDictionary(goldTuple, silverTuple,
