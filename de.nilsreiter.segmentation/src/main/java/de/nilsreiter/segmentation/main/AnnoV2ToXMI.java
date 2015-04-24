@@ -16,6 +16,7 @@ import com.lexicalscope.jewel.cli.Option;
 import de.nilsreiter.pipeline.PipelineBuilder;
 import de.nilsreiter.pipeline.io.TextReader;
 import de.nilsreiter.pipeline.segmentation.annotation.AnnotationReaderV2;
+import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasWriter;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.tudarmstadt.ukp.dkpro.core.languagetool.LanguageToolSegmenter;
 
@@ -35,7 +36,7 @@ public class AnnoV2ToXMI {
 		pl.add(AnalysisEngineFactory.createEngineDescription(
 				AnnotationReaderV2.class,
 				AnnotationReaderV2.PARAM_DIRECTORY_NAME, options
-				.getAnnoDirectory().getAbsolutePath(),
+						.getAnnoDirectory().getAbsolutePath(),
 				AnnotationReaderV2.PARAM_FILE_SUFFIX, options.getFileSuffix()));
 		if (options.getAddTokens()) {
 			pl.add(AnalysisEngineFactory
@@ -43,7 +44,9 @@ public class AnnoV2ToXMI {
 		}
 		pl.add(AnalysisEngineFactory.createEngineDescription(XmiWriter.class,
 				XmiWriter.PARAM_TARGET_LOCATION, options.getOutputDirectory()));
-
+		pl.add(AnalysisEngineFactory.createEngineDescription(
+				BinaryCasWriter.class, XmiWriter.PARAM_TARGET_LOCATION,
+				options.getOutputDirectory()));
 		SimplePipeline.runPipeline(crd, PipelineBuilder.array(pl));
 	}
 
