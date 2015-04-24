@@ -21,6 +21,7 @@ import de.nilsreiter.pipeline.segmentation.SegmentationUnitAnnotator;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.evaluation.Metric;
 import de.ustu.creta.segmentation.evaluation.MetricFactory;
+import de.ustu.creta.segmentation.evaluation.SegEvalMetric;
 
 public class CompareSegmentation {
 
@@ -44,6 +45,11 @@ public class CompareSegmentation {
 						.forName("de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel"
 								+ options.getBoundaryLevel());
 		Metric metric = MetricFactory.getMetric(metricClass, boundaryType);
+
+		if (SegEvalMetric.class.isAssignableFrom(metric.getClass())) {
+			((SegEvalMetric) metric)
+					.setMaxNearMiss(options.getNearMissWindow());
+		}
 
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
@@ -98,6 +104,9 @@ public class CompareSegmentation {
 
 		@Option(shortName = "pb")
 		boolean getPotentialBoundaries();
+
+		@Option
+		int getNearMissWindow();
 
 	}
 }
