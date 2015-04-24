@@ -11,8 +11,6 @@ import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
-import de.ustu.creta.segmentation.evaluation.FleissKappaBoundarySimilarity;
-import de.ustu.creta.segmentation.evaluation.MetricFactory;
 
 public class TestFleissKappaBoundarySimilarity_Tokens {
 
@@ -39,15 +37,15 @@ public class TestFleissKappaBoundarySimilarity_Tokens {
 		AnnotationFactory.createAnnotation(gold, 4, 7, SegmentationUnit.class);
 		AnnotationFactory.createAnnotation(gold, 8, 13, SegmentationUnit.class);
 		AnnotationFactory
-		.createAnnotation(gold, 13, 14, SegmentationUnit.class);
+				.createAnnotation(gold, 13, 14, SegmentationUnit.class);
 		AnnotationFactory
-		.createAnnotation(gold, 15, 17, SegmentationUnit.class);
+				.createAnnotation(gold, 15, 17, SegmentationUnit.class);
 		AnnotationFactory
-		.createAnnotation(gold, 18, 20, SegmentationUnit.class);
+				.createAnnotation(gold, 18, 20, SegmentationUnit.class);
 		AnnotationFactory
-		.createAnnotation(gold, 21, 27, SegmentationUnit.class);
+				.createAnnotation(gold, 21, 27, SegmentationUnit.class);
 		AnnotationFactory
-		.createAnnotation(gold, 27, 28, SegmentationUnit.class);
+				.createAnnotation(gold, 27, 28, SegmentationUnit.class);
 
 		silv = JCasFactory.createJCas();
 		silv.setDocumentText(text);
@@ -56,15 +54,15 @@ public class TestFleissKappaBoundarySimilarity_Tokens {
 		AnnotationFactory.createAnnotation(silv, 4, 7, SegmentationUnit.class);
 		AnnotationFactory.createAnnotation(silv, 8, 13, SegmentationUnit.class);
 		AnnotationFactory
-				.createAnnotation(silv, 13, 14, SegmentationUnit.class);
+		.createAnnotation(silv, 13, 14, SegmentationUnit.class);
 		AnnotationFactory
-				.createAnnotation(silv, 15, 17, SegmentationUnit.class);
+		.createAnnotation(silv, 15, 17, SegmentationUnit.class);
 		AnnotationFactory
-				.createAnnotation(silv, 18, 20, SegmentationUnit.class);
+		.createAnnotation(silv, 18, 20, SegmentationUnit.class);
 		AnnotationFactory
-				.createAnnotation(silv, 21, 27, SegmentationUnit.class);
+		.createAnnotation(silv, 21, 27, SegmentationUnit.class);
 		AnnotationFactory
-				.createAnnotation(silv, 27, 28, SegmentationUnit.class);
+		.createAnnotation(silv, 27, 28, SegmentationUnit.class);
 
 		bd =
 				MetricFactory.getMetric(FleissKappaBoundarySimilarity.class,

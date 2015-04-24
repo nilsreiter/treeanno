@@ -17,6 +17,14 @@ import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 public abstract class AbstractSegEvalMetric {
 	PythonInterpreter interpreter = null;
 
+	/**
+	 * Maximum distance (in potential boundary positions) that a transposition
+	 * may span.
+	 * 
+	 * See {@link http://segeval.readthedocs.org/en/latest/api/#segeval.boundary_edit_distance}
+	 */
+	int maxNearMiss = 2;
+
 	protected boolean ensureInterpreter() {
 		try {
 			if (interpreter == null) {
@@ -87,7 +95,8 @@ public abstract class AbstractSegEvalMetric {
 		interpreter.set("seg1", seg1);
 		interpreter.set("seg2", seg2);
 
-		interpreter.exec("result = " + function + "(seg1, seg2)");
+		interpreter.exec("result = " + function + "(seg1, seg2,n_t="
+				+ maxNearMiss + ")");
 		PyObject obj = interpreter.get("result");
 		return obj.asDouble();
 	}
@@ -100,9 +109,18 @@ public abstract class AbstractSegEvalMetric {
 						new PyDictionary(new PyObject[] { new PyInteger(1),
 								seg1, new PyInteger(2), seg2 }) });
 		interpreter.set("dataset", dict);
-		interpreter.exec("result = " + function + "(dataset)");
+		interpreter.exec("result = " + function + "(dataset,n_t=" + maxNearMiss
+				+ ")");
 		PyObject obj = interpreter.get("result");
 		return obj.asDouble();
+	}
+
+	public int getMaxNearMiss() {
+		return maxNearMiss;
+	}
+
+	public void setMaxNearMiss(int maxNearMiss) {
+		this.maxNearMiss = maxNearMiss;
 	}
 
 }
