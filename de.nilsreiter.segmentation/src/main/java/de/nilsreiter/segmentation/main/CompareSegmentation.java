@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -13,10 +17,10 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
 
+import de.nilsreiter.pipeline.segmentation.SegmentationUnitAnnotator;
+import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.nilsreiter.segmentation.evaluation.Metric;
 import de.nilsreiter.segmentation.evaluation.MetricFactory;
-import de.nilsreiter.segmentation.evaluation.PotentialBoundarySettable;
-import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 
 public class CompareSegmentation {
 
@@ -41,14 +45,6 @@ public class CompareSegmentation {
 						+ options.getBoundaryLevel());
 		Metric metric = MetricFactory.getMetric(metricClass, boundaryType);
 
-		if (options.getPotentialBoundaries()) {
-			if (PotentialBoundarySettable.class.isAssignableFrom(metric
-					.getClass())) {
-				((PotentialBoundarySettable) metric)
-						.setPotentialBoundaryType(Token.class);
-			}
-		}
-
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
 				.createTypeSystemDescriptionFromPath(new File(options
@@ -58,10 +54,28 @@ public class CompareSegmentation {
 		JCas jcas1 =
 				JCasFactory.createJCas(options.getInputFile1()
 						.getAbsolutePath(), tsd);
-
 		JCas jcas2 =
 				JCasFactory.createJCas(options.getInputFile2()
 						.getAbsolutePath(), tsd);
+
+		if (options.getPotentialBoundaries()) {
+			AnalysisEngineDescription addSegUnits =
+					AnalysisEngineFactory
+					.createEngineDescription(
+							SegmentationUnitAnnotator.class,
+							SegmentationUnitAnnotator.PARAM_BASE_TYPE,
+							"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token");
+
+			SimplePipeline.runPipeline(jcas1, addSegUnits);
+			SimplePipeline.runPipeline(jcas2, addSegUnits);
+			int units1 = JCasUtil.select(jcas1, SegmentationUnit.class).size();
+			int units2 = JCasUtil.select(jcas2, SegmentationUnit.class).size();
+			if (units1 != units2) {
+				System.err
+						.println("Different number of potential boundaries. Exiting.");
+				System.exit(-1);
+			}
+		}
 
 		metric.init(jcas1);
 
@@ -84,5 +98,6 @@ public class CompareSegmentation {
 
 		@Option(shortName = "pb")
 		boolean getPotentialBoundaries();
+
 	}
 }
