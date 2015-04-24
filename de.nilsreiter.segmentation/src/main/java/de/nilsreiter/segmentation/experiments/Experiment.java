@@ -27,16 +27,16 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import de.nilsreiter.pipeline.segmentation.type.Segment;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.uima.ClearAnnotation;
-import de.nilsreiter.segmentation.evaluation.BreakDifference;
-import de.nilsreiter.segmentation.evaluation.Metric;
-import de.nilsreiter.segmentation.evaluation.MetricFactory;
-import de.nilsreiter.segmentation.evaluation.WindowDifference;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
+import de.ustu.creta.segmentation.evaluation.BreakDifference;
+import de.ustu.creta.segmentation.evaluation.Metric;
+import de.ustu.creta.segmentation.evaluation.MetricFactory;
+import de.ustu.creta.segmentation.evaluation.WindowDifference;
 
 public abstract class Experiment {
 

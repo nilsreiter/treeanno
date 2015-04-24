@@ -19,8 +19,8 @@ import com.lexicalscope.jewel.cli.Option;
 
 import de.nilsreiter.pipeline.segmentation.SegmentationUnitAnnotator;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
-import de.nilsreiter.segmentation.evaluation.Metric;
-import de.nilsreiter.segmentation.evaluation.MetricFactory;
+import de.ustu.creta.segmentation.evaluation.Metric;
+import de.ustu.creta.segmentation.evaluation.MetricFactory;
 
 public class CompareSegmentation {
 

@@ -18,13 +18,13 @@ import de.nilsreiter.pipeline.segmentation.infinitejest.IJEvalPreparer;
 import de.nilsreiter.pipeline.segmentation.infinitejest.RelabelSegmentValues;
 import de.nilsreiter.pipeline.segmentation.topicmodeling.NarrativeDisentanglement;
 import de.nilsreiter.pipeline.segmentation.type.Segment;
-import de.nilsreiter.segmentation.evaluation.Metric;
-import de.nilsreiter.segmentation.evaluation.MetricFactory;
-import de.nilsreiter.segmentation.evaluation.PRF;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
+import de.ustu.creta.segmentation.evaluation.Metric;
+import de.ustu.creta.segmentation.evaluation.MetricFactory;
+import de.ustu.creta.segmentation.evaluation.PRF;
 
 public class NMDExperiment extends Experiment {
 
