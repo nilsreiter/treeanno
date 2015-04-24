@@ -16,14 +16,13 @@
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
     	<groupId>de.nilsreiter.pipeline.segmentation</groupId>
     	<artifactId>de.nilsreiter.pipeline.segmentation</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>de.nilsreiter.segmentation</groupId>
+    	<artifactId>de.nilsreiter.segmentation</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
