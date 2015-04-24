@@ -57,16 +57,16 @@
     	<version>0.8.9</version>
     </dependency>
   	<dependency>
-  		<groupId>org.python</groupId>
-  		<artifactId>jython-standalone</artifactId>
-  		<version>2.7-rc2</version>
-  	</dependency>
-  	<dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
   		<artifactId>
   			de.tudarmstadt.ukp.dkpro.core.io.bincas-asl
   		</artifactId>
   		<version>1.7.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.ustu.creta</groupId>
+  		<artifactId>segmentation.evaluation</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
 </project>

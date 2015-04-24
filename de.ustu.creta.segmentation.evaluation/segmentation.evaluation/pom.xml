@@ -21,9 +21,9 @@
     	<version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-    	<groupId>de.nilsreiter.segmentation</groupId>
-    	<artifactId>de.nilsreiter.segmentation</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
+  		<groupId>org.python</groupId>
+  		<artifactId>jython-standalone</artifactId>
+  		<version>2.7-rc2</version>
+  	</dependency>
   </dependencies>
 </project>
