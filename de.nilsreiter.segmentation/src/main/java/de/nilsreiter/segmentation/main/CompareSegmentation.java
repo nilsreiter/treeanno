@@ -27,7 +27,7 @@ public class CompareSegmentation {
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws ClassNotFoundException,
-			UIMAException, IOException {
+	UIMAException, IOException {
 		Options options = CliFactory.parseArguments(Options.class, args);
 
 		Class<? extends Metric> metricClass;
@@ -36,26 +36,26 @@ public class CompareSegmentation {
 			clazz = Class.forName(options.getMetric());
 		} catch (ClassNotFoundException e) {
 			clazz =
-					Class.forName("de.nilsreiter.segmentation.evaluation."
+					Class.forName("de.ustu.creta.segmentation.evaluation."
 							+ options.getMetric());
 		}
 		metricClass = (Class<? extends Metric>) clazz;
 		Class<? extends Annotation> boundaryType =
 				(Class<? extends Annotation>) Class
-						.forName("de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel"
-								+ options.getBoundaryLevel());
+				.forName("de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel"
+						+ options.getBoundaryLevel());
 		Metric metric = MetricFactory.getMetric(metricClass, boundaryType);
 
 		if (SegEvalMetric.class.isAssignableFrom(metric.getClass())) {
 			((SegEvalMetric) metric)
-					.setMaxNearMiss(options.getNearMissWindow());
+			.setMaxNearMiss(options.getNearMissWindow());
 		}
 
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
-						.createTypeSystemDescriptionFromPath(new File(options
-								.getInputFile1().getParentFile(),
-								"typesystem.xml").toURI().toString());
+				.createTypeSystemDescriptionFromPath(new File(options
+						.getInputFile1().getParentFile(),
+						"typesystem.xml").toURI().toString());
 
 		JCas jcas1 =
 				JCasFactory.createJCas(options.getInputFile1()
@@ -67,10 +67,10 @@ public class CompareSegmentation {
 		if (options.getPotentialBoundaries()) {
 			AnalysisEngineDescription addSegUnits =
 					AnalysisEngineFactory
-							.createEngineDescription(
-									SegmentationUnitAnnotator.class,
-									SegmentationUnitAnnotator.PARAM_BASE_TYPE,
-									"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token");
+					.createEngineDescription(
+							SegmentationUnitAnnotator.class,
+							SegmentationUnitAnnotator.PARAM_BASE_TYPE,
+							"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token");
 
 			SimplePipeline.runPipeline(jcas1, addSegUnits);
 			SimplePipeline.runPipeline(jcas2, addSegUnits);
@@ -78,7 +78,7 @@ public class CompareSegmentation {
 			int units2 = JCasUtil.select(jcas2, SegmentationUnit.class).size();
 			if (units1 != units2) {
 				System.err
-				.println("Different number of potential boundaries. Exiting.");
+						.println("Different number of potential boundaries. Exiting.");
 				System.exit(-1);
 			}
 		}
