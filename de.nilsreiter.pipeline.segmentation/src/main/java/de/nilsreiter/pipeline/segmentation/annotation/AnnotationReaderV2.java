@@ -65,33 +65,36 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 
 		int pos = 0;
 		int ind;
-		int l = 10;
+		int l = 15;
 		String text = jcas.getDocumentText();
 		int textPost = 0;
+		int annotationLength = 1;
 		do {
 			ind = contents.indexOf("<b", pos);
 			char lev;
 			if (ind > 0) {
 				lev = contents.charAt(ind + 2);
-				String post = contents.substring(ind + 4, ind + l).trim();
-				textPost = text.indexOf(post, textPost);
+				String post =
+						contents.substring(ind + 4, ind + l).trim()
+								.replaceAll("(<[^>]*>?)", "");
+				textPost = text.indexOf(post, textPost + (ind - pos - 4));
 				int level = Character.getNumericValue(lev);
 				if (textPost > 0)
 					switch (lev) {
 					case '1':
 						AnnotationFactory.createAnnotation(jcas, textPost,
-								textPost, SegmentBoundaryLevel1.class)
-								.setLevel(level);
+								textPost + annotationLength,
+								SegmentBoundaryLevel1.class).setLevel(level);
 						break;
 					case '2':
 						AnnotationFactory.createAnnotation(jcas, textPost,
-								textPost, SegmentBoundaryLevel2.class)
-								.setLevel(level);
+								textPost + annotationLength,
+								SegmentBoundaryLevel2.class).setLevel(level);
 						break;
 					case '3':
 						AnnotationFactory.createAnnotation(jcas, textPost,
-								textPost, SegmentBoundaryLevel3.class)
-								.setLevel(level);
+								textPost + annotationLength,
+								SegmentBoundaryLevel3.class).setLevel(level);
 						break;
 					}
 				else {
