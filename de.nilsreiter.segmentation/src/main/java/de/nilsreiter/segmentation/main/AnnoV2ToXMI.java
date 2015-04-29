@@ -5,10 +5,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -16,6 +21,7 @@ import com.lexicalscope.jewel.cli.Option;
 import de.nilsreiter.pipeline.PipelineBuilder;
 import de.nilsreiter.pipeline.io.TextReader;
 import de.nilsreiter.pipeline.segmentation.annotation.AnnotationReaderV2;
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasWriter;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.tudarmstadt.ukp.dkpro.core.languagetool.LanguageToolSegmenter;
@@ -42,6 +48,11 @@ public class AnnoV2ToXMI {
 			pl.add(AnalysisEngineFactory
 					.createEngineDescription(LanguageToolSegmenter.class));
 		}
+
+		pl.add(AnalysisEngineFactory.createEngineDescription(
+				DocumentIdChanger.class, DocumentIdChanger.PARAM_ID_POSTFIX,
+				options.getIdPostfix()));
+
 		pl.add(AnalysisEngineFactory.createEngineDescription(XmiWriter.class,
 				XmiWriter.PARAM_TARGET_LOCATION, options.getOutputDirectory()));
 		pl.add(AnalysisEngineFactory.createEngineDescription(
@@ -69,6 +80,24 @@ public class AnnoV2ToXMI {
 
 		@Option
 		String getLanguage();
+
+		@Option(defaultValue = "")
+		String getIdPostfix();
 	}
 
+	public static class DocumentIdChanger extends JCasAnnotator_ImplBase {
+
+		public static final String PARAM_ID_POSTFIX = "Id Postfix";
+
+		@ConfigurationParameter(name = PARAM_ID_POSTFIX)
+		String idPostfix = "";
+
+		@Override
+		public void process(JCas aJCas) throws AnalysisEngineProcessException {
+			DocumentMetaData dmd =
+					JCasUtil.selectSingle(aJCas, DocumentMetaData.class);
+			dmd.setDocumentId(dmd.getDocumentId() + idPostfix);
+		}
+
+	}
 }
