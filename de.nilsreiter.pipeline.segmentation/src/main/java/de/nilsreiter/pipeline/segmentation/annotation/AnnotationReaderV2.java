@@ -3,18 +3,20 @@ package de.nilsreiter.pipeline.segmentation.annotation;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
-import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1;
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2;
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
 public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
@@ -63,48 +65,62 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 
 		contents = contents.replaceAll("<b4>", "");
 
-		int pos = 0;
-		int annoIndex;
-		int l = 15;
 		String text = jcas.getDocumentText();
-		int textIndex = 0;
-		int annotationLength = 1;
-		do {
-			annoIndex = contents.indexOf("<b", pos);
-			char lev;
-			if (annoIndex > 0) {
-				lev = contents.charAt(annoIndex + 2);
-				String post =
-						contents.substring(annoIndex + 4, annoIndex + l).trim()
-						.replaceAll("(<[^>]*>?)", "");
-				int beg = (textIndex + 1);
-				textIndex = text.indexOf(post, beg);
-				int level = Character.getNumericValue(lev);
-				if (textIndex > 0)
-					switch (lev) {
-					case '1':
-						AnnotationFactory.createAnnotation(jcas, textIndex,
-								textIndex + annotationLength,
-								SegmentBoundaryLevel1.class).setLevel(level);
-						break;
-					case '2':
-						AnnotationFactory.createAnnotation(jcas, textIndex,
-								textIndex + annotationLength,
-								SegmentBoundaryLevel2.class).setLevel(level);
-						break;
-					case '3':
-						AnnotationFactory.createAnnotation(jcas, textIndex,
-								textIndex + annotationLength,
-								SegmentBoundaryLevel3.class).setLevel(level);
-						break;
-					}
-				else {
-					System.err.println(file.getName() + ": text not found: "
-							+ post + " (text = "
-							+ text.substring(beg, beg + 10));
+
+		char[] chars = contents.toCharArray();
+		int mode = 0;
+		StringBuilder b = new StringBuilder();
+		Map<Integer, Integer> breaks = new HashMap<Integer, Integer>();
+		int currentAnnoStart = -1;
+		for (int i = 0; i < chars.length; i++) {
+			char ch = chars[i];
+			switch (ch) {
+			case '<':
+				mode = 1;
+				currentAnnoStart = b.length();
+				break;
+			case '>':
+				mode = 0;
+				break;
+			case '1':
+			case '2':
+			case '3':
+				if (mode == 1) {
+					breaks.put(currentAnnoStart,
+							(Character.getNumericValue(ch)));
+					break;
 				}
-				pos = annoIndex + 1;
+			default:
+				if (mode == 0) b.append(ch);
+
+			}
+		}
+		String s = b.toString();
+		for (Integer br : breaks.keySet()) {
+			String annoText = s.substring(br, br + 10);
+			String targetText = text.substring(br, br + 10);
+			System.err.println(annoText + " - " + targetText);
+		}
+
+		int annoIndex = 0;
+		int numberOfMatches = 0;
+		int length = 4;
+		List<Pair<Integer, Integer>> matches =
+				new LinkedList<Pair<Integer, Integer>>();
+		do {
+			annoIndex = contents.indexOf("<b", annoIndex + 1);
+			if (annoIndex > 0) {
+				int begin = annoIndex, end = annoIndex + length;
+				matches.add(new ImmutablePair<Integer, Integer>(begin, end));
+				numberOfMatches++;
 			}
 		} while (annoIndex > 0);
+
+		String contentsWithoutAnnotation = contents.replaceAll("<b.>", "");
+		for (Pair<Integer, Integer> p : matches) {
+			System.err.println(p + " "
+					+ contents.substring(p.getLeft(), p.getRight() + 4));
+		}
+
 	}
 }
