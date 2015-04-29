@@ -1,0 +1,5 @@
+The dog barks.<b1> It is hungry. 
+
+<b3>Bla blubb. This is<b2> a<b3> text. Lorem Ipsum.
+
+Hallo!
