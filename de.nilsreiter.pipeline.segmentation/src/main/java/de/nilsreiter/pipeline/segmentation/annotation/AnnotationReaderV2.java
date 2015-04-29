@@ -64,45 +64,47 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 		contents = contents.replaceAll("<b4>", "");
 
 		int pos = 0;
-		int ind;
+		int annoIndex;
 		int l = 15;
 		String text = jcas.getDocumentText();
-		int textPost = 0;
+		int textIndex = 0;
 		int annotationLength = 1;
 		do {
-			ind = contents.indexOf("<b", pos);
+			annoIndex = contents.indexOf("<b", pos);
 			char lev;
-			if (ind > 0) {
-				lev = contents.charAt(ind + 2);
+			if (annoIndex > 0) {
+				lev = contents.charAt(annoIndex + 2);
 				String post =
-						contents.substring(ind + 4, ind + l).trim()
-								.replaceAll("(<[^>]*>?)", "");
-				textPost = text.indexOf(post, textPost + (ind - pos - 4));
+						contents.substring(annoIndex + 4, annoIndex + l).trim()
+						.replaceAll("(<[^>]*>?)", "");
+				int beg = (textIndex + 1);
+				textIndex = text.indexOf(post, beg);
 				int level = Character.getNumericValue(lev);
-				if (textPost > 0)
+				if (textIndex > 0)
 					switch (lev) {
 					case '1':
-						AnnotationFactory.createAnnotation(jcas, textPost,
-								textPost + annotationLength,
+						AnnotationFactory.createAnnotation(jcas, textIndex,
+								textIndex + annotationLength,
 								SegmentBoundaryLevel1.class).setLevel(level);
 						break;
 					case '2':
-						AnnotationFactory.createAnnotation(jcas, textPost,
-								textPost + annotationLength,
+						AnnotationFactory.createAnnotation(jcas, textIndex,
+								textIndex + annotationLength,
 								SegmentBoundaryLevel2.class).setLevel(level);
 						break;
 					case '3':
-						AnnotationFactory.createAnnotation(jcas, textPost,
-								textPost + annotationLength,
+						AnnotationFactory.createAnnotation(jcas, textIndex,
+								textIndex + annotationLength,
 								SegmentBoundaryLevel3.class).setLevel(level);
 						break;
 					}
 				else {
 					System.err.println(file.getName() + ": text not found: "
-							+ post);
+							+ post + " (text = "
+							+ text.substring(beg, beg + 10));
 				}
-				pos = ind + 1;
+				pos = annoIndex + 1;
 			}
-		} while (ind > 0);
+		} while (annoIndex > 0);
 	}
 }
