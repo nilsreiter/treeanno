@@ -1,5 +1,6 @@
 package de.ustu.creta.uima.textannotationreader;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.uima.UIMAException;
@@ -45,9 +46,14 @@ public class TestTextAnnotationReader {
 						"src/test/resources",
 						TextAnnotationReader.PARAM_FILE_SUFFIX, ".anno",
 						TextAnnotationReader.PARAM_ANNOTATION_TYPE,
-						TestType.class.getCanonicalName());
+						TestType.class.getCanonicalName(),
+						TextAnnotationReader.PARAM_ANNOTATION_MARK, "b");
 		SimplePipeline.runPipeline(jcas, aed);
 
 		assertTrue(JCasUtil.exists(jcas, TestType.class));
+		TestType tt;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, 0);
+		assertEquals(8, tt.getBegin());
+		assertEquals(813, tt.getEnd());
 	}
 }
