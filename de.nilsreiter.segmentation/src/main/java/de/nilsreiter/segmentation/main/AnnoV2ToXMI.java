@@ -39,26 +39,44 @@ public class AnnoV2ToXMI {
 
 		List<AnalysisEngineDescription> pl =
 				new LinkedList<AnalysisEngineDescription>();
-		pl.add(AnalysisEngineFactory.createEngineDescription(
-				AnnotationReaderV2.class,
-				AnnotationReaderV2.PARAM_DIRECTORY_NAME, options
-						.getAnnoDirectory().getAbsolutePath(),
-				AnnotationReaderV2.PARAM_FILE_SUFFIX, options.getFileSuffix()));
+		pl.addAll(AnnotationReaderV2.getDescriptions(
+				options.getAnnoDirectory().getAbsolutePath(),
+				options.getFileSuffix(),
+				"<b1>",
+				de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1.class
+				.getCanonicalName(),
+				"<b2>",
+				de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2.class
+				.getCanonicalName(),
+				"<b3>",
+				de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3.class
+				.getCanonicalName()));
+		/*
+		 * pl.add(AnalysisEngineFactory.createEngineDescription(
+		 * AnnotationReaderV2.class,
+		 * AnnotationReaderV2.PARAM_DIRECTORY_NAME, options
+		 * .getAnnoDirectory().getAbsolutePath(),
+		 * AnnotationReaderV2.PARAM_FILE_SUFFIX, options.getFileSuffix()));
+		 */
 		if (options.getAddTokens()) {
 			pl.add(AnalysisEngineFactory
 					.createEngineDescription(LanguageToolSegmenter.class));
 		}
 
-		pl.add(AnalysisEngineFactory.createEngineDescription(
-				DocumentIdChanger.class, DocumentIdChanger.PARAM_ID_POSTFIX,
-				options.getIdPostfix()));
+		/*
+		 * pl.add(AnalysisEngineFactory.createEngineDescription(
+		 * DocumentIdChanger.class, DocumentIdChanger.PARAM_ID_POSTFIX,
+		 * options.getIdPostfix()));
+		 */
 
 		pl.add(AnalysisEngineFactory.createEngineDescription(XmiWriter.class,
 				XmiWriter.PARAM_TARGET_LOCATION, options.getOutputDirectory()));
-		pl.add(AnalysisEngineFactory.createEngineDescription(
-				BinaryCasWriter.class, BinaryCasWriter.PARAM_TARGET_LOCATION,
-				options.getOutputDirectory(), BinaryCasWriter.PARAM_FORMAT,
-				"6+"));
+		if (false)
+			pl.add(AnalysisEngineFactory.createEngineDescription(
+					BinaryCasWriter.class,
+					BinaryCasWriter.PARAM_TARGET_LOCATION,
+					options.getOutputDirectory(), BinaryCasWriter.PARAM_FORMAT,
+					"6+"));
 		SimplePipeline.runPipeline(crd, PipelineBuilder.array(pl));
 	}
 
