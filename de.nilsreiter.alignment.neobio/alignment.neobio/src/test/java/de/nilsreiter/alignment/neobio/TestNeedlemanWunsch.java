@@ -55,6 +55,8 @@ public class TestNeedlemanWunsch {
 				new NeedlemanWunsch<String>(scheme);
 		algo.setSequences(sequence1, sequence2);
 		PairwiseAlignment<String> alignment = algo.computePairwiseAlignment();
+
+		// gapped sequence
 		assertEquals(4, alignment.getGappedSequence1().size());
 		assertEquals(4, alignment.getGappedSequence2().size());
 		assertNull(alignment.getGappedSequence1().get(2));
@@ -62,14 +64,59 @@ public class TestNeedlemanWunsch {
 		assertEquals("B", alignment.getGappedSequence1().get(1));
 		assertEquals("B", alignment.getGappedSequence2().get(1));
 
+		// index map 1
 		assertEquals(3, alignment.getIndexMap1().size());
 		assertEquals(0, (int) alignment.getIndexMap1().get(0));
 		assertEquals(1, (int) alignment.getIndexMap1().get(1));
 		assertEquals(3, (int) alignment.getIndexMap1().get(2));
 
+		// index map 2
 		assertEquals(3, alignment.getIndexMap2().size());
 		assertEquals(0, (int) alignment.getIndexMap2().get(0));
 		assertEquals(1, (int) alignment.getIndexMap2().get(1));
+		assertEquals(2, (int) alignment.getIndexMap2().get(3));
+	}
+
+	@Test
+	public void testMultiGappedAlignment()
+			throws IncompatibleScoringSchemeException {
+		sequence1 = Arrays.asList("A", "B", "C", "D");
+		sequence2 = Arrays.asList("A", "x", "B", "C", "x", "D");
+		ScoringScheme<String> scheme =
+				new BasicScoringScheme<String>(2, -1, -1);
+		PairwiseAlignmentAlgorithm<String> algo =
+				new NeedlemanWunsch<String>(scheme);
+		algo.setSequences(sequence1, sequence2);
+		PairwiseAlignment<String> alignment = algo.computePairwiseAlignment();
+
+		// gapped sequence
+		assertEquals(6, alignment.getGappedSequence1().size());
+		assertEquals(6, alignment.getGappedSequence2().size());
+
+		assertEquals("A", alignment.getGappedSequence1().get(0));
+		assertEquals(null, alignment.getGappedSequence1().get(1));
+		assertEquals("B", alignment.getGappedSequence1().get(2));
+		assertEquals("C", alignment.getGappedSequence1().get(3));
+		assertEquals(null, alignment.getGappedSequence1().get(4));
+		assertEquals("D", alignment.getGappedSequence1().get(5));
+
+		assertEquals("A", alignment.getGappedSequence2().get(0));
+		assertEquals("x", alignment.getGappedSequence2().get(1));
+		assertEquals("B", alignment.getGappedSequence2().get(2));
+		assertEquals("C", alignment.getGappedSequence2().get(3));
+		assertEquals("x", alignment.getGappedSequence2().get(4));
+		assertEquals("D", alignment.getGappedSequence2().get(5));
+
+		// index map 1
+		assertEquals(4, alignment.getIndexMap1().size());
+		assertEquals(0, (int) alignment.getIndexMap1().get(0));
+		assertEquals(2, (int) alignment.getIndexMap1().get(1));
+		assertEquals(3, (int) alignment.getIndexMap1().get(2));
+
+		// index map 2
+		assertEquals(4, alignment.getIndexMap2().size());
+		assertEquals(0, (int) alignment.getIndexMap2().get(0));
+		assertEquals(1, (int) alignment.getIndexMap2().get(2));
 		assertEquals(2, (int) alignment.getIndexMap2().get(3));
 	}
 }
