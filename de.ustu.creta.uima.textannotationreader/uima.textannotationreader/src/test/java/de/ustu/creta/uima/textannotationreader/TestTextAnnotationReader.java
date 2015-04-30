@@ -46,7 +46,7 @@ public class TestTextAnnotationReader {
 						TextAnnotationReader.PARAM_FILE_SUFFIX, ".anno",
 						TextAnnotationReader.PARAM_ANNOTATION_TYPE,
 						TestType.class.getCanonicalName(),
-						TextAnnotationReader.PARAM_ANNOTATION_MARK, "b");
+						TextAnnotationReader.PARAM_ANNOTATION_MARK, "<b>");
 		SimplePipeline.runPipeline(jcas, aed);
 
 		assertTrue(JCasUtil.exists(jcas, TestType.class));
@@ -76,10 +76,44 @@ public class TestTextAnnotationReader {
 						TextAnnotationReader.PARAM_FILE_SUFFIX, ".anno",
 						TextAnnotationReader.PARAM_ANNOTATION_TYPE,
 						TestType.class.getCanonicalName(),
-						TextAnnotationReader.PARAM_ANNOTATION_MARK, "b");
+						TextAnnotationReader.PARAM_ANNOTATION_MARK, "<b>");
 		SimplePipeline.runPipeline(jcas, aed);
 
 		assertTrue(JCasUtil.exists(jcas, TestType.class));
+
+		assertEquals(4, JCasUtil.select(jcas, TestType.class).size());
+		TestType tt;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, 0);
+		assertEquals(8, tt.getBegin());
+		assertEquals(13, tt.getEnd());
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, 1);
+		assertEquals(15, tt.getBegin());
+		assertEquals(17, tt.getEnd());
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, 2);
+		assertEquals(21, tt.getBegin());
+		assertEquals(27, tt.getEnd());
+	}
+
+	@Test
+	public void testTextAnnotationReaderDoc3()
+			throws ResourceInitializationException,
+			AnalysisEngineProcessException {
+		AnnotationFactory.createAnnotation(jcas, 0, text.length(),
+				DocumentMetaData.class).setDocumentId("doc3");
+		AnalysisEngineDescription aed =
+				AnalysisEngineFactory.createEngineDescription(
+						TextAnnotationReader.class,
+						TextAnnotationReader.PARAM_DIRECTORY_NAME,
+						"src/test/resources",
+						TextAnnotationReader.PARAM_FILE_SUFFIX, ".anno",
+						TextAnnotationReader.PARAM_ANNOTATION_TYPE,
+						TestType.class.getCanonicalName(),
+						TextAnnotationReader.PARAM_ANNOTATION_MARK, "<b>");
+		SimplePipeline.runPipeline(jcas, aed);
+
+		assertTrue(JCasUtil.exists(jcas, TestType.class));
+
+		assertEquals(4, JCasUtil.select(jcas, TestType.class).size());
 		TestType tt;
 		tt = JCasUtil.selectByIndex(jcas, TestType.class, 0);
 		assertEquals(8, tt.getBegin());
