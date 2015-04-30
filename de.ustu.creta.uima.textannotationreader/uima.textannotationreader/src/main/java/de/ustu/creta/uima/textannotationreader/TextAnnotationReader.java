@@ -119,31 +119,44 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 		}
 		if (alignment != null) {
 			Map<Integer, Integer> map = alignment.getIndexMap1();
+			List<Integer> cellar = new LinkedList<Integer>();
+
+			// Iteration over all tokens
 			for (int i = 0; i < annoTokens.getSurfaces().size(); i++) {
+
+				// character positions of token in anno-file
 				Pair<Integer, Integer> annoCharPos =
 						annoTokens.getCharacterPositions().get(i);
 				try {
+
+					// getting the context of the token
 					String annoTokenWithContext =
 							contents.substring(annoCharPos.getLeft() - 1,
 									annoCharPos.getRight() + 1);
-					if (annoTokenWithContext.equals(annotationMark)) {
-						if (!map.containsKey(i)) {
-							while (!map.containsKey(i)) {
-								i++;
-							}
-							if (i < annoTokens.getSurfaces().size()) {
-								Pair<Integer, Integer> tPos =
-										targetTokens.getCharacterPositions()
-												.get(map.get(i));
-								AnnotationFactory.createAnnotation(jcas,
-										tPos.getLeft(), tPos.getRight(),
-										annoClass);
-							}
+
+					if (map.containsKey(i)) {
+						for (int c = 0; c < cellar.size(); c++) {
+							Pair<Integer, Integer> tPos =
+									targetTokens.getCharacterPositions().get(
+											map.get(i));
+							AnnotationFactory.createAnnotation(jcas,
+									tPos.getLeft(), tPos.getRight(), annoClass);
+						}
+						cellar.clear();
+					} else {
+						// check if it matches the mark
+						if (annoTokenWithContext.equals(annotationMark)) {
+							cellar.add(i);
 						}
 					}
 				} catch (StringIndexOutOfBoundsException e) {
 
 				}
+			}
+
+			for (int c = 0; c < cellar.size(); c++) {
+				AnnotationFactory.createAnnotation(jcas, text.length() - 1,
+						text.length(), annoClass);
 			}
 
 		}
