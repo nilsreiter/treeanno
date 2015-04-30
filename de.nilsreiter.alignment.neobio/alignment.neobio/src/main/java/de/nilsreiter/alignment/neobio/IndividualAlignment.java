@@ -1,4 +1,4 @@
-package de.uniheidelberg.cl.a10.patterns.sequencealignment;
+package de.nilsreiter.alignment.neobio;
 
 public class IndividualAlignment {
 	/**

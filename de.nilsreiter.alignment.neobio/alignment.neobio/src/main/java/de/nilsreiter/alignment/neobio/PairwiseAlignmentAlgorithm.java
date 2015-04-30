@@ -1,12 +1,12 @@
-package de.uniheidelberg.cl.a10.patterns.sequencealignment;
+package de.nilsreiter.alignment.neobio;
 
 import java.util.List;
 
 import neobio.alignment.IncompatibleScoringSchemeException;
 
 public abstract class PairwiseAlignmentAlgorithm<T> extends
-		SequenceAlignmentAlgorithm<T, IndividualAlignment> implements
-		PairwiseAlgorithm<T> {
+SequenceAlignmentAlgorithm<T, IndividualAlignment> implements
+PairwiseAlgorithm<T> {
 
 	ScoringScheme<T> scoring;
 
@@ -109,7 +109,6 @@ public abstract class PairwiseAlignmentAlgorithm<T> extends
 		return r;
 	}
 
-	@Override
 	public void setSequences(final List<T> predicates1,
 			final List<T> predicates2) {
 		// load sequences into instances of CharSequence

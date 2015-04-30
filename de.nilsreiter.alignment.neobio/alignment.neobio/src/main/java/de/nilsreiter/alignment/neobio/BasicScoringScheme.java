@@ -1,7 +1,6 @@
-package de.uniheidelberg.cl.a10.patterns.sequencealignment;
+package de.nilsreiter.alignment.neobio;
 
 import neobio.alignment.IncompatibleScoringSchemeException;
-import de.uniheidelberg.cl.a10.patterns.data.Probability;
 
 public class BasicScoringScheme<T> extends ScoringScheme<T> {
 
@@ -49,8 +48,7 @@ public class BasicScoringScheme<T> extends ScoringScheme<T> {
 	@Override
 	public double scoreSubstitution(final T a, final T b)
 			throws IncompatibleScoringSchemeException {
-		if (a == null || b == null)
-			return gap_cost;
+		if (a == null || b == null) return gap_cost;
 		if (a.equals(b))
 			return match_reward;
 		else
@@ -82,17 +80,6 @@ public class BasicScoringScheme<T> extends ScoringScheme<T> {
 		b.append("mismatch_penalty = " + this.mismatch_penalty).append('\n');
 		b.append("gap_cost         = " + this.gap_cost).append('\n');
 		return b.toString();
-	}
-
-	@Override
-	public Probability sim(final T a, final T b) {
-		try {
-			return Probability.fromProbability(this.scoreSubstitution(a, b));
-		} catch (IncompatibleScoringSchemeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 }

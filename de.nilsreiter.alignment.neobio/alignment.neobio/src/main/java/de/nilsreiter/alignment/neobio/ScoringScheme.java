@@ -1,7 +1,6 @@
-package de.uniheidelberg.cl.a10.patterns.sequencealignment;
+package de.nilsreiter.alignment.neobio;
 
 import neobio.alignment.IncompatibleScoringSchemeException;
-import de.uniheidelberg.cl.a10.patterns.data.Probability;
 
 /**
  * This abstract class is the superclass of all scoring schemes. It defines
@@ -23,8 +22,7 @@ public abstract class ScoringScheme<T> {
 	 * Creates a new instance of an scoring scheme. The case of characters is
 	 * significant when subsequently computing their score.
 	 */
-	public ScoringScheme() {
-	}
+	public ScoringScheme() {}
 
 	/**
 	 * Returns the score of a substitution of character <CODE>a</CODE> for
@@ -91,6 +89,6 @@ public abstract class ScoringScheme<T> {
 	 */
 	public abstract boolean isPartialMatchSupported();
 
-	public abstract Probability sim(T a, T b);
+	// public abstract Probability sim(T a, T b);
 
 }

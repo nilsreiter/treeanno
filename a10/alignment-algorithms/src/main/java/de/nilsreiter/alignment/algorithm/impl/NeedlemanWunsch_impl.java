@@ -6,6 +6,7 @@ import java.util.Set;
 
 import neobio.alignment.IncompatibleScoringSchemeException;
 import de.nilsreiter.alignment.algorithm.NeedlemanWunsch;
+import de.nilsreiter.alignment.neobio.PairwiseAlignment;
 import de.uniheidelberg.cl.a10.data2.Document;
 import de.uniheidelberg.cl.a10.data2.HasDocument;
 import de.uniheidelberg.cl.a10.data2.alignment.Alignment;
@@ -15,20 +16,18 @@ import de.uniheidelberg.cl.a10.data2.alignment.impl.Alignment_impl;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.AdvancedScoringScheme;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.DoubleNeedlemanWunsch;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.ScoringScheme;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityConfiguration;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
 public class NeedlemanWunsch_impl<T extends HasDocument> extends
-AbstractAlignmentAlgorithm_impl<T> implements NeedlemanWunsch<T> {
+		AbstractAlignmentAlgorithm_impl<T> implements NeedlemanWunsch<T> {
 
 	DoubleNeedlemanWunsch<T> dnw;
 
 	public NeedlemanWunsch_impl(NeedlemanWunschConfiguration nwConf,
 			SimilarityFunction<T> function) {
 		this.function = function;
-		ScoringScheme<T> scoringScheme =
+		AdvancedScoringScheme<T> scoringScheme =
 				new AdvancedScoringScheme<T>(Probability.fromProbability(nwConf
 						.getThreshold()), this.function);
 		dnw = new DoubleNeedlemanWunsch<T>(scoringScheme);

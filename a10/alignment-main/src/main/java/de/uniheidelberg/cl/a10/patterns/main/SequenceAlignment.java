@@ -16,6 +16,12 @@ import neobio.alignment.IncompatibleScoringSchemeException;
 import org.kohsuke.args4j.Option;
 import org.xml.sax.SAXException;
 
+import de.nilsreiter.alignment.neobio.NeedlemanWunsch;
+import de.nilsreiter.alignment.neobio.PairwiseAlignment;
+import de.nilsreiter.alignment.neobio.PairwiseAlignmentAlgorithm;
+import de.nilsreiter.alignment.neobio.RecursiveSmithWaterman;
+import de.nilsreiter.alignment.neobio.ScoringScheme;
+import de.nilsreiter.alignment.neobio.SmithWaterman;
 import de.saar.coli.salsa.reiter.framenet.FrameElementNotFoundException;
 import de.saar.coli.salsa.reiter.framenet.FrameNotFoundException;
 import de.uniheidelberg.cl.a10.Main;
@@ -30,13 +36,7 @@ import de.uniheidelberg.cl.a10.data2.io.DataReader;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.AdvancedScoringScheme;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.DoubleNeedlemanWunsch;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.NeedlemanWunsch;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignmentAlgorithm;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.RecursiveSmithWaterman;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.ScoringScheme;
 import de.uniheidelberg.cl.a10.patterns.sequencealignment.SequenceAlignmentConfiguration;
-import de.uniheidelberg.cl.a10.patterns.sequencealignment.SmithWaterman;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunctionFactory;
 
@@ -60,10 +60,10 @@ public class SequenceAlignment extends MainWithInputSequences {
 			new SequenceAlignmentConfiguration();
 
 	public static void main(final String[] args) throws SecurityException,
-			FrameNotFoundException, FrameElementNotFoundException, IOException,
-			IncompatibleScoringSchemeException, ParserConfigurationException,
-			SAXException, InstantiationException, IllegalAccessException,
-			ClassNotFoundException {
+	FrameNotFoundException, FrameElementNotFoundException, IOException,
+	IncompatibleScoringSchemeException, ParserConfigurationException,
+	SAXException, InstantiationException, IllegalAccessException,
+	ClassNotFoundException {
 		// System.out.println(java.net.InetAddress.getLocalHost().getHostName());
 		Main.initProperties();
 		SequenceAlignment sa = new SequenceAlignment();
@@ -73,10 +73,10 @@ public class SequenceAlignment extends MainWithInputSequences {
 
 	public PairwiseAlignment<FrameTokenEvent> getAlignmentFromAlgorithm(
 			final Document doc1, final Document doc2)
-			throws IncompatibleScoringSchemeException, SecurityException,
-			InstantiationException, IllegalAccessException,
-			ClassNotFoundException, ParserConfigurationException, SAXException,
-			IOException {
+					throws IncompatibleScoringSchemeException, SecurityException,
+					InstantiationException, IllegalAccessException,
+					ClassNotFoundException, ParserConfigurationException, SAXException,
+					IOException {
 
 		PairwiseAlignmentAlgorithm<FrameTokenEvent> algo;
 		ScoringScheme<FrameTokenEvent> scoringScheme =
@@ -97,7 +97,10 @@ public class SequenceAlignment extends MainWithInputSequences {
 			break;
 		default:
 		case DoubleNeedlemanWunsch:
-			algo = new DoubleNeedlemanWunsch<FrameTokenEvent>(scoringScheme);
+			// This is defunct.
+			algo =
+					new DoubleNeedlemanWunsch<FrameTokenEvent>(
+							(AdvancedScoringScheme<FrameTokenEvent>) scoringScheme);
 			break;
 		}
 
@@ -112,10 +115,10 @@ public class SequenceAlignment extends MainWithInputSequences {
 	}
 
 	public void run() throws SecurityException, FrameNotFoundException,
-			FrameElementNotFoundException, IncompatibleScoringSchemeException,
-			ParserConfigurationException, SAXException, IOException,
-			InstantiationException, IllegalAccessException,
-			ClassNotFoundException {
+	FrameElementNotFoundException, IncompatibleScoringSchemeException,
+	ParserConfigurationException, SAXException, IOException,
+	InstantiationException, IllegalAccessException,
+	ClassNotFoundException {
 		if (getArguments().size() != 2) {
 			System.err.println("You need to specify exactly two input files.");
 			System.exit(1);

@@ -1,4 +1,4 @@
-package de.uniheidelberg.cl.a10.patterns.sequencealignment;
+package de.nilsreiter.alignment.neobio;
 
 import java.util.Formatter;
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class PairwiseAlignment<T> {
 	 * @param score
 	 *            the overall score value for this alignment
 	 */
-	protected PairwiseAlignment(final List<T> gapped_seq1,
+	public PairwiseAlignment(final List<T> gapped_seq1,
 			final List<IndividualAlignment> score_tag_line,
 			final List<T> gapped_seq2, final Number score) {
 		this.gapped_seq1 = gapped_seq1;
@@ -135,23 +135,19 @@ public class PairwiseAlignment<T> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof PairwiseAlignment))
-			return false;
+		if (!(obj instanceof PairwiseAlignment)) return false;
 
 		@SuppressWarnings("unchecked")
 		PairwiseAlignment<T> another_pa = (PairwiseAlignment<T>) obj;
 
-		if (this.score != another_pa.score)
-			return false;
+		if (this.score != another_pa.score) return false;
 
-		if (!this.gapped_seq1.equals(another_pa.gapped_seq1))
-			return false;
+		if (!this.gapped_seq1.equals(another_pa.gapped_seq1)) return false;
 
 		if (!this.score_tag_line.equals(another_pa.score_tag_line))
 			return false;
 
-		if (!this.gapped_seq2.equals(another_pa.gapped_seq2))
-			return false;
+		if (!this.gapped_seq2.equals(another_pa.gapped_seq2)) return false;
 
 		return true;
 	}
@@ -174,7 +170,7 @@ public class PairwiseAlignment<T> {
 	 * @param originalSeq1
 	 *            the originalSeq1 to set
 	 */
-	protected void setOriginalSeq1(final List<T> originalSeq1) {
+	public void setOriginalSeq1(final List<T> originalSeq1) {
 		this.originalSeq1 = originalSeq1;
 	}
 
@@ -182,7 +178,7 @@ public class PairwiseAlignment<T> {
 	 * @param originalSeq2
 	 *            the originalSeq2 to set
 	 */
-	protected void setOriginalSeq2(final List<T> originalSeq2) {
+	public void setOriginalSeq2(final List<T> originalSeq2) {
 		this.originalSeq2 = originalSeq2;
 	}
 
@@ -239,8 +235,9 @@ public class PairwiseAlignment<T> {
 
 	public String getVerticalAlignmentTable(final int cellwidth) {
 		StringBuilder b = new StringBuilder();
-		String formatString = "%1$" + cellwidth + "." + cellwidth
-				+ "s %2$-4.4s %3$-" + cellwidth + "." + cellwidth + "s\n";
+		String formatString =
+				"%1$" + cellwidth + "." + cellwidth + "s %2$-4.4s %3$-"
+						+ cellwidth + "." + cellwidth + "s\n";
 		Formatter formatter = new Formatter(b, Locale.US);
 		formatter.format(formatString, "Sequence 1", "  ", "Sequence 2");
 		for (int i = 0; i < score_tag_line.size(); i++) {

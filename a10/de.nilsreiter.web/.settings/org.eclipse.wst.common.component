@@ -40,6 +40,9 @@
         <dependent-module archiveName="neobio.alignment-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/neobio.alignment/neobio.alignment">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="alignment.neobio-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/alignment.neobio/alignment.neobio">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="de.nilsreiter.alignment.rwalk-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/de.nilsreiter.alignment.rwalk/de.nilsreiter.alignment.rwalk">
             <dependency-type>uses</dependency-type>
         </dependent-module>

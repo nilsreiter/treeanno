@@ -1,35 +1,41 @@
 /*
  * NeedlemanWunsch.java
- *
+ * 
  * Copyright 2003 Sergio Anibal de Carvalho Junior
- *
+ * 
  * This file is part of NeoBio.
- *
- * NeoBio is free software; you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation; either
+ * 
+ * NeoBio is free software; you can redistribute it and/or modify it under the
+ * terms of
+ * the GNU General Public License as published by the Free Software Foundation;
+ * either
  * version 2 of the License, or (at your option) any later version.
- *
- * NeoBio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * 
+ * NeoBio is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR
  * PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with NeoBio;
- * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * NeoBio;
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite
+ * 330,
  * Boston, MA 02111-1307, USA.
- *
- * Proper attribution of the author as the source of the software would be appreciated.
- *
- * Sergio Anibal de Carvalho Junior		mailto:sergioanibaljr@users.sourceforge.net
- * Department of Computer Science		http://www.dcs.kcl.ac.uk
- * King's College London, UK			http://www.kcl.ac.uk
- *
+ * 
+ * Proper attribution of the author as the source of the software would be
+ * appreciated.
+ * 
+ * Sergio Anibal de Carvalho Junior mailto:sergioanibaljr@users.sourceforge.net
+ * Department of Computer Science http://www.dcs.kcl.ac.uk
+ * King's College London, UK http://www.kcl.ac.uk
+ * 
  * Please visit http://neobio.sourceforge.net
- *
+ * 
  * This project was supervised by Professor Maxime Crochemore.
- *
  */
 
-package de.uniheidelberg.cl.a10.patterns.sequencealignment;
+package de.nilsreiter.alignment.neobio;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -172,20 +178,21 @@ public class NeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 		// initiate first row
 		matrix[0][0] = 0;
 		for (c = 1; c < cols; c++)
-			matrix[0][c] = matrix[0][c - 1]
-					+ (int) scoreInsertion(seq2.get(c - 1));
+			matrix[0][c] =
+					matrix[0][c - 1] + (int) scoreInsertion(seq2.get(c - 1));
 
 		// calculates the similarity matrix (row-wise)
 		for (r = 1; r < rows; r++) {
 			// initiate first column
-			matrix[r][0] = matrix[r - 1][0]
-					+ (int) scoreDeletion(seq1.get(r - 1));
+			matrix[r][0] =
+					matrix[r - 1][0] + (int) scoreDeletion(seq1.get(r - 1));
 
 			for (c = 1; c < cols; c++) {
 				ins = matrix[r][c - 1] + (int) scoreInsertion(seq2.get(c - 1));
-				sub = matrix[r - 1][c - 1]
-						+ (int) scoreSubstitution(seq1.get(r - 1),
-								seq2.get(c - 1));
+				sub =
+						matrix[r - 1][c - 1]
+								+ (int) scoreSubstitution(seq1.get(r - 1),
+										seq2.get(c - 1));
 				del = matrix[r - 1][c] + (int) scoreDeletion(seq1.get(r - 1));
 
 				// choose the greatest
@@ -308,8 +315,10 @@ public class NeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 
 				for (r = 1; r < rows; r++) {
 					ins = array[r] + (int) scoreInsertion(seq2.get(c));
-					sub = array[r - 1]
-							+ (int) scoreSubstitution(seq1.get(r), seq2.get(c));
+					sub =
+							array[r - 1]
+									+ (int) scoreSubstitution(seq1.get(r),
+											seq2.get(c));
 					del = tmp + (int) scoreDeletion(seq1.get(r));
 
 					// move the temp value to the array
@@ -341,8 +350,10 @@ public class NeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 
 				for (c = 1; c < cols; c++) {
 					ins = tmp + (int) scoreInsertion(seq2.get(c));
-					sub = array[c - 1]
-							+ (int) scoreSubstitution(seq1.get(r), seq2.get(c));
+					sub =
+							array[c - 1]
+									+ (int) scoreSubstitution(seq1.get(r),
+											seq2.get(c));
 					del = array[c] + (int) scoreDeletion(seq1.get(r));
 
 					// move the temp value to the array

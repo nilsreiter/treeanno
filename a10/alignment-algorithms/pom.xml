@@ -63,5 +63,10 @@
 			<artifactId>neobio.alignment</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>de.nilsreiter</groupId>
+			<artifactId>alignment.neobio</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
   </dependencies>
 </project>

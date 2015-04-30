@@ -11,10 +11,13 @@ import neobio.alignment.IncompatibleScoringSchemeException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.nilsreiter.alignment.neobio.AlignmentType;
+import de.nilsreiter.alignment.neobio.IndividualAlignment;
+import de.nilsreiter.alignment.neobio.PairwiseAlignment;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityFunction;
 
-public class TestNeedlemanWunsch {
+public class TestDoubleNeedlemanWunsch {
 
 	List<String> sequence1;
 	List<String> sequence2;
@@ -27,24 +30,8 @@ public class TestNeedlemanWunsch {
 
 	@Test
 	public void testComputePairwiseAlignment() {
-		ScoringScheme<String> scheme =
-				new BasicScoringScheme<String>(2, -1, -1);
-		PairwiseAlignmentAlgorithm<String> algo =
-				new NeedlemanWunsch<String>(scheme);
-		algo.setSequences(sequence1, sequence2);
-		try {
-			PairwiseAlignment<String> alignment =
-					algo.computePairwiseAlignment();
-			List<IndividualAlignment> at = alignment.getScoreTagLine();
-			assertEquals(4, alignment.getScoreTagLine().size());
-			assertEquals(AlignmentType.Full, at.get(0).getAlignmentType());
-			assertEquals(AlignmentType.Full, at.get(1).getAlignmentType());
-			assertEquals(AlignmentType.None, at.get(2).getAlignmentType());
-			assertEquals(AlignmentType.Full, at.get(3).getAlignmentType());
-		} catch (IncompatibleScoringSchemeException e) {
-			fail("This should not happen.");
-		}
-		scheme =
+		AdvancedScoringScheme<String> scheme =
+
 				new AdvancedScoringScheme<String>(
 						Probability.fromProbability(0.5),
 						new SimilarityFunction<String>() {
@@ -67,7 +54,8 @@ public class TestNeedlemanWunsch {
 							public void readConfiguration(final Object tc) {}
 
 						});
-		algo = new DoubleNeedlemanWunsch<String>(scheme);
+		DoubleNeedlemanWunsch<String> algo =
+				new DoubleNeedlemanWunsch<String>(scheme);
 		algo.setSequences(sequence1, sequence2);
 		try {
 			PairwiseAlignment<String> alignment =

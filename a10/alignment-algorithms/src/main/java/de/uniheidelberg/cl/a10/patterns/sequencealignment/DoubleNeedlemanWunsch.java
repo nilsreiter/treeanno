@@ -1,32 +1,38 @@
 /*
  * NeedlemanWunsch.java
- *
+ * 
  * Copyright 2003 Sergio Anibal de Carvalho Junior
- *
+ * 
  * This file is part of NeoBio.
- *
- * NeoBio is free software; you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation; either
+ * 
+ * NeoBio is free software; you can redistribute it and/or modify it under the
+ * terms of
+ * the GNU General Public License as published by the Free Software Foundation;
+ * either
  * version 2 of the License, or (at your option) any later version.
- *
- * NeoBio is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * 
+ * NeoBio is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR
  * PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with NeoBio;
- * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * NeoBio;
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite
+ * 330,
  * Boston, MA 02111-1307, USA.
- *
- * Proper attribution of the author as the source of the software would be appreciated.
- *
- * Sergio Anibal de Carvalho Junior		mailto:sergioanibaljr@users.sourceforge.net
- * Department of Computer Science		http://www.dcs.kcl.ac.uk
- * King's College London, UK			http://www.kcl.ac.uk
- *
+ * 
+ * Proper attribution of the author as the source of the software would be
+ * appreciated.
+ * 
+ * Sergio Anibal de Carvalho Junior mailto:sergioanibaljr@users.sourceforge.net
+ * Department of Computer Science http://www.dcs.kcl.ac.uk
+ * King's College London, UK http://www.kcl.ac.uk
+ * 
  * Please visit http://neobio.sourceforge.net
- *
+ * 
  * This project was supervised by Professor Maxime Crochemore.
- *
  */
 
 package de.uniheidelberg.cl.a10.patterns.sequencealignment;
@@ -39,6 +45,11 @@ import neobio.alignment.CrochemoreLandauZivUkelson;
 import neobio.alignment.CrochemoreLandauZivUkelsonGlobalAlignment;
 import neobio.alignment.CrochemoreLandauZivUkelsonLocalAlignment;
 import neobio.alignment.IncompatibleScoringSchemeException;
+import de.nilsreiter.alignment.neobio.AlignmentType;
+import de.nilsreiter.alignment.neobio.IndividualAlignment;
+import de.nilsreiter.alignment.neobio.PairwiseAlignment;
+import de.nilsreiter.alignment.neobio.PairwiseAlignmentAlgorithm;
+import de.nilsreiter.alignment.neobio.SmithWaterman;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 
 /**
@@ -119,8 +130,8 @@ public class DoubleNeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 		this.matrix = null;
 	}
 
-	public DoubleNeedlemanWunsch(final ScoringScheme<T> scoring) {
-		this.scoring = scoring;
+	public DoubleNeedlemanWunsch(final AdvancedScoringScheme<T> scoring) {
+		this.setScoring(scoring);
 	}
 
 	/**
@@ -183,8 +194,10 @@ public class DoubleNeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 
 			for (c = 1; c < cols; c++) {
 				ins = matrix[r][c - 1] + scoreInsertion(seq2.get(c - 1));
-				sub = matrix[r - 1][c - 1]
-						+ scoreSubstitution(seq1.get(r - 1), seq2.get(c - 1));
+				sub =
+						matrix[r - 1][c - 1]
+								+ scoreSubstitution(seq1.get(r - 1),
+										seq2.get(c - 1));
 				del = matrix[r - 1][c] + scoreDeletion(seq1.get(r - 1));
 
 				// choose the greatest
@@ -237,7 +250,9 @@ public class DoubleNeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 
 			if ((r > 0) && (c > 0)) {
 				sub = scoreSubstitution(seq1.get(r - 1), seq2.get(c - 1));
-				Probability p = scoring.sim(seq1.get(r - 1), seq2.get(c - 1));
+				Probability p =
+						getAdvancedScoring().sim(seq1.get(r - 1),
+								seq2.get(c - 1));
 
 				if (matrix[r][c] == matrix[r - 1][c - 1] + sub) {
 					// substitution was used
@@ -309,8 +324,10 @@ public class DoubleNeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 
 				for (r = 1; r < rows; r++) {
 					ins = array[r] + scoreInsertion(seq2.get(c));
-					sub = array[r - 1]
-							+ scoreSubstitution(seq1.get(r), seq2.get(c));
+					sub =
+							array[r - 1]
+									+ scoreSubstitution(seq1.get(r),
+											seq2.get(c));
 					del = tmp + scoreDeletion(seq1.get(r));
 
 					// move the temp value to the array
@@ -342,8 +359,10 @@ public class DoubleNeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 
 				for (c = 1; c < cols; c++) {
 					ins = tmp + scoreInsertion(seq2.get(c));
-					sub = array[c - 1]
-							+ scoreSubstitution(seq1.get(r), seq2.get(c));
+					sub =
+							array[c - 1]
+									+ scoreSubstitution(seq1.get(r),
+											seq2.get(c));
 					del = array[c] + scoreDeletion(seq1.get(r));
 
 					// move the temp value to the array
@@ -359,5 +378,9 @@ public class DoubleNeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 
 			return array[cols - 1];
 		}
+	}
+
+	private AdvancedScoringScheme<T> getAdvancedScoring() {
+		return (AdvancedScoringScheme<T>) this.getScoring();
 	}
 }

@@ -1,4 +1,4 @@
-package de.uniheidelberg.cl.a10.patterns.sequencealignment;
+package de.nilsreiter.alignment.neobio;
 
 import java.util.LinkedList;
 import java.util.List;

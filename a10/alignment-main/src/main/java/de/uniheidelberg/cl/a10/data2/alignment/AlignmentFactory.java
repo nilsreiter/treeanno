@@ -104,7 +104,7 @@ public class AlignmentFactory<T extends HasTarget & HasDocument> {
 			<T extends HasDocument>
 			Alignment<T>
 			fromPairwiseAlignment(
-					final de.uniheidelberg.cl.a10.patterns.sequencealignment.PairwiseAlignment<T> pa,
+					final de.nilsreiter.alignment.neobio.PairwiseAlignment<T> pa,
 					final Document text1, final Document text2) {
 		Alignment<T> document = new Alignment_impl<T>("");
 		AlignmentIdProvider idp = new AlignmentIdProvider_impl();

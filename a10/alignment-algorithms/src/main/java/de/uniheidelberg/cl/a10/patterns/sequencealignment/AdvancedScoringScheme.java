@@ -1,5 +1,6 @@
 package de.uniheidelberg.cl.a10.patterns.sequencealignment;
 
+import de.nilsreiter.alignment.neobio.BasicScoringScheme;
 import de.uniheidelberg.cl.a10.Util;
 import de.uniheidelberg.cl.a10.patterns.data.Probability;
 import de.uniheidelberg.cl.a10.patterns.similarity.SimilarityCalculationException;
@@ -48,7 +49,6 @@ public class AdvancedScoringScheme<T> extends BasicScoringScheme<T> {
 
 	}
 
-	@Override
 	public Probability sim(final T a, final T b) {
 		try {
 			return this.function.sim(a, b);
