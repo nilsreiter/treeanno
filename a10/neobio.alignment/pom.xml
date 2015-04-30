@@ -7,4 +7,10 @@
   </parent>
   <groupId>neobio.alignment</groupId>
   <artifactId>neobio.alignment</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  	</dependency>
+  </dependencies>
 </project>
