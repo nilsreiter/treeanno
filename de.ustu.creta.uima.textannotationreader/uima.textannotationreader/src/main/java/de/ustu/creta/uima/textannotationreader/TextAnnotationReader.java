@@ -51,6 +51,7 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 
 	Class<? extends Annotation> annoClass;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(final UimaContext context)
 			throws ResourceInitializationException {
@@ -60,6 +61,10 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 			throw new ResourceInitializationException(new IOException(
 					directory.getName() + " is not a directory."));
 		try {
+			Class<?> annoClassObj = Class.forName(annotationClassName);
+			if (!Annotation.class.isAssignableFrom(annoClassObj)) {
+				throw new ResourceInitializationException();
+			}
 			annoClass =
 					(Class<? extends Annotation>) Class
 							.forName(annotationClassName);
