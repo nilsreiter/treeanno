@@ -67,7 +67,7 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 			}
 			annoClass =
 					(Class<? extends Annotation>) Class
-							.forName(annotationClassName);
+					.forName(annotationClassName);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -99,16 +99,6 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 
 		TokenSequence annoTokens = getTokens(contents);
 		TokenSequence targetTokens = getTokens(text);
-
-		for (Pair<Integer, Integer> p : annoTokens.getCharacterPositions()) {
-			System.out.println(p + " = "
-					+ contents.substring(p.getLeft(), p.getRight()));
-		}
-
-		for (Pair<Integer, Integer> p : targetTokens.getCharacterPositions()) {
-			System.out.println(p + " = "
-					+ text.substring(p.getLeft(), p.getRight()));
-		}
 
 		NeedlemanWunsch<String> nw =
 				new NeedlemanWunsch<String>(new BasicScoringScheme<String>(3,
