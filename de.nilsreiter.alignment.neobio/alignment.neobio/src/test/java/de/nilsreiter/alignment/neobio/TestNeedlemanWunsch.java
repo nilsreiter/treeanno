@@ -78,6 +78,24 @@ public class TestNeedlemanWunsch {
 	}
 
 	@Test
+	public void testGappedAlignmentDifferentLengths()
+			throws IncompatibleScoringSchemeException {
+		sequence1 = Arrays.asList("A", "B", "C", "D");
+		sequence2 = Arrays.asList("A", "B", "C");
+		ScoringScheme<String> scheme =
+				new BasicScoringScheme<String>(2, -1, -1);
+		PairwiseAlignmentAlgorithm<String> algo =
+				new NeedlemanWunsch<String>(scheme);
+		algo.setSequences(sequence1, sequence2);
+		PairwiseAlignment<String> alignment = algo.computePairwiseAlignment();
+
+		// gapped sequence
+		assertEquals(4, alignment.getGappedSequence1().size());
+		assertEquals(4, alignment.getGappedSequence2().size());
+
+	}
+
+	@Test
 	public void testMultiGappedAlignment()
 			throws IncompatibleScoringSchemeException {
 		sequence1 = Arrays.asList("A", "B", "C", "D");
