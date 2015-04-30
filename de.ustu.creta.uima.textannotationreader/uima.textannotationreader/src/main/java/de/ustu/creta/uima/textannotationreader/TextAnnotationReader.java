@@ -5,24 +5,35 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import neobio.alignment.IncompatibleScoringSchemeException;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import de.nilsreiter.alignment.neobio.BasicScoringScheme;
+import de.nilsreiter.alignment.neobio.NeedlemanWunsch;
+import de.nilsreiter.alignment.neobio.PairwiseAlignment;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
 public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 	public static final String PARAM_DIRECTORY_NAME = "Directory Name";
 	public static final String PARAM_FILE_SUFFIX = "File Suffix";
 	public static final String PARAM_ANNOTATION_TYPE = "Annotation Type";
+	public static final String PARAM_ANNOTATION_MARK = "Annotation Mark";
 
 	@ConfigurationParameter(name = PARAM_DIRECTORY_NAME)
 	String directoryPathName;
@@ -31,9 +42,14 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 	String fileSuffix = ".txt";
 
 	@ConfigurationParameter(name = PARAM_ANNOTATION_TYPE)
-	String annotationClass = null;
+	String annotationClassName = null;
+
+	@ConfigurationParameter(name = PARAM_ANNOTATION_MARK)
+	String annotationMark;
 
 	File directory;
+
+	Class<? extends Annotation> annoClass;
 
 	@Override
 	public void initialize(final UimaContext context)
@@ -43,6 +59,13 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 		if (!directory.isDirectory())
 			throw new ResourceInitializationException(new IOException(
 					directory.getName() + " is not a directory."));
+		try {
+			annoClass =
+					(Class<? extends Annotation>) Class
+					.forName(annotationClassName);
+		} catch (ClassNotFoundException e) {
+			throw new ResourceInitializationException(e);
+		}
 
 	}
 
@@ -67,13 +90,71 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 			// throw new AnalysisEngineProcessException();
 		}
 
-		List<String> annoTokens = new LinkedList<String>();
-		Pattern pattern = Pattern.compile("\\b[\\w]\\b");
+		String text = jcas.getDocumentText();
 
-		Matcher matcher = pattern.matcher(contents);
-		while (matcher.find()) {
-			annoTokens.add(matcher.group(0));
+		TokenSequence annoTokens = getTokens(contents);
+		TokenSequence targetTokens = getTokens(text);
+
+		for (Pair<Integer, Integer> p : annoTokens.getCharacterPositions()) {
+			System.out.println(p + " = "
+					+ contents.substring(p.getLeft(), p.getRight()));
 		}
+
+		for (Pair<Integer, Integer> p : targetTokens.getCharacterPositions()) {
+			System.out.println(p + " = "
+					+ text.substring(p.getLeft(), p.getRight()));
+		}
+
+		NeedlemanWunsch<String> nw =
+				new NeedlemanWunsch<String>(new BasicScoringScheme<String>(3,
+						-30, -1));
+		// nw.setGap("NULL");
+		// nw.setGapTag(new IndividualAlignment(AlignmentType.Gap));
+		nw.setSequences(annoTokens.getSurfaces(), targetTokens.getSurfaces());
+		PairwiseAlignment<String> alignment = null;
+		try {
+			alignment = nw.computePairwiseAlignment();
+		} catch (IncompatibleScoringSchemeException e) {
+			throw new AnalysisEngineProcessException(e);
+		}
+		if (alignment != null) {
+			Map<Integer, Integer> map = alignment.getIndexMap1();
+			for (int i = 0; i < annoTokens.getSurfaces().size(); i++) {
+				int k = i;
+				while (!map.containsKey(i)) {
+					i++;
+				}
+				if (i < annoTokens.getSurfaces().size()) {
+					Pair<Integer, Integer> tPos =
+							targetTokens.getCharacterPositions()
+							.get(map.get(i));
+					AnnotationFactory.createAnnotation(jcas, tPos.getLeft(),
+							tPos.getRight(), annoClass);
+				}
+			}
+
+		}
+
 	}
 
+	protected TokenSequence getTokens(String text) {
+		List<Pair<Integer, Integer>> annoTokens =
+				new LinkedList<Pair<Integer, Integer>>();
+		List<String> annoTokensSurfaces = new LinkedList<String>();
+		Pattern pattern =
+				Pattern.compile("\\b[\\w\\p{Punct}]+\\b",
+						Pattern.UNICODE_CHARACTER_CLASS);
+		Matcher matcher = pattern.matcher(text);
+		while (matcher.find()) {
+			Pair<Integer, Integer> p =
+					new ImmutablePair<Integer, Integer>(matcher.start(),
+							matcher.end());
+			annoTokens.add(p);
+			annoTokensSurfaces.add(matcher.group());
+		}
+		TokenSequence ts = new TokenSequence();
+		ts.setCharacterPositions(annoTokens);
+		ts.setSurfaces(annoTokensSurfaces);
+		return ts;
+	}
 }
