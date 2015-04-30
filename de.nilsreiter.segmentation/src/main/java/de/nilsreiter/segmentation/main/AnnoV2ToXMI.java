@@ -20,6 +20,7 @@ import com.lexicalscope.jewel.cli.Option;
 
 import de.nilsreiter.pipeline.PipelineBuilder;
 import de.nilsreiter.pipeline.io.TextReader;
+import de.nilsreiter.pipeline.segmentation.annotation.AnnotationCleanerV2;
 import de.nilsreiter.pipeline.segmentation.annotation.AnnotationReaderV2;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasWriter;
@@ -44,13 +45,18 @@ public class AnnoV2ToXMI {
 				options.getFileSuffix(),
 				"<b1>",
 				de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1.class
-				.getCanonicalName(),
+						.getCanonicalName(),
 				"<b2>",
 				de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2.class
-				.getCanonicalName(),
+						.getCanonicalName(),
 				"<b3>",
 				de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3.class
-				.getCanonicalName()));
+						.getCanonicalName()));
+		pl.add(AnalysisEngineFactory
+				.createEngineDescription(LanguageToolSegmenter.class));
+
+		pl.add(AnalysisEngineFactory
+				.createEngineDescription(AnnotationCleanerV2.class));
 		/*
 		 * pl.add(AnalysisEngineFactory.createEngineDescription(
 		 * AnnotationReaderV2.class,
@@ -58,10 +64,7 @@ public class AnnoV2ToXMI {
 		 * .getAnnoDirectory().getAbsolutePath(),
 		 * AnnotationReaderV2.PARAM_FILE_SUFFIX, options.getFileSuffix()));
 		 */
-		if (options.getAddTokens()) {
-			pl.add(AnalysisEngineFactory
-					.createEngineDescription(LanguageToolSegmenter.class));
-		}
+		if (options.getAddTokens()) {}
 
 		/*
 		 * pl.add(AnalysisEngineFactory.createEngineDescription(
