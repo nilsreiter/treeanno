@@ -15,6 +15,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 
@@ -32,7 +33,8 @@ public class TestAnnotationCleanerV2 {
 	}
 
 	@Test
-	public void testAnnotationCleaner() throws AnalysisEngineProcessException,
+	public void testAnnotationCleanerDouble()
+			throws AnalysisEngineProcessException,
 			ResourceInitializationException {
 		AnnotationFactory.createAnnotation(jcas, 4, 7,
 				SegmentBoundaryLevel3.class);
@@ -43,7 +45,46 @@ public class TestAnnotationCleanerV2 {
 				.createEngineDescription(AnnotationCleanerV2.class));
 
 		assertTrue(JCasUtil.exists(jcas, SegmentBoundaryLevel3.class));
-		assertEquals(1, JCasUtil.select(jcas, SegmentBoundaryLevel3.class));
-
+		assertEquals(1, JCasUtil.select(jcas, SegmentBoundaryLevel3.class)
+				.size());
 	}
+
+	@Test
+	public void testAnnotationCleanerTriple()
+			throws AnalysisEngineProcessException,
+			ResourceInitializationException {
+		AnnotationFactory.createAnnotation(jcas, 4, 7,
+				SegmentBoundaryLevel3.class);
+		AnnotationFactory.createAnnotation(jcas, 4, 7,
+				SegmentBoundaryLevel3.class);
+		AnnotationFactory.createAnnotation(jcas, 4, 7,
+				SegmentBoundaryLevel3.class);
+
+		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory
+				.createEngineDescription(AnnotationCleanerV2.class));
+
+		assertTrue(JCasUtil.exists(jcas, SegmentBoundaryLevel3.class));
+		assertEquals(1, JCasUtil.select(jcas, SegmentBoundaryLevel3.class)
+				.size());
+	}
+
+	@Test
+	public void testAnnotationCleanerReal()
+			throws AnalysisEngineProcessException,
+			ResourceInitializationException {
+		AnnotationFactory.createAnnotation(jcas, 4, 7,
+				SegmentBoundaryLevel3.class);
+		AnnotationFactory.createAnnotation(jcas, 4, 7,
+				SegmentBoundaryLevel2.class);
+		AnnotationFactory.createAnnotation(jcas, 4, 7,
+				SegmentBoundaryLevel3.class);
+
+		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory
+				.createEngineDescription(AnnotationCleanerV2.class));
+
+		assertTrue(JCasUtil.exists(jcas, SegmentBoundaryLevel2.class));
+		assertEquals(1, JCasUtil.select(jcas, SegmentBoundaryLevel2.class)
+				.size());
+	}
+
 }
