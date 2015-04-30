@@ -13,15 +13,36 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
+import de.ustu.creta.uima.textannotationreader.TextAnnotationReader;
 
 public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
+
+	public static List<AnalysisEngineDescription> getDescriptions(
+			String directoryName, String fileSuffix, String... pparams)
+					throws ResourceInitializationException {
+		List<AnalysisEngineDescription> ret =
+				new LinkedList<AnalysisEngineDescription>();
+		for (int i = 0; i < pparams.length; i = i + 2) {
+			ret.add(AnalysisEngineFactory.createEngineDescription(
+					TextAnnotationReader.class,
+					TextAnnotationReader.PARAM_DIRECTORY_NAME, directoryName,
+					TextAnnotationReader.PARAM_FILE_SUFFIX, fileSuffix,
+					TextAnnotationReader.PARAM_ANNOTATION_MARK, pparams[i],
+					TextAnnotationReader.PARAM_ANNOTATION_TYPE, pparams[i + 1]));
+		}
+		return ret;
+	}
+
 	public static final String PARAM_DIRECTORY_NAME = "Directory Name";
 	public static final String PARAM_FILE_SUFFIX = "File Suffix";
 
