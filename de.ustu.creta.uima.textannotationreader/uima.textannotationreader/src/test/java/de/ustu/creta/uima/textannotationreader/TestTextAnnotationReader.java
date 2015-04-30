@@ -124,5 +124,8 @@ public class TestTextAnnotationReader {
 		tt = JCasUtil.selectByIndex(jcas, TestType.class, 2);
 		assertEquals(21, tt.getBegin());
 		assertEquals(27, tt.getEnd());
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, 3);
+		assertEquals(21, tt.getBegin());
+		assertEquals(27, tt.getEnd());
 	}
 }
