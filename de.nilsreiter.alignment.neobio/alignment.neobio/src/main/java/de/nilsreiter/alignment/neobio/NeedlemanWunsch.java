@@ -37,7 +37,6 @@
 
 package de.nilsreiter.alignment.neobio;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -219,7 +218,7 @@ public class NeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 		int r, c, sub, max_score;
 
 		gapped_seq1 = new LinkedList<T>();
-		score_tag_line = new ArrayList<IndividualAlignment>();
+		score_tag_line = new LinkedList<IndividualAlignment>();
 		gapped_seq2 = new LinkedList<T>();
 
 		// start at the last row, last column
@@ -267,7 +266,7 @@ public class NeedlemanWunsch<T> extends PairwiseAlignmentAlgorithm<T> {
 			}
 
 			// must be a deletion
-			gapped_seq1.add(0, seq1.get(r));
+			gapped_seq1.add(0, seq1.get(r - 1));
 
 			score_tag_line.add(0, new IndividualAlignment(AlignmentType.Gap,
 					1.0));
