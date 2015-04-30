@@ -193,7 +193,7 @@ public class PairwiseAlignment<T> {
 
 			int okey1 = 1;
 			int okey2 = 1;
-			for (int i = 1; i < this.getGappedSequence1().size() + 1; i++) {
+			for (int i = 0; i < this.getGappedSequence1().size(); i++) {
 				if (this.getGappedSequence1().get(i) == null) {
 					okey1--;
 				} else {
@@ -216,7 +216,7 @@ public class PairwiseAlignment<T> {
 
 			int okey1 = 1;
 			int okey2 = 1;
-			for (int i = 1; i < this.getGappedSequence2().size() + 1; i++) {
+			for (int i = 0; i < this.getGappedSequence2().size(); i++) {
 				if (this.getGappedSequence2().get(i) == null) {
 					okey1--;
 				} else {
