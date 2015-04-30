@@ -95,6 +95,8 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 			// throw new AnalysisEngineProcessException();
 		}
 
+		getLogger().info("Processing document " + id);
+
 		String text = jcas.getDocumentText();
 
 		TokenSequence annoTokens = getTokens(contents);
@@ -123,7 +125,6 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 				Pair<Integer, Integer> annoCharPos =
 						annoTokens.getCharacterPositions().get(i);
 				try {
-
 					// getting the context of the token
 					String annoTokenWithContext =
 							contents.substring(annoCharPos.getLeft() - 1,
@@ -145,7 +146,7 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 						}
 					}
 				} catch (StringIndexOutOfBoundsException e) {
-
+					e.printStackTrace();
 				}
 			}
 
