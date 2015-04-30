@@ -62,7 +62,7 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 		try {
 			annoClass =
 					(Class<? extends Annotation>) Class
-					.forName(annotationClassName);
+							.forName(annotationClassName);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -120,16 +120,29 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 		if (alignment != null) {
 			Map<Integer, Integer> map = alignment.getIndexMap1();
 			for (int i = 0; i < annoTokens.getSurfaces().size(); i++) {
-				int k = i;
-				while (!map.containsKey(i)) {
-					i++;
-				}
-				if (i < annoTokens.getSurfaces().size()) {
-					Pair<Integer, Integer> tPos =
-							targetTokens.getCharacterPositions()
-							.get(map.get(i));
-					AnnotationFactory.createAnnotation(jcas, tPos.getLeft(),
-							tPos.getRight(), annoClass);
+				Pair<Integer, Integer> annoCharPos =
+						annoTokens.getCharacterPositions().get(i);
+				try {
+					String annoTokenWithContext =
+							contents.substring(annoCharPos.getLeft() - 1,
+									annoCharPos.getRight() + 1);
+					if (annoTokenWithContext.equals(annotationMark)) {
+						if (!map.containsKey(i)) {
+							while (!map.containsKey(i)) {
+								i++;
+							}
+							if (i < annoTokens.getSurfaces().size()) {
+								Pair<Integer, Integer> tPos =
+										targetTokens.getCharacterPositions()
+												.get(map.get(i));
+								AnnotationFactory.createAnnotation(jcas,
+										tPos.getLeft(), tPos.getRight(),
+										annoClass);
+							}
+						}
+					}
+				} catch (StringIndexOutOfBoundsException e) {
+
 				}
 			}
 
