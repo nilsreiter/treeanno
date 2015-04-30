@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -66,6 +68,14 @@ public class AnnotationReaderV2 extends JCasAnnotator_ImplBase {
 		contents = contents.replaceAll("<b4>", "");
 
 		String text = jcas.getDocumentText();
+
+		List<String> annoTokens = new LinkedList<String>();
+		Pattern pattern = Pattern.compile("\\b[\\w]\\b");
+
+		Matcher matcher = pattern.matcher(contents);
+		while (matcher.find()) {
+			annoTokens.add(matcher.group(0));
+		}
 
 		char[] chars = contents.toCharArray();
 		int mode = 0;
