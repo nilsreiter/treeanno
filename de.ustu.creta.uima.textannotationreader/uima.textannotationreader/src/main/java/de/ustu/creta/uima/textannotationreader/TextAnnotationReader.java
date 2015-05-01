@@ -5,11 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import neobio.alignment.IncompatibleScoringSchemeException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -24,9 +21,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import de.nilsreiter.alignment.neobio.BasicScoringScheme;
-import de.nilsreiter.alignment.neobio.NeedlemanWunsch;
-import de.nilsreiter.alignment.neobio.PairwiseAlignment;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
 public class TextAnnotationReader extends JCasAnnotator_ImplBase {
@@ -67,7 +61,7 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 			}
 			annoClass =
 					(Class<? extends Annotation>) Class
-					.forName(annotationClassName);
+							.forName(annotationClassName);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -102,62 +96,42 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 		TokenSequence annoTokens = getTokens(contents);
 		TokenSequence targetTokens = getTokens(text);
 
-		NeedlemanWunsch<String> nw =
-				new NeedlemanWunsch<String>(new BasicScoringScheme<String>(3,
-						-30, -1));
-		// nw.setGap("NULL");
-		// nw.setGapTag(new IndividualAlignment(AlignmentType.Gap));
-		nw.setSequences(annoTokens.getSurfaces(), targetTokens.getSurfaces());
-		PairwiseAlignment<String> alignment = null;
-		try {
-			getLogger().info("Now computing alignment ");
-			alignment = nw.computePairwiseAlignment();
-		} catch (IncompatibleScoringSchemeException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-		getLogger().info("Now processing alignment ");
+		List<Integer> cellar = new LinkedList<Integer>();
+		int indexTarget = 0;
+		for (int indexAnno = 0; indexAnno < annoTokens.getSurfaces().size(); indexAnno++) {
+			// character positions of token in anno-file
+			Pair<Integer, Integer> annoCharPos =
+					annoTokens.getCharacterPositions().get(indexAnno);
 
-		if (alignment != null) {
-			Map<Integer, Integer> map = alignment.getIndexMap1();
-			List<Integer> cellar = new LinkedList<Integer>();
+			if (annoCharPos.getLeft() > 0) {
+				// getting the context of the token
+				String annoTokenWithContext =
+						contents.substring(annoCharPos.getLeft() - 1,
+								annoCharPos.getRight() + 1);
 
-			// Iteration over all tokens
-			for (int i = 0; i < annoTokens.getSurfaces().size(); i++) {
-
-				// character positions of token in anno-file
-				Pair<Integer, Integer> annoCharPos =
-						annoTokens.getCharacterPositions().get(i);
-				try {
-					// getting the context of the token
-					String annoTokenWithContext =
-							contents.substring(annoCharPos.getLeft() - 1,
-									annoCharPos.getRight() + 1);
-
-					if (map.containsKey(i)) {
-						for (int c = 0; c < cellar.size(); c++) {
-							Pair<Integer, Integer> tPos =
-									targetTokens.getCharacterPositions().get(
-											map.get(i));
-							AnnotationFactory.createAnnotation(jcas,
-									tPos.getLeft(), tPos.getRight(), annoClass);
-						}
-						cellar.clear();
-					} else {
-						// check if it matches the mark
-						if (annoTokenWithContext.equals(annotationMark)) {
-							cellar.add(i);
-						}
+				// if the token in the anno text is a mark
+				if (annoTokenWithContext.equals(annotationMark)) {
+					cellar.add(indexAnno);
+				} else if (annoTokens.getSurfaces().get(indexAnno)
+						.equals(targetTokens.getSurfaces().get(indexTarget))) {
+					for (int c = 0; c < cellar.size(); c++) {
+						Pair<Integer, Integer> tPos =
+								targetTokens.getCharacterPositions().get(
+										indexTarget);
+						AnnotationFactory.createAnnotation(jcas,
+								tPos.getLeft(), tPos.getRight(), annoClass);
 					}
-				} catch (StringIndexOutOfBoundsException e) {
-					e.printStackTrace();
+					if (!cellar.isEmpty()) cellar.clear();
+					indexTarget++;
 				}
+			} else {
+				indexTarget++;
 			}
 
-			for (int c = 0; c < cellar.size(); c++) {
-				AnnotationFactory.createAnnotation(jcas, text.length() - 1,
-						text.length(), annoClass);
-			}
-
+		}
+		for (int c = 0; c < cellar.size(); c++) {
+			AnnotationFactory.createAnnotation(jcas, text.length() - 1,
+					text.length(), annoClass);
 		}
 
 	}
