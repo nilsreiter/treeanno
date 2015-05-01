@@ -29,14 +29,14 @@ BoundarySimilarity {
 		PyTuple goldTuple, silverTuple;
 		if (JCasUtil.exists(gold, SegmentationUnit.class)
 				&& JCasUtil.exists(silver, SegmentationUnit.class)) {
-			goldTuple = getMassTuple(gold, annoType);
-			silverTuple = getMassTuple(silver, annoType);
+			goldTuple = getPyMassTuple(gold, annoType);
+			silverTuple = getPyMassTuple(silver, annoType);
 		} else {
 			goldTuple =
-					getMassTuple(JCasUtil.select(gold, annoType), gold
+					getPyMassTuple(JCasUtil.select(gold, annoType), gold
 							.getDocumentText().length());
 			silverTuple =
-					getMassTuple(JCasUtil.select(silver, annoType), silver
+					getPyMassTuple(JCasUtil.select(silver, annoType), silver
 							.getDocumentText().length());
 		}
 		System.err.println("goldTuple = " + goldTuple);

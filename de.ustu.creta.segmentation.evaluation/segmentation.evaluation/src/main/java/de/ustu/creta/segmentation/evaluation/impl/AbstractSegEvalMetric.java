@@ -40,7 +40,7 @@ public abstract class AbstractSegEvalMetric {
 		} finally {}
 	}
 
-	public PyTuple getMassTuple(JCas jcas,
+	public PyTuple getPyMassTuple(JCas jcas,
 			Class<? extends Annotation> boundaryType) {
 		Collection<? extends Annotation> boundaries =
 				JCasUtil.select(jcas, boundaryType);
@@ -69,7 +69,7 @@ public abstract class AbstractSegEvalMetric {
 		} else
 			coll =
 					JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
-							new Annotation(jcas, end, end));
+							new Annotation(jcas, end + 1, end + 1));
 		if (coll != null) {
 			// System.err.println(i + ": " + coll.toString());
 			masses[i] = new PyInteger(coll.size());
@@ -78,7 +78,7 @@ public abstract class AbstractSegEvalMetric {
 		return new PyTuple(masses);
 	}
 
-	PyTuple getMassTuple(Collection<? extends Annotation> annotations,
+	PyTuple getPyMassTuple(Collection<? extends Annotation> annotations,
 			int length) {
 		PyInteger[] silverMasses = new PyInteger[annotations.size() + 1];
 		int index = 0;

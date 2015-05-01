@@ -29,10 +29,10 @@ implements SegmentationSimilarity {
 		ensureInterpreter();
 
 		PyTuple goldTuple =
-				getMassTuple(JCasUtil.select(gold, annoType), gold
+				getPyMassTuple(JCasUtil.select(gold, annoType), gold
 						.getDocumentText().length());
 		PyTuple silverTuple =
-				getMassTuple(JCasUtil.select(silver, annoType), silver
+				getPyMassTuple(JCasUtil.select(silver, annoType), silver
 						.getDocumentText().length());
 
 		Map<String, Double> r = new HashMap<String, Double>();

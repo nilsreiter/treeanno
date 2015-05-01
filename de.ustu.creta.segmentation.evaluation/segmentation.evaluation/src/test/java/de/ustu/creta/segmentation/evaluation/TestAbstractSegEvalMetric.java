@@ -45,7 +45,7 @@ public class TestAbstractSegEvalMetric {
 		createAnnotation(gold, 0, 0, SegmentBoundary.class);
 		createAnnotation(gold, 15, 15, SegmentBoundary.class);
 		createAnnotation(gold, 28, 28, SegmentBoundary.class);
-		PyTuple tuple = metric.getMassTuple(gold, SegmentBoundary.class);
+		PyTuple tuple = metric.getPyMassTuple(gold, SegmentBoundary.class);
 		System.err.println(tuple);
 
 		assertEquals(4, tuple.__len__());
@@ -58,7 +58,7 @@ public class TestAbstractSegEvalMetric {
 	@Test
 	public void testGetMassTuple2() {
 		createAnnotation(gold, 15, 15, SegmentBoundary.class);
-		PyTuple tuple = metric.getMassTuple(gold, SegmentBoundary.class);
+		PyTuple tuple = metric.getPyMassTuple(gold, SegmentBoundary.class);
 		System.err.println(tuple);
 		assertEquals(4, tuple.__getitem__(0).asInt());
 		assertEquals(4, tuple.__getitem__(1).asInt());
@@ -68,7 +68,7 @@ public class TestAbstractSegEvalMetric {
 	public void testGetMassTuple3() {
 		createAnnotation(gold, 15, 15, SegmentBoundary.class);
 		createAnnotation(gold, 17, 17, SegmentBoundary.class);
-		PyTuple tuple = metric.getMassTuple(gold, SegmentBoundary.class);
+		PyTuple tuple = metric.getPyMassTuple(gold, SegmentBoundary.class);
 		System.err.println(tuple);
 		assertEquals(4, tuple.__getitem__(0).asInt());
 		assertEquals(1, tuple.__getitem__(1).asInt());
