@@ -10,10 +10,12 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
+import org.apache.uima.jcas.tcas.Annotation_Type;
+
 /** 
- * Updated by JCasGen Thu Apr 23 18:14:56 CEST 2015
+ * Updated by JCasGen Fri May 01 09:54:17 CEST 2015
  * @generated */
-public class SegmentBoundaryLevel3_Type extends SegmentBoundary_Type {
+public class SegmentBoundaryLevel3_Type extends Annotation_Type {
   /** @generated 
    * @return the generator for this type
    */

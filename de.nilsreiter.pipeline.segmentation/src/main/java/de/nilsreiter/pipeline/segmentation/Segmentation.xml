@@ -121,7 +121,7 @@
 	  <typeDescription>
       <name>de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3</name>
       <description/>
-      <supertypeName>de.nilsreiter.pipeline.segmentation.type.SegmentBoundary</supertypeName>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
   </types>
 </typeSystemDescription>

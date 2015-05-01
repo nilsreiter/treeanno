@@ -9,11 +9,14 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 
+import org.apache.uima.jcas.tcas.Annotation;
+
+
 /** 
- * Updated by JCasGen Thu Apr 23 18:14:56 CEST 2015
+ * Updated by JCasGen Fri May 01 09:54:17 CEST 2015
  * XML source: /Users/reiterns/Documents/Java/de.nilsreiter.pipeline.segmentation/src/main/java/de/nilsreiter/pipeline/segmentation/Segmentation.xml
  * @generated */
-public class SegmentBoundaryLevel3 extends SegmentBoundary {
+public class SegmentBoundaryLevel3 extends Annotation {
   /** @generated
    * @ordered 
    */
