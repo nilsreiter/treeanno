@@ -110,10 +110,13 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 		nw.setSequences(annoTokens.getSurfaces(), targetTokens.getSurfaces());
 		PairwiseAlignment<String> alignment = null;
 		try {
+			getLogger().info("Now computing alignment ");
 			alignment = nw.computePairwiseAlignment();
 		} catch (IncompatibleScoringSchemeException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
+		getLogger().info("Now processing alignment ");
+
 		if (alignment != null) {
 			Map<Integer, Integer> map = alignment.getIndexMap1();
 			List<Integer> cellar = new LinkedList<Integer>();
