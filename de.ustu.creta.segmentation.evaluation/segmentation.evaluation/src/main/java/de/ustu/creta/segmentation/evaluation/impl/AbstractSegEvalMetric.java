@@ -68,13 +68,59 @@ public abstract class AbstractSegEvalMetric {
 			coll = JCasUtil.select(jcas, SegmentationUnit.class);
 		} else
 			coll =
-					JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
-							new Annotation(jcas, end + 1, end + 1));
+			JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
+					new Annotation(jcas, end + 1, end + 1));
 		if (coll != null) {
 			// System.err.println(i + ": " + coll.toString());
 			masses[i] = new PyInteger(coll.size());
 		}
 
+		return new PyTuple(masses);
+	}
+
+	public int[] getMassTuple(JCas jcas,
+			Class<? extends Annotation> boundaryType) {
+		Collection<? extends Annotation> boundaries =
+				JCasUtil.select(jcas, boundaryType);
+
+		int[] masses = new int[boundaries.size() + 1];
+		int i = 0, end = jcas.getDocumentText().length();
+		Annotation prevAnno = null;
+		Collection<? extends Annotation> coll;
+		for (Annotation anno : boundaries) {
+			if (prevAnno == null) {
+				coll =
+						JCasUtil.selectPreceding(SegmentationUnit.class, anno,
+								Integer.MAX_VALUE);
+			} else {
+				coll =
+						JCasUtil.selectBetween(SegmentationUnit.class,
+								prevAnno, anno);
+			}
+			// System.err.println(i + ": " + coll.toString());
+			masses[i++] = coll.size();
+			prevAnno = anno;
+		}
+		coll = null;
+		if (prevAnno == null) {
+			coll = JCasUtil.select(jcas, SegmentationUnit.class);
+		} else
+			coll =
+			JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
+					new Annotation(jcas, end + 1, end + 1));
+		if (coll != null) {
+			// System.err.println(i + ": " + coll.toString());
+			masses[i] = coll.size();
+		}
+
+		return masses;
+	}
+
+	public PyTuple intArray2PyTuple(int[] arr) {
+		PyInteger[] masses = new PyInteger[arr.length];
+		for (int i = 0; i < arr.length; i++) {
+			masses[i] = new PyInteger(arr[i]);
+		}
 		return new PyTuple(masses);
 	}
 
