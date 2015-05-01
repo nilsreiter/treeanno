@@ -61,7 +61,7 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 			}
 			annoClass =
 					(Class<? extends Annotation>) Class
-							.forName(annotationClassName);
+					.forName(annotationClassName);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -102,8 +102,7 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 			// character positions of token in anno-file
 			Pair<Integer, Integer> annoCharPos =
 					annoTokens.getCharacterPositions().get(indexAnno);
-
-			if (annoCharPos.getLeft() > 0) {
+			try {
 				// getting the context of the token
 				String annoTokenWithContext =
 						contents.substring(annoCharPos.getLeft() - 1,
@@ -124,10 +123,9 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 					if (!cellar.isEmpty()) cellar.clear();
 					indexTarget++;
 				}
-			} else {
+			} catch (IndexOutOfBoundsException e) {
 				indexTarget++;
 			}
-
 		}
 		for (int c = 0; c < cellar.size(); c++) {
 			AnnotationFactory.createAnnotation(jcas, text.length() - 1,
