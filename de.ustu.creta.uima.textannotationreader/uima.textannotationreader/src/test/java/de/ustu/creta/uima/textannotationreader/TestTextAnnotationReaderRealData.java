@@ -1,5 +1,6 @@
 package de.ustu.creta.uima.textannotationreader;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.uima.UIMAException;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
+import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.tudarmstadt.ukp.dkpro.core.languagetool.LanguageToolSegmenter;
 import de.ustu.creta.uima.textannotationreader.test.type.TestType;
 
@@ -50,8 +52,20 @@ public class TestTextAnnotationReaderRealData {
 				TestType.class.getCanonicalName(),
 				TextAnnotationReader.PARAM_DIRECTORY_NAME,
 				"src/test/resources/anno",
-				TextAnnotationReader.PARAM_FILE_SUFFIX, ".anno"));
+				TextAnnotationReader.PARAM_FILE_SUFFIX, ".anno"),
+				AnalysisEngineFactory.createEngine(XmiWriter.class,
+						XmiWriter.PARAM_TARGET_LOCATION,
+						"target/test/resources/xmi"));
 
 		assertTrue(JCasUtil.exists(jcas, TestType.class));
+		assertEquals(90, JCasUtil.select(jcas, TestType.class).size());
+		TestType tt;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, 0);
+		assertEquals(451, tt.getBegin());
+		assertEquals(456, tt.getEnd());
+
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, 89);
+		assertEquals(64947, tt.getBegin());
+		assertEquals(64955, tt.getEnd());
 	}
 }
