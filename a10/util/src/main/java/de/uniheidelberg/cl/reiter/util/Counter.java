@@ -51,6 +51,12 @@ public class Counter<K> extends HashMap<K, Integer> {
 		}
 	}
 
+	public void subtractAll(final Collection<? extends K> arg) {
+		for (K k : arg) {
+			this.subtract(k);
+		}
+	}
+
 	public Pair<Integer, Set<K>> getMax() {
 		HashSet<K> set = new HashSet<K>();
 
