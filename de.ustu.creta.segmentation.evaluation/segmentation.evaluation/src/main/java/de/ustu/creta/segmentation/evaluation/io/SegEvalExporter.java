@@ -7,13 +7,10 @@ import org.json.JSONObject;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.creta.segmentation.evaluation.impl.AbstractSegEvalMetric;
-import de.ustu.creta.segmentation.evaluation.impl.BoundarySimilarity_impl;
 
 public class SegEvalExporter {
 
 	int counter = 0;
-	AbstractSegEvalMetric metric = new BoundarySimilarity_impl(
-			SegmentBoundary.class);
 
 	JSONObject items = new JSONObject();
 
@@ -27,8 +24,10 @@ public class SegEvalExporter {
 			did = String.valueOf(counter++);
 		}
 		JSONObject obj = new JSONObject();
-		obj.put("1", metric.getMassTuple(gold, SegmentBoundary.class));
-		obj.put("2", metric.getMassTuple(gold, SegmentBoundary.class));
+		obj.put("1",
+				AbstractSegEvalMetric.getMassTuple(gold, SegmentBoundary.class));
+		obj.put("2", AbstractSegEvalMetric.getMassTuple(silver,
+				SegmentBoundary.class));
 		items.put(did, obj);
 
 	};
