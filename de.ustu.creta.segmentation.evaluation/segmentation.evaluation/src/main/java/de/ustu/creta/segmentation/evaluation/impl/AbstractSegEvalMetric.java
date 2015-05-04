@@ -68,8 +68,8 @@ public abstract class AbstractSegEvalMetric {
 			coll = JCasUtil.select(jcas, SegmentationUnit.class);
 		} else
 			coll =
-			JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
-					new Annotation(jcas, end + 1, end + 1));
+					JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
+							new Annotation(jcas, end + 1, end + 1));
 		if (coll != null) {
 			// System.err.println(i + ": " + coll.toString());
 			masses[i] = new PyInteger(coll.size());
@@ -78,39 +78,53 @@ public abstract class AbstractSegEvalMetric {
 		return new PyTuple(masses);
 	}
 
-	public int[] getMassTuple(JCas jcas,
+	public static int[] getMassTuple(JCas jcas,
 			Class<? extends Annotation> boundaryType) {
 		Collection<? extends Annotation> boundaries =
 				JCasUtil.select(jcas, boundaryType);
 
+		int units = JCasUtil.select(jcas, SegmentationUnit.class).size();
 		int[] masses = new int[boundaries.size() + 1];
 		int i = 0, end = jcas.getDocumentText().length();
 		Annotation prevAnno = null;
 		Collection<? extends Annotation> coll;
 		for (Annotation anno : boundaries) {
 			if (prevAnno == null) {
+				// Case before the first segment
 				coll =
 						JCasUtil.selectPreceding(SegmentationUnit.class, anno,
 								Integer.MAX_VALUE);
 			} else {
+				// cases between the first and last segment boundary
 				coll =
 						JCasUtil.selectBetween(SegmentationUnit.class,
 								prevAnno, anno);
 			}
-			// System.err.println(i + ": " + coll.toString());
+
+			System.err.println(JCasUtil.toText(coll));
 			masses[i++] = coll.size();
 			prevAnno = anno;
 		}
+		// after the last segment boundary
 		coll = null;
 		if (prevAnno == null) {
 			coll = JCasUtil.select(jcas, SegmentationUnit.class);
 		} else
 			coll =
-			JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
-					new Annotation(jcas, end + 1, end + 1));
+					JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
+							new Annotation(jcas, end + 1, end + 1));
 		if (coll != null) {
 			// System.err.println(i + ": " + coll.toString());
 			masses[i] = coll.size();
+			System.err.println(JCasUtil.toText(coll));
+
+		}
+		int s = 0;
+		for (int j = 0; j < masses.length; j++) {
+			s += masses[j];
+		}
+		if (s != units) {
+			System.err.println("units: " + units + ". Mass string: " + s);
 		}
 
 		return masses;
