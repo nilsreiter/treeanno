@@ -29,13 +29,11 @@ import de.ustu.creta.segmentation.evaluation.impl.BoundarySimilarity_impl;
 import de.ustu.creta.segmentation.evaluation.util.SegmentBoundaryAnnotator;
 
 public class TestAbstractSegEvalMetric {
-	AbstractSegEvalMetric metric;
 	JCas gold;
 	String text = "The dog barks. It is hungry.";
 
 	@Before
 	public void setUp() throws UIMAException {
-		metric = new BoundarySimilarity_impl(SegmentBoundary.class);
 
 		gold = JCasFactory.createJCas();
 		gold.setDocumentText(text);
@@ -58,7 +56,8 @@ public class TestAbstractSegEvalMetric {
 		createAnnotation(gold, 0, 0, SegmentBoundary.class);
 		createAnnotation(gold, 15, 15, SegmentBoundary.class);
 		createAnnotation(gold, 28, 28, SegmentBoundary.class);
-		int[] tuple = metric.getMassTuple(gold, SegmentBoundary.class);
+		int[] tuple =
+				AbstractSegEvalMetric.getMassTuple(gold, SegmentBoundary.class);
 		// System.err.println(tuple);
 
 		assertEquals(4, tuple.length);
@@ -71,7 +70,8 @@ public class TestAbstractSegEvalMetric {
 	@Test
 	public void testGetMassTuple2() {
 		createAnnotation(gold, 15, 15, SegmentBoundary.class);
-		int[] tuple = metric.getMassTuple(gold, SegmentBoundary.class);
+		int[] tuple =
+				AbstractSegEvalMetric.getMassTuple(gold, SegmentBoundary.class);
 		// System.err.println(tuple);
 		assertEquals(4, tuple[0]);
 		assertEquals(4, tuple[1]);
@@ -79,6 +79,10 @@ public class TestAbstractSegEvalMetric {
 
 	@Test
 	public void testGetMassTuple3() {
+		AbstractSegEvalMetric metric;
+
+		metric = new BoundarySimilarity_impl(SegmentBoundary.class);
+
 		createAnnotation(gold, 15, 15, SegmentBoundary.class);
 		createAnnotation(gold, 17, 17, SegmentBoundary.class);
 		PyTuple tuple = metric.getPyMassTuple(gold, SegmentBoundary.class);
@@ -89,7 +93,7 @@ public class TestAbstractSegEvalMetric {
 	}
 
 	@Test
-	public void testRealExample() throws UIMAException, IOException {
+	public void testRealExample1() throws UIMAException, IOException {
 		JCas jcas1 =
 				JCasFactory.createJCas("src/test/resources/xmi/1009.v1.xmi",
 						TypeSystemDescriptionFactory
@@ -114,8 +118,12 @@ public class TestAbstractSegEvalMetric {
 		SimplePipeline.runPipeline(jcas2, aeds);
 
 		assertFalse(jcas1 == jcas2);
-		int[] mt1 = metric.getMassTuple(jcas1, SegmentBoundary.class);
-		int[] mt2 = metric.getMassTuple(jcas2, SegmentBoundary.class);
+		int[] mt1 =
+				AbstractSegEvalMetric
+				.getMassTuple(jcas1, SegmentBoundary.class);
+		int[] mt2 =
+				AbstractSegEvalMetric
+				.getMassTuple(jcas2, SegmentBoundary.class);
 
 		assertTrue(JCasUtil.exists(jcas1, SegmentBoundary.class));
 		assertTrue(JCasUtil.exists(jcas2, SegmentBoundary.class));
@@ -128,6 +136,56 @@ public class TestAbstractSegEvalMetric {
 		for (int i = 0; i < mt2.length; i++) {
 			mt2s += mt2[i];
 		}
+		assertEquals(mt1s, mt2s);
+	}
+
+	@Test
+	public void testRealExample2() throws UIMAException, IOException {
+		JCas jcas1 =
+				JCasFactory.createJCas("src/test/resources/xmi/1202.v1.xmi",
+						TypeSystemDescriptionFactory
+						.createTypeSystemDescription());
+		JCas jcas2 =
+				JCasFactory.createJCas("src/test/resources/xmi/1202.v2.xmi",
+						TypeSystemDescriptionFactory
+						.createTypeSystemDescription());
+
+		AnalysisEngineDescription[] aeds =
+				new AnalysisEngineDescription[] {
+				AnalysisEngineFactory.createEngineDescription(
+						SegmentationUnitAnnotator.class,
+						SegmentationUnitAnnotator.PARAM_BASE_TYPE,
+						Token.class.getCanonicalName()),
+						AnalysisEngineFactory.createEngineDescription(
+								SegmentBoundaryAnnotator.class,
+								SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
+								SegmentBoundaryLevel1.class.getCanonicalName()) };
+
+		SimplePipeline.runPipeline(jcas1, aeds);
+		SimplePipeline.runPipeline(jcas2, aeds);
+
+		assertFalse(jcas1 == jcas2);
+		assertTrue(JCasUtil.exists(jcas1, SegmentBoundary.class));
+		assertTrue(JCasUtil.exists(jcas2, SegmentBoundary.class));
+		int[] mt1 =
+				AbstractSegEvalMetric
+				.getMassTuple(jcas1, SegmentBoundary.class);
+		int[] mt2 =
+				AbstractSegEvalMetric
+				.getMassTuple(jcas2, SegmentBoundary.class);
+
+		int mt1s = 0;
+		for (int i = 0; i < mt1.length; i++) {
+			mt1s += mt1[i];
+		}
+		int mt2s = 0;
+		for (int i = 0; i < mt2.length; i++) {
+			mt2s += mt2[i];
+		}
+		assertEquals(JCasUtil.select(jcas1, SegmentationUnit.class).size(),
+				mt1s);
+		assertEquals(JCasUtil.select(jcas2, SegmentationUnit.class).size(),
+				mt2s);
 		assertEquals(mt1s, mt2s);
 	}
 }
