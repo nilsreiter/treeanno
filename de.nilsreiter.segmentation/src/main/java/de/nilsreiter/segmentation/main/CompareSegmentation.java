@@ -5,7 +5,11 @@ import java.io.IOException;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
@@ -18,6 +22,7 @@ import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
 
 import de.nilsreiter.pipeline.segmentation.SegmentationUnitAnnotator;
+import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.evaluation.Metric;
 import de.ustu.creta.segmentation.evaluation.MetricFactory;
@@ -27,7 +32,7 @@ public class CompareSegmentation {
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws ClassNotFoundException,
-	UIMAException, IOException {
+			UIMAException, IOException {
 		Options options = CliFactory.parseArguments(Options.class, args);
 
 		Class<? extends Metric> metricClass;
@@ -42,20 +47,21 @@ public class CompareSegmentation {
 		metricClass = (Class<? extends Metric>) clazz;
 		Class<? extends Annotation> boundaryType =
 				(Class<? extends Annotation>) Class
-				.forName("de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel"
-						+ options.getBoundaryLevel());
-		Metric metric = MetricFactory.getMetric(metricClass, boundaryType);
+						.forName("de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel"
+								+ options.getBoundaryLevel());
+		Metric metric =
+				MetricFactory.getMetric(metricClass, SegmentBoundary.class);
 
 		if (SegEvalMetric.class.isAssignableFrom(metric.getClass())) {
 			((SegEvalMetric) metric)
-			.setMaxNearMiss(options.getNearMissWindow());
+					.setMaxNearMiss(options.getNearMissWindow());
 		}
 
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
-				.createTypeSystemDescriptionFromPath(new File(options
-						.getInputFile1().getParentFile(),
-						"typesystem.xml").toURI().toString());
+						.createTypeSystemDescriptionFromPath(new File(options
+								.getInputFile1().getParentFile(),
+								"typesystem.xml").toURI().toString());
 
 		JCas jcas1 =
 				JCasFactory.createJCas(options.getInputFile1()
@@ -63,6 +69,13 @@ public class CompareSegmentation {
 		JCas jcas2 =
 				JCasFactory.createJCas(options.getInputFile2()
 						.getAbsolutePath(), tsd);
+		AnalysisEngineDescription segBoundAnno =
+				AnalysisEngineFactory.createEngineDescription(
+						SegmentBoundaryAnnotator.class,
+						SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
+						boundaryType.getCanonicalName());
+		SimplePipeline.runPipeline(jcas1, segBoundAnno);
+		SimplePipeline.runPipeline(jcas2, segBoundAnno);
 
 		if (options.getPotentialBoundaries()) {
 			AnalysisEngineDescription addSegUnits =
@@ -78,7 +91,7 @@ public class CompareSegmentation {
 			int units2 = JCasUtil.select(jcas2, SegmentationUnit.class).size();
 			if (units1 != units2) {
 				System.err
-						.println("Different number of potential boundaries. Exiting.");
+				.println("Different number of potential boundaries. Exiting.");
 				System.exit(-1);
 			}
 		}
@@ -107,6 +120,31 @@ public class CompareSegmentation {
 
 		@Option
 		int getNearMissWindow();
+
+	}
+
+	public static class SegmentBoundaryAnnotator extends JCasAnnotator_ImplBase {
+
+		public static final String PARAM_ANNOTATION_TYPE = "Annotation Type";
+
+		@ConfigurationParameter(name = PARAM_ANNOTATION_TYPE)
+		String annotationTypeName = "";
+		Class<? extends Annotation> annotationType;
+
+		@Override
+		public void process(JCas jcas) throws AnalysisEngineProcessException {
+			try {
+				Class<?> clazz = Class.forName(annotationTypeName);
+				annotationType = (Class<? extends Annotation>) clazz;
+			} catch (ClassNotFoundException e) {
+				throw new AnalysisEngineProcessException(e);
+			}
+			for (Annotation anno : JCasUtil.select(jcas, annotationType)) {
+				int b = anno.getBegin();
+				AnnotationFactory.createAnnotation(jcas, b, b,
+						SegmentBoundary.class);
+			}
+		}
 
 	}
 }
