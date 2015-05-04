@@ -24,9 +24,9 @@ public class AddSegmentBoundaries {
 		Options options = CliFactory.parseArguments(Options.class, args);
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
-				.createTypeSystemDescriptionFromPath(new File(options
-						.getInputFile().getParentFile(),
-						"typesystem.xml").getAbsolutePath());
+						.createTypeSystemDescriptionFromPath(new File(options
+								.getInputFile().getParentFile(),
+								"typesystem.xml").getAbsolutePath());
 
 		JCas jcas =
 				JCasFactory.createJCas(
@@ -34,13 +34,13 @@ public class AddSegmentBoundaries {
 		AnalysisEngineDescription aed =
 				AnalysisEngineFactory.createEngineDescription(
 						SegmentBoundaryAnnotator.class,
-						SegmentBoundaryAnnotator.PARAM_BASE_ANNOTATION, options
-						.getSegmentClassName(), AnalysisEngineFactory
-						.createEngineDescription(XmiWriter.class,
-										XmiWriter.PARAM_TARGET_LOCATION,
-										options.getOutputDirectory()));
+						SegmentBoundaryAnnotator.PARAM_BASE_ANNOTATION,
+						options.getSegmentClassName());
 
-		SimplePipeline.runPipeline(jcas, aed);
+		SimplePipeline.runPipeline(jcas, aed, AnalysisEngineFactory
+				.createEngineDescription(XmiWriter.class,
+						XmiWriter.PARAM_TARGET_LOCATION,
+						options.getOutputDirectory()));
 	}
 
 	public interface Options {
