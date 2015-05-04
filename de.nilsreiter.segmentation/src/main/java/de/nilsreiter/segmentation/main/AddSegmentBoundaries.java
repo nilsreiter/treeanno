@@ -16,6 +16,7 @@ import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
 
 import de.nilsreiter.pipeline.segmentation.SegmentBoundaryAnnotator;
+import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 
 public class AddSegmentBoundaries {
 
@@ -23,9 +24,9 @@ public class AddSegmentBoundaries {
 		Options options = CliFactory.parseArguments(Options.class, args);
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
-						.createTypeSystemDescriptionFromPath(new File(options
-								.getInputFile().getParentFile(),
-								"typesystem.xml").getAbsolutePath());
+				.createTypeSystemDescriptionFromPath(new File(options
+						.getInputFile().getParentFile(),
+						"typesystem.xml").getAbsolutePath());
 
 		JCas jcas =
 				JCasFactory.createJCas(
@@ -33,8 +34,11 @@ public class AddSegmentBoundaries {
 		AnalysisEngineDescription aed =
 				AnalysisEngineFactory.createEngineDescription(
 						SegmentBoundaryAnnotator.class,
-						SegmentBoundaryAnnotator.PARAM_BASE_ANNOTATION,
-						options.getSegmentClassName());
+						SegmentBoundaryAnnotator.PARAM_BASE_ANNOTATION, options
+						.getSegmentClassName(), AnalysisEngineFactory
+						.createEngineDescription(XmiWriter.class,
+										XmiWriter.PARAM_TARGET_LOCATION,
+										options.getOutputDirectory()));
 
 		SimplePipeline.runPipeline(jcas, aed);
 	}
@@ -44,7 +48,7 @@ public class AddSegmentBoundaries {
 		File getInputFile();
 
 		@Option
-		File getOutputFile();
+		File getOutputDirectory();
 
 		@Option
 		String getSegmentClassName();
