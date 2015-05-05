@@ -13,11 +13,12 @@ import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
+import de.ustu.creta.segmentation.evaluation.impl.SegmentationSimilarity_impl;
 
 public class TestSegmentationSimilarity {
 	JCas gold, silv;
 
-	Metric bd;
+	SegmentationSimilarity_impl bd;
 
 	String text = "The dog barks. It is hungry.";
 
@@ -59,8 +60,8 @@ public class TestSegmentationSimilarity {
 		createAnnotation(silv, 27, 28, SegmentationUnit.class);
 
 		bd =
-				MetricFactory.getMetric(SegmentationSimilarity.class,
-						SegmentBoundary.class);
+				(SegmentationSimilarity_impl) MetricFactory.getMetric(
+						SegmentationSimilarity.class, SegmentBoundary.class);
 
 	}
 
@@ -75,6 +76,7 @@ public class TestSegmentationSimilarity {
 		AnnotationFactory.createAnnotation(silv, 18, 18, SegmentBoundary.class);
 		AnnotationFactory.createAnnotation(silv, 13, 13, SegmentBoundary.class);
 
+		bd.getEditDistance(gold, silv, 2);
 		assertEquals(0.92592,
 				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
