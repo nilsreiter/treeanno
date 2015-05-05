@@ -1,6 +1,7 @@
 package de.ustu.creta.segmentation.evaluation.impl;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -19,13 +20,13 @@ public class SegmentationUtil {
 		for (Annotation su : JCasUtil.select(jcas, SegmentationUnit.class)) {
 			segUnits.add(su);
 		}
-	
+
 		int units = segUnits.size();
 		int[] masses = new int[boundaries.size() + 1];
 		int i = 0, end = jcas.getDocumentText().length();
 		Annotation prevAnno = null;
 		Collection<? extends Annotation> coll;
-	
+
 		for (Annotation anno : boundaries) {
 			if (prevAnno == null) {
 				// Case before the first segment
@@ -38,7 +39,7 @@ public class SegmentationUtil {
 						JCasUtil.selectBetween(SegmentationUnit.class,
 								prevAnno, anno);
 			}
-	
+
 			// System.err.println(JCasUtil.toText(coll));
 			masses[i++] = coll.size();
 			segUnits.subtractAll(coll);
@@ -50,14 +51,14 @@ public class SegmentationUtil {
 			coll = JCasUtil.select(jcas, SegmentationUnit.class);
 		} else
 			coll =
-			JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
-					new Annotation(jcas, end + 1, end + 1));
+					JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
+							new Annotation(jcas, end + 1, end + 1));
 		if (coll != null) {
 			// System.err.println(i + ": " + coll.toString());
 			masses[i] = coll.size();
 			// System.err.println(JCasUtil.toText(coll));
 			segUnits.subtractAll(coll);
-	
+
 		}
 		int s = 0;
 		for (int j = 0; j < masses.length; j++) {
@@ -71,6 +72,13 @@ public class SegmentationUtil {
 			System.err.println(JCasUtil.toText(segUnits.getKeysWithMaxCount()));
 		}
 		return masses;
+	}
+
+	public static List<Annotation> getBoundarySets(JCas jcas,
+			Class<? extends Annotation> boundaryType) {
+
+		return null;
+
 	}
 
 }

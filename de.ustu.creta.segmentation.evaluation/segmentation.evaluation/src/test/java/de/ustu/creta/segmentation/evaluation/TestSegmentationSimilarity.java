@@ -1,5 +1,6 @@
 package de.ustu.creta.segmentation.evaluation;
 
+import static org.apache.uima.fit.factory.AnnotationFactory.createAnnotation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -11,9 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.ustu.creta.segmentation.evaluation.Metric;
-import de.ustu.creta.segmentation.evaluation.MetricFactory;
-import de.ustu.creta.segmentation.evaluation.SegmentationSimilarity;
+import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 
 public class TestSegmentationSimilarity {
 	JCas gold, silv;
@@ -32,11 +31,32 @@ public class TestSegmentationSimilarity {
 	public void setUp() throws Exception {
 		gold = JCasFactory.createJCas();
 		gold.setDocumentText(text);
-		AnnotationFactory.createAnnotation(gold, 5, 6, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(gold, 20, 21, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 8, 8, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 21, 21, SegmentBoundary.class);
+		// sentence 1
+		createAnnotation(gold, 0, 3, SegmentationUnit.class);
+		createAnnotation(gold, 4, 7, SegmentationUnit.class);
+		createAnnotation(gold, 8, 13, SegmentationUnit.class);
+		createAnnotation(gold, 13, 14, SegmentationUnit.class);
+
+		// sentence 2
+		createAnnotation(gold, 15, 17, SegmentationUnit.class);
+		createAnnotation(gold, 18, 20, SegmentationUnit.class);
+		createAnnotation(gold, 21, 27, SegmentationUnit.class);
+		createAnnotation(gold, 27, 28, SegmentationUnit.class);
 
 		silv = JCasFactory.createJCas();
 		silv.setDocumentText(text);
+
+		createAnnotation(silv, 0, 3, SegmentationUnit.class);
+		createAnnotation(silv, 4, 7, SegmentationUnit.class);
+		createAnnotation(silv, 8, 13, SegmentationUnit.class);
+		createAnnotation(silv, 13, 14, SegmentationUnit.class);
+
+		createAnnotation(silv, 15, 17, SegmentationUnit.class);
+		createAnnotation(silv, 18, 20, SegmentationUnit.class);
+		createAnnotation(silv, 21, 27, SegmentationUnit.class);
+		createAnnotation(silv, 27, 28, SegmentationUnit.class);
 
 		bd =
 				MetricFactory.getMetric(SegmentationSimilarity.class,
@@ -51,7 +71,12 @@ public class TestSegmentationSimilarity {
 
 	@Test
 	public void testNoSilverBreak() {
+		AnnotationFactory.createAnnotation(silv, 8, 8, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(silv, 18, 18, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(silv, 13, 13, SegmentBoundary.class);
+
 		assertEquals(0.92592,
 				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
+
 }
