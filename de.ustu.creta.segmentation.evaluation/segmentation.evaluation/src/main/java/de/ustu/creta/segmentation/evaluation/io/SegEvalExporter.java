@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
-import de.ustu.creta.segmentation.evaluation.impl.AbstractSegEvalMetric;
+import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 
 public class SegEvalExporter {
 
@@ -25,8 +25,8 @@ public class SegEvalExporter {
 		}
 		JSONObject obj = new JSONObject();
 		obj.put("1",
-				AbstractSegEvalMetric.getMassTuple(gold, SegmentBoundary.class));
-		obj.put("2", AbstractSegEvalMetric.getMassTuple(silver,
+				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class));
+		obj.put("2", SegmentationUtil.getMassTuple(silver,
 				SegmentBoundary.class));
 		items.put(did, obj);
 

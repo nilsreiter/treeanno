@@ -27,6 +27,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.ustu.creta.segmentation.evaluation.impl.AbstractSegEvalMetric;
 import de.ustu.creta.segmentation.evaluation.impl.BoundarySimilarity_impl;
+import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 import de.ustu.creta.segmentation.evaluation.util.SegmentBoundaryAnnotator;
 
 public class TestAbstractSegEvalMetric {
@@ -58,7 +59,7 @@ public class TestAbstractSegEvalMetric {
 		createAnnotation(gold, 15, 15, SegmentBoundary.class);
 		createAnnotation(gold, 28, 28, SegmentBoundary.class);
 		int[] tuple =
-				AbstractSegEvalMetric.getMassTuple(gold, SegmentBoundary.class);
+				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
 		// System.err.println(tuple);
 
 		assertEquals(4, tuple.length);
@@ -72,7 +73,7 @@ public class TestAbstractSegEvalMetric {
 	public void testGetMassTuple2() {
 		createAnnotation(gold, 15, 15, SegmentBoundary.class);
 		int[] tuple =
-				AbstractSegEvalMetric.getMassTuple(gold, SegmentBoundary.class);
+				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
 		// System.err.println(tuple);
 		assertEquals(4, tuple[0]);
 		assertEquals(4, tuple[1]);
@@ -120,10 +121,10 @@ public class TestAbstractSegEvalMetric {
 
 		assertFalse(jcas1 == jcas2);
 		int[] mt1 =
-				AbstractSegEvalMetric
+				SegmentationUtil
 						.getMassTuple(jcas1, SegmentBoundary.class);
 		int[] mt2 =
-				AbstractSegEvalMetric
+				SegmentationUtil
 						.getMassTuple(jcas2, SegmentBoundary.class);
 
 		assertTrue(JCasUtil.exists(jcas1, SegmentBoundary.class));
@@ -175,10 +176,10 @@ public class TestAbstractSegEvalMetric {
 		assertTrue(JCasUtil.exists(jcas1, SegmentBoundary.class));
 		assertTrue(JCasUtil.exists(jcas2, SegmentBoundary.class));
 		int[] mt1 =
-				AbstractSegEvalMetric
+				SegmentationUtil
 				.getMassTuple(jcas1, SegmentBoundary.class);
 		int[] mt2 =
-				AbstractSegEvalMetric
+				SegmentationUtil
 						.getMassTuple(jcas2, SegmentBoundary.class);
 
 		int mt1s = 0;
@@ -224,7 +225,7 @@ public class TestAbstractSegEvalMetric {
 		assertTrue(JCasUtil.exists(jcas2, SegmentationUnit.class));
 		assertTrue(JCasUtil.exists(jcas2, SegmentBoundary.class));
 		int[] mt2 =
-				AbstractSegEvalMetric
+				SegmentationUtil
 						.getMassTuple(jcas2, SegmentBoundary.class);
 
 	}
