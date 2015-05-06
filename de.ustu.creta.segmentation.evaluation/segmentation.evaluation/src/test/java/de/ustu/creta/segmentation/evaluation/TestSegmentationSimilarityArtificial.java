@@ -78,7 +78,7 @@ public class TestSegmentationSimilarityArtificial {
 		AnnotationFactory.createAnnotation(silv, 6, 6, SegmentBoundary.class);
 		AnnotationFactory.createAnnotation(silv, 12, 12, SegmentBoundary.class);
 
-		assertEquals(3, bd.getEditDistance(gold, silv, 2));
+		assertEquals(4, bd.getEditDistance(gold, silv, 2));
 		assertEquals(0, bd.getEditDistance(silv, silv, 10));
 		assertEquals(0, bd.getEditDistance(gold, gold, 10));
 	}

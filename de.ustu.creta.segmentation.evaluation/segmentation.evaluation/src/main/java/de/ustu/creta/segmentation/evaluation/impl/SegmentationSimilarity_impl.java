@@ -16,10 +16,17 @@ import de.ustu.creta.segmentation.evaluation.SegmentationSimilarity;
 
 public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 	Class<? extends Annotation> boundaryType;
+	TranspositionPenaltyFunction tpFunction =
+			new TranspositionPenaltyFunction() {
+		@Override
+		public int getPenalty(Transposition tp) {
+
+			return 1;
+		}
+			};
 
 	public SegmentationSimilarity_impl(
 			Class<? extends Annotation> annotationType) {
-
 		boundaryType = annotationType;
 	}
 
@@ -103,7 +110,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 			// substOperations.remove(new Integer(tp.source));
 			// substOperations.remove(new Integer(tp.target));
 			if (Math.min(tp.source, tp.target) > lEnd)
-				editDistance -= tp.getMass();
+				editDistance -= tpFunction.getPenalty(tp);// tp.getMass();
 			lEnd = Math.max(tp.target, tp.source);
 		}
 		return editDistance;
@@ -132,4 +139,16 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		return this.score(jcas1, jcas2).get(
 				SegmentationSimilarity.class.getSimpleName());
 	}
+
+	@Override
+	public void
+	setTranspositionPenaltyFunction(TranspositionPenaltyFunction tpf) {
+		tpFunction = tpf;
+	}
+
+	@Override
+	public TranspositionPenaltyFunction getTranspositionPenaltyFunction() {
+		return tpFunction;
+	}
+
 }
