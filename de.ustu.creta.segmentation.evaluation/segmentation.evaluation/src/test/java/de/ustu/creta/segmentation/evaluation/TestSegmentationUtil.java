@@ -108,15 +108,15 @@ public class TestSegmentationUtil {
 		assertTrue(b[1]);
 		assertFalse(b[2]);
 		assertTrue(b[3]);
-		assertFalse(b[4]);
-		assertTrue(b[5]);
-		assertFalse(b[6]);
-		assertTrue(b[7]);
-		assertFalse(b[8]);
-		assertFalse(b[9]);
-		assertFalse(b[10]);
-		assertTrue(b[11]);
-		assertFalse(b[12]);
-		assertTrue(b[13]);
+	}
+
+	@Test
+	public void testGetBoundaryString3() {
+		int[] array = new int[] { 1, 2, 0 };
+
+		boolean[] b = SegmentationUtil.getBoundaryString(array);
+		assertFalse(b[0]);
+		assertTrue(b[1]);
+		assertFalse(b[2]);
 	}
 }
