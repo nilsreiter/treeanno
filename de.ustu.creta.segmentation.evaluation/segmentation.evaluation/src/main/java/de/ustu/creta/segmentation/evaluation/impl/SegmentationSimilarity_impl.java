@@ -1,6 +1,7 @@
 package de.ustu.creta.segmentation.evaluation.impl;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,60 +30,14 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 
 	@Override
 	public Map<String, Double> score(JCas jcas1, JCas jcas2) {
-		int n = 2;
-		int length1 = JCasUtil.select(jcas1, SegmentationUnit.class).size();
-		int length2 = JCasUtil.select(jcas2, SegmentationUnit.class).size();
-		if (length1 != length2) {
-			throw new RuntimeException("Numbers of segmentation units differ.");
-		}
+		double mass = JCasUtil.select(jcas1, SegmentationUnit.class).size();
+		double editDistance = getEditDistance(jcas1, jcas2, 2);
 
-		int[] massString1 = SegmentationUtil.getMassTuple(jcas1, boundaryType);
-		int[] massString2 = SegmentationUtil.getMassTuple(jcas2, boundaryType);
+		double d = (mass - 1 - editDistance) / (mass - 1);
 
-		int[][] boundaries = new int[2][];
-		boundaries[0] = new int[length1];
-		Arrays.fill(boundaries[0], 0);
-		int index = 0;
-		for (int i = 0; i < massString1.length - 1; i++) {
-			index += massString1[i];
-			boundaries[0][index] = 1;
-		}
-		boundaries[1] = new int[length2];
-		Arrays.fill(boundaries[1], 0);
-		index = 0;
-		for (int i = 0; i < massString2.length - 1; i++) {
-			index += massString2[i];
-			boundaries[1][index] = 1;
-		}
-
-		// finding possible substituion operations
-		List<Integer> substOperations = new LinkedList<Integer>();
-		Counter<Transposition> potTranspositions = new Counter<Transposition>();
-		for (int i = 0; i < boundaries[0].length; i++) {
-			if (boundaries[0][i] != boundaries[1][i]) {
-				substOperations.add(i);
-			}
-		}
-		Integer j = null;
-		for (Integer i : substOperations) {
-
-			if (j != null && i - j < n) {
-				potTranspositions.add(new Transposition(j, i), i - j);
-			}
-
-			j = i;
-		}
-		int editDistance = substOperations.size();
-		int lEnd = 0;
-		for (Transposition tp : potTranspositions.keySet()) {
-			// substOperations.remove(new Integer(tp.source));
-			// substOperations.remove(new Integer(tp.target));
-			if (Math.min(tp.source, tp.target) > lEnd)
-				editDistance -= tp.getMass();
-			lEnd = Math.max(tp.target, tp.source);
-		}
-
-		return null;
+		HashMap<String, Double> map = new HashMap<String, Double>();
+		map.put(SegmentationSimilarity.class.getSimpleName(), d);
+		return map;
 
 	}
 
@@ -170,5 +125,11 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		public String toString() {
 			return "(" + source + "," + target + ")";
 		}
+	}
+
+	@Override
+	public double getSegmentationSimilarity(JCas jcas1, JCas jcas2) {
+		return this.score(jcas1, jcas2).get(
+				SegmentationSimilarity.class.getSimpleName());
 	}
 }
