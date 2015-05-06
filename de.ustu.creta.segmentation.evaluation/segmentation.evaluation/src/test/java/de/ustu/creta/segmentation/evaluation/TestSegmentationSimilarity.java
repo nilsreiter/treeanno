@@ -79,9 +79,8 @@ public class TestSegmentationSimilarity {
 		// AnnotationFactory.createAnnotation(silv, 13, 13,
 		// SegmentBoundary.class);
 
-		bd.getEditDistance(gold, silv, 2);
-		assertEquals(0.92592,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+		assertEquals(2, bd.getEditDistance(gold, silv, 2));
+		assertEquals(0.7143, bd.getSegmentationSimilarity(gold, silv), 1e-3);
 	}
 
 }
