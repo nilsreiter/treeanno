@@ -72,9 +72,12 @@ public class TestSegmentationSimilarity {
 
 	@Test
 	public void testNoSilverBreak() {
-		AnnotationFactory.createAnnotation(silv, 8, 8, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(silv, 18, 18, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(silv, 13, 13, SegmentBoundary.class);
+		// AnnotationFactory.createAnnotation(silv, 8, 8,
+		// SegmentBoundary.class);
+		// AnnotationFactory.createAnnotation(silv, 18, 18,
+		// SegmentBoundary.class);
+		// AnnotationFactory.createAnnotation(silv, 13, 13,
+		// SegmentBoundary.class);
 
 		bd.getEditDistance(gold, silv, 2);
 		assertEquals(0.92592,

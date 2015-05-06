@@ -20,7 +20,7 @@ public class TestSegmentationSimilarityArtificial {
 
 	SegmentationSimilarity_impl bd;
 
-	String text = "12345678901234";
+	String text = "123456789012345";
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -33,12 +33,6 @@ public class TestSegmentationSimilarityArtificial {
 		gold = JCasFactory.createJCas();
 		gold.setDocumentText(text);
 
-		AnnotationFactory.createAnnotation(gold, 1, 1, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(gold, 3, 3, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(gold, 5, 5, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(gold, 8, 8, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(gold, 11, 11, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(gold, 12, 12, SegmentBoundary.class);
 		// AnnotationFactory.createAnnotation(gold, 14, 14,
 		// SegmentBoundary.class);
 
@@ -65,6 +59,12 @@ public class TestSegmentationSimilarityArtificial {
 
 	@Test
 	public void testEditDistance1() {
+		AnnotationFactory.createAnnotation(gold, 1, 1, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 3, 3, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 5, 5, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 8, 8, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 11, 11, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 12, 12, SegmentBoundary.class);
 
 		// no silver annotations
 		assertEquals(6, bd.getEditDistance(gold, silv, 2));
@@ -81,5 +81,47 @@ public class TestSegmentationSimilarityArtificial {
 		assertEquals(3, bd.getEditDistance(gold, silv, 2));
 		assertEquals(0, bd.getEditDistance(silv, silv, 10));
 		assertEquals(0, bd.getEditDistance(gold, gold, 10));
+	}
+
+	@Test
+	public void testMaxVsMin() {
+		for (int i = 1; i < text.length() - 1; i++) {
+			AnnotationFactory.createAnnotation(gold, i, i,
+					SegmentBoundary.class);
+		}
+
+		assertEquals(0, bd.getSegmentationSimilarity(gold, silv), 1e-5);
+		assertEquals(0, bd.getSegmentationSimilarity(silv, gold), 1e-5);
+
+		assertEquals(1, bd.getSegmentationSimilarity(silv, silv), 1e-5);
+		assertEquals(1, bd.getSegmentationSimilarity(gold, gold), 1e-5);
+
+	}
+
+	@Test
+	public void testFullMisses() {
+		AnnotationFactory.createAnnotation(gold, 1, 1, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 3, 3, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 5, 5, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 7, 7, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 11, 11, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 13, 13, SegmentBoundary.class);
+
+		AnnotationFactory.createAnnotation(silv, 1, 1, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(silv, 3, 3, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(silv, 11, 11, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(silv, 13, 13, SegmentBoundary.class);
+
+		assertEquals(0.8461, bd.getSegmentationSimilarity(gold, silv), 1e-3);
+
+	}
+
+	@Test
+	public void testNearMisses() {
+		AnnotationFactory.createAnnotation(gold, 6, 6, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(silv, 7, 7, SegmentBoundary.class);
+
+		assertEquals(0.9231, bd.getSegmentationSimilarity(gold, silv), 1e-3);
+
 	}
 }
