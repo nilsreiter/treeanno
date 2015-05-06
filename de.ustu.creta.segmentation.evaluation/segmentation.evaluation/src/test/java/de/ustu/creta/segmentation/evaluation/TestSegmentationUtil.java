@@ -1,0 +1,78 @@
+package de.ustu.creta.segmentation.evaluation;
+
+import static org.apache.uima.fit.factory.AnnotationFactory.createAnnotation;
+import static org.junit.Assert.assertEquals;
+
+import org.apache.uima.UIMAException;
+import org.apache.uima.fit.factory.JCasFactory;
+import org.apache.uima.jcas.JCas;
+import org.junit.Before;
+import org.junit.Test;
+
+import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
+import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
+import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
+
+public class TestSegmentationUtil {
+
+	JCas gold;
+	String text = "The dog barks. It is hungry.";
+
+	@Before
+	public void setUp() throws UIMAException {
+
+		gold = JCasFactory.createJCas();
+		gold.setDocumentText(text);
+
+		// sentence 1
+		createAnnotation(gold, 0, 3, SegmentationUnit.class);
+		createAnnotation(gold, 4, 7, SegmentationUnit.class);
+		createAnnotation(gold, 8, 13, SegmentationUnit.class);
+		createAnnotation(gold, 13, 14, SegmentationUnit.class);
+
+		// sentence 2
+		createAnnotation(gold, 15, 17, SegmentationUnit.class);
+		createAnnotation(gold, 18, 20, SegmentationUnit.class);
+		createAnnotation(gold, 21, 27, SegmentationUnit.class);
+		createAnnotation(gold, 27, 28, SegmentationUnit.class);
+	}
+
+	@Test
+	public void testGetMassTuple1() {
+		createAnnotation(gold, 0, 0, SegmentBoundary.class);
+		createAnnotation(gold, 15, 15, SegmentBoundary.class);
+		createAnnotation(gold, 28, 28, SegmentBoundary.class);
+		int[] tuple =
+				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
+		// System.err.println(tuple);
+
+		assertEquals(4, tuple.length);
+		assertEquals(0, tuple[0]);
+		assertEquals(4, tuple[1]);
+		assertEquals(4, tuple[2]);
+		assertEquals(0, tuple[3]);
+	}
+
+	@Test
+	public void testGetMassTuple2() {
+		createAnnotation(gold, 15, 15, SegmentBoundary.class);
+		int[] tuple =
+				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
+		// System.err.println(tuple);
+		assertEquals(4, tuple[0]);
+		assertEquals(4, tuple[1]);
+	}
+
+	@Test
+	public void testGetMassTuple3() {
+
+		createAnnotation(gold, 15, 15, SegmentBoundary.class);
+		createAnnotation(gold, 17, 17, SegmentBoundary.class);
+		int[] tuple =
+				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
+		System.err.println(tuple);
+		assertEquals(4, tuple[0]);
+		assertEquals(1, tuple[1]);
+		assertEquals(3, tuple[2]);
+	}
+}

@@ -17,7 +17,6 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.junit.Before;
 import org.junit.Test;
-import org.python.core.PyTuple;
 
 import de.nilsreiter.pipeline.segmentation.SegmentationUnitAnnotator;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
@@ -25,8 +24,6 @@ import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
-import de.ustu.creta.segmentation.evaluation.impl.AbstractSegEvalMetric;
-import de.ustu.creta.segmentation.evaluation.impl.BoundarySimilarity_impl;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 import de.ustu.creta.segmentation.evaluation.util.SegmentBoundaryAnnotator;
 
@@ -54,63 +51,22 @@ public class TestAbstractSegEvalMetric {
 	}
 
 	@Test
-	public void testGetMassTuple1() {
-		createAnnotation(gold, 0, 0, SegmentBoundary.class);
-		createAnnotation(gold, 15, 15, SegmentBoundary.class);
-		createAnnotation(gold, 28, 28, SegmentBoundary.class);
-		int[] tuple =
-				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
-		// System.err.println(tuple);
-
-		assertEquals(4, tuple.length);
-		assertEquals(0, tuple[0]);
-		assertEquals(4, tuple[1]);
-		assertEquals(4, tuple[2]);
-		assertEquals(0, tuple[3]);
-	}
-
-	@Test
-	public void testGetMassTuple2() {
-		createAnnotation(gold, 15, 15, SegmentBoundary.class);
-		int[] tuple =
-				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
-		// System.err.println(tuple);
-		assertEquals(4, tuple[0]);
-		assertEquals(4, tuple[1]);
-	}
-
-	@Test
-	public void testGetMassTuple3() {
-		AbstractSegEvalMetric metric;
-
-		metric = new BoundarySimilarity_impl(SegmentBoundary.class);
-
-		createAnnotation(gold, 15, 15, SegmentBoundary.class);
-		createAnnotation(gold, 17, 17, SegmentBoundary.class);
-		PyTuple tuple = metric.getPyMassTuple(gold, SegmentBoundary.class);
-		System.err.println(tuple);
-		assertEquals(4, tuple.__getitem__(0).asInt());
-		assertEquals(1, tuple.__getitem__(1).asInt());
-		assertEquals(3, tuple.__getitem__(2).asInt());
-	}
-
-	@Test
 	public void testRealExample1() throws UIMAException, IOException {
 		JCas jcas1 =
 				JCasFactory.createJCas("src/test/resources/xmi/1009.v1.xmi",
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription());
+						.createTypeSystemDescription());
 		JCas jcas2 =
 				JCasFactory.createJCas("src/test/resources/xmi/1009.v2.xmi",
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription());
+						.createTypeSystemDescription());
 
 		AnalysisEngineDescription[] aeds =
 				new AnalysisEngineDescription[] {
-						AnalysisEngineFactory.createEngineDescription(
-								SegmentationUnitAnnotator.class,
-								SegmentationUnitAnnotator.PARAM_BASE_TYPE,
-								Token.class.getCanonicalName()),
+				AnalysisEngineFactory.createEngineDescription(
+						SegmentationUnitAnnotator.class,
+						SegmentationUnitAnnotator.PARAM_BASE_TYPE,
+						Token.class.getCanonicalName()),
 						AnalysisEngineFactory.createEngineDescription(
 								SegmentBoundaryAnnotator.class,
 								SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
@@ -120,12 +76,8 @@ public class TestAbstractSegEvalMetric {
 		SimplePipeline.runPipeline(jcas2, aeds);
 
 		assertFalse(jcas1 == jcas2);
-		int[] mt1 =
-				SegmentationUtil
-						.getMassTuple(jcas1, SegmentBoundary.class);
-		int[] mt2 =
-				SegmentationUtil
-						.getMassTuple(jcas2, SegmentBoundary.class);
+		int[] mt1 = SegmentationUtil.getMassTuple(jcas1, SegmentBoundary.class);
+		int[] mt2 = SegmentationUtil.getMassTuple(jcas2, SegmentBoundary.class);
 
 		assertTrue(JCasUtil.exists(jcas1, SegmentBoundary.class));
 		assertTrue(JCasUtil.exists(jcas2, SegmentBoundary.class));
@@ -146,26 +98,26 @@ public class TestAbstractSegEvalMetric {
 		JCas jcas1 =
 				JCasFactory.createJCas("src/test/resources/xmi/1202.v1.xmi",
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription());
+						.createTypeSystemDescription());
 		JCas jcas2 =
 				JCasFactory.createJCas("src/test/resources/xmi/1202.v2.xmi",
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription());
+						.createTypeSystemDescription());
 
 		AnalysisEngineDescription[] aeds =
 				new AnalysisEngineDescription[] {
-						AnalysisEngineFactory.createEngineDescription(
-								SegmentationUnitAnnotator.class,
-								SegmentationUnitAnnotator.PARAM_BASE_TYPE,
-								Token.class.getCanonicalName()),
+				AnalysisEngineFactory.createEngineDescription(
+						SegmentationUnitAnnotator.class,
+						SegmentationUnitAnnotator.PARAM_BASE_TYPE,
+						Token.class.getCanonicalName()),
 						AnalysisEngineFactory.createEngineDescription(
 								SegmentBoundaryAnnotator.class,
 								SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 								SegmentBoundaryLevel1.class.getCanonicalName()),
-						AnalysisEngineFactory.createEngineDescription(
-										XmiWriter.class,
-										XmiWriter.PARAM_TARGET_LOCATION,
-										"target/resources/xmi") };
+								AnalysisEngineFactory.createEngineDescription(
+								XmiWriter.class,
+								XmiWriter.PARAM_TARGET_LOCATION,
+								"target/resources/xmi") };
 
 		SimplePipeline.runPipeline(jcas1, aeds);
 		SimplePipeline.runPipeline(jcas2, aeds);
@@ -175,12 +127,8 @@ public class TestAbstractSegEvalMetric {
 		assertTrue(JCasUtil.exists(jcas2, SegmentationUnit.class));
 		assertTrue(JCasUtil.exists(jcas1, SegmentBoundary.class));
 		assertTrue(JCasUtil.exists(jcas2, SegmentBoundary.class));
-		int[] mt1 =
-				SegmentationUtil
-				.getMassTuple(jcas1, SegmentBoundary.class);
-		int[] mt2 =
-				SegmentationUtil
-						.getMassTuple(jcas2, SegmentBoundary.class);
+		int[] mt1 = SegmentationUtil.getMassTuple(jcas1, SegmentBoundary.class);
+		int[] mt2 = SegmentationUtil.getMassTuple(jcas2, SegmentBoundary.class);
 
 		int mt1s = 0;
 		for (int i = 0; i < mt1.length; i++) {
@@ -203,30 +151,28 @@ public class TestAbstractSegEvalMetric {
 		JCas jcas2 =
 				JCasFactory.createJCas("src/test/resources/xmi/1202.v2.xmi",
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription());
+						.createTypeSystemDescription());
 
 		AnalysisEngineDescription[] aeds =
 				new AnalysisEngineDescription[] {
-						AnalysisEngineFactory.createEngineDescription(
-								SegmentationUnitAnnotator.class,
-								SegmentationUnitAnnotator.PARAM_BASE_TYPE,
-								Token.class.getCanonicalName()),
+				AnalysisEngineFactory.createEngineDescription(
+						SegmentationUnitAnnotator.class,
+						SegmentationUnitAnnotator.PARAM_BASE_TYPE,
+						Token.class.getCanonicalName()),
 						AnalysisEngineFactory.createEngineDescription(
 								SegmentBoundaryAnnotator.class,
 								SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 								SegmentBoundaryLevel1.class.getCanonicalName()),
-						AnalysisEngineFactory.createEngineDescription(
-										XmiWriter.class,
-										XmiWriter.PARAM_TARGET_LOCATION,
-										"target/resources/xmi") };
+								AnalysisEngineFactory.createEngineDescription(
+								XmiWriter.class,
+								XmiWriter.PARAM_TARGET_LOCATION,
+								"target/resources/xmi") };
 
 		SimplePipeline.runPipeline(jcas2, aeds);
 
 		assertTrue(JCasUtil.exists(jcas2, SegmentationUnit.class));
 		assertTrue(JCasUtil.exists(jcas2, SegmentBoundary.class));
-		int[] mt2 =
-				SegmentationUtil
-						.getMassTuple(jcas2, SegmentBoundary.class);
+		int[] mt2 = SegmentationUtil.getMassTuple(jcas2, SegmentBoundary.class);
 
 	}
 }
