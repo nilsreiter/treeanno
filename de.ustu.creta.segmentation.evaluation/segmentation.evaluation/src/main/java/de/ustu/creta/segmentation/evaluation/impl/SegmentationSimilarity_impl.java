@@ -43,7 +43,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		double d = (mass - 1 - editDistance) / (mass - 1);
 
 		HashMap<String, Double> map = new HashMap<String, Double>();
-		map.put(SegmentationSimilarity.class.getSimpleName(), d);
+		map.put(getClass().getSimpleName(), d);
 		return map;
 
 	}
@@ -137,7 +137,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 	@Override
 	public double getSegmentationSimilarity(JCas jcas1, JCas jcas2) {
 		return this.score(jcas1, jcas2).get(
-				SegmentationSimilarity.class.getSimpleName());
+				SegmentationSimilarity_impl.class.getSimpleName());
 	}
 
 	@Override
