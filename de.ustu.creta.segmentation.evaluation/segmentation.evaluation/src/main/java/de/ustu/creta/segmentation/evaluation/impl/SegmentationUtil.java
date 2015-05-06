@@ -1,7 +1,7 @@
 package de.ustu.creta.segmentation.evaluation.impl;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -51,8 +51,8 @@ public class SegmentationUtil {
 			coll = JCasUtil.select(jcas, SegmentationUnit.class);
 		} else
 			coll =
-					JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
-							new Annotation(jcas, end + 1, end + 1));
+			JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
+					new Annotation(jcas, end + 1, end + 1));
 		if (coll != null) {
 			// System.err.println(i + ": " + coll.toString());
 			masses[i] = coll.size();
@@ -74,11 +74,23 @@ public class SegmentationUtil {
 		return masses;
 	}
 
-	public static List<Annotation> getBoundarySets(JCas jcas,
-			Class<? extends Annotation> boundaryType) {
+	public static boolean[] getBoundaryString(int[] massString) {
+		boolean[] boundaries = new boolean[sum(massString)];
+		Arrays.fill(boundaries, false);
+		int index = 0;
+		for (int i = 0; i < massString.length - 1; i++) {
+			index += massString[i];
+			boundaries[index] = true;
+		}
+		return boundaries;
+	}
 
-		return null;
-
+	public static int sum(int[] array) {
+		int s = 0;
+		for (int i = 0; i < array.length; i++) {
+			s += array[i];
+		}
+		return s;
 	}
 
 }
