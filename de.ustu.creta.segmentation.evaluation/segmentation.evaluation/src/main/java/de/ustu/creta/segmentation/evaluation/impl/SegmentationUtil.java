@@ -80,7 +80,7 @@ public class SegmentationUtil {
 		int index = 0;
 		for (int i = 0; i < massString.length - 1; i++) {
 			index += massString[i];
-			boundaries[index] = true;
+			if (index < boundaries.length) boundaries[index] = true;
 		}
 		return boundaries;
 	}
