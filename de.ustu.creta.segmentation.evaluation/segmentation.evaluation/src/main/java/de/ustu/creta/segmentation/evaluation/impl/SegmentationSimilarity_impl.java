@@ -14,7 +14,7 @@ import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.SegmentationSimilarity;
 
 public class SegmentationSimilarity_impl extends AbstractFournierMetric
-		implements SegmentationSimilarity {
+implements SegmentationSimilarity {
 	Class<? extends Annotation> boundaryType;
 
 	public SegmentationSimilarity_impl(
@@ -29,15 +29,9 @@ public class SegmentationSimilarity_impl extends AbstractFournierMetric
 
 	@Override
 	public Map<String, Double> scores(JCas jcas1, JCas jcas2) {
-		double mass = JCasUtil.select(jcas1, SegmentationUnit.class).size();
-		double editDistance = getEditDistance(jcas1, jcas2);
-
-		double d = (mass - 1.0 - editDistance) / (mass - 1.0);
-
 		HashMap<String, Double> map = new HashMap<String, Double>();
-		map.put(getClass().getSimpleName(), d);
+		map.put(getClass().getSimpleName(), score(jcas1, jcas2));
 		return map;
-
 	}
 
 	public double getEditDistance(JCas jcas1, JCas jcas2) {
@@ -69,7 +63,7 @@ public class SegmentationSimilarity_impl extends AbstractFournierMetric
 		}
 		double editDistance =
 				getSubstOperationsWeight(substOperations)
-						+ getTranspositionsWeight(potTranspositions.keySet());
+				+ getTranspositionsWeight(potTranspositions.keySet());
 
 		return editDistance;
 	}
