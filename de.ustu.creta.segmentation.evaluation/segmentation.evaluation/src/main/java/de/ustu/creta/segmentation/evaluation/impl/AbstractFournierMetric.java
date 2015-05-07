@@ -29,7 +29,8 @@ public abstract class AbstractFournierMetric implements FournierMetric {
 	}
 
 	@Override
-	public void setTranspositionPenaltyFunction(TranspositionWeightingFunction tpf) {
+	public void setTranspositionPenaltyFunction(
+			TranspositionWeightingFunction tpf) {
 		tpFunction = tpf;
 	}
 
@@ -41,7 +42,6 @@ public abstract class AbstractFournierMetric implements FournierMetric {
 	public List<Integer> getPotentialSubstitions(boolean[][] boundaries) {
 		List<Integer> substOperations = new LinkedList<Integer>();
 		for (int i = 0; i < boundaries[0].length; i++) {
-	
 			if (boundaries[0][i] ^ boundaries[1][i]) {
 				substOperations.add((boundaries[0][i] ? i : -i));
 			}
@@ -49,10 +49,22 @@ public abstract class AbstractFournierMetric implements FournierMetric {
 		return substOperations;
 	}
 
-	public Counter<Transposition> getTranspositions(List<Integer> substOperations) {
+	public List<Substitution> getPotentialSubstitions2(boolean[][] boundaries) {
+		List<Substitution> substOperations = new LinkedList<Substitution>();
+		for (int i = 0; i < boundaries[0].length; i++) {
+			if (boundaries[0][i] ^ boundaries[1][i]) {
+				substOperations.add(new Substitution(i, (boundaries[0][i] ? 0
+						: 1)));
+			}
+		}
+		return substOperations;
+	}
+
+	public Counter<Transposition> getTranspositions(
+			List<Integer> substOperations) {
 		Counter<Transposition> potTranspositions = new Counter<Transposition>();
+
 		// finding possible transpositions
-	
 		Iterator<Integer> iterator = substOperations.iterator();
 		while (iterator.hasNext()) {
 			int j = iterator.next();
@@ -63,21 +75,33 @@ public abstract class AbstractFournierMetric implements FournierMetric {
 							Math.abs(i)), i - j);
 				}
 			}
-	
+
 		}
-		/*
-		 * Integer j = null;
-		 * 
-		 * for (Integer i : substOperations) {
-		 * if (j != null && Math.abs(i) - Math.abs(j) < getWindowSize()
-		 * && i * j < 0) {
-		 * potTranspositions.add(
-		 * new Transposition(Math.abs(j), Math.abs(i)), i - j);
-		 * }
-		 * 
-		 * j = i;
-		 * }
-		 */
+
+		return potTranspositions;
+	}
+
+	public Counter<Transposition> getTranspositions2(
+			List<Substitution> substOperations) {
+		Counter<Transposition> potTranspositions = new Counter<Transposition>();
+
+		// finding possible transpositions
+		Iterator<Substitution> iterator = substOperations.iterator();
+		while (iterator.hasNext()) {
+			Substitution j = iterator.next();
+			if (iterator.hasNext()) {
+				Substitution i = iterator.next();
+				if (i.getPosition() - j.getPosition() < getWindowSize()
+						&& i.getSequence() != j.getSequence()) {
+					potTranspositions.add(
+							new Transposition_impl(j.getPosition(), i
+									.getPosition()),
+							i.getPosition() - j.getPosition());
+				}
+			}
+
+		}
+
 		return potTranspositions;
 	}
 
@@ -115,5 +139,25 @@ public abstract class AbstractFournierMetric implements FournierMetric {
 		public int getTarget() {
 			return target;
 		}
+	}
+
+	public class Substitution {
+		int position;
+		int sequence;
+
+		public Substitution(int position, int sequence) {
+			super();
+			this.position = position;
+			this.sequence = sequence;
+		}
+
+		public int getPosition() {
+			return position;
+		}
+
+		public int getSequence() {
+			return sequence;
+		}
+
 	}
 }
