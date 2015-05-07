@@ -13,7 +13,6 @@ import org.junit.Test;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.evaluation.impl.BoundarySimilarity_impl;
-import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 
 public class TestBoundarySimilarity_Characters {
 
@@ -77,10 +76,7 @@ public class TestBoundarySimilarity_Characters {
 			AnnotationFactory.createAnnotation(silv, i, i,
 					SegmentBoundary.class);
 		}
-		boolean[][] b =
-				bd.getBoundaries(SegmentationUtil.getMassTuple(gold,
-						SegmentBoundary.class), SegmentationUtil.getMassTuple(
-								silv, SegmentBoundary.class));
+
 		assertEquals(0.083333, bd.score(gold, silv), 1e-5);
 	}
 
