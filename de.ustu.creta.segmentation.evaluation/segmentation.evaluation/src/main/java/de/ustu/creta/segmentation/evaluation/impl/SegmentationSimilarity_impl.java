@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -48,22 +49,25 @@ implements SegmentationSimilarity {
 		boolean[][] boundaries = getBoundaries(massString1, massString2);
 
 		// finding possible substitution operations
-		List<Integer> substOperations =
-				this.getPotentialSubstitions(boundaries);
+		List<Substitution> substOperations =
+				this.getPotentialSubstitions2(boundaries);
 
 		// finding possible transposition operations
 		Counter<Transposition> potTranspositions =
-				this.getTranspositions(substOperations);
+				this.getTranspositions2(substOperations);
 
 		for (Transposition tp : potTranspositions.keySet()) {
-			substOperations.remove(new Integer(tp.getSource()));
-			substOperations.remove(new Integer(tp.getTarget()));
-			substOperations.remove(new Integer(-1 * tp.getSource()));
-			substOperations.remove(new Integer(-1 * tp.getTarget()));
+			substOperations.removeIf(new Predicate<Substitution>() {
+				@Override
+				public boolean test(Substitution t) {
+					return (tp.getTarget() == t.getPosition() || tp.getSource() == t
+							.getPosition());
+				}
+			});
 		}
 		double editDistance =
 				getSubstOperationsWeight(substOperations)
-				+ getTranspositionsWeight(potTranspositions.keySet());
+						+ getTranspositionsWeight(potTranspositions.keySet());
 
 		return editDistance;
 	}
@@ -76,7 +80,7 @@ implements SegmentationSimilarity {
 		return d / getWindowSize();
 	}
 
-	protected double getSubstOperationsWeight(Collection<Integer> substOp) {
+	protected double getSubstOperationsWeight(Collection<?> substOp) {
 		return substOp.size();
 	}
 
