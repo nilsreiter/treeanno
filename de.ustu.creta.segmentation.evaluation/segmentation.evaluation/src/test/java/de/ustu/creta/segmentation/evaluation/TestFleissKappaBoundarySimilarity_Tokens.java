@@ -72,7 +72,7 @@ public class TestFleissKappaBoundarySimilarity_Tokens {
 	@Test
 	public void testNoSilverBreak() {
 		assertEquals(0.0,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class TestFleissKappaBoundarySimilarity_Tokens {
 		AnnotationFactory.createAnnotation(silv, 27, 27, SegmentBoundary.class);
 
 		assertEquals(1.0,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class TestFleissKappaBoundarySimilarity_Tokens {
 		AnnotationFactory.createAnnotation(silv, 27, 27, SegmentBoundary.class);
 
 		assertEquals(0.47872,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -101,6 +101,6 @@ public class TestFleissKappaBoundarySimilarity_Tokens {
 		AnnotationFactory.createAnnotation(silv, 27, 27, SegmentBoundary.class);
 
 		assertEquals(0.72777,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 }

@@ -39,7 +39,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 	}
 
 	@Override
-	public Map<String, Double> score(JCas jcas1, JCas jcas2) {
+	public Map<String, Double> scores(JCas jcas1, JCas jcas2) {
 		double mass = JCasUtil.select(jcas1, SegmentationUnit.class).size();
 		double editDistance = getEditDistance(jcas1, jcas2);
 
@@ -176,9 +176,12 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 	}
 
 	@Override
-	public double getSegmentationSimilarity(JCas jcas1, JCas jcas2) {
-		return this.score(jcas1, jcas2).get(
-				SegmentationSimilarity_impl.class.getSimpleName());
+	public double score(JCas jcas1, JCas jcas2) {
+		double mass = JCasUtil.select(jcas1, SegmentationUnit.class).size();
+		double editDistance = getEditDistance(jcas1, jcas2);
+
+		double d = (mass - 1.0 - editDistance) / (mass - 1.0);
+		return d;
 	}
 
 	@Override

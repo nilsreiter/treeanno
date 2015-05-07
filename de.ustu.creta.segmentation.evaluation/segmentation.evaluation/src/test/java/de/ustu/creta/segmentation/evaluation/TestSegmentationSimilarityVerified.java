@@ -60,7 +60,7 @@ public class TestSegmentationSimilarityVerified {
 		Counter<Transposition> tps = bd.getTranspositions(potSubst);
 		assertEquals(1, tps.size());
 		assertEquals(0.5, bd.getEditDistance(gold, silv), 1e-3);
-		assertEquals(0.9444, bd.getSegmentationSimilarity(silv, gold), 1e-3);
+		assertEquals(0.9444, bd.score(silv, gold), 1e-3);
 
 		bd.setWindowSize(1);
 
@@ -71,7 +71,7 @@ public class TestSegmentationSimilarityVerified {
 		tps = bd.getTranspositions(potSubst);
 		assertEquals(0, tps.size());
 		assertEquals(2.0, bd.getEditDistance(gold, silv), 1e-3);
-		assertEquals(0.7777, bd.getSegmentationSimilarity(silv, gold), 1e-3);
+		assertEquals(0.7777, bd.score(silv, gold), 1e-3);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class TestSegmentationSimilarityVerified {
 		Counter<Transposition> tps = bd.getTranspositions(potSubst);
 		assertEquals(1, tps.size());
 		assertEquals(0.5, bd.getEditDistance(gold, silv), 1e-3);
-		assertEquals(0.9444, bd.getSegmentationSimilarity(silv, gold), 1e-3);
+		assertEquals(0.9444, bd.score(silv, gold), 1e-3);
 	}
 
 	/**
@@ -108,6 +108,6 @@ public class TestSegmentationSimilarityVerified {
 		createAnnotation(silv, 2, 2, SegmentBoundary.class);
 		createAnnotation(silv, 6, 6, SegmentBoundary.class);
 
-		assertEquals(0.7222, bd.getSegmentationSimilarity(silv, gold), 1e-3);
+		assertEquals(0.7222, bd.score(silv, gold), 1e-3);
 	}
 }

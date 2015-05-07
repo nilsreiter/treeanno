@@ -69,7 +69,7 @@ public class TestBoundarySimilarity_Tokens {
 	@Test
 	public void testNoSilverBreak() {
 		assertEquals(0.0,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class TestBoundarySimilarity_Tokens {
 		createAnnotation(silv, 28, 28, SegmentBoundary.class);
 
 		assertEquals(1.0,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class TestBoundarySimilarity_Tokens {
 		createAnnotation(silv, 28, 28, SegmentBoundary.class);
 
 		assertEquals(0.5,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -100,6 +100,6 @@ public class TestBoundarySimilarity_Tokens {
 		createAnnotation(silv, 18, 18, SegmentBoundary.class);
 
 		assertEquals(0.75,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 }

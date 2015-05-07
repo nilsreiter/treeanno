@@ -94,11 +94,11 @@ public class TestSegmentationSimilarityArtificial {
 					SegmentBoundary.class);
 		}
 
-		assertEquals(0, bd.getSegmentationSimilarity(gold, silv), 1e-5);
-		assertEquals(0, bd.getSegmentationSimilarity(silv, gold), 1e-5);
+		assertEquals(0, bd.score(gold, silv), 1e-5);
+		assertEquals(0, bd.score(silv, gold), 1e-5);
 
-		assertEquals(1, bd.getSegmentationSimilarity(silv, silv), 1e-5);
-		assertEquals(1, bd.getSegmentationSimilarity(gold, gold), 1e-5);
+		assertEquals(1, bd.score(silv, silv), 1e-5);
+		assertEquals(1, bd.score(gold, gold), 1e-5);
 
 	}
 
@@ -116,7 +116,7 @@ public class TestSegmentationSimilarityArtificial {
 		AnnotationFactory.createAnnotation(silv, 11, 11, SegmentBoundary.class);
 		AnnotationFactory.createAnnotation(silv, 13, 13, SegmentBoundary.class);
 
-		assertEquals(0.8461, bd.getSegmentationSimilarity(gold, silv), 1e-3);
+		assertEquals(0.8461, bd.score(gold, silv), 1e-3);
 
 	}
 
@@ -126,7 +126,7 @@ public class TestSegmentationSimilarityArtificial {
 		AnnotationFactory.createAnnotation(silv, 7, 7, SegmentBoundary.class);
 
 		assertEquals(0.5, bd.getEditDistance(silv, gold), 1e-3);
-		assertEquals(0.9615, bd.getSegmentationSimilarity(gold, silv), 1e-3);
+		assertEquals(0.9615, bd.score(gold, silv), 1e-3);
 
 	}
 }

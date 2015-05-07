@@ -20,11 +20,13 @@ BoundarySimilarity {
 		ensureInterpreter();
 	}
 
+	@Override
 	public boolean init(JCas gold) {
 		return ensureInterpreter();
 	}
 
-	public Map<String, Double> score(JCas gold, JCas silver) {
+	@Override
+	public double score(JCas gold, JCas silver) {
 		ensureInterpreter();
 		PyTuple goldTuple, silverTuple;
 		if (JCasUtil.exists(gold, SegmentationUnit.class)
@@ -42,11 +44,15 @@ BoundarySimilarity {
 		System.err.println("goldTuple = " + goldTuple);
 		System.err.println("silverTuple = " + silverTuple);
 
-		Map<String, Double> r = new HashMap<String, Double>();
-		r.put(getClass().getSimpleName(),
-				getPyFunctionValue(goldTuple, silverTuple,
-						"segeval.boundary_similarity"));
-		return r;
+		return getPyFunctionValue(goldTuple, silverTuple,
+				"segeval.boundary_similarity");
 	}
 
+	@Override
+	public Map<String, Double> scores(JCas gold, JCas silver) {
+
+		Map<String, Double> r = new HashMap<String, Double>();
+		r.put(getClass().getSimpleName(), score(gold, silver));
+		return r;
+	}
 }

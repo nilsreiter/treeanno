@@ -41,7 +41,7 @@ public class TestPRF {
 
 	@Test(expected = RuntimeException.class)
 	public void testNoSilverAnnotations() {
-		bd.score(gold, silv);
+		bd.scores(gold, silv);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class TestPRF {
 				"1");
 		AnnotationFactory.createAnnotation(silv, 6, 9, Segment.class).setValue(
 				"2");
-		Map<String, Double> result = bd.score(gold, silv);
+		Map<String, Double> result = bd.scores(gold, silv);
 		assertEquals(1.0, result.get(Strings.PRECISION), 1e-5);
 		assertEquals(1.0, result.get(Strings.RECALL), 1e-5);
 		assertEquals(1.0, result.get(Strings.FSCORE), 1e-5);

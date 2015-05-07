@@ -27,7 +27,7 @@ public class CohensKappa_impl implements CohensKappa {
 		for (int i = 0; i < jcas.length; i++) {
 			for (int j = i + 1; j < jcas.length; j++) {
 				double score =
-						observedAgreementMetric.score(jcas[i], jcas[j]).get(
+						observedAgreementMetric.scores(jcas[i], jcas[j]).get(
 								observedAgreementMetric.getClass()
 										.getSimpleName());
 				z += mass * score;

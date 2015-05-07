@@ -39,7 +39,7 @@ public class TestBreakDifference {
 	@Test
 	public void testNoSilverBreak() {
 		assertEquals(28.0,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class TestBreakDifference {
 		AnnotationFactory.createAnnotation(silv, text.length() - 1,
 				text.length(), SegmentBoundary.class);
 		assertEquals(6.0,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class TestBreakDifference {
 					SegmentBoundary.class);
 		}
 		assertEquals(0.0,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
 	@Test
@@ -67,6 +67,6 @@ public class TestBreakDifference {
 		AnnotationFactory.createAnnotation(silv, 20, 21, SegmentBoundary.class);
 
 		assertEquals(0.0,
-				bd.score(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 }

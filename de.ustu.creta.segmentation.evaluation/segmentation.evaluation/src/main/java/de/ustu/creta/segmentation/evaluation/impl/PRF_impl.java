@@ -31,13 +31,14 @@ public class PRF_impl implements PRF {
 		annotationClass = annoClass;
 	}
 
+	@Override
 	public boolean init(JCas gold) {
 		try {
 			feature =
 					gold.getRequiredFeature(
 							gold.getTypeSystem().getType(
 									annotationClass.getCanonicalName()),
-							featureName);
+									featureName);
 		} catch (CASRuntimeException e) {
 			logger.debug(e.getLocalizedMessage());
 			e.printStackTrace();
@@ -49,14 +50,15 @@ public class PRF_impl implements PRF {
 		return JCasUtil.exists(gold, annotationClass);
 	}
 
-	public Map<String, Double> score(JCas gold, JCas silver) {
+	@Override
+	public Map<String, Double> scores(JCas gold, JCas silver) {
 		int goldNumber = JCasUtil.select(gold, annotationClass).size();
 		int silverNumber = JCasUtil.select(silver, annotationClass).size();
 		if (goldNumber != silverNumber) {
 			logger.error("Number of annotations not matching.");
 			throw new RuntimeException(
 					"Number of annotations not matching (gold: " + goldNumber
-					+ ", silver: " + silverNumber + ").");
+							+ ", silver: " + silverNumber + ").");
 		}
 		// int fp = 0, fn = 0;
 		Counter<String> tp = new Counter<String>();
@@ -89,8 +91,8 @@ public class PRF_impl implements PRF {
 			res = getMicroAverage(tp, fp, fn);
 		}
 		if (isClassWise()) for (String c : categories) {
-				res.putAll(getPRF(tp.get(c), fp.get(c), fn.get(c), c + "_"));
-			}
+			res.putAll(getPRF(tp.get(c), fp.get(c), fn.get(c), c + "_"));
+		}
 		return res;
 	}
 
@@ -117,6 +119,7 @@ public class PRF_impl implements PRF {
 		return featureName;
 	}
 
+	@Override
 	public void setFeatureName(String featureName) {
 		this.featureName = featureName;
 	}
@@ -125,14 +128,17 @@ public class PRF_impl implements PRF {
 		return annotationClass;
 	}
 
+	@Override
 	public void setAnnotationClass(Class<? extends Annotation> annotationClass) {
 		this.annotationClass = annotationClass;
 	}
 
+	@Override
 	public Average getAverage() {
 		return average;
 	}
 
+	@Override
 	public void setAverage(Average average) {
 		this.average = average;
 	}
@@ -145,12 +151,19 @@ public class PRF_impl implements PRF {
 		return i;
 	}
 
+	@Override
 	public boolean isClassWise() {
 		return classWise;
 	}
 
+	@Override
 	public void setClassWise(boolean classWise) {
 		this.classWise = classWise;
+	}
+
+	@Override
+	public double score(JCas gold, JCas silver) {
+		return scores(gold, silver).get("_" + Strings.FSCORE);
 	}
 
 }

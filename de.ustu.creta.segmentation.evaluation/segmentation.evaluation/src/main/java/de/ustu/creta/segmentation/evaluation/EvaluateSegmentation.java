@@ -43,7 +43,7 @@ public class EvaluateSegmentation extends Main {
 			metric = MetricFactory.getMetric(WindowDifference.class, annoType);
 		}
 		Map<String, Double> score = null;
-		if (metric.init(goldJCas)) score = metric.score(goldJCas, silverJCas);
+		if (metric.init(goldJCas)) score = metric.scores(goldJCas, silverJCas);
 		System.out.println(score.toString());
 
 	}

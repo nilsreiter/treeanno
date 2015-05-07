@@ -19,7 +19,8 @@ public class BreakDifference_impl implements BreakDifference {
 		annoType = annotationType;
 	}
 
-	public Map<String, Double> score(JCas gold, JCas silver) {
+	@Override
+	public double score(JCas gold, JCas silver) {
 		int length = gold.getDocumentText().length();
 
 		int sum = 0;
@@ -45,11 +46,19 @@ public class BreakDifference_impl implements BreakDifference {
 			sum += distance;
 			n++;
 		}
+
+		return ((double) sum / (double) n);
+	}
+
+	@Override
+	public Map<String, Double> scores(JCas gold, JCas silver) {
+
 		HashMap<String, Double> res = new HashMap<String, Double>();
-		res.put(this.getClass().getSimpleName(), ((double) sum / (double) n));
+		res.put(this.getClass().getSimpleName(), score(gold, silver));
 		return res;
 	}
 
+	@Override
 	public boolean init(JCas gold) {
 		// nothing happens here
 		return true;
