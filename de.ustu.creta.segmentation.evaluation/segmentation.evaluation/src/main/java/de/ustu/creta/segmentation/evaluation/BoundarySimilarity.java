@@ -1,5 +1,5 @@
 package de.ustu.creta.segmentation.evaluation;
 
-public interface BoundarySimilarity extends SegEvalMetric {
+public interface BoundarySimilarity extends Metric {
 
 }
