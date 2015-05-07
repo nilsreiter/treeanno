@@ -1,8 +1,10 @@
 package de.nilsreiter.segmentation.main;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -23,6 +25,7 @@ import de.nilsreiter.pipeline.io.TextReader;
 import de.nilsreiter.pipeline.segmentation.annotation.AnnotationCleanerV2;
 import de.nilsreiter.pipeline.segmentation.annotation.AnnotationReaderV2;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.io.bincas.BinaryCasWriter;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.tudarmstadt.ukp.dkpro.core.languagetool.LanguageToolSegmenter;
@@ -54,7 +57,8 @@ public class AnnoV2ToXMI {
 						.getCanonicalName()));
 		pl.add(AnalysisEngineFactory
 				.createEngineDescription(LanguageToolSegmenter.class));
-
+		pl.add(AnalysisEngineFactory
+				.createEngineDescription(TokenizerCorrection.class));
 		pl.add(AnalysisEngineFactory
 				.createEngineDescription(AnnotationCleanerV2.class));
 		/*
@@ -118,6 +122,38 @@ public class AnnoV2ToXMI {
 			DocumentMetaData dmd =
 					JCasUtil.selectSingle(aJCas, DocumentMetaData.class);
 			dmd.setDocumentId(dmd.getDocumentId() + idPostfix);
+		}
+
+	}
+
+	public static class TokenizerCorrection extends JCasAnnotator_ImplBase {
+
+		@Override
+		public void process(JCas jcas) throws AnalysisEngineProcessException {
+			Set<Token> toRemove = new HashSet<Token>();
+			Set<Token> toAdd = new HashSet<Token>();
+			for (Token token : JCasUtil.select(jcas, Token.class)) {
+				if (token.getCoveredText().startsWith("›")
+						&& token.getEnd() > token.getBegin() + 1) {
+					int b = token.getBegin();
+					int e = token.getEnd();
+					Token t1 = new Token(jcas);
+					t1.setBegin(b);
+					t1.setEnd(b + 1);
+					Token t2 = new Token(jcas);
+					t2.setBegin(b + 1);
+					t2.setEnd(e);
+					toAdd.add(t1);
+					toAdd.add(t2);
+					toRemove.add(token);
+				}
+			}
+			for (Token token : toRemove) {
+				token.removeFromIndexes();
+			}
+			for (Token token : toAdd) {
+				token.addToIndexes();
+			}
 		}
 
 	}
