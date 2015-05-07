@@ -8,7 +8,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 import de.ustu.creta.segmentation.evaluation.BoundarySimilarity;
 
-public class BoundarySimilarity_impl implements BoundarySimilarity {
+public class BoundarySimilarity_impl extends AbstractFournierMetric implements
+		BoundarySimilarity {
 	Class<? extends Annotation> annoType;
 
 	public BoundarySimilarity_impl(Class<? extends Annotation> annotationType) {
@@ -32,4 +33,5 @@ public class BoundarySimilarity_impl implements BoundarySimilarity {
 		r.put(getClass().getSimpleName(), score(gold, silver));
 		return r;
 	}
+
 }

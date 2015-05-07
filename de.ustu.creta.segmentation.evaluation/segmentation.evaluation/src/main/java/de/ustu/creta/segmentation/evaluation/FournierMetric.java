@@ -1,7 +1,5 @@
 package de.ustu.creta.segmentation.evaluation;
 
-import de.ustu.creta.segmentation.evaluation.impl.SegmentationSimilarity_impl.Transposition;
-
 public interface FournierMetric extends Metric {
 
 	void setTranspositionPenaltyFunction(TranspositionWeightingFunction tpf);
@@ -14,5 +12,13 @@ public interface FournierMetric extends Metric {
 
 	public static interface TranspositionWeightingFunction {
 		double getWeight(Transposition tp);
+	}
+
+	public static interface Transposition {
+		int getMass();
+
+		int getSource();
+
+		int getTarget();
 	}
 }

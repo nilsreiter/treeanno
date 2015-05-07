@@ -15,18 +15,9 @@ import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.SegmentationSimilarity;
 
-public class SegmentationSimilarity_impl implements SegmentationSimilarity {
+public class SegmentationSimilarity_impl extends AbstractFournierMetric
+		implements SegmentationSimilarity {
 	Class<? extends Annotation> boundaryType;
-
-	int windowSize = 2;
-
-	TranspositionWeightingFunction tpFunction =
-			new TranspositionWeightingFunction() {
-		@Override
-		public double getWeight(Transposition tp) {
-			return tp.getMass();
-		}
-	};
 
 	public SegmentationSimilarity_impl(
 			Class<? extends Annotation> annotationType) {
@@ -73,8 +64,8 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 			if (iterator.hasNext()) {
 				int i = iterator.next();
 				if (Math.abs(i) - Math.abs(j) < getWindowSize() && i * j <= 0) {
-					potTranspositions.add(
-							new Transposition(Math.abs(j), Math.abs(i)), i - j);
+					potTranspositions.add(new Transposition_impl(Math.abs(j),
+							Math.abs(i)), i - j);
 				}
 			}
 
@@ -124,14 +115,14 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 				this.getTranspositions(substOperations);
 
 		for (Transposition tp : potTranspositions.keySet()) {
-			substOperations.remove(new Integer(tp.source));
-			substOperations.remove(new Integer(tp.target));
-			substOperations.remove(new Integer(-1 * tp.source));
-			substOperations.remove(new Integer(-1 * tp.target));
+			substOperations.remove(new Integer(tp.getSource()));
+			substOperations.remove(new Integer(tp.getTarget()));
+			substOperations.remove(new Integer(-1 * tp.getSource()));
+			substOperations.remove(new Integer(-1 * tp.getTarget()));
 		}
 		double editDistance =
 				getSubstOperationsWeight(substOperations)
-				+ getTranspositionsWeight(potTranspositions.keySet());
+						+ getTranspositionsWeight(potTranspositions.keySet());
 
 		return editDistance;
 	}
@@ -148,24 +139,6 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		return substOp.size();
 	}
 
-	public class Transposition {
-		int source, target;
-
-		public Transposition(int s1, int s2) {
-			this.source = s1;
-			this.target = s2;
-		}
-
-		public int getMass() {
-			return Math.max(source, target) - Math.min(target, source);
-		}
-
-		@Override
-		public String toString() {
-			return "(" + source + "," + target + ")";
-		}
-	}
-
 	@Override
 	public double score(JCas jcas1, JCas jcas2) {
 		double mass = JCasUtil.select(jcas1, SegmentationUnit.class).size();
@@ -173,27 +146,6 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 
 		double d = (mass - 1.0 - editDistance) / (mass - 1.0);
 		return d;
-	}
-
-	@Override
-	public void setTranspositionPenaltyFunction(
-			TranspositionWeightingFunction tpf) {
-		tpFunction = tpf;
-	}
-
-	@Override
-	public TranspositionWeightingFunction getTranspositionPenaltyFunction() {
-		return tpFunction;
-	}
-
-	@Override
-	public int getWindowSize() {
-		return windowSize;
-	}
-
-	@Override
-	public void setWindowSize(int windowSize) {
-		this.windowSize = windowSize;
 	}
 
 }
