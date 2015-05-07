@@ -79,6 +79,34 @@ public class TestSegmentationUtil {
 	}
 
 	@Test
+	public void testGetMassTuple4() {
+
+		createAnnotation(gold, 4, 4, SegmentBoundary.class);
+		createAnnotation(gold, 13, 13, SegmentBoundary.class);
+		createAnnotation(gold, 18, 18, SegmentBoundary.class);
+		int[] tuple =
+				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
+		System.err.println(tuple);
+		assertEquals(1, tuple[0]);
+		assertEquals(2, tuple[1]);
+		assertEquals(2, tuple[2]);
+	}
+
+	@Test
+	public void testGetMassTuple5() {
+
+		createAnnotation(gold, 8, 8, SegmentBoundary.class);
+		createAnnotation(gold, 15, 15, SegmentBoundary.class);
+		createAnnotation(gold, 21, 21, SegmentBoundary.class);
+		int[] tuple =
+				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
+		System.err.println(tuple);
+		assertEquals(2, tuple[0]);
+		assertEquals(2, tuple[1]);
+		assertEquals(2, tuple[2]);
+	}
+
+	@Test
 	public void testGetBoundaryString1() {
 		int[] array = new int[] { 1, 2, 2, 2, 4, 2, 1 };
 
