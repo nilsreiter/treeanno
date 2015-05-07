@@ -1,19 +1,22 @@
 package de.ustu.creta.segmentation.evaluation.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
+import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.BoundarySimilarity;
 
 public class BoundarySimilarity_impl extends AbstractFournierMetric implements
 		BoundarySimilarity {
-	Class<? extends Annotation> annoType;
+	Class<? extends Annotation> boundaryType;
 
 	public BoundarySimilarity_impl(Class<? extends Annotation> annotationType) {
-		annoType = annotationType;
+		boundaryType = annotationType;
 	}
 
 	@Override
@@ -23,7 +26,44 @@ public class BoundarySimilarity_impl extends AbstractFournierMetric implements
 
 	@Override
 	public double score(JCas gold, JCas silver) {
-		return 0.0;
+		int[] ms1 = SegmentationUtil.getMassTuple(gold, boundaryType);
+		int[] ms2 = SegmentationUtil.getMassTuple(silver, boundaryType);
+		boolean[][] b = getBoundaries(ms1, ms2);
+
+		// finding (number of) matches
+		int m = 0;
+		for (int i = 0; i < b[0].length; i++) {
+			m += (b[0][i] == b[1][i] && b[0][i] ? 1 : 0);
+		}
+
+		// finding possible substitution operations
+		List<Integer> substOperations = this.getPotentialSubstitions(b);
+
+		// finding possible transposition operations
+		Counter<Transposition> potTranspositions =
+				this.getTranspositions(substOperations);
+
+		for (Transposition tp : potTranspositions.keySet()) {
+			substOperations.remove(new Integer(tp.getSource()));
+			substOperations.remove(new Integer(tp.getTarget()));
+			substOperations.remove(new Integer(-1 * tp.getSource()));
+			substOperations.remove(new Integer(-1 * tp.getTarget()));
+		}
+
+		double num =
+				substOperations.size()
+						+ getTranspositionsWeight(potTranspositions.keySet());
+		double denom = substOperations.size() + potTranspositions.size() + m;
+
+		return 1 - (num / denom);
+	}
+
+	protected double getTranspositionsWeight(Collection<Transposition> trans) {
+		double d = 0.0;
+		for (Transposition tp : trans) {
+			d += tpFunction.getWeight(tp);
+		}
+		return d / getWindowSize();
 	}
 
 	@Override
