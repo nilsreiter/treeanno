@@ -76,6 +76,22 @@ public class TestCohensKappa {
 		createAnnotation(gold, 5, 5, SegmentBoundary.class);
 		createAnnotation(silv, 6, 6, SegmentBoundary.class);
 		assertEquals(0.0059, spi.getChanceAgreement(gold, silv), 1e-3);
+		assertEquals(0.9615, spi.getObservedAgreement(gold, silv), 1e-3);
+
+		createAnnotation(silv, 5, 5, SegmentBoundary.class);
+		createAnnotation(gold, 6, 6, SegmentBoundary.class);
+		assertEquals(0.0237, spi.getChanceAgreement(gold, silv), 1e-3);
+
+	}
+
+	@Test
+	public void testGetChanceAgreement2() {
+		spi.setObservedAgreementMetric(MetricFactory.getMetric(
+				BoundarySimilarity.class, SegmentBoundary.class));
+		createAnnotation(gold, 5, 5, SegmentBoundary.class);
+		createAnnotation(silv, 6, 6, SegmentBoundary.class);
+		assertEquals(0.0059, spi.getChanceAgreement(gold, silv), 1e-3);
+		assertEquals(0.5, spi.getObservedAgreement(gold, silv), 1e-3);
 
 		createAnnotation(silv, 5, 5, SegmentBoundary.class);
 		createAnnotation(gold, 6, 6, SegmentBoundary.class);
