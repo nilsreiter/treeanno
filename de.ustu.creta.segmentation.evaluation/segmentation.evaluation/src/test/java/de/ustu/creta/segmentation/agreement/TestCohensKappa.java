@@ -81,4 +81,52 @@ public class TestCohensKappa {
 		assertEquals(0.0237, spi.getChanceAgreement(gold, silv), 1e-3);
 
 	}
+
+	/**
+	 * 
+	 * <pre>
+	 * >>> ds = Dataset(
+	 *    {'text':
+	 *       {'1':(1,2,2,2,2,2,2,1),
+	 *        '2':(2,2,2,2,2,2,2)
+	 *       }
+	 *    })
+	 * </pre>
+	 */
+	@Test
+	public void testFullDisagreement() {
+		for (int i = 1; i < text.length() - 1; i++) {
+			if (i % 2 == 0)
+				createAnnotation(gold, i, i, SegmentBoundary.class);
+			else
+				createAnnotation(silv, i, i, SegmentBoundary.class);
+
+		}
+		assertEquals(0.6923, spi.getObservedAgreement(gold, silv), 1e-3);
+		assertEquals(0.5905, spi.agr(gold, silv), 1e-3);
+	}
+
+	/**
+	 * Verified with segeval.
+	 * <pre>
+	 * >>> dataset3 = Dataset(
+	 * {'text':
+	 *    {'1':(5,9),
+	 *     '2':(6,8)
+	 *    }
+	 * })
+	 * >>> segeval.actual_agreement_linear(dataset3, fnc_compare=segeval.segmentation_similarity)
+	 * Decimal('0.9615384615384615384615384615')
+	 * </pre>
+	 */
+	@Test
+	public void testNearMiss() {
+		createAnnotation(gold, 5, 5, SegmentBoundary.class);
+		createAnnotation(silv, 6, 6, SegmentBoundary.class);
+
+		assertEquals(0.9615,
+				spi.getObservedAgreementMetric().score(gold, silv), 1e-3);
+		assertEquals(0.9615, spi.getObservedAgreement(gold, silv), 1e-3);
+	}
+
 }
