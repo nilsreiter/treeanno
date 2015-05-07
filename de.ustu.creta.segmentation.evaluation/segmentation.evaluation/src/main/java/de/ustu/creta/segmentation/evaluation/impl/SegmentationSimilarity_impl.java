@@ -23,11 +23,11 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 
 	TranspositionWeightingFunction tpFunction =
 			new TranspositionWeightingFunction() {
-				@Override
-				public double getWeight(Transposition tp) {
-					return tp.getMass();
-				}
-			};
+		@Override
+		public double getWeight(Transposition tp) {
+			return tp.getMass();
+		}
+	};
 
 	public SegmentationSimilarity_impl(
 			Class<? extends Annotation> annotationType) {
@@ -143,21 +143,15 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		Counter<Transposition> potTranspositions =
 				this.getTranspositions(substOperations);
 
-		// int editDistance = substOperations.size();
-		int lEnd = 0;
 		for (Transposition tp : potTranspositions.keySet()) {
-			// if (Math.min(tp.source, tp.target) > lEnd) {
 			substOperations.remove(new Integer(tp.source));
 			substOperations.remove(new Integer(tp.target));
 			substOperations.remove(new Integer(-1 * tp.source));
 			substOperations.remove(new Integer(-1 * tp.target));
-			// }
-			// editDistance -= tpFunction.getWeight(tp);
-			lEnd = Math.max(tp.target, tp.source);
 		}
 		double editDistance =
 				getSubstOperationsWeight(substOperations)
-						+ getTranspositionsWeight(potTranspositions.keySet());
+				+ getTranspositionsWeight(potTranspositions.keySet());
 
 		return editDistance;
 	}
