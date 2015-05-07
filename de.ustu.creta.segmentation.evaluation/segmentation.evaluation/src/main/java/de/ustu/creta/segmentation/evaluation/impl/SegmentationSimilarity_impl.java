@@ -23,11 +23,11 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 
 	TranspositionWeightingFunction tpFunction =
 			new TranspositionWeightingFunction() {
-		@Override
-		public double getWeight(Transposition tp) {
-			return tp.getMass();
-		}
-	};
+				@Override
+				public double getWeight(Transposition tp) {
+					return tp.getMass();
+				}
+			};
 
 	public SegmentationSimilarity_impl(
 			Class<? extends Annotation> annotationType) {
@@ -63,7 +63,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		return boundaries;
 	}
 
-	public int sum(int[] array) {
+	public static int sum(int[] array) {
 		int s = 0;
 		for (int i = 0; i < array.length; i++) {
 			s += array[i];
@@ -151,7 +151,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		}
 		double editDistance =
 				getSubstOperationsWeight(substOperations)
-				+ getTranspositionsWeight(potTranspositions.keySet());
+						+ getTranspositionsWeight(potTranspositions.keySet());
 
 		return editDistance;
 	}
