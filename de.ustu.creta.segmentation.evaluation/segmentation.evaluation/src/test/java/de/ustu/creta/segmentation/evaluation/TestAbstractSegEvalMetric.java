@@ -27,6 +27,7 @@ import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 import de.ustu.creta.segmentation.evaluation.util.SegmentBoundaryAnnotator;
 
+@Deprecated
 public class TestAbstractSegEvalMetric {
 	JCas gold;
 	String text = "The dog barks. It is hungry.";
@@ -55,18 +56,18 @@ public class TestAbstractSegEvalMetric {
 		JCas jcas1 =
 				JCasFactory.createJCas("src/test/resources/xmi/1009.v1.xmi",
 						TypeSystemDescriptionFactory
-						.createTypeSystemDescription());
+								.createTypeSystemDescription());
 		JCas jcas2 =
 				JCasFactory.createJCas("src/test/resources/xmi/1009.v2.xmi",
 						TypeSystemDescriptionFactory
-						.createTypeSystemDescription());
+								.createTypeSystemDescription());
 
 		AnalysisEngineDescription[] aeds =
 				new AnalysisEngineDescription[] {
-				AnalysisEngineFactory.createEngineDescription(
-						SegmentationUnitAnnotator.class,
-						SegmentationUnitAnnotator.PARAM_BASE_TYPE,
-						Token.class.getCanonicalName()),
+						AnalysisEngineFactory.createEngineDescription(
+								SegmentationUnitAnnotator.class,
+								SegmentationUnitAnnotator.PARAM_BASE_TYPE,
+								Token.class.getCanonicalName()),
 						AnalysisEngineFactory.createEngineDescription(
 								SegmentBoundaryAnnotator.class,
 								SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
@@ -98,26 +99,26 @@ public class TestAbstractSegEvalMetric {
 		JCas jcas1 =
 				JCasFactory.createJCas("src/test/resources/xmi/1202.v1.xmi",
 						TypeSystemDescriptionFactory
-						.createTypeSystemDescription());
+								.createTypeSystemDescription());
 		JCas jcas2 =
 				JCasFactory.createJCas("src/test/resources/xmi/1202.v2.xmi",
 						TypeSystemDescriptionFactory
-						.createTypeSystemDescription());
+								.createTypeSystemDescription());
 
 		AnalysisEngineDescription[] aeds =
 				new AnalysisEngineDescription[] {
-				AnalysisEngineFactory.createEngineDescription(
-						SegmentationUnitAnnotator.class,
-						SegmentationUnitAnnotator.PARAM_BASE_TYPE,
-						Token.class.getCanonicalName()),
+						AnalysisEngineFactory.createEngineDescription(
+								SegmentationUnitAnnotator.class,
+								SegmentationUnitAnnotator.PARAM_BASE_TYPE,
+								Token.class.getCanonicalName()),
 						AnalysisEngineFactory.createEngineDescription(
 								SegmentBoundaryAnnotator.class,
 								SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 								SegmentBoundaryLevel1.class.getCanonicalName()),
-								AnalysisEngineFactory.createEngineDescription(
-								XmiWriter.class,
-								XmiWriter.PARAM_TARGET_LOCATION,
-								"target/resources/xmi") };
+						AnalysisEngineFactory.createEngineDescription(
+										XmiWriter.class,
+										XmiWriter.PARAM_TARGET_LOCATION,
+										"target/resources/xmi") };
 
 		SimplePipeline.runPipeline(jcas1, aeds);
 		SimplePipeline.runPipeline(jcas2, aeds);
@@ -151,22 +152,22 @@ public class TestAbstractSegEvalMetric {
 		JCas jcas2 =
 				JCasFactory.createJCas("src/test/resources/xmi/1202.v2.xmi",
 						TypeSystemDescriptionFactory
-						.createTypeSystemDescription());
+								.createTypeSystemDescription());
 
 		AnalysisEngineDescription[] aeds =
 				new AnalysisEngineDescription[] {
-				AnalysisEngineFactory.createEngineDescription(
-						SegmentationUnitAnnotator.class,
-						SegmentationUnitAnnotator.PARAM_BASE_TYPE,
-						Token.class.getCanonicalName()),
+						AnalysisEngineFactory.createEngineDescription(
+								SegmentationUnitAnnotator.class,
+								SegmentationUnitAnnotator.PARAM_BASE_TYPE,
+								Token.class.getCanonicalName()),
 						AnalysisEngineFactory.createEngineDescription(
 								SegmentBoundaryAnnotator.class,
 								SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 								SegmentBoundaryLevel1.class.getCanonicalName()),
-								AnalysisEngineFactory.createEngineDescription(
-								XmiWriter.class,
-								XmiWriter.PARAM_TARGET_LOCATION,
-								"target/resources/xmi") };
+						AnalysisEngineFactory.createEngineDescription(
+										XmiWriter.class,
+										XmiWriter.PARAM_TARGET_LOCATION,
+										"target/resources/xmi") };
 
 		SimplePipeline.runPipeline(jcas2, aeds);
 

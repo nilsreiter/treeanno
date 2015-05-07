@@ -14,6 +14,7 @@ import org.python.util.PythonInterpreter;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 
+@Deprecated
 public abstract class AbstractSegEvalMetric {
 	PythonInterpreter interpreter = null;
 
@@ -68,8 +69,8 @@ public abstract class AbstractSegEvalMetric {
 			coll = JCasUtil.select(jcas, SegmentationUnit.class);
 		} else
 			coll =
-					JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
-							new Annotation(jcas, end + 1, end + 1));
+			JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
+					new Annotation(jcas, end + 1, end + 1));
 		if (coll != null) {
 			// System.err.println(i + ": " + coll.toString());
 			masses[i] = new PyInteger(coll.size());
