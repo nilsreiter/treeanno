@@ -22,20 +22,20 @@ public class CohensKappa_impl implements CohensKappa {
 	@Override
 	public double getObservedAgreement(JCas... jcas) {
 		int mass = JCasUtil.select(jcas[0], SegmentationUnit.class).size();
-		int z = 0;
-		int n = 0;
+		double z = 0;
+		double n = 0;
 		for (int i = 0; i < jcas.length; i++) {
 			for (int j = i + 1; j < jcas.length; j++) {
 				double score =
 						observedAgreementMetric.scores(jcas[i], jcas[j]).get(
 								observedAgreementMetric.getClass()
-										.getSimpleName());
+								.getSimpleName());
 				z += mass * score;
 				n += mass;
 			}
 		}
 
-		return z / (double) n;
+		return z / n;
 	}
 
 	@Override
@@ -44,10 +44,10 @@ public class CohensKappa_impl implements CohensKappa {
 
 		double cha0 =
 				JCasUtil.select(jcas[0], SegmentBoundary.class).size()
-						/ (double) (mass - 1);
+				/ (double) (mass - 1);
 		double cha1 =
 				JCasUtil.select(jcas[1], SegmentBoundary.class).size()
-						/ (double) (mass - 1);
+				/ (double) (mass - 1);
 		return cha0 * cha1;
 	}
 
