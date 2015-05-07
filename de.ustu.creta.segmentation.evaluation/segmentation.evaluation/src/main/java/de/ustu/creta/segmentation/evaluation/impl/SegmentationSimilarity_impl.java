@@ -63,7 +63,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		return boundaries;
 	}
 
-	protected int sum(int[] array) {
+	public int sum(int[] array) {
 		int s = 0;
 		for (int i = 0; i < array.length; i++) {
 			s += array[i];
