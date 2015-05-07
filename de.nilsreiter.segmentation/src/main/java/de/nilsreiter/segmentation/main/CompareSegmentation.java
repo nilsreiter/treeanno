@@ -98,7 +98,7 @@ public class CompareSegmentation {
 
 		metric.init(jcas1);
 
-		System.out.print(metric.score(jcas1, jcas2).get(
+		System.out.print(metric.scores(jcas1, jcas2).get(
 				metric.getClass().getSimpleName()));
 	}
 

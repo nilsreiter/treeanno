@@ -192,7 +192,7 @@ public abstract class Experiment {
 						new LinkedList<Map<String, Double>>();
 				for (Metric metric : metrics) {
 					metric.init(goldJCas);
-					results.add(metric.score(goldJCas, silverJCas));
+					results.add(metric.scores(goldJCas, silverJCas));
 				}
 				scores.put(goldFile.getName(), results);
 			}
