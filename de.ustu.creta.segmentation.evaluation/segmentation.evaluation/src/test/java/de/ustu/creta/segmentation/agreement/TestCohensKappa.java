@@ -13,6 +13,7 @@ import org.junit.Test;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.agreement.impl.CohensKappa_impl;
+import de.ustu.creta.segmentation.evaluation.BoundarySimilarity;
 import de.ustu.creta.segmentation.evaluation.MetricFactory;
 import de.ustu.creta.segmentation.evaluation.SegmentationSimilarity;
 import de.ustu.creta.segmentation.evaluation.impl.AbstractFournierMetric;
@@ -91,6 +92,8 @@ public class TestCohensKappa {
 	 *        '2':(2,2,2,2,2,2,2)
 	 *       }
 	 *    })
+	 * >>> segeval.fleiss_kappa_linear(ds)
+	 * Decimal('0.2395950506186726659167604050')
 	 * </pre>
 	 */
 	@Test
@@ -102,8 +105,13 @@ public class TestCohensKappa {
 				createAnnotation(silv, i, i, SegmentBoundary.class);
 
 		}
-		assertEquals(0.6923, spi.getObservedAgreement(gold, silv), 1e-3);
-		assertEquals(0.5905, spi.agr(gold, silv), 1e-3);
+		assertEquals(0.6923, spi.getObservedAgreement(gold, silv), 1e-4);
+		assertEquals(0.5905, spi.agr(gold, silv), 1e-4);
+
+		spi.setObservedAgreementMetric(MetricFactory.getMetric(
+				BoundarySimilarity.class, SegmentBoundary.class));
+		assertEquals(0.428571, spi.getObservedAgreement(gold, silv), 1e-4);
+		assertEquals(0.239595, spi.agr(gold, silv), 1e-4);
 	}
 
 	/**
@@ -117,6 +125,10 @@ public class TestCohensKappa {
 	 * })
 	 * >>> segeval.actual_agreement_linear(dataset3, fnc_compare=segeval.segmentation_similarity)
 	 * Decimal('0.9615384615384615384615384615')
+	 * >>> segeval.fleiss_kappa_linear(dataset3, fnc_compare=segeval.segmentation_similarity)
+	 * Decimal('0.9613095238095238095238095238')
+	 * >>> segeval.fleiss_kappa_linear(dataset3)
+	 * Decimal('0.4970238095238095238095238095')
 	 * </pre>
 	 */
 	@Test
@@ -124,9 +136,14 @@ public class TestCohensKappa {
 		createAnnotation(gold, 5, 5, SegmentBoundary.class);
 		createAnnotation(silv, 6, 6, SegmentBoundary.class);
 
-		assertEquals(0.9615,
-				spi.getObservedAgreementMetric().score(gold, silv), 1e-3);
-		assertEquals(0.9615, spi.getObservedAgreement(gold, silv), 1e-3);
-	}
+		assertEquals(0.961538,
+				spi.getObservedAgreementMetric().score(gold, silv), 1e-4);
+		assertEquals(0.961538, spi.getObservedAgreement(gold, silv), 1e-4);
+		assertEquals(0.961309, spi.agr(gold, silv), 1e-4);
 
+		spi.setObservedAgreementMetric(MetricFactory.getMetric(
+				BoundarySimilarity.class, SegmentBoundary.class));
+		assertEquals(0.497023, spi.agr(gold, silv), 1e-4);
+
+	}
 }
