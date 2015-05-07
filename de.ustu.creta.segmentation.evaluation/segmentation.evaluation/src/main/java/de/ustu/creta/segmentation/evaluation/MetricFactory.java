@@ -4,7 +4,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 import de.ustu.creta.segmentation.evaluation.impl.BoundarySimilarity_impl;
 import de.ustu.creta.segmentation.evaluation.impl.BreakDifference_impl;
-import de.ustu.creta.segmentation.evaluation.impl.FleissKappaBoundarySimilarity_impl;
 import de.ustu.creta.segmentation.evaluation.impl.PRF_impl;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationSimilarity_impl;
 import de.ustu.creta.segmentation.evaluation.impl.WindowDifference_impl;
@@ -23,8 +22,6 @@ public class MetricFactory {
 			return (T) new SegmentationSimilarity_impl(annoClass);
 		if (mClass.equals(BoundarySimilarity.class))
 			return (T) new BoundarySimilarity_impl(annoClass);
-		if (mClass.equals(FleissKappaBoundarySimilarity.class))
-			return (T) new FleissKappaBoundarySimilarity_impl(annoClass);
 		return null;
 
 	}
