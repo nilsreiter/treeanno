@@ -13,8 +13,9 @@ import org.slf4j.LoggerFactory;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.evaluation.FleissKappaBoundarySimilarity;
 
+@Deprecated
 public class FleissKappaBoundarySimilarity_impl extends AbstractSegEvalMetric
-		implements FleissKappaBoundarySimilarity {
+implements FleissKappaBoundarySimilarity {
 	Class<? extends Annotation> annoType;
 
 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -25,11 +26,13 @@ public class FleissKappaBoundarySimilarity_impl extends AbstractSegEvalMetric
 		ensureInterpreter();
 	}
 
+	@Override
 	public boolean init(JCas gold) {
 		return ensureInterpreter();
 	}
 
-	public Map<String, Double> score(JCas gold, JCas silver) {
+	@Override
+	public Map<String, Double> scores(JCas gold, JCas silver) {
 		if (!ensureInterpreter()) {
 			return new HashMap<String, Double>();
 		};
@@ -54,6 +57,12 @@ public class FleissKappaBoundarySimilarity_impl extends AbstractSegEvalMetric
 				getPyFunctionValueFromDictionary(goldTuple, silverTuple,
 						"segeval.fleiss_kappa_linear"));
 		return r;
+	}
+
+	@Override
+	public double score(JCas gold, JCas silver) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
