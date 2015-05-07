@@ -12,11 +12,11 @@ public abstract class AbstractFournierMetric implements FournierMetric {
 	int windowSize = 2;
 	protected TranspositionWeightingFunction tpFunction =
 			new TranspositionWeightingFunction() {
-				@Override
-				public double getWeight(Transposition tp) {
-					return tp.getMass();
-				}
-			};
+		@Override
+		public double getWeight(Transposition tp) {
+			return tp.getMass();
+		}
+	};
 
 	@Override
 	public int getWindowSize() {
@@ -39,6 +39,7 @@ public abstract class AbstractFournierMetric implements FournierMetric {
 		return tpFunction;
 	}
 
+	@Deprecated
 	public List<Integer> getPotentialSubstitions(boolean[][] boundaries) {
 		List<Integer> substOperations = new LinkedList<Integer>();
 		for (int i = 0; i < boundaries[0].length; i++) {
@@ -60,6 +61,7 @@ public abstract class AbstractFournierMetric implements FournierMetric {
 		return substOperations;
 	}
 
+	@Deprecated
 	public Counter<Transposition> getTranspositions(
 			List<Integer> substOperations) {
 		Counter<Transposition> potTranspositions = new Counter<Transposition>();
@@ -96,7 +98,7 @@ public abstract class AbstractFournierMetric implements FournierMetric {
 					potTranspositions.add(
 							new Transposition_impl(j.getPosition(), i
 									.getPosition()),
-							i.getPosition() - j.getPosition());
+									i.getPosition() - j.getPosition());
 				}
 			}
 
