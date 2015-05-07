@@ -7,11 +7,15 @@ import de.ustu.creta.segmentation.evaluation.impl.SegmentationSimilarity_impl.Tr
 public interface SegmentationSimilarity extends Metric {
 	double getSegmentationSimilarity(JCas jcas1, JCas jcas2);
 
-	void setTranspositionPenaltyFunction(TranspositionPenaltyFunction tpf);
+	void setTranspositionPenaltyFunction(TranspositionWeightingFunction tpf);
 
-	TranspositionPenaltyFunction getTranspositionPenaltyFunction();
+	TranspositionWeightingFunction getTranspositionPenaltyFunction();
 
-	public static interface TranspositionPenaltyFunction {
-		int getPenalty(Transposition tp);
+	public static interface TranspositionWeightingFunction {
+		double getWeight(Transposition tp);
 	}
+
+	void setWindowSize(int n);
+
+	int getWindowSize();
 }

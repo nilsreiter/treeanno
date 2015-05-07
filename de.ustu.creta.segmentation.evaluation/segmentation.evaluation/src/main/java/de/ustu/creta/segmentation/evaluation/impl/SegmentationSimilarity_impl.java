@@ -1,6 +1,7 @@
 package de.ustu.creta.segmentation.evaluation.impl;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,14 +17,16 @@ import de.ustu.creta.segmentation.evaluation.SegmentationSimilarity;
 
 public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 	Class<? extends Annotation> boundaryType;
-	TranspositionPenaltyFunction tpFunction =
-			new TranspositionPenaltyFunction() {
-		@Override
-		public int getPenalty(Transposition tp) {
 
-			return 1;
+	int windowSize = 2;
+
+	TranspositionWeightingFunction tpFunction =
+			new TranspositionWeightingFunction() {
+		@Override
+		public double getWeight(Transposition tp) {
+			return tp.getMass();
 		}
-			};
+	};
 
 	public SegmentationSimilarity_impl(
 			Class<? extends Annotation> annotationType) {
@@ -38,9 +41,9 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 	@Override
 	public Map<String, Double> score(JCas jcas1, JCas jcas2) {
 		double mass = JCasUtil.select(jcas1, SegmentationUnit.class).size();
-		double editDistance = getEditDistance(jcas1, jcas2, 2);
+		double editDistance = getEditDistance(jcas1, jcas2);
 
-		double d = (mass - 1 - editDistance) / (mass - 1);
+		double d = (mass - 1.0 - editDistance) / (mass - 1.0);
 
 		HashMap<String, Double> map = new HashMap<String, Double>();
 		map.put(getClass().getSimpleName(), d);
@@ -67,8 +70,43 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		return s;
 	}
 
-	public int getEditDistance(JCas jcas1, JCas jcas2, int window) {
-		int n = window;
+	public List<Integer> getPotentialSubstitions(boolean[][] boundaries) {
+		List<Integer> substOperations = new LinkedList<Integer>();
+		for (int i = 0; i < boundaries[0].length; i++) {
+
+			if (boundaries[0][i] ^ boundaries[1][i]) {
+				substOperations.add((boundaries[0][i] ? i : -i));
+			}
+		}
+		return substOperations;
+	}
+
+	public Counter<Transposition> getTranspositions(
+			List<Integer> substOperations) {
+		Counter<Transposition> potTranspositions = new Counter<Transposition>();
+		// finding possible transpositions
+		Integer j = null;
+		for (Integer i : substOperations) {
+			if (j != null && Math.abs(i) - Math.abs(j) < getWindowSize()
+					&& i * j < 0) {
+				potTranspositions.add(
+						new Transposition(Math.abs(j), Math.abs(i)), i - j);
+			}
+
+			j = i;
+		}
+		return potTranspositions;
+	}
+
+	public boolean[][] getBoundaries(int[] ms1, int[] ms2) {
+		boolean[][] boundaries = new boolean[2][];
+		boundaries[0] = getBoundaryString(ms1);
+		boundaries[1] = getBoundaryString(ms2);
+		return boundaries;
+	}
+
+	public double getEditDistance(JCas jcas1, JCas jcas2) {
+
 		int length1 = JCasUtil.select(jcas1, SegmentationUnit.class).size();
 		int length2 = JCasUtil.select(jcas2, SegmentationUnit.class).size();
 		if (length1 != length2) {
@@ -78,42 +116,45 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		int[] massString1 = SegmentationUtil.getMassTuple(jcas1, boundaryType);
 		int[] massString2 = SegmentationUtil.getMassTuple(jcas2, boundaryType);
 
-		boolean[][] boundaries = new boolean[2][];
-		boundaries[0] = getBoundaryString(massString1);
-		boundaries[1] = getBoundaryString(massString2);
+		boolean[][] boundaries = getBoundaries(massString1, massString2);
 
 		// finding possible substitution operations
-		List<Integer> substOperations = new LinkedList<Integer>();
-		Counter<Transposition> potTranspositions = new Counter<Transposition>();
-		for (int i = 0; i < boundaries[0].length; i++) {
+		List<Integer> substOperations =
+				this.getPotentialSubstitions(boundaries);
 
-			if (boundaries[0][i] ^ boundaries[1][i]) {
-				substOperations.add((boundaries[0][i] ? i : -i));
-			}
-		}
+		// finding possible transposition operations
+		Counter<Transposition> potTranspositions =
+				this.getTranspositions(substOperations);
 
-		// finding possible transpositions
-
-		Integer j = null;
-		for (Integer i : substOperations) {
-
-			if (j != null && Math.abs(i) - Math.abs(j) < n && i * j < 0) {
-				potTranspositions.add(
-						new Transposition(Math.abs(j), Math.abs(i)), i - j);
-			}
-
-			j = i;
-		}
-		int editDistance = substOperations.size();
+		// int editDistance = substOperations.size();
 		int lEnd = 0;
 		for (Transposition tp : potTranspositions.keySet()) {
-			// substOperations.remove(new Integer(tp.source));
-			// substOperations.remove(new Integer(tp.target));
-			if (Math.min(tp.source, tp.target) > lEnd)
-				editDistance -= tpFunction.getPenalty(tp);// tp.getMass();
+			if (Math.min(tp.source, tp.target) > lEnd) {
+				substOperations.remove(new Integer(tp.source));
+				substOperations.remove(new Integer(tp.target));
+				substOperations.remove(new Integer(-1 * tp.source));
+				substOperations.remove(new Integer(-1 * tp.target));
+			}
+			// editDistance -= tpFunction.getWeight(tp);
 			lEnd = Math.max(tp.target, tp.source);
 		}
+		double editDistance =
+				getSubstOperationsWeight(substOperations)
+				+ getTranspositionsWeight(potTranspositions.keySet());
+
 		return editDistance;
+	}
+
+	protected double getTranspositionsWeight(Collection<Transposition> trans) {
+		double d = 0.0;
+		for (Transposition tp : trans) {
+			d += tpFunction.getWeight(tp);
+		}
+		return d / getWindowSize();
+	}
+
+	protected double getSubstOperationsWeight(Collection<Integer> substOp) {
+		return substOp.size();
 	}
 
 	public class Transposition {
@@ -125,7 +166,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		}
 
 		public int getMass() {
-			return Math.max(source, target) - Math.min(target, source) + 1;
+			return Math.max(source, target) - Math.min(target, source);
 		}
 
 		@Override
@@ -141,14 +182,24 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 	}
 
 	@Override
-	public void
-	setTranspositionPenaltyFunction(TranspositionPenaltyFunction tpf) {
+	public void setTranspositionPenaltyFunction(
+			TranspositionWeightingFunction tpf) {
 		tpFunction = tpf;
 	}
 
 	@Override
-	public TranspositionPenaltyFunction getTranspositionPenaltyFunction() {
+	public TranspositionWeightingFunction getTranspositionPenaltyFunction() {
 		return tpFunction;
+	}
+
+	@Override
+	public int getWindowSize() {
+		return windowSize;
+	}
+
+	@Override
+	public void setWindowSize(int windowSize) {
+		this.windowSize = windowSize;
 	}
 
 }
