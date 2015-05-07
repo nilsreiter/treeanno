@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -37,17 +38,20 @@ public class BoundarySimilarity_impl extends AbstractFournierMetric implements
 		}
 
 		// finding possible substitution operations
-		List<Integer> substOperations = this.getPotentialSubstitions(b);
+		List<Substitution> substOperations = this.getPotentialSubstitions2(b);
 
 		// finding possible transposition operations
 		Counter<Transposition> potTranspositions =
-				this.getTranspositions(substOperations);
+				this.getTranspositions2(substOperations);
 
 		for (Transposition tp : potTranspositions.keySet()) {
-			substOperations.remove(new Integer(tp.getSource()));
-			substOperations.remove(new Integer(tp.getTarget()));
-			substOperations.remove(new Integer(-1 * tp.getSource()));
-			substOperations.remove(new Integer(-1 * tp.getTarget()));
+			substOperations.removeIf(new Predicate<Substitution>() {
+				@Override
+				public boolean test(Substitution t) {
+					return (tp.getTarget() == t.getPosition() || tp.getSource() == t
+							.getPosition());
+				}
+			});
 		}
 
 		double num =

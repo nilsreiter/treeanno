@@ -67,21 +67,21 @@ public class TestBoundarySimilarity_Characters {
 
 	/**
 	 * <pre>
-	 * segeval.boundary_similarity((5,10), (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1))
-	 * Decimal('0.07142857142857142857142857143')
+	 * >>> segeval.boundary_similarity((5,8), (1,1,1,1,1,1,1,1,1,1,1,1,1))
+	 * Decimal('0.08333333333333333333333333333')	
 	 * </pre>
 	 */
 	@Test
 	public void testEverywhere() {
-		for (int i = 0; i < text.length(); i++) {
+		for (int i = 1; i < text.length(); i++) {
 			AnnotationFactory.createAnnotation(silv, i, i,
 					SegmentBoundary.class);
 		}
 		boolean[][] b =
 				bd.getBoundaries(SegmentationUtil.getMassTuple(gold,
 						SegmentBoundary.class), SegmentationUtil.getMassTuple(
-						silv, SegmentBoundary.class));
-		assertEquals(0.0769, bd.score(gold, silv), 1e-5);
+								silv, SegmentBoundary.class));
+		assertEquals(0.083333, bd.score(gold, silv), 1e-5);
 	}
 
 	@Test

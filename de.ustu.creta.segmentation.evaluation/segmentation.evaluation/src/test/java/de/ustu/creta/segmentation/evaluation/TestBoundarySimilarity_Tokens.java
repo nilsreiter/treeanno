@@ -11,8 +11,6 @@ import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
-import de.ustu.creta.segmentation.evaluation.BoundarySimilarity;
-import de.ustu.creta.segmentation.evaluation.MetricFactory;
 
 public class TestBoundarySimilarity_Tokens {
 
@@ -32,9 +30,9 @@ public class TestBoundarySimilarity_Tokens {
 	public void setUp() throws Exception {
 		gold = JCasFactory.createJCas();
 		gold.setDocumentText(text);
-		createAnnotation(gold, 0, 0, SegmentBoundary.class);
+		// createAnnotation(gold, 0, 0, SegmentBoundary.class);
 		createAnnotation(gold, 15, 15, SegmentBoundary.class);
-		createAnnotation(gold, 28, 28, SegmentBoundary.class);
+		// createAnnotation(gold, 28, 28, SegmentBoundary.class);
 
 		// sentence 1
 		createAnnotation(gold, 0, 3, SegmentationUnit.class);
@@ -78,8 +76,7 @@ public class TestBoundarySimilarity_Tokens {
 		createAnnotation(silv, 15, 15, SegmentBoundary.class);
 		createAnnotation(silv, 28, 28, SegmentBoundary.class);
 
-		assertEquals(1.0,
-				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+		assertEquals(1.0, bd.score(gold, silv), 1e-5);
 	}
 
 	@Test
@@ -87,8 +84,7 @@ public class TestBoundarySimilarity_Tokens {
 		createAnnotation(silv, 0, 0, SegmentBoundary.class);
 		createAnnotation(silv, 28, 28, SegmentBoundary.class);
 
-		assertEquals(0.5,
-				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+		assertEquals(0.0, bd.score(gold, silv), 1e-5);
 	}
 
 	@Test
@@ -99,7 +95,6 @@ public class TestBoundarySimilarity_Tokens {
 		// misplaced
 		createAnnotation(silv, 18, 18, SegmentBoundary.class);
 
-		assertEquals(0.75,
-				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+		assertEquals(0.5, bd.score(gold, silv), 1e-5);
 	}
 }
