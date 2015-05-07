@@ -100,7 +100,7 @@ public class TestSegmentationSimilarityArtificial {
 
 	@Test
 	public void testMaxVsMin() {
-		for (int i = 1; i < text.length() - 1; i++) {
+		for (int i = 1; i < text.length(); i++) {
 			AnnotationFactory.createAnnotation(gold, i, i,
 					SegmentBoundary.class);
 		}

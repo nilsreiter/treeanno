@@ -109,6 +109,7 @@ public class TestSegmentationSimilarityVerified {
 		createAnnotation(silv, 2, 2, SegmentBoundary.class);
 		createAnnotation(silv, 6, 6, SegmentBoundary.class);
 
+		assertEquals(2.5, bd.getEditDistance(silv, gold), 1e-3);
 		assertEquals(0.7222, bd.score(silv, gold), 1e-3);
 	}
 
@@ -126,7 +127,7 @@ public class TestSegmentationSimilarityVerified {
 	 */
 	@Test
 	public void test4() {
-		for (int i = 0; i < text.length() - 1; i++) {
+		for (int i = 1; i < text.length(); i++) {
 			if (i % 2 == 0)
 				createAnnotation(gold, i, i, SegmentBoundary.class);
 			else
@@ -135,7 +136,7 @@ public class TestSegmentationSimilarityVerified {
 		boolean[][] boundaries =
 				bd.getBoundaries(SegmentationUtil.getMassTuple(gold,
 						SegmentBoundary.class), SegmentationUtil.getMassTuple(
-								silv, SegmentBoundary.class));
+						silv, SegmentBoundary.class));
 		List<Integer> poSub = bd.getPotentialSubstitions(boundaries);
 		assertEquals(9, poSub.size());
 		assertEquals(4, bd.getTranspositions(poSub).size());

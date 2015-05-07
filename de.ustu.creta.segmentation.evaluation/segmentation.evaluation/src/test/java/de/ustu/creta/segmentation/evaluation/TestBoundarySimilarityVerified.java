@@ -79,7 +79,7 @@ public class TestBoundarySimilarityVerified {
 	 */
 	@Test
 	public void test4() {
-		for (int i = 0; i < text.length() - 1; i++) {
+		for (int i = 0; i < text.length(); i++) {
 			if (i % 2 == 0)
 				createAnnotation(gold, i, i, SegmentBoundary.class);
 			else

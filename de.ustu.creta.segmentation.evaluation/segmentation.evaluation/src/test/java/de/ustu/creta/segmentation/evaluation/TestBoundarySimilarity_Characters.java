@@ -1,5 +1,6 @@
 package de.ustu.creta.segmentation.evaluation;
 
+import static org.apache.uima.fit.factory.AnnotationFactory.createAnnotation;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.uima.fit.factory.AnnotationFactory;
@@ -10,17 +11,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.ustu.creta.segmentation.evaluation.BoundarySimilarity;
-import de.ustu.creta.segmentation.evaluation.Metric;
-import de.ustu.creta.segmentation.evaluation.MetricFactory;
+import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
+import de.ustu.creta.segmentation.evaluation.impl.BoundarySimilarity_impl;
+import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 
 public class TestBoundarySimilarity_Characters {
 
 	JCas gold, silv;
 
-	Metric bd;
+	BoundarySimilarity_impl bd;
 
-	String text = "The dog barks. It is hungry.";
+	String text = "The dog barks.";
 
 	@BeforeClass
 	public static void setUpClass() {
@@ -32,15 +33,21 @@ public class TestBoundarySimilarity_Characters {
 	public void setUp() throws Exception {
 		gold = JCasFactory.createJCas();
 		gold.setDocumentText(text);
-		AnnotationFactory.createAnnotation(gold, 5, 6, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(gold, 20, 21, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 5, 5, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(gold, 13, 13, SegmentBoundary.class);
+		for (int i = 0; i < text.length() - 1; i++) {
+			createAnnotation(gold, i, i + 1, SegmentationUnit.class);
+		}
 
 		silv = JCasFactory.createJCas();
 		silv.setDocumentText(text);
+		for (int i = 0; i < text.length() - 1; i++) {
+			createAnnotation(silv, i, i + 1, SegmentationUnit.class);
+		}
 
 		bd =
-				MetricFactory.getMetric(BoundarySimilarity.class,
-						SegmentBoundary.class);
+				(BoundarySimilarity_impl) MetricFactory.getMetric(
+						BoundarySimilarity.class, SegmentBoundary.class);
 	}
 
 	@Test
@@ -51,29 +58,37 @@ public class TestBoundarySimilarity_Characters {
 
 	@Test
 	public void testBeginAndEnd() {
-		AnnotationFactory.createAnnotation(silv, 0, 1, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(silv, 0, 0, SegmentBoundary.class);
 		AnnotationFactory.createAnnotation(silv, text.length() - 1,
-				text.length(), SegmentBoundary.class);
+				text.length() - 1, SegmentBoundary.class);
 		assertEquals(0.0,
 				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
 	}
 
+	/**
+	 * <pre>
+	 * segeval.boundary_similarity((5,10), (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1))
+	 * Decimal('0.07142857142857142857142857143')
+	 * </pre>
+	 */
 	@Test
 	public void testEverywhere() {
 		for (int i = 0; i < text.length(); i++) {
-			AnnotationFactory.createAnnotation(silv, i, i + 1,
+			AnnotationFactory.createAnnotation(silv, i, i,
 					SegmentBoundary.class);
 		}
-		assertEquals(0.07407,
-				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+		boolean[][] b =
+				bd.getBoundaries(SegmentationUtil.getMassTuple(gold,
+						SegmentBoundary.class), SegmentationUtil.getMassTuple(
+						silv, SegmentBoundary.class));
+		assertEquals(0.0769, bd.score(gold, silv), 1e-5);
 	}
 
 	@Test
 	public void testPerfect() {
-		AnnotationFactory.createAnnotation(silv, 5, 6, SegmentBoundary.class);
-		AnnotationFactory.createAnnotation(silv, 20, 21, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(silv, 5, 5, SegmentBoundary.class);
+		AnnotationFactory.createAnnotation(silv, 20, 20, SegmentBoundary.class);
 
-		assertEquals(1.0,
-				bd.scores(gold, silv).get(bd.getClass().getSimpleName()), 1e-5);
+		assertEquals(1.0, bd.score(gold, silv), 1e-5);
 	}
 }

@@ -17,7 +17,7 @@ import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 
 public class TestSegmentationUtil {
 
-	JCas gold;
+	JCas gold, gold2;
 	String text = "The dog barks. It is hungry.";
 
 	@Before
@@ -37,6 +37,12 @@ public class TestSegmentationUtil {
 		createAnnotation(gold, 18, 20, SegmentationUnit.class);
 		createAnnotation(gold, 21, 27, SegmentationUnit.class);
 		createAnnotation(gold, 27, 28, SegmentationUnit.class);
+
+		gold2 = JCasFactory.createJCas();
+		gold2.setDocumentText("12345678901234567890");
+		for (int i = 0; i < 20; i++) {
+			createAnnotation(gold2, i, i + 1, SegmentationUnit.class);
+		}
 	}
 
 	@Test
@@ -48,11 +54,11 @@ public class TestSegmentationUtil {
 				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class);
 		// System.err.println(tuple);
 
-		assertEquals(4, tuple.length);
-		assertEquals(0, tuple[0]);
+		assertEquals(2, tuple.length);
+		// assertEquals(0, tuple[0]);
+		assertEquals(4, tuple[0]);
 		assertEquals(4, tuple[1]);
-		assertEquals(4, tuple[2]);
-		assertEquals(0, tuple[3]);
+		// assertEquals(0, tuple[3]);
 	}
 
 	@Test
@@ -111,20 +117,21 @@ public class TestSegmentationUtil {
 		int[] array = new int[] { 1, 2, 2, 2, 4, 2, 1 };
 
 		boolean[] b = SegmentationUtil.getBoundaryString(array);
-		assertFalse(b[0]);
-		assertTrue(b[1]);
-		assertFalse(b[2]);
-		assertTrue(b[3]);
-		assertFalse(b[4]);
-		assertTrue(b[5]);
-		assertFalse(b[6]);
-		assertTrue(b[7]);
+		assertEquals(SegmentationUtil.sum(array), b.length);
+		assertTrue(b[0]);
+		assertFalse(b[1]);
+		assertTrue(b[2]);
+		assertFalse(b[3]);
+		assertTrue(b[4]);
+		assertFalse(b[5]);
+		assertTrue(b[6]);
+		assertFalse(b[7]);
 		assertFalse(b[8]);
 		assertFalse(b[9]);
-		assertFalse(b[10]);
-		assertTrue(b[11]);
-		assertFalse(b[12]);
-		assertTrue(b[13]);
+		assertTrue(b[10]);
+		assertFalse(b[11]);
+		assertTrue(b[12]);
+		assertFalse(b[13]);
 	}
 
 	@Test
@@ -132,10 +139,10 @@ public class TestSegmentationUtil {
 		int[] array = new int[] { 1, 2, 0, 1, 0, 0, 0 };
 
 		boolean[] b = SegmentationUtil.getBoundaryString(array);
-		assertFalse(b[0]);
-		assertTrue(b[1]);
-		assertFalse(b[2]);
-		assertTrue(b[3]);
+		assertTrue(b[0]);
+		assertFalse(b[1]);
+		assertTrue(b[2]);
+		assertFalse(b[3]);
 	}
 
 	@Test
@@ -143,8 +150,17 @@ public class TestSegmentationUtil {
 		int[] array = new int[] { 1, 2, 0 };
 
 		boolean[] b = SegmentationUtil.getBoundaryString(array);
-		assertFalse(b[0]);
-		assertTrue(b[1]);
+		assertTrue(b[0]);
+		assertFalse(b[1]);
 		assertFalse(b[2]);
+	}
+
+	@Test
+	public void testGetMassTuple6() {
+		for (int i = 0; i < gold2.getDocumentText().length() + 1; i++) {
+			createAnnotation(gold2, i, i, SegmentBoundary.class);
+		}
+		int[] ms = SegmentationUtil.getMassTuple(gold2, SegmentBoundary.class);
+		assertEquals(20, ms.length);
 	}
 }
