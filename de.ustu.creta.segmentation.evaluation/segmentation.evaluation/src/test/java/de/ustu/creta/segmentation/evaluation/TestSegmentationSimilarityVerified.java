@@ -15,6 +15,7 @@ import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationSimilarity_impl;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationSimilarity_impl.Transposition;
+import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 
 public class TestSegmentationSimilarityVerified {
 	JCas gold, silv;
@@ -109,5 +110,36 @@ public class TestSegmentationSimilarityVerified {
 		createAnnotation(silv, 6, 6, SegmentBoundary.class);
 
 		assertEquals(0.7222, bd.score(silv, gold), 1e-3);
+	}
+
+	/**
+	 * <pre>
+	 * >>> ds = Dataset(
+	 *    {'text':
+	 *       {'1':(1,2,2,2,2,1),
+	 *        '2':(2,2,2,2,2)
+	 *       }
+	 *    })
+	 * >>> segeval.segmentation_similarity(ds['text']['1'],ds['text']['2'])
+	 * Decimal('0.66666666')
+	 * </pre>
+	 */
+	@Test
+	public void test4() {
+		for (int i = 0; i < text.length() - 1; i++) {
+			if (i % 2 == 0)
+				createAnnotation(gold, i, i, SegmentBoundary.class);
+			else
+				createAnnotation(silv, i, i, SegmentBoundary.class);
+		}
+		boolean[][] boundaries =
+				bd.getBoundaries(SegmentationUtil.getMassTuple(gold,
+						SegmentBoundary.class), SegmentationUtil.getMassTuple(
+								silv, SegmentBoundary.class));
+		List<Integer> poSub = bd.getPotentialSubstitions(boundaries);
+		assertEquals(9, poSub.size());
+		assertEquals(4, bd.getTranspositions(poSub).size());
+		assertEquals(3, bd.getEditDistance(silv, gold), 1e-3);
+		assertEquals(0.6666, bd.score(gold, silv), 1e-3);
 	}
 }

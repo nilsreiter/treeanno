@@ -3,6 +3,7 @@ package de.ustu.creta.segmentation.evaluation.impl;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,11 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 
 	TranspositionWeightingFunction tpFunction =
 			new TranspositionWeightingFunction() {
-		@Override
-		public double getWeight(Transposition tp) {
-			return tp.getMass();
-		}
-	};
+				@Override
+				public double getWeight(Transposition tp) {
+					return tp.getMass();
+				}
+			};
 
 	public SegmentationSimilarity_impl(
 			Class<? extends Annotation> annotationType) {
@@ -85,16 +86,32 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 			List<Integer> substOperations) {
 		Counter<Transposition> potTranspositions = new Counter<Transposition>();
 		// finding possible transpositions
-		Integer j = null;
-		for (Integer i : substOperations) {
-			if (j != null && Math.abs(i) - Math.abs(j) < getWindowSize()
-					&& i * j < 0) {
-				potTranspositions.add(
-						new Transposition(Math.abs(j), Math.abs(i)), i - j);
+
+		Iterator<Integer> iterator = substOperations.iterator();
+		while (iterator.hasNext()) {
+			int j = iterator.next();
+			if (iterator.hasNext()) {
+				int i = iterator.next();
+				if (Math.abs(i) - Math.abs(j) < getWindowSize() && i * j <= 0) {
+					potTranspositions.add(
+							new Transposition(Math.abs(j), Math.abs(i)), i - j);
+				}
 			}
 
-			j = i;
 		}
+		/*
+		 * Integer j = null;
+		 * 
+		 * for (Integer i : substOperations) {
+		 * if (j != null && Math.abs(i) - Math.abs(j) < getWindowSize()
+		 * && i * j < 0) {
+		 * potTranspositions.add(
+		 * new Transposition(Math.abs(j), Math.abs(i)), i - j);
+		 * }
+		 * 
+		 * j = i;
+		 * }
+		 */
 		return potTranspositions;
 	}
 
@@ -129,18 +146,18 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		// int editDistance = substOperations.size();
 		int lEnd = 0;
 		for (Transposition tp : potTranspositions.keySet()) {
-			if (Math.min(tp.source, tp.target) > lEnd) {
-				substOperations.remove(new Integer(tp.source));
-				substOperations.remove(new Integer(tp.target));
-				substOperations.remove(new Integer(-1 * tp.source));
-				substOperations.remove(new Integer(-1 * tp.target));
-			}
+			// if (Math.min(tp.source, tp.target) > lEnd) {
+			substOperations.remove(new Integer(tp.source));
+			substOperations.remove(new Integer(tp.target));
+			substOperations.remove(new Integer(-1 * tp.source));
+			substOperations.remove(new Integer(-1 * tp.target));
+			// }
 			// editDistance -= tpFunction.getWeight(tp);
 			lEnd = Math.max(tp.target, tp.source);
 		}
 		double editDistance =
 				getSubstOperationsWeight(substOperations)
-				+ getTranspositionsWeight(potTranspositions.keySet());
+						+ getTranspositionsWeight(potTranspositions.keySet());
 
 		return editDistance;
 	}
