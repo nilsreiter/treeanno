@@ -94,4 +94,20 @@ public class TestSegmentationSimilarityVerified {
 		assertEquals(0.5, bd.getEditDistance(gold, silv), 1e-3);
 		assertEquals(0.9444, bd.getSegmentationSimilarity(silv, gold), 1e-3);
 	}
+
+	/**
+	 * <pre>
+	 * >>> segeval.segmentation_similarity((1,1,4,4), (5,5))
+	 * Decimal('0.7222222222222222222222222222')
+	 * </pre>
+	 */
+	@Test
+	public void test3() {
+		createAnnotation(gold, 5, 5, SegmentBoundary.class);
+		createAnnotation(silv, 1, 1, SegmentBoundary.class);
+		createAnnotation(silv, 2, 2, SegmentBoundary.class);
+		createAnnotation(silv, 6, 6, SegmentBoundary.class);
+
+		assertEquals(0.7222, bd.getSegmentationSimilarity(silv, gold), 1e-3);
+	}
 }
