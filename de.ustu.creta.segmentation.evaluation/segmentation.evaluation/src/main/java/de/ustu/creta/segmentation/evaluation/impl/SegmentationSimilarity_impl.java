@@ -1,6 +1,5 @@
 package de.ustu.creta.segmentation.evaluation.impl;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,11 +22,11 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 
 	TranspositionWeightingFunction tpFunction =
 			new TranspositionWeightingFunction() {
-				@Override
-				public double getWeight(Transposition tp) {
-					return tp.getMass();
-				}
-			};
+		@Override
+		public double getWeight(Transposition tp) {
+			return tp.getMass();
+		}
+	};
 
 	public SegmentationSimilarity_impl(
 			Class<? extends Annotation> annotationType) {
@@ -50,17 +49,6 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		map.put(getClass().getSimpleName(), d);
 		return map;
 
-	}
-
-	protected boolean[] getBoundaryString(int[] massString) {
-		boolean[] boundaries = new boolean[SegmentationUtil.sum(massString)];
-		Arrays.fill(boundaries, false);
-		int index = 0;
-		for (int i = 0; i < massString.length - 1; i++) {
-			index += massString[i];
-			boundaries[index] = true;
-		}
-		return boundaries;
 	}
 
 	public List<Integer> getPotentialSubstitions(boolean[][] boundaries) {
@@ -109,8 +97,8 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 
 	public boolean[][] getBoundaries(int[] ms1, int[] ms2) {
 		boolean[][] boundaries = new boolean[2][];
-		boundaries[0] = getBoundaryString(ms1);
-		boundaries[1] = getBoundaryString(ms2);
+		boundaries[0] = SegmentationUtil.getBoundaryString(ms1);
+		boundaries[1] = SegmentationUtil.getBoundaryString(ms2);
 		return boundaries;
 	}
 
@@ -143,7 +131,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 		}
 		double editDistance =
 				getSubstOperationsWeight(substOperations)
-						+ getTranspositionsWeight(potTranspositions.keySet());
+				+ getTranspositionsWeight(potTranspositions.keySet());
 
 		return editDistance;
 	}
