@@ -8,5 +8,7 @@ public interface Metric {
 
 	boolean init(JCas gold);
 
-	Map<String, Double> score(JCas gold, JCas silver);
+	Map<String, Double> scores(JCas gold, JCas silver);
+
+	double score(JCas gold, JCas silver);
 }
