@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
+import de.ustu.creta.segmentation.evaluation.FournierMetric.Transposition;
+import de.ustu.creta.segmentation.evaluation.FournierMetric.TranspositionWeightingFunction;
 import de.ustu.creta.segmentation.evaluation.impl.BoundarySimilarity_impl;
 
 public class TestBoundarySimilarityVerified {
@@ -87,5 +89,29 @@ public class TestBoundarySimilarityVerified {
 		}
 
 		assertEquals(0.4, bd.score(gold, silv), 1e-3);
+	}
+
+	/**
+	 * <pre>
+	 * >>> 
+	 * </pre>
+	 */
+	@Test
+	public void test5() {
+
+		createAnnotation(gold, 3, 3, SegmentBoundary.class);
+		createAnnotation(silv, 7, 7, SegmentBoundary.class);
+
+		assertEquals(0.0, bd.score(gold, silv), 1e-5);
+
+		bd.setWindowSize(5);
+		bd.setTranspositionPenaltyFunction(new TranspositionWeightingFunction() {
+			@Override
+			public double getWeight(Transposition tp) {
+				return 0;
+			}
+		});
+		assertEquals(1.0, bd.score(gold, silv), 1e-5);
+
 	}
 }
