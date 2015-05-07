@@ -14,6 +14,7 @@ import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.FournierMetric.Transposition;
+import de.ustu.creta.segmentation.evaluation.impl.AbstractFournierMetric.Substitution;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationSimilarity_impl;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 
@@ -56,9 +57,9 @@ public class TestSegmentationSimilarityVerified {
 		boolean[][] boundaries =
 				bd.getBoundaries(new int[] { 6, 4 }, new int[] { 5, 5 });
 
-		List<Integer> potSubst = bd.getPotentialSubstitions(boundaries);
+		List<Substitution> potSubst = bd.getPotentialSubstitions2(boundaries);
 		assertEquals(2, potSubst.size());
-		Counter<Transposition> tps = bd.getTranspositions(potSubst);
+		Counter<Transposition> tps = bd.getTranspositions2(potSubst);
 		assertEquals(1, tps.size());
 		assertEquals(0.5, bd.getEditDistance(gold, silv), 1e-3);
 		assertEquals(0.9444, bd.score(silv, gold), 1e-3);
@@ -67,9 +68,9 @@ public class TestSegmentationSimilarityVerified {
 
 		boundaries = bd.getBoundaries(new int[] { 6, 4 }, new int[] { 5, 5 });
 
-		potSubst = bd.getPotentialSubstitions(boundaries);
+		potSubst = bd.getPotentialSubstitions2(boundaries);
 		assertEquals(2, potSubst.size());
-		tps = bd.getTranspositions(potSubst);
+		tps = bd.getTranspositions2(potSubst);
 		assertEquals(0, tps.size());
 		assertEquals(2.0, bd.getEditDistance(gold, silv), 1e-3);
 		assertEquals(0.7777, bd.score(silv, gold), 1e-3);
@@ -88,9 +89,9 @@ public class TestSegmentationSimilarityVerified {
 		boolean[][] boundaries =
 				bd.getBoundaries(new int[] { 6, 4 }, new int[] { 5, 5 });
 
-		List<Integer> potSubst = bd.getPotentialSubstitions(boundaries);
+		List<Substitution> potSubst = bd.getPotentialSubstitions2(boundaries);
 		assertEquals(2, potSubst.size());
-		Counter<Transposition> tps = bd.getTranspositions(potSubst);
+		Counter<Transposition> tps = bd.getTranspositions2(potSubst);
 		assertEquals(1, tps.size());
 		assertEquals(0.5, bd.getEditDistance(gold, silv), 1e-3);
 		assertEquals(0.9444, bd.score(silv, gold), 1e-3);
@@ -137,9 +138,9 @@ public class TestSegmentationSimilarityVerified {
 				bd.getBoundaries(SegmentationUtil.getMassTuple(gold,
 						SegmentBoundary.class), SegmentationUtil.getMassTuple(
 						silv, SegmentBoundary.class));
-		List<Integer> poSub = bd.getPotentialSubstitions(boundaries);
+		List<Substitution> poSub = bd.getPotentialSubstitions2(boundaries);
 		assertEquals(9, poSub.size());
-		assertEquals(4, bd.getTranspositions(poSub).size());
+		assertEquals(4, bd.getTranspositions2(poSub).size());
 		assertEquals(3, bd.getEditDistance(silv, gold), 1e-3);
 		assertEquals(0.6666, bd.score(gold, silv), 1e-3);
 	}
