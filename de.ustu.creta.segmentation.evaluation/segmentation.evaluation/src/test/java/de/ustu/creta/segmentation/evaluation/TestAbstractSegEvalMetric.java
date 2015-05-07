@@ -173,7 +173,6 @@ public class TestAbstractSegEvalMetric {
 
 		assertTrue(JCasUtil.exists(jcas2, SegmentationUnit.class));
 		assertTrue(JCasUtil.exists(jcas2, SegmentBoundary.class));
-		int[] mt2 = SegmentationUtil.getMassTuple(jcas2, SegmentBoundary.class);
 
 	}
 }
