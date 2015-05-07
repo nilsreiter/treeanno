@@ -57,6 +57,17 @@ public class TestSegmentationSimilarityArtificial {
 		assertTrue(bd.init(gold));
 	}
 
+	/**
+	 * <h3>Second Test Set</h3>
+	 * <pre>
+	 * >>> ds = Dataset(
+	 * 	{"text":{
+	 * 		"1":(1,2,2,3,3,1,3),
+	 * 		"2":(1,2,1,2,6,3)
+	 * 		}
+	 *  })
+	 * </pre>
+	 */
 	@Test
 	public void testEditDistance1() {
 		AnnotationFactory.createAnnotation(gold, 1, 1, SegmentBoundary.class);
@@ -80,7 +91,7 @@ public class TestSegmentationSimilarityArtificial {
 		AnnotationFactory.createAnnotation(silv, 12, 12, SegmentBoundary.class);
 
 		bd.setWindowSize(2);
-		assertEquals(4, bd.getEditDistance(gold, silv), 1e-3);
+		assertEquals(3.5, bd.getEditDistance(gold, silv), 1e-3);
 		bd.setWindowSize(10);
 
 		assertEquals(0, bd.getEditDistance(silv, silv), 1e-3);
