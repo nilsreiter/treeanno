@@ -2,6 +2,8 @@ package de.ustu.creta.segmentation.evaluation.impl;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -22,7 +24,8 @@ public class SegmentationUtil {
 		}
 
 		int units = segUnits.size();
-		int[] masses = new int[boundaries.size() + 1];
+		// int[] masses = new int[boundaries.size() + 1];
+		List<Integer> massList = new LinkedList<Integer>();
 		int i = 0, end = jcas.getDocumentText().length();
 		Annotation prevAnno = null;
 		Collection<? extends Annotation> coll;
@@ -41,7 +44,8 @@ public class SegmentationUtil {
 			}
 
 			// System.err.println(JCasUtil.toText(coll));
-			masses[i++] = coll.size();
+			if (!coll.isEmpty()) massList.add(coll.size());
+			// masses[i++] = coll.size();
 			segUnits.subtractAll(coll);
 			prevAnno = anno;
 		}
@@ -55,14 +59,16 @@ public class SegmentationUtil {
 					new Annotation(jcas, end + 1, end + 1));
 		if (coll != null) {
 			// System.err.println(i + ": " + coll.toString());
-			masses[i] = coll.size();
+			// masses[i] = coll.size();
+			if (!coll.isEmpty()) massList.add(coll.size());
+
 			// System.err.println(JCasUtil.toText(coll));
 			segUnits.subtractAll(coll);
 
 		}
 		int s = 0;
-		for (int j = 0; j < masses.length; j++) {
-			s += masses[j];
+		for (int j = 0; j < massList.size(); j++) {
+			s += massList.get(j);
 		}
 		if (s != units) {
 			System.err.println("units: " + units + ". Mass string: " + s);
@@ -71,6 +77,12 @@ public class SegmentationUtil {
 			System.err.println(segUnits.getKeysWithMaxCount());
 			System.err.println(JCasUtil.toText(segUnits.getKeysWithMaxCount()));
 		}
+
+		int[] masses = new int[massList.size()];
+		for (i = 0; i < massList.size(); i++) {
+			masses[i] = massList.get(i);
+		}
+
 		return masses;
 	}
 
@@ -80,7 +92,7 @@ public class SegmentationUtil {
 		int index = 0;
 		for (int i = 0; i < massString.length - 1; i++) {
 			index += massString[i];
-			if (index < boundaries.length) boundaries[index] = true;
+			if (index < boundaries.length) boundaries[index - 1] = true;
 		}
 		return boundaries;
 	}
