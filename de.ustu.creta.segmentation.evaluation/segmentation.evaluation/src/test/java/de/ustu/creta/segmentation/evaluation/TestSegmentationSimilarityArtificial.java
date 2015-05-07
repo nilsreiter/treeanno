@@ -67,9 +67,10 @@ public class TestSegmentationSimilarityArtificial {
 		AnnotationFactory.createAnnotation(gold, 12, 12, SegmentBoundary.class);
 
 		// no silver annotations
-		assertEquals(6, bd.getEditDistance(gold, silv, 2));
-		assertEquals(0, bd.getEditDistance(silv, silv, 10));
-		assertEquals(0, bd.getEditDistance(gold, gold, 10));
+		assertEquals(6, bd.getEditDistance(gold, silv), 1e-3);
+		bd.setWindowSize(10);
+		assertEquals(0, bd.getEditDistance(silv, silv), 1e-3);
+		assertEquals(0, bd.getEditDistance(gold, gold), 1e-3);
 
 		// some silver annotations
 		AnnotationFactory.createAnnotation(silv, 1, 1, SegmentBoundary.class);
@@ -78,9 +79,12 @@ public class TestSegmentationSimilarityArtificial {
 		AnnotationFactory.createAnnotation(silv, 6, 6, SegmentBoundary.class);
 		AnnotationFactory.createAnnotation(silv, 12, 12, SegmentBoundary.class);
 
-		assertEquals(4, bd.getEditDistance(gold, silv, 2));
-		assertEquals(0, bd.getEditDistance(silv, silv, 10));
-		assertEquals(0, bd.getEditDistance(gold, gold, 10));
+		bd.setWindowSize(2);
+		assertEquals(4, bd.getEditDistance(gold, silv), 1e-3);
+		bd.setWindowSize(10);
+
+		assertEquals(0, bd.getEditDistance(silv, silv), 1e-3);
+		assertEquals(0, bd.getEditDistance(gold, gold), 1e-3);
 	}
 
 	@Test
@@ -121,7 +125,8 @@ public class TestSegmentationSimilarityArtificial {
 		AnnotationFactory.createAnnotation(gold, 6, 6, SegmentBoundary.class);
 		AnnotationFactory.createAnnotation(silv, 7, 7, SegmentBoundary.class);
 
-		assertEquals(0.9231, bd.getSegmentationSimilarity(gold, silv), 1e-3);
+		assertEquals(0.5, bd.getEditDistance(silv, gold), 1e-3);
+		assertEquals(0.9615, bd.getSegmentationSimilarity(gold, silv), 1e-3);
 
 	}
 }
