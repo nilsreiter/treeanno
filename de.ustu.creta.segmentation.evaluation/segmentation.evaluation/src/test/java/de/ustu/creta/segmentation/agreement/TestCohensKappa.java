@@ -15,12 +15,12 @@ import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.agreement.impl.CohensKappa_impl;
 import de.ustu.creta.segmentation.evaluation.MetricFactory;
 import de.ustu.creta.segmentation.evaluation.SegmentationSimilarity;
-import de.ustu.creta.segmentation.evaluation.impl.SegmentationSimilarity_impl;
+import de.ustu.creta.segmentation.evaluation.impl.AbstractFournierMetric;
 
 public class TestCohensKappa {
 	JCas gold, silv;
 
-	SegmentationSimilarity_impl bd;
+	AbstractFournierMetric bd;
 
 	String text = "123456789012345";
 	CohensKappa spi;
