@@ -53,7 +53,7 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 	}
 
 	protected boolean[] getBoundaryString(int[] massString) {
-		boolean[] boundaries = new boolean[sum(massString)];
+		boolean[] boundaries = new boolean[SegmentationUtil.sum(massString)];
 		Arrays.fill(boundaries, false);
 		int index = 0;
 		for (int i = 0; i < massString.length - 1; i++) {
@@ -61,14 +61,6 @@ public class SegmentationSimilarity_impl implements SegmentationSimilarity {
 			boundaries[index] = true;
 		}
 		return boundaries;
-	}
-
-	public static int sum(int[] array) {
-		int s = 0;
-		for (int i = 0; i < array.length; i++) {
-			s += array[i];
-		}
-		return s;
 	}
 
 	public List<Integer> getPotentialSubstitions(boolean[][] boundaries) {
