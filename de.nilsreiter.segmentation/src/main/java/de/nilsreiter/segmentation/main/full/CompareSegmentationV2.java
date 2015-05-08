@@ -57,7 +57,7 @@ public class CompareSegmentationV2 {
 		metric =
 				MetricFactory.getMetric(BoundarySimilarity.class,
 						SegmentBoundary.class);
-		metric.setWindowSize(42);
+		metric.setWindowSize(44);
 		metric.setTranspositionPenaltyFunction(new TranspositionWeightingFunction() {
 			public double getWeight(Transposition tp) {
 				return 0;
@@ -75,7 +75,7 @@ public class CompareSegmentationV2 {
 						SegmentBoundaryAnnotator.class,
 						SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 						de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1.class
-								.getCanonicalName()));
+						.getCanonicalName()));
 		pipeline = new AnalysisEngineDescription[3][];
 		pipeline[0] = PipelineBuilder.array(pl);
 		pl.add(AnalysisEngineFactory
@@ -83,23 +83,23 @@ public class CompareSegmentationV2 {
 						SegmentBoundaryAnnotator.class,
 						SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 						de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2.class
-								.getCanonicalName()));
+						.getCanonicalName()));
 		pipeline[1] = PipelineBuilder.array(pl);
 		pl.add(AnalysisEngineFactory
 				.createEngineDescription(
 						SegmentBoundaryAnnotator.class,
 						SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 						de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3.class
-								.getCanonicalName()));
+						.getCanonicalName()));
 		// pl.add(AnalysisEngineFactory
 		// .createEngineDescription(CorpusStatistics.class));
 		pipeline[2] = PipelineBuilder.array(pl);
 
 		tsd =
 				TypeSystemDescriptionFactory
-						.createTypeSystemDescriptionFromPath(new File(
-								inputDirectory1, "typesystem.xml").toURI()
-								.toString());
+				.createTypeSystemDescriptionFromPath(new File(
+						inputDirectory1, "typesystem.xml").toURI()
+						.toString());
 
 		for (File file1 : inputDirectory1.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
