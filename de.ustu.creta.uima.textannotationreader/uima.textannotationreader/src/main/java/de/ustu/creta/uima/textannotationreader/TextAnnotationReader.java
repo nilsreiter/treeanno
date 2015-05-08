@@ -61,7 +61,7 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 			}
 			annoClass =
 					(Class<? extends Annotation>) Class
-					.forName(annotationClassName);
+							.forName(annotationClassName);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -99,6 +99,7 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 		List<Integer> cellar = new LinkedList<Integer>();
 		int indexTarget = 0;
 		for (int indexAnno = 0; indexAnno < annoTokens.getSurfaces().size(); indexAnno++) {
+
 			// character positions of token in anno-file
 			Pair<Integer, Integer> annoCharPos =
 					annoTokens.getCharacterPositions().get(indexAnno);
@@ -122,6 +123,13 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 					}
 					if (!cellar.isEmpty()) cellar.clear();
 					indexTarget++;
+				} else {
+					// this is the bug area
+					// indexTarget++;
+					// if (indexTarget > 2000)
+					// System.err.println("indexAnno=" + indexAnno
+					// + " indexTarget=" + indexTarget
+					// + " annoTokenWithContext=" + annoTokenWithContext);
 				}
 			} catch (IndexOutOfBoundsException e) {
 				indexTarget++;
