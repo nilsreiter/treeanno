@@ -124,12 +124,14 @@ public class TextAnnotationReader extends JCasAnnotator_ImplBase {
 					if (!cellar.isEmpty()) cellar.clear();
 					indexTarget++;
 				} else {
-					// this is the bug area
+					if (!annoTokenWithContext.startsWith("<"))
+						// this is the bug area
 					// indexTarget++;
 					// if (indexTarget > 2000)
-					// System.err.println("indexAnno=" + indexAnno
-					// + " indexTarget=" + indexTarget
-					// + " annoTokenWithContext=" + annoTokenWithContext);
+						System.err.println("indexAnno=" + indexAnno
+								+ " indexTarget=" + indexTarget
+								+ " annoTokenWithContext="
+								+ annoTokenWithContext);
 				}
 			} catch (IndexOutOfBoundsException e) {
 				indexTarget++;
