@@ -13,7 +13,6 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
-import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -21,8 +20,6 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import de.nilsreiter.pipeline.PipelineBuilder;
 import de.nilsreiter.pipeline.segmentation.SegmentationUnitAnnotator;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
-import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.ustu.creta.segmentation.agreement.CohensKappa;
 import de.ustu.creta.segmentation.agreement.impl.CohensKappa_impl;
 import de.ustu.creta.segmentation.evaluation.BoundarySimilarity;
@@ -75,7 +72,7 @@ public class CompareSegmentationV2 {
 						SegmentBoundaryAnnotator.class,
 						SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 						de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1.class
-						.getCanonicalName()));
+								.getCanonicalName()));
 		pipeline = new AnalysisEngineDescription[3][];
 		pipeline[0] = PipelineBuilder.array(pl);
 		pl.add(AnalysisEngineFactory
@@ -83,23 +80,23 @@ public class CompareSegmentationV2 {
 						SegmentBoundaryAnnotator.class,
 						SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 						de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2.class
-						.getCanonicalName()));
+								.getCanonicalName()));
 		pipeline[1] = PipelineBuilder.array(pl);
 		pl.add(AnalysisEngineFactory
 				.createEngineDescription(
 						SegmentBoundaryAnnotator.class,
 						SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
 						de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3.class
-						.getCanonicalName()));
+								.getCanonicalName()));
 		// pl.add(AnalysisEngineFactory
 		// .createEngineDescription(CorpusStatistics.class));
 		pipeline[2] = PipelineBuilder.array(pl);
 
 		tsd =
 				TypeSystemDescriptionFactory
-				.createTypeSystemDescriptionFromPath(new File(
-						inputDirectory1, "typesystem.xml").toURI()
-						.toString());
+						.createTypeSystemDescriptionFromPath(new File(
+								inputDirectory1, "typesystem.xml").toURI()
+								.toString());
 
 		for (File file1 : inputDirectory1.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
@@ -117,21 +114,6 @@ public class CompareSegmentationV2 {
 			}
 		}
 		System.out.println("--------");
-		for (File file1 : inputDirectory1.listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".xmi");
-			}
-		})) {
-			JCas jcas1 = JCasFactory.createJCas(file1.getAbsolutePath(), tsd);
-			Formatter pf = new Formatter();
-			int tokens = JCasUtil.select(jcas1, Token.class).size();
-			int sentences = JCasUtil.select(jcas1, Sentence.class).size();
-			pf.format("%1$s\t%2$d\t%3$d\t%4$4.1f",
-					file1.getName().replaceAll(".xml.txt.xmi", ""), tokens,
-					sentences, ((double) tokens / (double) sentences));
-			System.out.println(pf.toString());
-			pf.close();
-		}
 
 	}
 

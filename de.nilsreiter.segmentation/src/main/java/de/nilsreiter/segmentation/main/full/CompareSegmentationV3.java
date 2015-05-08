@@ -13,10 +13,12 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 
+import webanno.custom.Zusammenfassung;
 import de.nilsreiter.pipeline.PipelineBuilder;
 import de.nilsreiter.pipeline.segmentation.SegmentationUnitAnnotator;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
@@ -27,7 +29,6 @@ import de.ustu.creta.segmentation.evaluation.FournierMetric;
 import de.ustu.creta.segmentation.evaluation.FournierMetric.Transposition;
 import de.ustu.creta.segmentation.evaluation.FournierMetric.TranspositionWeightingFunction;
 import de.ustu.creta.segmentation.evaluation.MetricFactory;
-import de.ustu.creta.segmentation.evaluation.util.SegmentBoundaryAnnotator;
 
 public class CompareSegmentationV3 {
 
@@ -51,7 +52,7 @@ public class CompareSegmentationV3 {
 		metric =
 				MetricFactory.getMetric(BoundarySimilarity.class,
 						SegmentBoundary.class);
-		metric.setWindowSize(50);
+		metric.setWindowSize(44);
 		metric.setTranspositionPenaltyFunction(new TranspositionWeightingFunction() {
 
 			public double getWeight(Transposition tp) {
@@ -67,27 +68,7 @@ public class CompareSegmentationV3 {
 				SegmentationUnitAnnotator.class,
 				SegmentationUnitAnnotator.PARAM_BASE_TYPE,
 				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token"));
-		if (level1)
-			pl.add(AnalysisEngineFactory
-					.createEngineDescription(
-							SegmentBoundaryAnnotator.class,
-							SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
-							de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel1.class
-							.getCanonicalName()));
-		if (level2)
-			pl.add(AnalysisEngineFactory
-					.createEngineDescription(
-							SegmentBoundaryAnnotator.class,
-							SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
-							de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel2.class
-							.getCanonicalName()));
-		if (level3)
-			pl.add(AnalysisEngineFactory
-					.createEngineDescription(
-							SegmentBoundaryAnnotator.class,
-							SegmentBoundaryAnnotator.PARAM_ANNOTATION_TYPE,
-							de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryLevel3.class
-									.getCanonicalName()));
+
 		pipeline = PipelineBuilder.array(pl);
 
 		for (File file1 : inputDirectory1.listFiles(new FilenameFilter() {
@@ -97,6 +78,7 @@ public class CompareSegmentationV3 {
 		})) {
 			String name = file1.getName();
 			File file2 = new File(inputDirectory2, name);
+
 			if (file2.exists()) {
 				try {
 					processFiles(file1, file2);
@@ -112,23 +94,37 @@ public class CompareSegmentationV3 {
 			throws UIMAException, IOException {
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
-				.createTypeSystemDescriptionFromPath(new File(file1
-						.getParentFile(), "typesystem.xml").toURI()
-						.toString());
+						.createTypeSystemDescriptionFromPath(new File(file1
+								.getParentFile(), "typesystem.xml").toURI()
+								.toString());
 
 		JCas jcas1 = JCasFactory.createJCas(file1.getAbsolutePath(), tsd);
 		JCas jcas2 = JCasFactory.createJCas(file2.getAbsolutePath(), tsd);
 
+		if (false) {
+			for (Zusammenfassung zus : JCasUtil.select(jcas1,
+					Zusammenfassung.class)) {
+				System.out.println(zus.getBegin() + "," + zus.getEnd() + ": "
+						+ zus.getZusammenfassung());
+			}
+
+			for (Zusammenfassung zus : JCasUtil.select(jcas2,
+					Zusammenfassung.class)) {
+				System.out.println(zus.getBegin() + "," + zus.getEnd() + ": "
+						+ zus.getZusammenfassung());
+			}
+		}
+
 		SimplePipeline.runPipeline(jcas1, pipeline);
 		SimplePipeline.runPipeline(jcas2, pipeline);
 
-		double d = metric.score(jcas1, jcas2);
+		// double d = metric.score(jcas1, jcas2);
 		double a = agr.agr(jcas1, jcas2);
-		double cha = agr.getChanceAgreement(jcas1, jcas2);
+		// double cha = agr.getChanceAgreement(jcas1, jcas2);
 
 		Formatter pf = new Formatter();
-		pf.format("%1$s & %2$7.5f & %3$7.5f & %4$7.5f \\\\", file1.getName(),
-				d, a, cha);
+		pf.format("%1$s %2$7.5f ",
+				file1.getName().replaceAll(".xml.txt.xmi", ""), a);
 		System.out.println(pf.toString());
 		pf.close();
 
