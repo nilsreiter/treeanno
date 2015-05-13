@@ -16,7 +16,7 @@ public interface MainOptions {
 	@Option(defaultValue = "1000")
 	int getFirstId();
 
-	@Option
+	@Option(defaultToNull = true)
 	File getGenreList();
 
 	boolean getPrintFront();
