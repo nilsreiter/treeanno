@@ -35,9 +35,10 @@ public class Main {
 		MainOptions options =
 				CliFactory.parseArguments(MainOptions.class, args);
 
-		genres =
-				new HashSet<String>(IOUtils.readLines(new FileInputStream(
-						options.getGenreList())));
+		if (options.getGenreList() != null)
+			genres =
+			new HashSet<String>(IOUtils.readLines(new FileInputStream(
+					options.getGenreList())));
 
 		int id = options.getFirstId();
 
@@ -80,7 +81,7 @@ public class Main {
 							FileWriter fw = new FileWriter(outputFile);
 							fw.write(tgtext.getText());
 							fw.flush();
-							IOUtils.closeQuietly(fw);
+							fw.close();
 						}
 					}
 				}
@@ -120,7 +121,8 @@ public class Main {
 		String aVal = node.getAttributeValue("n");
 		try {
 			tgtext.setGenre(aVal.split("/")[4]);
-			if (!genres.contains(tgtext.getGenre())) return null;
+			if (genres != null && !genres.contains(tgtext.getGenre()))
+				return null;
 		} catch (Exception e) {
 			return null;
 		}
