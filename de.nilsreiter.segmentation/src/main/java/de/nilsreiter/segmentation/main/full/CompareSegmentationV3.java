@@ -94,14 +94,14 @@ public class CompareSegmentationV3 {
 			throws UIMAException, IOException {
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
-						.createTypeSystemDescriptionFromPath(new File(file1
-								.getParentFile(), "typesystem.xml").toURI()
-								.toString());
+				.createTypeSystemDescriptionFromPath(new File(file1
+						.getParentFile(), "typesystem.xml").toURI()
+						.toString());
 
 		JCas jcas1 = JCasFactory.createJCas(file1.getAbsolutePath(), tsd);
 		JCas jcas2 = JCasFactory.createJCas(file2.getAbsolutePath(), tsd);
 
-		if (false) {
+		if (true) {
 			for (Zusammenfassung zus : JCasUtil.select(jcas1,
 					Zusammenfassung.class)) {
 				System.out.println(zus.getBegin() + "," + zus.getEnd() + ": "
