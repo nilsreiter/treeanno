@@ -26,16 +26,19 @@ public class Main1 {
 
 		AnalysisEngineDescription tokenizer =
 				AnalysisEngineFactory
-				.createEngineDescription(StanfordSegmenter.class);
+						.createEngineDescription(StanfordSegmenter.class);
+
 		AnalysisEngineDescription posTagger =
 				AnalysisEngineFactory
-				.createEngineDescription(StanfordPosTagger.class);
+						.createEngineDescription(StanfordPosTagger.class);
 
 		AnalysisEngineDescription myComponent =
 				AnalysisEngineFactory.createEngineDescription(Component1.class);
 
 		AnalysisEngineDescription xmiWriter =
-				AnalysisEngineFactory.createEngineDescription(XmiWriter.class);
+				AnalysisEngineFactory.createEngineDescription(XmiWriter.class,
+						XmiWriter.PARAM_TARGET_LOCATION,
+						"/Users/reiterns/Desktop/");
 
 		SimplePipeline.runPipeline(crd, tokenizer, posTagger, myComponent,
 				xmiWriter);
