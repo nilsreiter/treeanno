@@ -11,8 +11,9 @@ public class Component1 extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
+
 		for (Token token : JCasUtil.select(jcas, Token.class)) {
-			// do stuff with token
+			System.out.println(token.getCoveredText());
 		}
 
 	}
