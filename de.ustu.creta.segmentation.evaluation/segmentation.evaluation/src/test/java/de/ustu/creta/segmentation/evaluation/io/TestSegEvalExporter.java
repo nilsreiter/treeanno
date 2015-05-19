@@ -12,6 +12,7 @@ import org.junit.Test;
 import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 
+@Deprecated
 public class TestSegEvalExporter {
 	JCas gold, silv;
 	String text = "The dog barks. It is hungry.";

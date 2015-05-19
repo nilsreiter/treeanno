@@ -8,6 +8,7 @@ import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
 
+@Deprecated
 public class SegEvalExporter {
 
 	int counter = 0;
@@ -24,10 +25,9 @@ public class SegEvalExporter {
 			did = String.valueOf(counter++);
 		}
 		JSONObject obj = new JSONObject();
-		obj.put("1",
-				SegmentationUtil.getMassTuple(gold, SegmentBoundary.class));
-		obj.put("2", SegmentationUtil.getMassTuple(silver,
-				SegmentBoundary.class));
+		obj.put("1", SegmentationUtil.getMassTuple(gold, SegmentBoundary.class));
+		obj.put("2",
+				SegmentationUtil.getMassTuple(silver, SegmentBoundary.class));
 		items.put(did, obj);
 
 	};
