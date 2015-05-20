@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.kohsuke.args4j.Option;
 
+@Deprecated
 public class EvaluationOptions {
 	enum EvaluationMetric {
 		WindowDiff, BreakDiff, WinPR
