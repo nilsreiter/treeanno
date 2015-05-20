@@ -1,6 +1,6 @@
 
-/* First created by JCasGen Tue May 19 17:46:17 CEST 2015 */
-package de.ustu.creta.segmentation.type;
+/* First created by JCasGen Wed May 20 09:02:43 CEST 2015 */
+package de.ustu.ims.segmentation.type;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue May 19 17:46:17 CEST 2015
+ * Updated by JCasGen Wed May 20 09:02:43 CEST 2015
  * @generated */
 public class Segment_Type extends Annotation_Type {
   /** @generated 
@@ -44,7 +44,7 @@ public class Segment_Type extends Annotation_Type {
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.ustu.creta.segmentation.type.Segment");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.ustu.ims.segmentation.type.Segment");
  
   /** @generated */
   final Feature casFeat_Value;
@@ -56,7 +56,7 @@ public class Segment_Type extends Annotation_Type {
    */ 
   public String getValue(int addr) {
         if (featOkTst && casFeat_Value == null)
-      jcas.throwFeatMissing("Value", "de.ustu.creta.segmentation.type.Segment");
+      jcas.throwFeatMissing("Value", "de.ustu.ims.segmentation.type.Segment");
     return ll_cas.ll_getStringValue(addr, casFeatCode_Value);
   }
   /** @generated
@@ -65,7 +65,7 @@ public class Segment_Type extends Annotation_Type {
    */    
   public void setValue(int addr, String v) {
         if (featOkTst && casFeat_Value == null)
-      jcas.throwFeatMissing("Value", "de.ustu.creta.segmentation.type.Segment");
+      jcas.throwFeatMissing("Value", "de.ustu.ims.segmentation.type.Segment");
     ll_cas.ll_setStringValue(addr, casFeatCode_Value, v);}
     
   

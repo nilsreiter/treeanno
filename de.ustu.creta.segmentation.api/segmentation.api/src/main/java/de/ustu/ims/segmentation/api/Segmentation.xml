@@ -6,7 +6,7 @@
   <vendor>Nils Reiter</vendor>
   <types>
   	<typeDescription>
-      <name>de.ustu.creta.segmentation.type.SegmentBoundary</name>
+      <name>de.ustu.ims.segmentation.type.SegmentBoundary</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     <features>
@@ -18,7 +18,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>de.ustu.creta.segmentation.type.Segment</name>
+      <name>de.ustu.ims.segmentation.type.Segment</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     <features>
@@ -30,7 +30,7 @@
       </features>
     </typeDescription>
   <typeDescription>
-      <name>de.ustu.creta.segmentation.type.SegmentationUnit</name>
+      <name>de.ustu.ims.segmentation.type.SegmentationUnit</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
