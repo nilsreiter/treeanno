@@ -1,1 +1,1 @@
-classpath*:de/ustu/ims/segmentation/Segmentation.xml
+classpath*:de/ustu/ims/segmentation/api/Segmentation.xml
