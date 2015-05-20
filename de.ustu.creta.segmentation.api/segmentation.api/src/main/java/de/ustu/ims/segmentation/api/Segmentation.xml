@@ -35,7 +35,7 @@
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
   <typeDescription>
-      <name>de.ustu.creta.segmentation.type.SegmentationSubUnit</name>
+      <name>de.ustu.ims.segmentation.type.SegmentationSubUnit</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
