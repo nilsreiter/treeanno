@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.FournierMetric;
+import de.ustu.creta.segmentation.evaluation.util.Counter;
 
 public abstract class AbstractFournierMetric implements FournierMetric {
 

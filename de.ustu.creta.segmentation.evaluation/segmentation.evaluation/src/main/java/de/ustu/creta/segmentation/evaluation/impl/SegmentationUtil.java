@@ -9,7 +9,7 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
-import de.uniheidelberg.cl.reiter.util.Counter;
+import de.ustu.creta.segmentation.evaluation.util.Counter;
 import de.ustu.ims.segmentation.type.SegmentationUnit;
 
 public class SegmentationUtil {

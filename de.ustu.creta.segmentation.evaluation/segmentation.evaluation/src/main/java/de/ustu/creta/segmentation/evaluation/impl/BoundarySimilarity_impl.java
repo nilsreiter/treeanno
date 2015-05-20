@@ -9,8 +9,8 @@ import java.util.function.Predicate;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
-import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.BoundarySimilarity;
+import de.ustu.creta.segmentation.evaluation.util.Counter;
 
 public class BoundarySimilarity_impl extends AbstractFournierMetric implements
 		BoundarySimilarity {

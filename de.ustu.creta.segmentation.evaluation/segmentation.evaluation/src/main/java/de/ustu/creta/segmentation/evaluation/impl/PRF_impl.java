@@ -14,9 +14,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.PRF;
 import de.ustu.creta.segmentation.evaluation.Strings;
+import de.ustu.creta.segmentation.evaluation.util.Counter;
 
 public class PRF_impl implements PRF {
 
