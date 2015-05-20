@@ -10,13 +10,13 @@ import org.apache.uima.jcas.JCas;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.agreement.impl.CohensKappa_impl;
 import de.ustu.creta.segmentation.evaluation.BoundarySimilarity;
 import de.ustu.creta.segmentation.evaluation.MetricFactory;
 import de.ustu.creta.segmentation.evaluation.SegmentationSimilarity;
 import de.ustu.creta.segmentation.evaluation.impl.AbstractFournierMetric;
+import de.ustu.ims.segmentation.type.SegmentBoundary;
+import de.ustu.ims.segmentation.type.SegmentationUnit;
 
 public class TestCohensKappa {
 	JCas gold, silv;

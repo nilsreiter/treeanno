@@ -10,12 +10,12 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.SegmentationSimilarity;
+import de.ustu.ims.segmentation.type.SegmentationUnit;
 
 public class SegmentationSimilarity_impl extends AbstractFournierMetric
-implements SegmentationSimilarity {
+		implements SegmentationSimilarity {
 	Class<? extends Annotation> boundaryType;
 
 	public SegmentationSimilarity_impl(
@@ -67,7 +67,7 @@ implements SegmentationSimilarity {
 		}
 		double editDistance =
 				getSubstOperationsWeight(substOperations)
-						+ getTranspositionsWeight(potTranspositions.keySet());
+				+ getTranspositionsWeight(potTranspositions.keySet());
 
 		return editDistance;
 	}

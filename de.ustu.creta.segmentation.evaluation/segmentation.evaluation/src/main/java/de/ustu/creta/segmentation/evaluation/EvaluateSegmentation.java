@@ -10,9 +10,10 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.uniheidelberg.cl.a10.Main;
+import de.ustu.ims.segmentation.type.SegmentBoundary;
 
+@Deprecated
 public class EvaluateSegmentation extends Main {
 
 	EvaluationOptions options = new EvaluationOptions();

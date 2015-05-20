@@ -3,10 +3,10 @@ package de.ustu.creta.segmentation.agreement.impl;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.agreement.CohensKappa;
 import de.ustu.creta.segmentation.evaluation.Metric;
+import de.ustu.ims.segmentation.type.SegmentBoundary;
+import de.ustu.ims.segmentation.type.SegmentationUnit;
 
 public class CohensKappa_impl implements CohensKappa {
 
@@ -41,10 +41,10 @@ public class CohensKappa_impl implements CohensKappa {
 
 		double cha0 =
 				JCasUtil.select(jcas[0], SegmentBoundary.class).size()
-						/ (double) (mass - 1);
+				/ (double) (mass - 1);
 		double cha1 =
 				JCasUtil.select(jcas[1], SegmentBoundary.class).size()
-						/ (double) (mass - 1);
+				/ (double) (mass - 1);
 		return cha0 * cha1;
 	}
 

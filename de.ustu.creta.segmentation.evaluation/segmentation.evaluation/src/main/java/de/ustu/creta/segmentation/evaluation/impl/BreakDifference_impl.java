@@ -8,8 +8,8 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
 import de.ustu.creta.segmentation.evaluation.BreakDifference;
+import de.ustu.ims.segmentation.type.SegmentBoundary;
 
 public class BreakDifference_impl implements BreakDifference {
 

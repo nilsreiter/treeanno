@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.evaluation.impl.BoundarySimilarity_impl;
+import de.ustu.ims.segmentation.type.SegmentBoundary;
+import de.ustu.ims.segmentation.type.SegmentationUnit;
 
 public class TestBoundarySimilarity_Characters {
 

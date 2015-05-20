@@ -8,10 +8,7 @@ import org.apache.uima.jcas.JCas;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.ustu.creta.segmentation.evaluation.Metric;
-import de.ustu.creta.segmentation.evaluation.MetricFactory;
-import de.ustu.creta.segmentation.evaluation.WindowDifference;
+import de.ustu.ims.segmentation.type.SegmentBoundary;
 
 /**
  * TODO: Verify results

@@ -9,8 +9,8 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.uniheidelberg.cl.reiter.util.Counter;
+import de.ustu.ims.segmentation.type.SegmentationUnit;
 
 public class SegmentationUtil {
 
@@ -55,8 +55,8 @@ public class SegmentationUtil {
 			coll = JCasUtil.select(jcas, SegmentationUnit.class);
 		} else
 			coll =
-			JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
-					new Annotation(jcas, end + 1, end + 1));
+					JCasUtil.selectBetween(SegmentationUnit.class, prevAnno,
+							new Annotation(jcas, end + 1, end + 1));
 		if (coll != null) {
 			// System.err.println(i + ": " + coll.toString());
 			// masses[i] = coll.size();

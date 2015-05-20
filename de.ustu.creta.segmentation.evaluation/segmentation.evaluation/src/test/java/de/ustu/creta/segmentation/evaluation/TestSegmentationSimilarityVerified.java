@@ -10,13 +10,13 @@ import org.apache.uima.jcas.JCas;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.creta.segmentation.evaluation.FournierMetric.Transposition;
 import de.ustu.creta.segmentation.evaluation.impl.AbstractFournierMetric.Substitution;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationSimilarity_impl;
 import de.ustu.creta.segmentation.evaluation.impl.SegmentationUtil;
+import de.ustu.ims.segmentation.type.SegmentBoundary;
+import de.ustu.ims.segmentation.type.SegmentationUnit;
 
 public class TestSegmentationSimilarityVerified {
 	JCas gold, silv;

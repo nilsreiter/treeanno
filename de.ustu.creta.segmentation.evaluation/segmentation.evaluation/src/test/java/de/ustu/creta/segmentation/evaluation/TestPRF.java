@@ -10,11 +10,7 @@ import org.apache.uima.jcas.JCas;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.nilsreiter.pipeline.segmentation.type.Segment;
-import de.ustu.creta.segmentation.evaluation.Metric;
-import de.ustu.creta.segmentation.evaluation.MetricFactory;
-import de.ustu.creta.segmentation.evaluation.PRF;
-import de.ustu.creta.segmentation.evaluation.Strings;
+import de.ustu.ims.segmentation.type.Segment;
 
 public class TestPRF {
 	JCas gold, silv;

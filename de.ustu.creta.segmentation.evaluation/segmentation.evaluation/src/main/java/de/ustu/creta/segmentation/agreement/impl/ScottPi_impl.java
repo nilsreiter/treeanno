@@ -3,10 +3,10 @@ package de.ustu.creta.segmentation.agreement.impl;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.nilsreiter.pipeline.segmentation.type.SegmentBoundary;
-import de.nilsreiter.pipeline.segmentation.type.SegmentationUnit;
 import de.ustu.creta.segmentation.agreement.ScottPi;
 import de.ustu.creta.segmentation.evaluation.Metric;
+import de.ustu.ims.segmentation.type.SegmentBoundary;
+import de.ustu.ims.segmentation.type.SegmentationUnit;
 
 public class ScottPi_impl implements ScottPi {
 	Metric observedAgreementMetric;
@@ -39,7 +39,7 @@ public class ScottPi_impl implements ScottPi {
 				double score =
 						observedAgreementMetric.scores(jcas[i], jcas[j]).get(
 								observedAgreementMetric.getClass()
-								.getSimpleName());
+										.getSimpleName());
 				z += mass * score;
 				n += mass;
 			}
