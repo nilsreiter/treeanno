@@ -22,8 +22,8 @@
     </dependency>
   </dependencies>
   <scm>
-	<connection>scm:git:ssh://git@bitbucket.org:7548950/java.git</connection>
-	<developerConnection>scm:git:ssh://git@bitbucket.org:7548950/java.git</developerConnection>
+	<connection>scm:git:git@bitbucket.org:7548950/java.git</connection>
+	<developerConnection>scm:git:git@bitbucket.org:7548950/java.git</developerConnection>
   	<url>https://git@bitbucket.org:7548950/java.git</url>
   </scm>
 </project>
