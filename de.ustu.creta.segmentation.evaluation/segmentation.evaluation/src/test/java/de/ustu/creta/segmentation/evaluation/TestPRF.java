@@ -47,8 +47,8 @@ public class TestPRF {
 		AnnotationFactory.createAnnotation(silv, 6, 9, Segment.class).setValue(
 				"2");
 		Map<String, Double> result = bd.scores(gold, silv);
-		assertEquals(1.0, result.get(Strings.PRECISION), 1e-5);
-		assertEquals(1.0, result.get(Strings.RECALL), 1e-5);
-		assertEquals(1.0, result.get(Strings.FSCORE), 1e-5);
+		assertEquals(1.0, result.get("_" + Strings.PRECISION), 1e-5);
+		assertEquals(1.0, result.get("_" + Strings.RECALL), 1e-5);
+		assertEquals(1.0, result.get("_" + Strings.FSCORE), 1e-5);
 	}
 }
