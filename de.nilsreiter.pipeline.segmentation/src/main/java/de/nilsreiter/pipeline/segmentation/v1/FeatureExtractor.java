@@ -14,9 +14,9 @@ import de.nilsreiter.pipeline.segmentation.type.SegmentBoundaryCandidate;
 import de.nilsreiter.pipeline.segmentation.type.v1.FeatureVector;
 import de.nilsreiter.pipeline.segmentation.wc.type.TimeAdverb;
 import de.nilsreiter.pipeline.segmentation.wc.type.TimeNoun;
-import de.nilsreiter.pipeline.tense.type.Aspect;
-import de.nilsreiter.pipeline.tense.type.Tense;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
+import de.ustu.ims.reiter.tense.api.type.Aspect;
+import de.ustu.ims.reiter.tense.api.type.Tense;
 
 public class FeatureExtractor extends JCasAnnotator_ImplBase {
 

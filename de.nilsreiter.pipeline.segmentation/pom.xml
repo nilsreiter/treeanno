@@ -102,13 +102,13 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
-  		<groupId>de.nilsreiter.pipeline</groupId>
-  		<artifactId>tense</artifactId>
-  		<version>0.0.2-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
   		<groupId>de.ustu.creta</groupId>
   		<artifactId>uima.textannotationreader</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.ustu.ims.reiter</groupId>
+  		<artifactId>tense.annotator</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>

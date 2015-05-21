@@ -10,7 +10,7 @@ import org.apache.uima.jcas.JCas;
 
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.Clause;
 import de.nilsreiter.pipeline.segmentation.clauselevel.type.DepRel;
-import de.nilsreiter.pipeline.tense.EnglishTenseAspect;
+import de.ustu.ims.reiter.tense.annotator.EnglishTenseAspect;
 
 public class TenseIdentifier extends JCasAnnotator_ImplBase {
 
@@ -28,8 +28,10 @@ public class TenseIdentifier extends JCasAnnotator_ImplBase {
 		List<DepRel> aux = ClauseUtil.getDependents(dr, "aux");
 		String posValue = dr.getToken().getPos().getPosValue();
 		if (aux.isEmpty()) {
-			if (posValue.matches("^VB[PZ]$")) return EnglishTenseAspect.Simple_Present;
-			if (posValue.matches("^VBD$")) return EnglishTenseAspect.Simple_Past;
+			if (posValue.matches("^VB[PZ]$"))
+				return EnglishTenseAspect.Simple_Present;
+			if (posValue.matches("^VBD$"))
+				return EnglishTenseAspect.Simple_Past;
 		} else if (aux.size() == 1) {
 			String auxPosValue = aux.get(0).getToken().getPos().getPosValue();
 			// String auxSurface = aux.get(0).getToken().getCoveredText();
@@ -43,14 +45,16 @@ public class TenseIdentifier extends JCasAnnotator_ImplBase {
 					}
 					return EnglishTenseAspect.Present_Progressive;
 				}
-				if (auxPosValue.matches("VBD")) return EnglishTenseAspect.Past_Progressive;
+				if (auxPosValue.matches("VBD"))
+					return EnglishTenseAspect.Past_Progressive;
 			} else if (posValue.matches("^VBN$")) {
 				if (auxPosValue.matches("^VB[PZ]$"))
 					return EnglishTenseAspect.Present_Perfect;
 				if (auxPosValue.matches("^VBD$"))
 					return EnglishTenseAspect.Simple_Past_Perfect;
 			} else if (posValue.matches("^VB$")) {
-				if (auxPosValue.matches("MD")) return EnglishTenseAspect.Will_Future;
+				if (auxPosValue.matches("MD"))
+					return EnglishTenseAspect.Will_Future;
 			}
 		} else if (aux.size() == 2) {
 			String aux0PosValue = aux.get(0).getToken().getPos().getPosValue();
@@ -75,9 +79,9 @@ public class TenseIdentifier extends JCasAnnotator_ImplBase {
 				if (aux.get(0).getToken().getPos().getPosValue()
 						.matches("^MD$")
 						&& aux.get(1).getToken().getPos().getPosValue()
-						.matches("^VB$")
+								.matches("^VB$")
 						&& aux.get(2).getToken().getPos().getPosValue()
-						.matches("^VBN$"))
+								.matches("^VBN$"))
 					return EnglishTenseAspect.Future_Perfect_Progressive;
 			}
 		}
