@@ -18,6 +18,7 @@ import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
 
+import de.nilsreiter.pipeline.uima.ClearAnnotation;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
@@ -26,6 +27,7 @@ import de.ustu.ims.reiter.tense.api.type.Aspect;
 import de.ustu.ims.reiter.tense.api.type.Future;
 import de.ustu.ims.reiter.tense.api.type.Past;
 import de.ustu.ims.reiter.tense.api.type.Perfective;
+import de.ustu.ims.reiter.tense.api.type.PerfectiveProgressive;
 import de.ustu.ims.reiter.tense.api.type.Present;
 import de.ustu.ims.reiter.tense.api.type.Progressive;
 import de.ustu.ims.reiter.tense.api.type.Tense;
@@ -64,7 +66,26 @@ public class TenseAnnotationCorpus {
 					SimplePipeline.runPipeline(jcas, AnalysisEngineFactory
 							.createEngineDescription(XmiWriter.class,
 									XmiWriter.PARAM_TARGET_LOCATION,
-									"target/main/resources/"));
+									"target/main/resources/gold/"));
+					SimplePipeline
+					.runPipeline(
+							jcas,
+							AnalysisEngineFactory
+							.createEngineDescription(
+									ClearAnnotation.class,
+									ClearAnnotation.PARAM_TYPE,
+									de.ustu.ims.reiter.tense.api.type.Tense.class),
+									AnalysisEngineFactory
+									.createEngineDescription(
+											ClearAnnotation.class,
+											ClearAnnotation.PARAM_TYPE,
+											de.ustu.ims.reiter.tense.api.type.Aspect.class),
+
+											AnalysisEngineFactory
+											.createEngineDescription(
+													XmiWriter.class,
+													XmiWriter.PARAM_TARGET_LOCATION,
+													"target/main/resources/plain/"));
 					jcas = null;
 					jcas = JCasFactory.createJCas();
 					b = new JCasBuilder(jcas);
@@ -122,22 +143,40 @@ public class TenseAnnotationCorpus {
 		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory
 				.createEngineDescription(XmiWriter.class,
 						XmiWriter.PARAM_TARGET_LOCATION,
-						"target/main/resources/"));
+						"target/main/resources/gold/"));
+		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory
+				.createEngineDescription(ClearAnnotation.class,
+						ClearAnnotation.PARAM_TYPE,
+						de.ustu.ims.reiter.tense.api.type.Tense.class),
+						AnalysisEngineFactory.createEngineDescription(
+								ClearAnnotation.class, ClearAnnotation.PARAM_TYPE,
+								de.ustu.ims.reiter.tense.api.type.Aspect.class),
+
+								AnalysisEngineFactory.createEngineDescription(XmiWriter.class,
+						XmiWriter.PARAM_TARGET_LOCATION,
+						"target/main/resources/plain/"));
 	}
 
 	public static void annotate(JCas jcas, int begin, int end, String tense) {
 
 		String[] tenseAsp =
 				new String[] { "pres", "pres_perf", "pres_cont", "sim_past",
-				"past_perf", "past_cont", "infinitiv", "fut" };
+				"past_perf", "past_cont", "infinitiv", "fut",
+				"past_perf_cont", "pres_perf_cont", "fut_perf_cont",
+						"fut_perf", "fut_cont" };
 		Class<? extends Aspect>[] aspects =
 				new Class[] { Aspect.class, Perfective.class,
 						Progressive.class, Aspect.class, Perfective.class,
-						Progressive.class, Aspect.class, Aspect.class };
+						Progressive.class, Aspect.class, Aspect.class,
+				PerfectiveProgressive.class,
+						PerfectiveProgressive.class,
+				PerfectiveProgressive.class, Perfective.class,
+				Progressive.class };
 		Class<? extends Tense>[] tenses =
 				new Class[] { Present.class, Present.class, Present.class,
 				Past.class, Past.class, Past.class, Tense.class,
-				Future.class };
+				Future.class, Past.class, Present.class, Future.class,
+						Future.class, Future.class };
 
 		Class<? extends Tense> annoClassTense = null;
 		Class<? extends Aspect> annoClassAspect = null;
@@ -150,10 +189,15 @@ public class TenseAnnotationCorpus {
 
 		if (annoClassTense != null)
 			AnnotationFactory
-					.createAnnotation(jcas, begin, end, annoClassTense)
-					.setTense(tense);
+					.createAnnotation(jcas, begin, end, annoClassTense);
+		else
+			AnnotationFactory.createAnnotation(jcas, begin, end, Tense.class)
+			.setTense(tense);
 		if (annoClassAspect != null)
 			AnnotationFactory.createAnnotation(jcas, begin, end,
 					annoClassAspect);
+		else
+			AnnotationFactory.createAnnotation(jcas, begin, end, Aspect.class)
+			.setAspect(tense);
 	}
 }
