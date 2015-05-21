@@ -49,6 +49,7 @@ public class TenseAnnotationCorpus {
 		int counter = 0;
 		int documentCounter = 0;
 		JCas jcas = JCasFactory.createJCas();
+		jcas.setDocumentLanguage("en");
 		JCasBuilder b = new JCasBuilder(jcas);
 		Map<Integer, Token> tokenMap = new HashMap<Integer, Token>();
 		do {
@@ -68,26 +69,28 @@ public class TenseAnnotationCorpus {
 									XmiWriter.PARAM_TARGET_LOCATION,
 									"target/main/resources/gold/"));
 					SimplePipeline
-					.runPipeline(
-							jcas,
-							AnalysisEngineFactory
-							.createEngineDescription(
-									ClearAnnotation.class,
-									ClearAnnotation.PARAM_TYPE,
-									de.ustu.ims.reiter.tense.api.type.Tense.class),
+							.runPipeline(
+									jcas,
 									AnalysisEngineFactory
-									.createEngineDescription(
-											ClearAnnotation.class,
-											ClearAnnotation.PARAM_TYPE,
-											de.ustu.ims.reiter.tense.api.type.Aspect.class),
+											.createEngineDescription(
+													ClearAnnotation.class,
+													ClearAnnotation.PARAM_TYPE,
+													de.ustu.ims.reiter.tense.api.type.Tense.class),
+									AnalysisEngineFactory
+											.createEngineDescription(
+													ClearAnnotation.class,
+													ClearAnnotation.PARAM_TYPE,
+													de.ustu.ims.reiter.tense.api.type.Aspect.class),
 
-											AnalysisEngineFactory
+									AnalysisEngineFactory
 											.createEngineDescription(
 													XmiWriter.class,
 													XmiWriter.PARAM_TARGET_LOCATION,
 													"target/main/resources/plain/"));
 					jcas = null;
 					jcas = JCasFactory.createJCas();
+					jcas.setDocumentLanguage("en");
+
 					b = new JCasBuilder(jcas);
 
 				}
@@ -114,14 +117,14 @@ public class TenseAnnotationCorpus {
 					String[] pos = lp[0].split(" ");
 					if (pos.length == 1)
 						range =
-						new Pair<Integer, Integer>(
-								Integer.valueOf(pos[0]),
-								Integer.parseInt(pos[0]));
+								new Pair<Integer, Integer>(
+										Integer.valueOf(pos[0]),
+										Integer.parseInt(pos[0]));
 					else
 						range =
-						new Pair<Integer, Integer>(
-								Integer.valueOf(pos[0]),
-								Integer.parseInt(pos[1]));
+								new Pair<Integer, Integer>(
+										Integer.valueOf(pos[0]),
+										Integer.parseInt(pos[1]));
 					String tense = lp[tenseIndex];
 					int begin = tokenMap.get(range.getFirst()).getBegin();
 					int end = tokenMap.get(range.getSecond()).getEnd();
@@ -148,35 +151,35 @@ public class TenseAnnotationCorpus {
 				.createEngineDescription(ClearAnnotation.class,
 						ClearAnnotation.PARAM_TYPE,
 						de.ustu.ims.reiter.tense.api.type.Tense.class),
-						AnalysisEngineFactory.createEngineDescription(
-								ClearAnnotation.class, ClearAnnotation.PARAM_TYPE,
-								de.ustu.ims.reiter.tense.api.type.Aspect.class),
+				AnalysisEngineFactory.createEngineDescription(
+						ClearAnnotation.class, ClearAnnotation.PARAM_TYPE,
+						de.ustu.ims.reiter.tense.api.type.Aspect.class),
 
-								AnalysisEngineFactory.createEngineDescription(XmiWriter.class,
-						XmiWriter.PARAM_TARGET_LOCATION,
-						"target/main/resources/plain/"));
+				AnalysisEngineFactory.createEngineDescription(XmiWriter.class,
+										XmiWriter.PARAM_TARGET_LOCATION,
+										"target/main/resources/plain/"));
 	}
 
 	public static void annotate(JCas jcas, int begin, int end, String tense) {
 
 		String[] tenseAsp =
 				new String[] { "pres", "pres_perf", "pres_cont", "sim_past",
-				"past_perf", "past_cont", "infinitiv", "fut",
-				"past_perf_cont", "pres_perf_cont", "fut_perf_cont",
-						"fut_perf", "fut_cont" };
+						"past_perf", "past_cont", "infinitiv", "fut",
+						"past_perf_cont", "pres_perf_cont", "fut_perf_cont",
+				"fut_perf", "fut_cont" };
 		Class<? extends Aspect>[] aspects =
 				new Class[] { Aspect.class, Perfective.class,
-						Progressive.class, Aspect.class, Perfective.class,
-						Progressive.class, Aspect.class, Aspect.class,
-				PerfectiveProgressive.class,
+				Progressive.class, Aspect.class, Perfective.class,
+				Progressive.class, Aspect.class, Aspect.class,
 						PerfectiveProgressive.class,
-				PerfectiveProgressive.class, Perfective.class,
-				Progressive.class };
+				PerfectiveProgressive.class,
+						PerfectiveProgressive.class, Perfective.class,
+						Progressive.class };
 		Class<? extends Tense>[] tenses =
 				new Class[] { Present.class, Present.class, Present.class,
-				Past.class, Past.class, Past.class, Tense.class,
-				Future.class, Past.class, Present.class, Future.class,
-						Future.class, Future.class };
+						Past.class, Past.class, Past.class, Tense.class,
+						Future.class, Past.class, Present.class, Future.class,
+				Future.class, Future.class };
 
 		Class<? extends Tense> annoClassTense = null;
 		Class<? extends Aspect> annoClassAspect = null;
@@ -189,15 +192,15 @@ public class TenseAnnotationCorpus {
 
 		if (annoClassTense != null)
 			AnnotationFactory
-					.createAnnotation(jcas, begin, end, annoClassTense);
+			.createAnnotation(jcas, begin, end, annoClassTense);
 		else
 			AnnotationFactory.createAnnotation(jcas, begin, end, Tense.class)
-			.setTense(tense);
+					.setTense(tense);
 		if (annoClassAspect != null)
 			AnnotationFactory.createAnnotation(jcas, begin, end,
 					annoClassAspect);
 		else
 			AnnotationFactory.createAnnotation(jcas, begin, end, Aspect.class)
-			.setAspect(tense);
+					.setAspect(tense);
 	}
 }
