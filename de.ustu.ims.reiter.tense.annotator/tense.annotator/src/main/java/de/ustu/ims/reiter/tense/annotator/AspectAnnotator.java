@@ -3,9 +3,7 @@ package de.ustu.ims.reiter.tense.annotator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-import org.apache.commons.math3.util.Pair;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.TypeCapability;
@@ -15,7 +13,6 @@ import org.apache.uima.jcas.JCas;
 
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
-import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.ims.reiter.tense.api.type.Aspect;
 import de.ustu.ims.reiter.tense.api.type.Perfective;
 import de.ustu.ims.reiter.tense.api.type.PerfectiveProgressive;
@@ -30,7 +27,7 @@ public class AspectAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
-			Counter<EAspect> tc = new Counter<EAspect>();
+			// Counter<EAspect> tc = new Counter<EAspect>();
 
 			List<List<POS>> posPatterns = new LinkedList<List<POS>>();
 			List<POS> poss = new LinkedList<POS>();
@@ -45,38 +42,35 @@ public class AspectAnnotator extends JCasAnnotator_ImplBase {
 			}
 
 			for (List<POS> l : posPatterns) {
-				EAspect t = getTense(l);
-				if (t != null) tc.add(t);
-			}
-			Pair<Integer, Set<EAspect>> res = tc.getMax();
+				if (!l.isEmpty()) {
+					EAspect t = getTense(l);
+					int b = l.get(0).getBegin();
+					int e = l.get(l.size() - 1).getEnd();
+					Aspect tenseAnnotation = null;
+					if (t != null)
+						switch (t) {
+						case PERFECTIVE:
+							tenseAnnotation =
+									AnnotationFactory.createAnnotation(jcas, b,
+											e, Perfective.class);
+							break;
+						case PERFECTIVE_PROGRESSIVE:
+							tenseAnnotation =
+									AnnotationFactory.createAnnotation(jcas, b,
+											e, PerfectiveProgressive.class);
+							break;
+						case PROGRESSIVE:
+							tenseAnnotation =
+									AnnotationFactory.createAnnotation(jcas, b,
+											e, Progressive.class);
+							break;
+						default:
+							return;
 
-			if (res.getSecond().size() == 1) {
-				EAspect asp = res.getSecond().iterator().next();
-				Aspect tenseAnnotation = null;
-				switch (asp) {
-				case PERFECTIVE:
-					tenseAnnotation =
-							AnnotationFactory.createAnnotation(jcas,
-									sentence.getBegin(), sentence.getEnd(),
-									Perfective.class);
-					break;
-				case PERFECTIVE_PROGRESSIVE:
-					tenseAnnotation =
-					AnnotationFactory.createAnnotation(jcas,
-							sentence.getBegin(), sentence.getEnd(),
-							PerfectiveProgressive.class);
-					break;
-				case PROGRESSIVE:
-					tenseAnnotation =
-							AnnotationFactory.createAnnotation(jcas,
-									sentence.getBegin(), sentence.getEnd(),
-									Progressive.class);
-					break;
-				default:
-					return;
-
+						}
+					if (tenseAnnotation != null)
+						tenseAnnotation.setAspect(Objects.toString(t));
 				}
-				tenseAnnotation.setAspect(Objects.toString(asp));
 			}
 		}
 	}

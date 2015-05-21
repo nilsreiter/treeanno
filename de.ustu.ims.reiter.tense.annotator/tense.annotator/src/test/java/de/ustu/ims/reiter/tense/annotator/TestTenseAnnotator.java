@@ -27,8 +27,8 @@ public class TestTenseAnnotator {
 
 		pipeline =
 				new AnalysisEngine[] { createEngine(StanfordSegmenter.class),
-						createEngine(StanfordPosTagger.class),
-				createEngine(TenseAnnotator.class) };
+				createEngine(StanfordPosTagger.class),
+						createEngine(TenseAnnotator.class) };
 	}
 
 	public JCas getJCas(String text) throws UIMAException {
@@ -48,6 +48,10 @@ public class TestTenseAnnotator {
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
 			assertEquals(ETense.PRESENT.toString(), clause.getTense());
 		}
+
+		Tense tense = JCasUtil.selectByIndex(jcas, Tense.class, 0);
+		assertEquals(3, tense.getBegin());
+		assertEquals(19, tense.getEnd());
 	}
 
 	@Test
@@ -60,6 +64,10 @@ public class TestTenseAnnotator {
 		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
 			assertEquals(ETense.PAST.toString(), clause.getTense());
 		}
+
+		Tense tense = JCasUtil.selectByIndex(jcas, Tense.class, 0);
+		assertEquals(3, tense.getBegin());
+		assertEquals(13, tense.getEnd());
 	}
 
 	@Test

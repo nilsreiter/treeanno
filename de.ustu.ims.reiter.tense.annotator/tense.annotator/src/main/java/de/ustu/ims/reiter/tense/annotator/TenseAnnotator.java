@@ -2,9 +2,7 @@ package de.ustu.ims.reiter.tense.annotator;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-import org.apache.commons.math3.util.Pair;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.TypeCapability;
@@ -14,11 +12,9 @@ import org.apache.uima.jcas.JCas;
 
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
-import de.uniheidelberg.cl.reiter.util.Counter;
 import de.ustu.ims.reiter.tense.api.type.Future;
 import de.ustu.ims.reiter.tense.api.type.Past;
 import de.ustu.ims.reiter.tense.api.type.Present;
-import de.ustu.ims.reiter.tense.api.type.Tense;
 
 @TypeCapability(inputs = {
 		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
@@ -29,7 +25,7 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
-			Counter<ETense> tc = new Counter<ETense>();
+			// Counter<ETense> tc = new Counter<ETense>();
 
 			List<List<POS>> posPatterns = new LinkedList<List<POS>>();
 			List<POS> poss = new LinkedList<POS>();
@@ -45,35 +41,59 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 
 			for (List<POS> l : posPatterns) {
 				ETense t = getTense(l);
-				if (t != null) tc.add(t);
-			}
-			Pair<Integer, Set<ETense>> res = tc.getMax();
-			if (res.getSecond().size() == 1) {
+				if (t != null)
+					switch (t) {
+					case PAST:
+						AnnotationFactory.createAnnotation(jcas,
+								l.get(0).getBegin(),
+								l.get(l.size() - 1).getEnd(), Past.class)
+								.setTense(java.util.Objects.toString(t));
+						break;
+					case FUTURE:
+						AnnotationFactory.createAnnotation(jcas,
+								l.get(0).getBegin(),
+								l.get(l.size() - 1).getEnd(), Future.class)
+								.setTense(java.util.Objects.toString(t));
+						break;
+					default:
+						AnnotationFactory.createAnnotation(jcas,
+								l.get(0).getBegin(),
+								l.get(l.size() - 1).getEnd(), Present.class)
+								.setTense(java.util.Objects.toString(t));
+					}
 
-				Tense tenseAnnotation;
-				ETense t = res.getSecond().iterator().next();
-				switch (t) {
-				case PAST:
-					tenseAnnotation =
-							AnnotationFactory.createAnnotation(jcas,
-									sentence.getBegin(), sentence.getEnd(),
-									Past.class);
-					break;
-				case FUTURE:
-					tenseAnnotation =
-					AnnotationFactory.createAnnotation(jcas,
-							sentence.getBegin(), sentence.getEnd(),
-							Future.class);
-					break;
-				default:
-					tenseAnnotation =
-					AnnotationFactory.createAnnotation(jcas,
-							sentence.getBegin(), sentence.getEnd(),
-							Present.class);
-				}
-
-				tenseAnnotation.setTense(java.util.Objects.toString(t));
+				// if (t != null) tc.add(t);
 			}
+
+			/*
+			 * Pair<Integer, Set<ETense>> res = tc.getMax();
+			 * if (res.getSecond().size() == 1) {
+			 * 
+			 * Tense tenseAnnotation;
+			 * ETense t = res.getSecond().iterator().next();
+			 * switch (t) {
+			 * case PAST:
+			 * tenseAnnotation =
+			 * AnnotationFactory.createAnnotation(jcas,
+			 * sentence.getBegin(), sentence.getEnd(),
+			 * Past.class);
+			 * break;
+			 * case FUTURE:
+			 * tenseAnnotation =
+			 * AnnotationFactory.createAnnotation(jcas,
+			 * sentence.getBegin(), sentence.getEnd(),
+			 * Future.class);
+			 * break;
+			 * default:
+			 * tenseAnnotation =
+			 * AnnotationFactory.createAnnotation(jcas,
+			 * sentence.getBegin(), sentence.getEnd(),
+			 * Present.class);
+			 * }
+			 * 
+			 * tenseAnnotation.setTense(java.util.Objects.toString(t));
+			 * }
+			 */
 		}
 	}
 
