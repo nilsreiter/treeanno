@@ -1,1 +1,0 @@
-classpath*:de/nilsreiter/pipeline/tense/Tense.xml
