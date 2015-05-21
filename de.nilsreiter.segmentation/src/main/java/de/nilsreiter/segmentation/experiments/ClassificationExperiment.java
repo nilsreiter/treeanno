@@ -17,11 +17,11 @@ import de.nilsreiter.pipeline.segmentation.v1.FeatureExtractor;
 import de.nilsreiter.pipeline.segmentation.wc.TimeAdverbAnnotator;
 import de.nilsreiter.pipeline.segmentation.wc.TimeNounAnnotator;
 import de.nilsreiter.pipeline.segmentation.wc.WordSet;
-import de.nilsreiter.pipeline.tense.AspectAnnotator;
-import de.nilsreiter.pipeline.tense.TenseAnnotator;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
+import de.ustu.ims.reiter.tense.annotator.AspectAnnotator;
+import de.ustu.ims.reiter.tense.annotator.TenseAnnotator;
 
 public class ClassificationExperiment extends WekaExperiment {
 
