@@ -1,1 +1,1 @@
-classpath*:de/utsu/ims/reiter/tense/api/Tense.xml
+classpath*:de/ustu/ims/reiter/tense/api/Tense.xml
