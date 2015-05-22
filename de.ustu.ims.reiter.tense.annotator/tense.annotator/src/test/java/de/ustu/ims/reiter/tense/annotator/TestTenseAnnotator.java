@@ -48,9 +48,27 @@ public class TestTenseAnnotator {
 		SimplePipeline.runPipeline(jcas, pipeline);
 		assertTrue(JCasUtil.exists(jcas, Present.class));
 
-		Tense tense = JCasUtil.selectByIndex(jcas, Present.class, 0);
+		Tense tense;
+		int i = 0;
+		tense = JCasUtil.selectByIndex(jcas, Present.class, i++);
 		assertEquals(3, tense.getBegin());
 		assertEquals(19, tense.getEnd());
+
+		tense = JCasUtil.selectByIndex(jcas, Present.class, i++);
+		assertEquals(24, tense.getBegin());
+		assertEquals(29, tense.getEnd());
+
+		tense = JCasUtil.selectByIndex(jcas, Present.class, i++);
+		assertEquals(34, tense.getBegin());
+		assertEquals(44, tense.getEnd());
+
+		tense = JCasUtil.selectByIndex(jcas, Present.class, i++);
+		assertEquals(49, tense.getBegin());
+		assertEquals(57, tense.getEnd());
+
+		tense = JCasUtil.selectByIndex(jcas, Present.class, i++);
+		assertEquals(81, tense.getBegin());
+		assertEquals(91, tense.getEnd());
 	}
 
 	@Test
@@ -60,9 +78,23 @@ public class TestTenseAnnotator {
 		SimplePipeline.runPipeline(jcas, pipeline);
 		assertTrue(JCasUtil.exists(jcas, Tense.class));
 
-		Tense tense = JCasUtil.selectByIndex(jcas, Past.class, 0);
+		Tense tense;
+		int i = 0;
+		tense = JCasUtil.selectByIndex(jcas, Past.class, i++);
 		assertEquals(3, tense.getBegin());
 		assertEquals(13, tense.getEnd());
+
+		tense = JCasUtil.selectByIndex(jcas, Past.class, i++);
+		assertEquals(18, tense.getBegin());
+		assertEquals(24, tense.getEnd());
+
+		tense = JCasUtil.selectByIndex(jcas, Past.class, i++);
+		assertEquals(29, tense.getBegin());
+		assertEquals(40, tense.getEnd());
+
+		tense = JCasUtil.selectByIndex(jcas, Past.class, i++);
+		assertEquals(45, tense.getBegin());
+		assertEquals(61, tense.getEnd());
 	}
 
 	@Test
