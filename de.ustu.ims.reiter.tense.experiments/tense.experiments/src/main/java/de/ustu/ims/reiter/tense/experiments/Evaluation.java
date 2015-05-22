@@ -29,7 +29,7 @@ public class Evaluation {
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
 				.createTypeSystemDescriptionFromPath(new File(
-						goldDirectory, "typesystem.xml")
+						silverDirectory, "typesystem.xml")
 				.getAbsolutePath());
 
 		int fileCounter = 0;
