@@ -5,7 +5,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.apache.uima.UIMAException;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
@@ -14,13 +13,14 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 
-import de.ustu.ims.reiter.tense.api.type.Future;
+import de.ustu.ims.reiter.tense.api.type.Present;
 
 public class Evaluation {
-	static Class<? extends Annotation> annoType = Future.class;
+	static Class<? extends Annotation> annoType = Present.class;
 
-	static SummaryStatistics precision = new SummaryStatistics();
-	static SummaryStatistics recall = new SummaryStatistics();
+	static ClassificationEvaluation classEval = new ClassificationEvaluation();
+
+	static int numFiles = 10;
 
 	public static void main(String[] args) throws UIMAException, IOException {
 		File silverDirectory = new File("target/main/resources/silver");
@@ -28,10 +28,11 @@ public class Evaluation {
 
 		TypeSystemDescription tsd =
 				TypeSystemDescriptionFactory
-						.createTypeSystemDescriptionFromPath(new File(
-								goldDirectory, "typesystem.xml")
-								.getAbsolutePath());
+				.createTypeSystemDescriptionFromPath(new File(
+						goldDirectory, "typesystem.xml")
+				.getAbsolutePath());
 
+		int fileCounter = 0;
 		for (File file : goldDirectory.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".xmi");
@@ -46,16 +47,15 @@ public class Evaluation {
 				JCas gold = JCasFactory.createJCas(file.getAbsolutePath(), tsd);
 				evaluate2(gold, silv);
 			}
+			fileCounter++;
+			if (fileCounter >= numFiles) break;
 		}
-		System.out.println(precision.getSummary());
-		System.out.println(recall.getSummary());
+		System.out.println(classEval.toString());
+
 	}
 
 	public static void evaluate2(JCas gold, JCas silver) {
-		StringBuilder b = new StringBuilder();
-		int tp = 0, fp = 0, fn = 0;
 
-		int index = 0;
 		Iterator<? extends Annotation> goldIterator =
 				JCasUtil.select(gold, annoType).iterator();
 		Iterator<? extends Annotation> silvIterator =
@@ -75,26 +75,19 @@ public class Evaluation {
 						+ silvAnno.getBegin() + "," + silvAnno.getEnd() + ")");
 			if ((goldAnno.getBegin() <= silvAnno.getEnd() && goldAnno
 					.getBegin() >= silvAnno.getBegin())) {
-				tp++;
+				classEval.tp();
 			} else {
 				if (goldAnno.getEnd() < silvAnno.getBegin()) {
-					fn++;
 					sa = false;
+					classEval.fn();
 				}
 				if (silvAnno.getEnd() < goldAnno.getBegin()) {
-					fp++;
 					ga = false;
+					classEval.fp();
 				}
 
 			}
 		}
 
-		double p = (double) tp / (fp + tp);
-		double r = (double) tp / (fn + tp);
-		precision.addValue(p);
-		recall.addValue(r);
-		b.append(tp).append('\t').append(fp).append('\t').append(fn)
-				.append('\t').append(p).append('\t').append(r);
-		System.out.println(b.toString());
 	}
 }
