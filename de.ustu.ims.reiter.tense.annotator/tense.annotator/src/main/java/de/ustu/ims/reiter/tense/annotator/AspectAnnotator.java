@@ -20,14 +20,13 @@ import de.ustu.ims.reiter.tense.api.type.Progressive;
 
 @TypeCapability(inputs = {
 		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
-		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
-		outputs = { "de.nilsreiter.pipeline.tense.type.Aspect" })
+"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+outputs = { "de.nilsreiter.pipeline.tense.type.Aspect" })
 public class AspectAnnotator extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		for (Sentence sentence : JCasUtil.select(jcas, Sentence.class)) {
-			// Counter<EAspect> tc = new Counter<EAspect>();
 
 			List<List<POS>> posPatterns = new LinkedList<List<POS>>();
 			List<POS> poss = new LinkedList<POS>();
@@ -51,18 +50,18 @@ public class AspectAnnotator extends JCasAnnotator_ImplBase {
 						switch (t) {
 						case PERFECTIVE:
 							tenseAnnotation =
-									AnnotationFactory.createAnnotation(jcas, b,
-											e, Perfective.class);
+							AnnotationFactory.createAnnotation(jcas, b,
+									e, Perfective.class);
 							break;
 						case PERFECTIVE_PROGRESSIVE:
 							tenseAnnotation =
-									AnnotationFactory.createAnnotation(jcas, b,
-											e, PerfectiveProgressive.class);
+							AnnotationFactory.createAnnotation(jcas, b,
+									e, PerfectiveProgressive.class);
 							break;
 						case PROGRESSIVE:
 							tenseAnnotation =
-									AnnotationFactory.createAnnotation(jcas, b,
-											e, Progressive.class);
+							AnnotationFactory.createAnnotation(jcas, b,
+									e, Progressive.class);
 							break;
 						default:
 							return;
