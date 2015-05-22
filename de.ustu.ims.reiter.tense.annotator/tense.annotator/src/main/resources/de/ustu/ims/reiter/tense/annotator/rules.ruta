@@ -1,0 +1,28 @@
+PACKAGE de.ustu.ims.reiter.tense.annotator;
+
+TYPESYSTEM de.ustu.ims.reiter.tense.api.Tense;
+TYPESYSTEM desc.type.POS;
+
+BLOCK(English) Document{FEATURE("language", "en")} {
+    POS.PosValue=="MD" V.PosValue=="VB" V.PosValue=="VBN" V.PosValue=="VBG" {->MARKONCE(Future)};
+
+    V.PosValue=="VBZ" V.PosValue=="VBN" V.PosValue=="VBG" {->MARKONCE(Present,1,3),MARKONCE(PerfectiveProgressive,1,3)};
+    V.PosValue=="VBP" V.PosValue=="VBN" V.PosValue=="VBG" {->MARKONCE(Present,1,3),MARKONCE(PerfectiveProgressive,1,3)};
+    V.PosValue=="VBD" V.PosValue=="VBN" V.PosValue=="VBG" {->MARKONCE(Past,1,3),MARKONCE(PerfectiveProgressive,1,3)};
+    POS.PosValue=="MD" POS.PosValue=="VB" POS.PosValue=="VBG" {->MARKONCE(Future,1,3),MARKONCE(Progressive,1,3)};
+    POS.PosValue=="MD" POS.PosValue=="VB" POS.PosValue=="VBN" {->MARKONCE(Future,1,3),MARKONCE(Perfective,1,3)};
+
+
+    V.PosValue=="VBZ" V.PosValue=="VBN" {->MARKONCE(Present,1,2),MARKONCE(Perfective,1,2)};
+    V.PosValue=="VBP" V.PosValue=="VBN" {->MARKONCE(Present,1,2),MARKONCE(Perfective,1,2)};
+    V.PosValue=="VBD" V.PosValue=="VBN" {->MARKONCE(Past,1,2),MARKONCE(Perfective,1,2)};
+    V.PosValue=="VBZ" V.PosValue=="VBG" {->MARKONCE(Present,1,2),MARKONCE(Progressive,1,2)};
+    V.PosValue=="VBP" V.PosValue=="VBG" {->MARKONCE(Present,1,2),MARKONCE(Progressive,1,2)};
+    V.PosValue=="VBD" V.PosValue=="VBG" {->MARKONCE(Past,1,2),MARKONCE(Progressive,1,2)};
+    POS.PosValue=="MD" POS.PosValue=="VB" {->MARKONCE(Future,1,2)};
+
+
+    V.PosValue=="VBD" {->MARKONCE(Past)};
+    V.PosValue=="VBZ" {->MARKONCE(Present)};
+    V.PosValue=="VBP" {->MARKONCE(Present)};
+}

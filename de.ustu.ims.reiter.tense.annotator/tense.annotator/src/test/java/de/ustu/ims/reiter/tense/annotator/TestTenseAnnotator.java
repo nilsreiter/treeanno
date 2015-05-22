@@ -17,6 +17,9 @@ import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
+import de.ustu.ims.reiter.tense.api.type.Future;
+import de.ustu.ims.reiter.tense.api.type.Past;
+import de.ustu.ims.reiter.tense.api.type.Present;
 import de.ustu.ims.reiter.tense.api.type.Tense;
 
 public class TestTenseAnnotator {
@@ -43,9 +46,9 @@ public class TestTenseAnnotator {
 		JCas jcas =
 				getJCas("He has been working. He works. He is working. He is going to the supermarket. He has worked.");
 		SimplePipeline.runPipeline(jcas, pipeline);
-		assertTrue(JCasUtil.exists(jcas, Tense.class));
+		assertTrue(JCasUtil.exists(jcas, Present.class));
 
-		Tense tense = JCasUtil.selectByIndex(jcas, Tense.class, 0);
+		Tense tense = JCasUtil.selectByIndex(jcas, Present.class, 0);
 		assertEquals(3, tense.getBegin());
 		assertEquals(19, tense.getEnd());
 	}
@@ -57,7 +60,7 @@ public class TestTenseAnnotator {
 		SimplePipeline.runPipeline(jcas, pipeline);
 		assertTrue(JCasUtil.exists(jcas, Tense.class));
 
-		Tense tense = JCasUtil.selectByIndex(jcas, Tense.class, 0);
+		Tense tense = JCasUtil.selectByIndex(jcas, Past.class, 0);
 		assertEquals(3, tense.getBegin());
 		assertEquals(13, tense.getEnd());
 	}
@@ -67,9 +70,9 @@ public class TestTenseAnnotator {
 		JCas jcas =
 				getJCas("He will work. He is going to work. He will be working. He will have worked. He'll have been working. He will have been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
-		assertTrue(JCasUtil.exists(jcas, Tense.class));
+		assertTrue(JCasUtil.exists(jcas, Future.class));
 
-		Tense tense = JCasUtil.selectByIndex(jcas, Tense.class, 0);
+		Tense tense = JCasUtil.selectByIndex(jcas, Future.class, 0);
 		assertEquals(3, tense.getBegin());
 		assertEquals(12, tense.getEnd());
 	}

@@ -19,6 +19,7 @@ import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 import de.ustu.ims.reiter.tense.api.type.Aspect;
 import de.ustu.ims.reiter.tense.api.type.Perfective;
+import de.ustu.ims.reiter.tense.api.type.PerfectiveProgressive;
 import de.ustu.ims.reiter.tense.api.type.Progressive;
 
 public class TestAspectAnnotator {
@@ -29,8 +30,8 @@ public class TestAspectAnnotator {
 
 		pipeline =
 				new AnalysisEngine[] { createEngine(StanfordSegmenter.class),
-				createEngine(StanfordPosTagger.class),
-						createEngine(AspectAnnotator.class) };
+						createEngine(StanfordPosTagger.class),
+				createEngine(TenseAnnotator.class) };
 	}
 
 	public JCas getJCas(String text) throws UIMAException {
@@ -72,7 +73,7 @@ public class TestAspectAnnotator {
 		JCas jcas =
 				getJCas("He had been working. He has been working. He'll have been working. He will have been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
-		assertTrue(JCasUtil.exists(jcas, Aspect.class));
+		assertTrue(JCasUtil.exists(jcas, PerfectiveProgressive.class));
 
 	}
 
