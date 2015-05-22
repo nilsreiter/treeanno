@@ -20,7 +20,7 @@ BLOCK(English) Document{FEATURE("language", "en")} {
     V.PosValue=="VBP" V.PosValue=="VBG" {->MARKONCE(Present,1,2),MARKONCE(Progressive,1,2)};
     V.PosValue=="VBD" V.PosValue=="VBG" {->MARKONCE(Past,1,2),MARKONCE(Progressive,1,2)};
     POS.PosValue=="MD" POS.PosValue=="VB" {->MARKONCE(Future,1,2)};
-
+    "will" POS.PosValue=="VB" {->MARKONCE(Future,1,2)};
 
     V.PosValue=="VBD" {->MARKONCE(Past)};
     V.PosValue=="VBZ" {->MARKONCE(Present)};
