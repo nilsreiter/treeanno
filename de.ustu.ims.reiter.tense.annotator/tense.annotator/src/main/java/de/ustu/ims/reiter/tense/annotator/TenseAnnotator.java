@@ -1,45 +1,46 @@
 package de.ustu.ims.reiter.tense.annotator;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.component.ExternalResourceAware;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ExternalResource;
 import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.SharedResourceObject;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.util.InvalidXMLException;
 
 @TypeCapability(inputs = {
 		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
-		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
-		outputs = { "de.nilsreiter.pipeline.tense.type.Tense" })
+"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+outputs = { "de.nilsreiter.pipeline.tense.type.Tense" })
 public class TenseAnnotator extends JCasAnnotator_ImplBase {
 
 	public static final String RUTA_RULES_PARA = "RutaRules";
 
 	@ExternalResource(key = RUTA_RULES_PARA, mandatory = false)
-	File rutaRulesF = new File(
-			"src/main/resources/de/ustu/ims/reiter/tense/annotator/rules.ruta");
-	String rutaRules;
+	RutaRules rr = null;
 
 	@Override
 	public void initialize(UimaContext context)
 			throws ResourceInitializationException {
-		rutaRulesF =
-				new File(
-						"src/main/resources/de/ustu/ims/reiter/tense/annotator/rules.ruta");
-		try {
-			rutaRules =
-					org.apache.commons.io.FileUtils.readFileToString(
-							rutaRulesF, "UTF-8");
-		} catch (IOException e) {
-			throw new ResourceInitializationException(e);
+		super.initialize(context);
+		if (rr == null) {
+			rr = new RutaRules();
+			try {
+				rr.loadFromStream(getClass().getResourceAsStream("rules.ruta"));
+			} catch (IOException e) {
+				throw new ResourceInitializationException(e);
+			}
 		}
 	}
 
@@ -47,7 +48,7 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 
 		try {
-			Ruta.apply(jcas.getCas(), rutaRules);
+			Ruta.apply(jcas.getCas(), rr.rules);
 		} catch (InvalidXMLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,6 +65,32 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static class RutaRules implements SharedResourceObject,
+			ExternalResourceAware {
+		String rules;
+
+		public String getResourceName() {
+			return "RutaRules";
+		}
+
+		public void afterResourcesInitialized()
+				throws ResourceInitializationException {}
+
+		public void load(DataResource aData)
+				throws ResourceInitializationException {
+			try {
+				loadFromStream(aData.getInputStream());
+			} catch (IOException e) {
+				throw new ResourceInitializationException(e);
+			}
+		}
+
+		public void loadFromStream(InputStream is) throws IOException {
+			rules = IOUtils.toString(is, "UTF-8");
+		}
+
 	}
 
 }
