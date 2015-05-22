@@ -23,8 +23,9 @@ import de.ustu.ims.reiter.tense.api.type.Progressive;
 
 @TypeCapability(inputs = {
 		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
-"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
-outputs = { "de.nilsreiter.pipeline.tense.type.Aspect" })
+		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
+		outputs = { "de.nilsreiter.pipeline.tense.type.Aspect" })
+@Deprecated
 public class AspectAnnotator extends JCasAnnotator_ImplBase {
 
 	Map<String, Class<? extends Aspect>> aspectMapping =
