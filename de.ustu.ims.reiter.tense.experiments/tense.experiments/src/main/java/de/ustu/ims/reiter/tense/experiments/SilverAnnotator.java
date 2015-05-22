@@ -15,24 +15,23 @@ import org.apache.uima.resource.ResourceInitializationException;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
-import de.ustu.ims.reiter.tense.annotator.AspectAnnotator;
 import de.ustu.ims.reiter.tense.annotator.TenseAnnotator;
 
 public class SilverAnnotator {
 
 	public static void main(String[] args)
 			throws ResourceInitializationException, UIMAException, IOException {
-		SimplePipeline.runPipeline(
-				CollectionReaderFactory.createReaderDescription(
-						XmiReader.class, XmiReader.PARAM_SOURCE_LOCATION,
+		SimplePipeline.runPipeline(CollectionReaderFactory
+				.createReaderDescription(XmiReader.class,
+						XmiReader.PARAM_SOURCE_LOCATION,
 						"target/main/resources/plain/*.xmi"),
-				createEngineDescription(LanguageAnnotator.class),
-						createEngineDescription(StanfordPosTagger.class),
-						createEngineDescription(AspectAnnotator.class),
-						createEngineDescription(TenseAnnotator.class),
-				createEngineDescription(XmiWriter.class,
-						XmiWriter.PARAM_TARGET_LOCATION,
-								"target/main/resources/silver/"));
+						createEngineDescription(LanguageAnnotator.class),
+				createEngineDescription(StanfordPosTagger.class),
+				// createEngineDescription(AspectAnnotator.class),
+				createEngineDescription(TenseAnnotator.class),
+						createEngineDescription(XmiWriter.class,
+								XmiWriter.PARAM_TARGET_LOCATION,
+						"target/main/resources/silver/"));
 
 	}
 
