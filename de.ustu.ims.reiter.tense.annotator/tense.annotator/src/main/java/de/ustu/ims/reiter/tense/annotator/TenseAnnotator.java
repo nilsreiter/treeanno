@@ -1,26 +1,57 @@
 package de.ustu.ims.reiter.tense.annotator;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.ustu.ims.reiter.tense.api.type.Future;
 import de.ustu.ims.reiter.tense.api.type.Past;
 import de.ustu.ims.reiter.tense.api.type.Present;
+import de.ustu.ims.reiter.tense.api.type.Tense;
 
 @TypeCapability(inputs = {
 		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
 		"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
 		outputs = { "de.nilsreiter.pipeline.tense.type.Tense" })
 public class TenseAnnotator extends JCasAnnotator_ImplBase {
+
+	Map<String, Class<? extends Tense>> tenseMapping =
+			new HashMap<String, Class<? extends Tense>>();
+
+	@Override
+	public void initialize(final UimaContext context)
+			throws ResourceInitializationException {
+		super.initialize(context);
+
+		tenseMapping.put("VBP", Present.class);
+		tenseMapping.put("VBZ", Present.class);
+		tenseMapping.put("VBD", Past.class);
+		tenseMapping.put("VBZ VBG", Present.class);
+		tenseMapping.put("VBP VBG", Present.class);
+		tenseMapping.put("VBD VBG", Past.class);
+		tenseMapping.put("VBZ VBN", Present.class);
+		tenseMapping.put("VBP VBN", Present.class);
+		tenseMapping.put("VBD VBN", Past.class);
+		tenseMapping.put("MD VB", Future.class);
+		tenseMapping.put("VBZ VBN VBG", Present.class);
+		tenseMapping.put("VBP VBN VBG", Present.class);
+		tenseMapping.put("VBD VBN VBG", Past.class);
+		tenseMapping.put("MD VB VBG", Future.class);
+		tenseMapping.put("MD VB VBN", Future.class);
+		tenseMapping.put("MD VB VBN VBG", Future.class);
+	}
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
@@ -40,33 +71,31 @@ public class TenseAnnotator extends JCasAnnotator_ImplBase {
 			}
 
 			for (List<POS> l : posPatterns) {
-				ETense t = getTense(l);
-				if (t != null)
-					switch (t) {
-					case PAST:
-						AnnotationFactory.createAnnotation(jcas,
-								l.get(0).getBegin(),
-								l.get(l.size() - 1).getEnd(), Past.class)
-								.setTense(java.util.Objects.toString(t));
-						break;
-					case FUTURE:
-						AnnotationFactory.createAnnotation(jcas,
-								l.get(0).getBegin(),
-								l.get(l.size() - 1).getEnd(), Future.class)
-								.setTense(java.util.Objects.toString(t));
-						break;
-					default:
-						AnnotationFactory.createAnnotation(jcas,
-								l.get(0).getBegin(),
-								l.get(l.size() - 1).getEnd(), Present.class)
-								.setTense(java.util.Objects.toString(t));
-					}
+				if (!l.isEmpty()) {
+					Class<? extends Tense> tenseClass = getTenseClass(l);
+					AnnotationFactory.createAnnotation(jcas, l.get(0)
+							.getBegin(), l.get(l.size() - 1).getEnd(),
+							tenseClass);
+				}
 
 			}
 
 		}
 	}
 
+	Class<? extends Tense> getTenseClass(List<POS> posList) {
+		if (posList.isEmpty()) return null;
+		StringBuilder b = new StringBuilder();
+		for (POS pos : posList) {
+			b.append(pos.getPosValue());
+			b.append(" ");
+		}
+		if (tenseMapping.containsKey(b.toString().trim()))
+			return tenseMapping.get(b.toString().trim());
+		return Tense.class;
+	}
+
+	@Deprecated
 	ETense getTense(List<POS> posList) {
 		if (posList.isEmpty()) return null;
 		String posValue = posList.get(posList.size() - 1).getPosValue();

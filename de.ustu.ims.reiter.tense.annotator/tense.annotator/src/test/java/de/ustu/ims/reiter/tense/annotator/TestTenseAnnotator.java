@@ -27,8 +27,8 @@ public class TestTenseAnnotator {
 
 		pipeline =
 				new AnalysisEngine[] { createEngine(StanfordSegmenter.class),
-				createEngine(StanfordPosTagger.class),
-						createEngine(TenseAnnotator.class) };
+						createEngine(StanfordPosTagger.class),
+				createEngine(TenseAnnotator.class) };
 	}
 
 	public JCas getJCas(String text) throws UIMAException {
@@ -45,10 +45,6 @@ public class TestTenseAnnotator {
 		SimplePipeline.runPipeline(jcas, pipeline);
 		assertTrue(JCasUtil.exists(jcas, Tense.class));
 
-		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
-			assertEquals(ETense.PRESENT.toString(), clause.getTense());
-		}
-
 		Tense tense = JCasUtil.selectByIndex(jcas, Tense.class, 0);
 		assertEquals(3, tense.getBegin());
 		assertEquals(19, tense.getEnd());
@@ -60,10 +56,6 @@ public class TestTenseAnnotator {
 				getJCas("He had worked. He worked. He was working. He had been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		assertTrue(JCasUtil.exists(jcas, Tense.class));
-
-		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
-			assertEquals(ETense.PAST.toString(), clause.getTense());
-		}
 
 		Tense tense = JCasUtil.selectByIndex(jcas, Tense.class, 0);
 		assertEquals(3, tense.getBegin());
@@ -77,10 +69,9 @@ public class TestTenseAnnotator {
 		SimplePipeline.runPipeline(jcas, pipeline);
 		assertTrue(JCasUtil.exists(jcas, Tense.class));
 
-		for (Tense clause : JCasUtil.select(jcas, Tense.class)) {
-			assertEquals(clause.getCoveredText(), ETense.FUTURE.toString(),
-					clause.getTense());
-		}
+		Tense tense = JCasUtil.selectByIndex(jcas, Tense.class, 0);
+		assertEquals(3, tense.getBegin());
+		assertEquals(12, tense.getEnd());
 	}
 
 }
