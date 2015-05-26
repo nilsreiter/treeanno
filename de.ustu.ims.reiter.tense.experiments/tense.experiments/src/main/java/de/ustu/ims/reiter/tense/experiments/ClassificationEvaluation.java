@@ -1,9 +1,16 @@
 package de.ustu.ims.reiter.tense.experiments;
 
 import java.util.Formatter;
+import java.util.LinkedList;
+import java.util.List;
 
-public class ClassificationEvaluation {
+import org.apache.commons.math3.util.Pair;
+
+public class ClassificationEvaluation<T> {
 	private int tp = 0, fp = 0, fn = 0;
+
+	List<Pair<T, T>> falsePositives = new LinkedList<Pair<T, T>>();
+	List<Pair<T, T>> falseNegatives = new LinkedList<Pair<T, T>>();
 
 	public double getPrecision() {
 		return (double) tp / (tp + fp);
@@ -31,9 +38,19 @@ public class ClassificationEvaluation {
 		fp++;
 	};
 
+	public void fp(T gold, T silver) {
+		fp();
+		falsePositives.add(new Pair<T, T>(gold, silver));
+	};
+
 	public void fn() {
 		fn++;
 	}
+
+	public void fn(T gold, T silver) {
+		fn();
+		falseNegatives.add(new Pair<T, T>(gold, silver));
+	};
 
 	@Override
 	public String toString() {
@@ -44,5 +61,13 @@ public class ClassificationEvaluation {
 				getPrecision(), getRecall(), getFScore());
 		formatter.close();
 		return b.toString();
+	}
+
+	public List<Pair<T, T>> getFalsePositives() {
+		return falsePositives;
+	}
+
+	public List<Pair<T, T>> getFalseNegatives() {
+		return falseNegatives;
 	}
 }
