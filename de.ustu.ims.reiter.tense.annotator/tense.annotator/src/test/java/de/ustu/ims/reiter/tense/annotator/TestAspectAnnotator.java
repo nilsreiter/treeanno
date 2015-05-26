@@ -1,7 +1,9 @@
 package de.ustu.ims.reiter.tense.annotator;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -46,8 +48,26 @@ public class TestAspectAnnotator {
 		JCas jcas =
 				getJCas("He had worked. He has worked. He will have worked.");
 		SimplePipeline.runPipeline(jcas, pipeline);
-		assertTrue(JCasUtil.exists(jcas, Aspect.class));
 		assertTrue(JCasUtil.exists(jcas, Perfective.class));
+
+		Perfective aspect = null;
+
+		aspect = JCasUtil.selectByIndex(jcas, Perfective.class, 0);
+		assertNotNull(aspect);
+		assertEquals(3, aspect.getBegin());
+		assertEquals(13, aspect.getEnd());
+
+		aspect = JCasUtil.selectByIndex(jcas, Perfective.class, 1);
+		assertNotNull(aspect);
+		assertEquals(18, aspect.getBegin());
+		assertEquals(28, aspect.getEnd());
+
+		aspect = JCasUtil.selectByIndex(jcas, Perfective.class, 2);
+		assertNotNull(aspect);
+		assertEquals(33, aspect.getBegin());
+		assertEquals(49, aspect.getEnd());
+
+		assertEquals(3, JCasUtil.select(jcas, Perfective.class).size());
 
 	}
 
@@ -66,6 +86,24 @@ public class TestAspectAnnotator {
 		SimplePipeline.runPipeline(jcas, pipeline);
 		assertTrue(JCasUtil.exists(jcas, Progressive.class));
 
+		Progressive aspect = null;
+
+		aspect = JCasUtil.selectByIndex(jcas, Progressive.class, 0);
+		assertNotNull(aspect);
+		assertEquals(3, aspect.getBegin());
+		assertEquals(14, aspect.getEnd());
+
+		aspect = JCasUtil.selectByIndex(jcas, Progressive.class, 1);
+		assertNotNull(aspect);
+		assertEquals(19, aspect.getBegin());
+		assertEquals(29, aspect.getEnd());
+
+		aspect = JCasUtil.selectByIndex(jcas, Progressive.class, 2);
+		assertNotNull(aspect);
+		assertEquals(34, aspect.getBegin());
+		assertEquals(42, aspect.getEnd());
+
+		assertEquals(5, JCasUtil.select(jcas, Progressive.class).size());
 	}
 
 	@Test
@@ -74,6 +112,33 @@ public class TestAspectAnnotator {
 				getJCas("He had been working. He has been working. He'll have been working. He will have been working.");
 		SimplePipeline.runPipeline(jcas, pipeline);
 		assertTrue(JCasUtil.exists(jcas, PerfectiveProgressive.class));
+
+		PerfectiveProgressive aspect = null;
+
+		aspect = JCasUtil.selectByIndex(jcas, PerfectiveProgressive.class, 0);
+		assertNotNull(aspect);
+		assertEquals(3, aspect.getBegin());
+		assertEquals(19, aspect.getEnd());
+
+		aspect = JCasUtil.selectByIndex(jcas, PerfectiveProgressive.class, 1);
+		assertNotNull(aspect);
+		assertEquals(24, aspect.getBegin());
+		assertEquals(66 - 26, aspect.getEnd());
+
+		aspect = JCasUtil.selectByIndex(jcas, PerfectiveProgressive.class, 2);
+		assertNotNull(aspect);
+		// assertEquals(96 - 26, aspect.getBegin());
+		assertEquals(91 - 26, aspect.getEnd());
+
+		aspect = JCasUtil.selectByIndex(jcas, PerfectiveProgressive.class, 3);
+		assertNotNull(aspect);
+		assertEquals(96 - 26, aspect.getBegin());
+		assertEquals(118 - 26, aspect.getEnd());
+
+		aspect = JCasUtil.selectByIndex(jcas, PerfectiveProgressive.class, 1);
+
+		assertEquals(4, JCasUtil.select(jcas, PerfectiveProgressive.class)
+				.size());
 
 	}
 
