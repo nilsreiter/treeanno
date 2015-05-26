@@ -4,13 +4,11 @@ import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.math3.util.Pair;
-
 public class ClassificationEvaluation<T> {
 	private int tp = 0, fp = 0, fn = 0;
 
-	List<Pair<T, T>> falsePositives = new LinkedList<Pair<T, T>>();
-	List<Pair<T, T>> falseNegatives = new LinkedList<Pair<T, T>>();
+	List<T> falsePositives = new LinkedList<T>();
+	List<T> falseNegatives = new LinkedList<T>();
 
 	public double getPrecision() {
 		return (double) tp / (tp + fp);
@@ -38,18 +36,18 @@ public class ClassificationEvaluation<T> {
 		fp++;
 	};
 
-	public void fp(T gold, T silver) {
+	public void fp(T silver) {
 		fp();
-		falsePositives.add(new Pair<T, T>(gold, silver));
+		falsePositives.add(silver);
 	};
 
 	public void fn() {
 		fn++;
 	}
 
-	public void fn(T gold, T silver) {
+	public void fn(T gold) {
 		fn();
-		falseNegatives.add(new Pair<T, T>(gold, silver));
+		falseNegatives.add(gold);
 	};
 
 	@Override
@@ -63,11 +61,11 @@ public class ClassificationEvaluation<T> {
 		return b.toString();
 	}
 
-	public List<Pair<T, T>> getFalsePositives() {
+	public List<T> getFalsePositives() {
 		return falsePositives;
 	}
 
-	public List<Pair<T, T>> getFalseNegatives() {
+	public List<T> getFalseNegatives() {
 		return falseNegatives;
 	}
 }
