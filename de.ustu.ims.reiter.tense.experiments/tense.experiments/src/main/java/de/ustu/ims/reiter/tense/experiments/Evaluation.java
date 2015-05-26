@@ -24,7 +24,7 @@ public class Evaluation {
 	static ClassificationEvaluation<Annotation> classEval =
 			new ClassificationEvaluation<Annotation>();
 
-	static int numFiles = 1;
+	static int numFiles = 10;
 
 	public static void main(String[] args) throws UIMAException, IOException {
 		File silverDirectory = new File("target/main/resources/silver");
