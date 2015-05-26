@@ -4,7 +4,7 @@ TYPESYSTEM de.ustu.ims.reiter.tense.api.Tense;
 TYPESYSTEM desc.type.POS;
 
 BLOCK(English) Document{FEATURE("language", "en")} {
-    POS.PosValue=="MD" V.PosValue=="VB" V.PosValue=="VBN" V.PosValue=="VBG" {->MARKONCE(Future)};
+    POS.PosValue=="MD" V.PosValue=="VB" V.PosValue=="VBN" V.PosValue=="VBG" {->MARKONCE(Future,1,4), MARKONCE(PerfectiveProgressive,1,4)};
 
     V.PosValue=="VBZ" V.PosValue=="VBN" V.PosValue=="VBG" {->MARKONCE(Present,1,3),MARKONCE(PerfectiveProgressive,1,3)};
     V.PosValue=="VBP" V.PosValue=="VBN" V.PosValue=="VBG" {->MARKONCE(Present,1,3),MARKONCE(PerfectiveProgressive,1,3)};
