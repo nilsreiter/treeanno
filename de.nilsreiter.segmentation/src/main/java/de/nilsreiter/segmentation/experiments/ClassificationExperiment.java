@@ -20,7 +20,6 @@ import de.nilsreiter.pipeline.segmentation.wc.WordSet;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
-import de.ustu.ims.reiter.tense.annotator.AspectAnnotator;
 import de.ustu.ims.reiter.tense.annotator.TenseAnnotator;
 
 public class ClassificationExperiment extends WekaExperiment {
@@ -52,7 +51,6 @@ public class ClassificationExperiment extends WekaExperiment {
 				createEngineDescription(StanfordPosTagger.class),
 				createEngineDescription(StanfordNamedEntityRecognizer.class),
 				createEngineDescription(TenseAnnotator.class),
-				createEngineDescription(AspectAnnotator.class),
 				createEngineDescription(TimeAdverbAnnotator.class),
 				createEngineDescription(TimeNounAnnotator.class,
 						TimeNounAnnotator.RESOURCE_LIST, extDesc) };
