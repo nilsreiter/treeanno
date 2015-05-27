@@ -22,7 +22,8 @@ import org.apache.uima.util.InvalidXMLException;
 @TypeCapability(inputs = {
 		"de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS",
 "de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence" },
-outputs = { "de.nilsreiter.pipeline.tense.type.Tense" })
+outputs = { "de.ustu.ims.reiter.tense.api.type.Tense",
+"de.ustu.ims.reiter.tense.api.type.Aspect" })
 public class TenseAnnotator extends JCasAnnotator_ImplBase {
 
 	public static final String RUTA_RULES_PARA = "RutaRules";
