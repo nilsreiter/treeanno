@@ -80,18 +80,14 @@
 		<div class="content level5">
 			<div id="container"></div>
 			<script>
- load_document_similarities("${param.doc}");
+				load_document_similarities("${param.doc}");
+				$('#showValuesButton').button();
+				$('#showValuesButton').on("click",function () {
+					load_document_similarities("${param.doc}");
+				});
+			</script>
 
-$('#showValuesButton').button();
-$('#showValuesButton').on("click",function () {
-	load_document_similarities("${param.doc}");
-});
-
-
-
-</script>
-
-</div>
+		</div>
 	</div>
 </div>
 </div>
