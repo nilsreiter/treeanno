@@ -64,6 +64,8 @@ $( ".level3.content" ).tabs({
 		switch (ui['newPanel']['selector']) {
 		case "#event-sequence":
 			if (loaded["#event-sequence"] == 1) break;
+			$("#sidebar").draggable();
+			$("#sidebar").resizable();
 			load_event_sequence("${param.doc}");
 			loaded["#event-sequence"] = 1;
 			break;
