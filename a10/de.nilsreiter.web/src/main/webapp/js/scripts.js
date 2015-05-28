@@ -391,24 +391,29 @@ function load_document_similarities(docId) {
 
 	        tooltip: {
 	            formatter: function () {
-	                //return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> sold <br><b>' +
-	                //    this.point.value + '</b> items on <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
+	                return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> sold <br><b>' +
+	                    this.point.value + '</b> items on <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
 	            }
 	        },
 
 	        series: [{
-	            name: 'Sales per employee',
+	            name: 'Similarity of Document Pairs',
 	            borderWidth: 1,
 	            data: data['data'],
 	            dataLabels: {
-	                enabled: $("#showValuesButton").val() == 1,
+	                enabled: 'true',
 	                color: 'black',
-	                format: '{point.value:.2f}',
+	                //format: '{point.value:.2f}',
 	                style: {
 	                    textShadow: 'none',
 	                    HcTextStroke: null
-	                }
-	            }
+	                },
+	                useHTML: 'true',
+	    	            formatter: function() {
+	    	            	return '<a href="&d1='+data['list'][this.point.x]+'&d2='+data['list'][this.point.y]+'#event-similarities">'+this.point.value+"</a>";
+	    	            }
+
+	            },
 	        }]
 
 	    });
