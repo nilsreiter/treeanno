@@ -410,7 +410,7 @@ function load_document_similarities(docId) {
 	                },
 	                useHTML: 'true',
 	    	            formatter: function() {
-	    	            	return '<a href="&d1='+data['list'][this.point.x]+'&d2='+data['list'][this.point.y]+'#event-similarities">'+this.point.value+"</a>";
+	    	            	return '<a href="javascript:show_event_similarities(\''+data['list'][this.point.x]+'\',\''+data['list'][this.point.y]+'\')">'+this.point.value+"</a>";
 	    	            }
 
 	            },
@@ -419,3 +419,10 @@ function load_document_similarities(docId) {
 	    });
 	})
 	};
+	
+function show_event_similarities(doc1, doc2) {
+	$(".level5 .menu input:checked").click();
+	$("#toggle-document-"+doc1).click();
+	$("#toggle-document-"+doc2).click();
+	$(".level3.content").tabs("option", "active" , 1);
+}

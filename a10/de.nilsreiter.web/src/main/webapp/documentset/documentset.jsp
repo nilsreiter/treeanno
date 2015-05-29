@@ -55,12 +55,27 @@
 			<%@ include file="../controls.html" %>
 		</div>
 		<div class="content level5" >
+			<div class="menu">
+				<div>
+				<c:forEach var="i" begin="0" end="${arity-1}" >
+					<input type="checkbox" id="toggle-document-${documents[i].id}" checked="checked" value="${documents[i].id}" /><label for="toggle-document-${documents[i].id}">${documents[i].id}</label>
+				</c:forEach>
+				</div>
+			</div>
+			<script>
+			$(".level5 > .menu > div").buttonset();
+			$(".level5 .menu div input").bind("change", function(event) {
+				val = $(event.target).val();
+				jQuery('#event-similarities .alignmenttext .'+val).parent().toggle();		
+			});
+			</script>
 		<c:forEach var="i" begin="0" end="${arity-1}" >
 			<div class="alignmenttext surface">
 				<h1>${documents[i].id}</h1>
 				<div class="${documents[i].id}"></div>
 				<script>
 					load_document_html("${documents[i].id}", ".${documents[i].id}", function() {
+						
 						load_similarities("${param.doc}", 2, "documentset");
 					});
 				</script>
@@ -81,8 +96,7 @@
 			<div id="container"></div>
 			<script>
 				load_document_similarities("${param.doc}");
-				$('#showValuesButton').button();
-				$('#showValuesButton').on("click",function () {
+				$('#showValuesButton').button().on("click",function () {
 					load_document_similarities("${param.doc}");
 				});
 			</script>
