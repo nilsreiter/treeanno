@@ -272,16 +272,16 @@ function eventtable(event, eventClasses) {
 
 function init_controls(controlcontainer) {
 	$(controlcontainer).buttonset();
-	$("#button-highlight-events").button().bind("click", function(event) {
+	$("#button-highlight-events").bind("click", function(event) {
 		jQuery('.event').toggleClass('highlightEvent');
 	});
-	$("#button-highlight-frames").button().bind("click", function(event) {
+	$("#button-highlight-frames").bind("click", function(event) {
 		jQuery('.frame').toggleClass('highlightFrame');
 	});
-	$("#button-highlight-mentions").button().bind("click", function(event) {
+	$("#button-highlight-mentions").bind("click", function(event) {
 		jQuery('.mention').toggleClass('highlightMention');
 	});
-	$("#button-split-sentences").button().bind("click", function(event) {
+	$("#button-split-sentences").bind("click", function(event) {
 		jQuery('.sentence').toggleClass('div');		
 	});
 }
