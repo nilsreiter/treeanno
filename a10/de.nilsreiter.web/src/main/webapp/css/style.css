@@ -305,6 +305,12 @@ table.filelist tr td {
 	top:0;
 }
 
+.level5 > .menu {
+	width:100% !important;
+	border:none;
+	padding:5px;
+}
+
 /*
  * Search Results
  */
