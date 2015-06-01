@@ -421,7 +421,7 @@ function load_document_similarities(docId) {
 	};
 	
 function show_event_similarities(doc1, doc2) {
-	$(".level5 .menu input:checked").click();
+	$(".level4 .menu input:checked").click();
 	$("#toggle-document-"+doc1).click();
 	$("#toggle-document-"+doc2).click();
 	$(".level3.content").tabs("option", "active" , 1);

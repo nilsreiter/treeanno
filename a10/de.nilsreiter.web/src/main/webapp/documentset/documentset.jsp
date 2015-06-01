@@ -52,23 +52,22 @@
 	</div>
 	<div id="event-similarities"  class="content level4">
 		<div class="menu">
-			<%@ include file="../controls.html" %>
-		</div>
-		<div class="content level5" >
-			<div class="menu">
-				<div>
+			<div>
 				<c:forEach var="i" begin="0" end="${arity-1}" >
 					<input type="checkbox" id="toggle-document-${documents[i].id}" checked="checked" value="${documents[i].id}" /><label for="toggle-document-${documents[i].id}">${documents[i].id}</label>
 				</c:forEach>
-				</div>
 			</div>
-			<script>
-			$(".level5 > .menu > div").buttonset();
-			$(".level5 .menu div input").bind("change", function(event) {
+		</div>
+		<script>
+			$(".level4 > .menu > div").buttonset();
+			$(".level4 .menu div input").bind("change", function(event) {
 				val = $(event.target).val();
 				jQuery('#event-similarities .alignmenttext .'+val).parent().toggle();		
 			});
 			</script>
+		<div class="content level5" >
+			
+			
 		<c:forEach var="i" begin="0" end="${arity-1}" >
 			<div class="alignmenttext surface">
 				<h1>${documents[i].id}</h1>
