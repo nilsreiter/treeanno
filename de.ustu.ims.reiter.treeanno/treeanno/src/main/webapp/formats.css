@@ -1,0 +1,11 @@
+body{
+	font-size:10px;
+}
+div#controls {
+	float:right;
+}
+div#artifact {
+	width:50%;
+	border:thin solid black;
+	padding:5px;
+}
