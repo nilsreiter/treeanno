@@ -29,10 +29,14 @@ public class ControllerServlet extends HttpServlet {
 	 */
 	public ControllerServlet() throws UIMAException {
 		jcas = JCasFactory.createJCas();
-		jcas.setDocumentText("The dog barks. It is hungry.");
+		jcas.setDocumentText("The dog barks. It is hungry. Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
 		jcas.setDocumentLanguage("en");
 		AnnotationFactory.createAnnotation(jcas, 0, 14, Segment.class);
 		AnnotationFactory.createAnnotation(jcas, 15, 28, Segment.class);
+		AnnotationFactory.createAnnotation(jcas, 29, 35, Segment.class);
+		AnnotationFactory.createAnnotation(jcas, 36, 46, Segment.class);
+		AnnotationFactory.createAnnotation(jcas, 46, jcas.getDocumentText()
+				.length(), Segment.class);
 	}
 
 	/**
