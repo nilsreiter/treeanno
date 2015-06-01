@@ -294,9 +294,7 @@ table.filelist tr td {
 }
 
 .level4 > .menu {
-	width:100% !important;
-	border:none;
-	padding:5px;
+	padding-bottom:5px;
 }
 
 .level5 {
@@ -305,11 +303,7 @@ table.filelist tr td {
 	top:0;
 }
 
-.level5 > .menu {
-	width:100% !important;
-	border:none;
-	padding:5px;
-}
+
 
 /*
  * Search Results
