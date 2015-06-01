@@ -98,7 +98,6 @@ function login() {
 				}
 				break;
 			case kbkey.right:
-				// alert('TODO: Indent item (maybe)');
 				indent();
 				break;
 			case kbkey.left:
@@ -122,9 +121,14 @@ function mergedialog() {
 	$("#merge p").append("Merge <span class=\"tt\">&quot;"+dtext(item['text'])+"&quot;</span> with ...");
 	if (typeof prevCand !== 'undefined') 
 		$("#form_mergecandidates").append("<option value=\""+prevCand+"\">"+dtext(items[prevCand]['text'])+"</option>");
-	if (typeof nextCand !== 'undefined') 
+	if (typeof nextCand !== 'undefined' && $(".selected ul").length == 0) 
 		$("#form_mergecandidates").append("<option value=\""+nextCand+"\">"+dtext(items[nextCand]['text'])+"</option>");
-	
+	$('#form_mergecandidates').on('keydown', function(e) {
+	    if (e.which == 13) {
+	        e.preventDefault();
+	        mergedialog_enter();
+	    }
+	});
 	$("#merge").dialog({
 		title: i18n("Merge Segments"),
 		modal:true,
@@ -155,17 +159,25 @@ function mergedialog_enter() {
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
 	items[nid] = undefined;
 	items[$(".selected").attr("data-treeanno-id")] = undefined;
+	
+	sublist0 = $("#outline li[data-treeanno-id='"+nid+"'] > ul").detach();
 	$("#outline li[data-treeanno-id='"+nid+"']").remove();
 	items[++idCounter] = nitem;
+	
 	$(".selected").after(get_html_item(nitem, idCounter));
 	newsel = $(".selected").next();
+	sublist1 = $(".selected > ul").detach();
 	$(".selected").remove();
 	$(newsel).addClass("selected");
+	$(".selected").append(sublist0);
+	$(".selected").append(sublist1);
+	cleanup_list();
 	mergedialog_cleanup();
 }
 function mergedialog_cleanup() {
 	enable_interaction = true;
 	$("#merge p").empty();
+	$("#form_mergecandidates").unbind('keydown');
 	$("#form_mergecandidates").empty();
 	$("#merge").dialog( "destroy" );
 	
@@ -174,7 +186,6 @@ function mergedialog_cleanup() {
 function splitdialog() {
 	enable_interaction = false;
 	var item = items[$(".selected").attr("data-treeanno-id")];
-	alert(item);
 	$("#form_splittext").val(item['text'].trim());
 	$("#split").dialog({
 		title: i18n("Split Segment"),
@@ -185,18 +196,11 @@ function splitdialog() {
 		[
 		 	{
 		 		text: i18n("ok"),
-		 		icons: {
-		 			primary: "ui-icon-heart"
-		 		},
-		 		click: function() {
-		 			splitdialog_enter()
-		 		}
+		 		
+		 		click: splitdialog_enter
 		    },
 		    {
 		    	text: i18n("cancel"),
-		    	icons: {
-		    		primary: "ui-icon-heart"
-		    	},
 		    	click: splitdialog_cleanup
 		    }
 		]
@@ -228,14 +232,17 @@ function splitdialog_enter() {
 		litems[1]['begin'] = litems[0]['end'];
 		items[itemid] = undefined;
 		
+		sublist = $(".selected > ul").detach();
 		items[++idCounter] = litems[1];
-		$(".selected").after(get_html_item(litems[1], idCounter));
+		$(".selected").after(get_html_item(litems[1], idCounter))
+		$(".selected").next().append(sublist);
 		items[++idCounter] = litems[0];
 		$(".selected").after(get_html_item(litems[0], idCounter));
 		nsel = $(".selected").next();
 		$(".selected").remove();
 		$(nsel).addClass("selected");
 	}
+	cleanup_list();
 	splitdialog_cleanup();
 }
 
@@ -265,4 +272,9 @@ function indent() {
 		$(prev).children("ul").append(s);
 	}
 
+}
+
+
+function cleanup_list() {
+	$("#outline ul:not(:has(*))").remove();
 }
