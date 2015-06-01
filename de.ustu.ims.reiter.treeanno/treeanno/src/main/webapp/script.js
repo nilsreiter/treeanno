@@ -1,8 +1,17 @@
 var maxStringLength = 30;
 
+var i18n;
+
+var enable_interaction = true;
+
+var items;
+
+var idCounter;
+
 function init(t) {
+	i18n = t;
 	$(function() {
-		$("#artifact").hide();
+		$("#split").hide();
 		$("#login").dialog({
 			title: t("username"),
 			buttons: 
@@ -17,7 +26,22 @@ function init(t) {
 			]
 		});
 		
+		
 	});
+}
+
+function get_html_item(item, i) {
+	var htmlItem = document.createElement("li");
+	$(htmlItem).addClass("tl0");
+	$(htmlItem).attr("data-treeanno-id", i);
+	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
+	return htmlItem;
+}
+
+function dtext(s) {
+	if (s.length > maxStringLength)
+		s = s.substring(0,maxStringLength-3)+"...";
+	return s;
 }
 
 function login() {
@@ -25,11 +49,15 @@ function login() {
 	$( this ).dialog( "close" );
 	var username = $("#form_username").val();
 	jQuery.getJSON("ControllerServlet?document="+docid, function(data) {
+		items = data["list"];
+		idCounter = data["list"].length;
 		for (var i = 0; i < data["list"].length; i++) {
-			var t = data["list"][i]["text"];
+			var item = data["list"][i];
+			var t = item["text"];
+			
 			if (t.length > maxStringLength)
 				t = t.substring(0,maxStringLength-3)+"...";
-		    $('#outline').append("<li class=\"tl0\"><div>"+t+"</div></li>");
+			$('#outline').append(get_html_item(item, i));
 		}
 		$('#outline li:first-child').addClass("selected");
 		$('#outline').nestedSortable({
@@ -41,13 +69,23 @@ function login() {
 		    forcePlaceholderSize:true
 		});
 		document.onkeydown = function(e) {
+			if (!enable_interaction) return;
+			e.preventDefault();
 			var keyCode = e.keyCode || e.which,
-            	kbkey = { up: 38, down: 40, right: 39, left: 37, enter: 13 };
+            	kbkey = { up: 38, down: 40, right: 39, left: 37, enter: 13, s: 83, m:77 };
 			var allItems = $("#outline li");
 			switch (keyCode) {
+			case kbkey.m:
+				mergedialog();
+				break;
+			case kbkey.s:
+				splitdialog();
+				break;
 			case kbkey.down:
 				var index = $(".selected").index("#outline li");
-				if (index < $(allItems).length-1) {
+				if (index == -1) {
+					$($(allItems).get(0)).toggleClass("selected");					
+				} else if (index < $(allItems).length-1) {
 					$($(allItems).get(index)).toggleClass("selected");
 					$($(allItems).get(index+1)).toggleClass("selected");
 				}
@@ -75,32 +113,132 @@ function login() {
 	
 }
 
-function outdentcss() {
-	var item = $("#outline li.selected");
-	var l =  getLevel(item);
-	if (l > 0) {
-		$(item).removeClass("tl"+l);
-		$(item).addClass("tl"+(l-1));
+function mergedialog() {
+	enable_interaction = false;
+	var item = items[$(".selected").data("treeanno-id")];
+	
+	var prevCand = $(".selected").prev("li").attr("data-treeanno-id");
+	var nextCand = $(".selected").next("li").attr("data-treeanno-id");
+	$("#merge p").append("Merge <span class=\"tt\">&quot;"+dtext(item['text'])+"&quot;</span> with ...");
+	if (typeof prevCand !== 'undefined') 
+		$("#form_mergecandidates").append("<option value=\""+prevCand+"\">"+dtext(items[prevCand]['text'])+"</option>");
+	if (typeof nextCand !== 'undefined') 
+		$("#form_mergecandidates").append("<option value=\""+nextCand+"\">"+dtext(items[nextCand]['text'])+"</option>");
+	
+	$("#merge").dialog({
+		title: i18n("Merge Segments"),
+		modal:true,
+		minWidth:400,
+		close: mergedialog_cleanup,
+		buttons: [{
+		        	  text: i18n("ok"),
+		        	  click: mergedialog_enter
+		        }, {
+		        	text: i18n("cancel"),
+		        	click: mergedialog_cleanup
+		        }
+		]
+	});
+}
+
+
+function mergedialog_enter() {
+	nid = $("#form_mergecandidates").val();
+	item1 = items[nid];
+	item0 = items[$(".selected").attr("data-treeanno-id")];
+	
+	correctOrder = (item1['begin'] > item0['begin']);
+	
+	nitem = new Object();
+	nitem['text'] = (correctOrder?item0['text']+item1['text']:item1['text']+item0['text']);
+	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
+	nitem['end'] = (correctOrder?item1['end']:item0['end']);
+	items[nid] = undefined;
+	items[$(".selected").attr("data-treeanno-id")] = undefined;
+	$("#outline li[data-treeanno-id='"+nid+"']").remove();
+	items[++idCounter] = nitem;
+	$(".selected").after(get_html_item(nitem, idCounter));
+	newsel = $(".selected").next();
+	$(".selected").remove();
+	$(newsel).addClass("selected");
+	mergedialog_cleanup();
+}
+function mergedialog_cleanup() {
+	enable_interaction = true;
+	$("#merge p").empty();
+	$("#form_mergecandidates").empty();
+	$("#merge").dialog( "destroy" );
+	
+}
+
+function splitdialog() {
+	enable_interaction = false;
+	var item = items[$(".selected").attr("data-treeanno-id")];
+	alert(item);
+	$("#form_splittext").val(item['text'].trim());
+	$("#split").dialog({
+		title: i18n("Split Segment"),
+		modal: true,
+		minWidth: 400,
+		close: splitdialog_cleanup,
+		buttons: 
+		[
+		 	{
+		 		text: i18n("ok"),
+		 		icons: {
+		 			primary: "ui-icon-heart"
+		 		},
+		 		click: function() {
+		 			splitdialog_enter()
+		 		}
+		    },
+		    {
+		    	text: i18n("cancel"),
+		    	icons: {
+		    		primary: "ui-icon-heart"
+		    	},
+		    	click: splitdialog_cleanup
+		    }
+		]
+	});
+}
+
+function splitdialog_cleanup() {
+	$("#form_splittext").val("");
+	enable_interaction = true;
+	$("#split").dialog( "destroy" );
+	
+}
+
+function splitdialog_enter() {
+	itemid = $(".selected").data("treeanno-id");
+	item = items[itemid];
+	var text = $("#form_splittext").val();
+	var lines = text.split("\n\n");
+	if (lines.length == 2) {
+		
+		litems = new Array();
+		litems[0] = new Object();
+		litems[0]['begin'] = item['begin'];
+		litems[0]['text'] = lines[0];
+		litems[0]['end'] = item['begin']+lines[0].length;
+		litems[1] = new Object();
+		litems[1]['end'] = item['end'];
+		litems[1]['text'] = lines[1];
+		litems[1]['begin'] = litems[0]['end'];
+		items[itemid] = undefined;
+		
+		items[++idCounter] = litems[1];
+		$(".selected").after(get_html_item(litems[1], idCounter));
+		items[++idCounter] = litems[0];
+		$(".selected").after(get_html_item(litems[0], idCounter));
+		nsel = $(".selected").next();
+		$(".selected").remove();
+		$(nsel).addClass("selected");
 	}
+	splitdialog_cleanup();
 }
 
-
-function indentcss() {
-	var item = $("#outline li.selected");
-	var l =  getLevel(item);
-	$(item).removeClass("tl"+l);
-	$(item).addClass("tl"+(l+1));
-}
-
-function getLevel(item) {
-	array = $(item).attr("class").split(/\s+/);
-	for (var i = 0; i < array[i].length; i++) {
-		if (array[i].substring(0, 2) == "tl") {
-			return parseInt(array[i].substring(2, array[i].length));
-		}
-	}
-	return 0;
-}
 
 function outdent() {
 	var currentItem = $("#outline li.selected");

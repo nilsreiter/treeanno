@@ -32,9 +32,5 @@ div#artifact {
 .placeholder { background:#eee; }
 .nesttoodeep { background:#ffdedd; }
 
-#outline li.tl0 { margin-left:0px; }
-#outline li.tl1 { margin-left:20px; }
-#outline li.tl2 { margin-left:40px; }
-#outline li.tl3 { margin-left:60px; }
-#outline li.tl4 { margin-left:80px; }
-#outline li.tl5 { margin-left:100px; }
+
+#split,#merge { display:none; }
