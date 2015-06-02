@@ -10,6 +10,7 @@ var idCounter;
 
 var includeSeparationWhenMerging = true;
 
+
 function init(t) {
 	i18n = t;
 	$(function() {
@@ -71,47 +72,93 @@ function login() {
 		    forcePlaceholderSize:true
 		});
 		document.onkeydown = function(e) {
-			if (!enable_interaction) return;
-			e.preventDefault();
-			var keyCode = e.keyCode || e.which,
-            	kbkey = { up: 38, down: 40, right: 39, left: 37, enter: 13, s: 83, m:77 };
-			var allItems = $("#outline li");
-			switch (keyCode) {
-			case kbkey.m:
-				mergedialog();
-				break;
-			case kbkey.s:
-				splitdialog();
-				break;
-			case kbkey.down:
-				var index = $(".selected").index("#outline li");
-				if (index == -1) {
-					$($(allItems).get(0)).toggleClass("selected");					
-				} else if (index < $(allItems).length-1) {
-					$($(allItems).get(index)).toggleClass("selected");
-					$($(allItems).get(index+1)).toggleClass("selected");
-				}
-				break;
-			case kbkey.up:
-				var index = $(".selected").index("#outline li");
-				if (index > 0) {
-					$($(allItems).get(index)).toggleClass("selected");
-					$($(allItems).get(index-1)).toggleClass("selected");
-				}
-				break;
-			case kbkey.right:
-				indent();
-				break;
-			case kbkey.left:
-				outdent();
-				break;
-			case kbkey.enter:
-				$(this).prev().attr('checked', !$(this).prev().attr('checked'));
-				break;
-			}
-		};
+			user_input(e);
+		}
 	});
 	
+}
+
+function user_input(e) {
+	if (!enable_interaction) return;
+	e.preventDefault();
+	var keyCode = e.keyCode || e.which,
+    	kbkey = { up: 38, down: 40, right: 39, left: 37, 
+			enter: 13, s: 83, m:77, c:67, d:68 };
+	var allItems = $("#outline li");
+	switch (keyCode) {
+	case kbkey.d:
+		delete_category();
+		break;
+	case kbkey.c:
+		add_category();
+		break;
+	case kbkey.m:
+		mergedialog();
+		break;
+	case kbkey.s:
+		splitdialog();
+		break;
+	case kbkey.down:
+		var index = $(".selected").index("#outline li");
+		if (index == -1) {
+			$($(allItems).get(0)).toggleClass("selected");					
+		} else if (index < $(allItems).length-1) {
+			$($(allItems).get(index)).toggleClass("selected");
+			$($(allItems).get(index+1)).toggleClass("selected");
+		}
+		break;
+	case kbkey.up:
+		var index = $(".selected").index("#outline li");
+		if (index > 0) {
+			$($(allItems).get(index)).toggleClass("selected");
+			$($(allItems).get(index-1)).toggleClass("selected");
+		}
+		break;
+	case kbkey.right:
+		indent();
+		break;
+	case kbkey.left:
+		outdent();
+		break;
+	case kbkey.enter:
+		$(this).prev().attr('checked', !$(this).prev().attr('checked'));
+		break;
+	}
+}
+function delete_category() {
+	$(".selected > p.annocat").remove();
+	$(".selected").removeAttr("data-treeanno-categories");
+}
+function add_category() {
+	enable_interaction = false;
+	$(".selected > p.annocat").remove();
+	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
+	$(".selected").prepend("<input type=\"text\" id=\"cat_input\" value=\""+val+"\"/>");
+	$("#cat_input").keyup(function(event){
+	    if(event.keyCode == 13){
+	       enter_category();
+	    }
+	    if(event.keyCode == 27){
+	    	event.preventDefault();
+	    	cancel_category();
+	    }
+	});
+	document.getElementById("cat_input").focus();
+}
+
+
+function cancel_category() {
+	$("#cat_input").remove();
+	enable_interaction = true;
+
+}
+function enter_category() {
+	value = $("#cat_input").val();
+	$("#cat_input").remove();
+	$(".selected").prepend("<p class=\"annocat\">"+value+"</p>");
+	// var oa = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
+	$(".selected").attr("data-treeanno-categories", value);
+	enable_interaction = true;
 }
 
 function mergedialog() {
