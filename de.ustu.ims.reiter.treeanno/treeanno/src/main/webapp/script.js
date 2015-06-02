@@ -8,6 +8,8 @@ var items;
 
 var idCounter;
 
+var includeSeparationWhenMerging = true;
+
 function init(t) {
 	i18n = t;
 	$(function() {
@@ -143,6 +145,7 @@ function mergedialog() {
 		        }
 		]
 	});
+	document.getElementById("form_mergecandidates").focus();
 }
 
 
@@ -154,7 +157,10 @@ function mergedialog_enter() {
 	correctOrder = (item1['begin'] > item0['begin']);
 	
 	nitem = new Object();
-	nitem['text'] = (correctOrder?item0['text']+item1['text']:item1['text']+item0['text']);
+	var distance = (correctOrder?item1['begin']-item0['end']:item0['begin']-item1['end']);
+	var str = (includeSeparationWhenMerging?new Array(distance+1).join(" "):"");
+
+	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
 	items[nid] = undefined;
@@ -260,6 +266,7 @@ function outdent() {
 		s = $(currentItem).detach();
 		$(newParent).after(s);
 	}
+	cleanup_list();
 }
 
 function indent() {
@@ -271,7 +278,7 @@ function indent() {
 		s = $(".selected").detach();
 		$(prev).children("ul").append(s);
 	}
-
+	cleanup_list();
 }
 
 
