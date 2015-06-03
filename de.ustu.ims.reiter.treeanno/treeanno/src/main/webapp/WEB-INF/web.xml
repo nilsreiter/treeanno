@@ -4,6 +4,9 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <listener>
+  	<listener-class>de.ustu.ims.reiter.treeanno.ContextListener</listener-class>
+  </listener>
   <servlet>
   	<servlet-name>ControllerServlet</servlet-name>
   	<display-name>ControllerServlet</display-name>
