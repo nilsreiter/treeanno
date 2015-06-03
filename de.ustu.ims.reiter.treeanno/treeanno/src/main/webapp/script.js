@@ -48,7 +48,7 @@ function dtext(s) {
 }
 
 function login() {
-	var docid = "1";
+	var docid = "2";
 	$( this ).dialog( "close" );
 	var username = $("#form_username").val();
 	jQuery.getJSON("ControllerServlet?document="+docid, function(data) {
