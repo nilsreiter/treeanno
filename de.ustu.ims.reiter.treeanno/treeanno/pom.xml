@@ -37,9 +37,9 @@
     	<version>1.7.0</version>
     </dependency>
     <dependency>
-    	<groupId>de.ustu.ims</groupId>
-    	<artifactId>segmentation.api</artifactId>
-    	<version>1.0</version>
+    	<groupId>de.ustu.ims.reiter</groupId>
+    	<artifactId>treeanno.api</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
