@@ -1,4 +1,4 @@
-var maxStringLength = 30;
+var maxStringLength = 80;
 
 var i18n;
 
@@ -50,6 +50,7 @@ function dtext(s) {
 function login() {
 	var docid = "2";
 	$( this ).dialog( "close" );
+	
 	var username = $("#form_username").val();
 	jQuery.getJSON("ControllerServlet?document="+docid, function(data) {
 		items = data["list"];
