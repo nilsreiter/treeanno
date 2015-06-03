@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,9 +48,8 @@ public class ControllerServlet extends HttpServlet {
 				obj.put("documentId", docId);
 				obj.put("list",
 						new JCasConverter().getJSONArrayFromAnnotations(
-								dr.getJCas(Integer.valueOf(docId)),
-								(Class<? extends Annotation>) Class
-								.forName("webanno.custom.Zusammenfassung")));
+						dr.getJCas(Integer.valueOf(docId)),
+						de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 				Util.returnJSON(response, obj);
 			}
 		} catch (UIMAException e) {
@@ -63,9 +61,6 @@ public class ControllerServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
