@@ -15,6 +15,27 @@ select id, username from users
 	<script src="jquery-2.1.3.min.js"></script>
 	<script src="jquery-ui/jquery-ui.js"></script>
 	<script src="i18next/i18next-1.8.0.min.js"></script>
+	<script>
+	i18n.init({ 
+		resGetPath:'locales/__ns__-__lng__.json',
+		lng: "en-US" }, function(t) {
+			$("#login").dialog({
+				title: t("login"),
+				buttons: 
+				[
+				    {
+				      text: t("enter"),
+				      icons: {
+				        primary: "ui-icon-heart"
+				      },
+				      click: function() {
+				    	  $("form").submit();
+				      }
+				    }
+				]
+			});
+		});
+	</script>
 	<link rel="stylesheet" href="formats.css" type="text/css" />
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.css" type="text/css" /> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.structure.css" type="text/css" /> 
@@ -25,14 +46,15 @@ select id, username from users
 	<div>
 		<div id="login">
 			<form action="login" method="POST">
-				<label for="form_username">User Name</label> 
-				<select size="1" id="form_username">
+				
+				<p><label for="form_username">User Name</label> 
+				<select size="1" id="form_username" name="username">
 					<c:forEach var="row" items="${rs.rows}">
 					<option value="${row.id}">${row.username}</option>
 					</c:forEach>
-				</select>
+				</select></p>
 				
-				<label for="form_password">Password</label> <input type="password" id="form_password" value="" />
+				<p><label for="form_password">Password</label> <input type="password" id="form_password" name="password" value="" /></p>
 			</form>
 		</div>
 	</div>
