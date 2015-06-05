@@ -11,27 +11,7 @@ var idCounter;
 var includeSeparationWhenMerging = true;
 
 
-function init(t) {
-	i18n = t;
-	$(function() {
-		$("#split").hide();
-		$("#login").dialog({
-			title: t("username"),
-			buttons: 
-			[
-			    {
-			      text: t("ok"),
-			      icons: {
-			        primary: "ui-icon-heart"
-			      },
-			      click: login
-			    }
-			]
-		});
-		
-		
-	});
-}
+
 
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
@@ -47,9 +27,12 @@ function dtext(s) {
 	return s;
 }
 
-function login() {
+function init(t) {
+	i18n = t;
+	
+	$("#split").hide();
+
 	var docid = "2";
-	$( this ).dialog( "close" );
 	
 	var username = $("#form_username").val();
 	jQuery.getJSON("ControllerServlet?document="+docid, function(data) {

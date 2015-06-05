@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:directive.page contentType="text/html; charset=UTF-8" 
+		pageEncoding="UTF-8" session="true" import="java.util.*, javax.sql.*"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,19 +22,18 @@
 </head>
 <body>
 	<div>
-		<div id="split">
+	    <ul id="outline" class="text sortable">
+    	</ul>
+	</div>
+	<div id="split">
 			<textarea id="form_splittext" rows="5" cols="50" spellcheck="false"></textarea>
-		</div>
-		<div id="merge">
-			<p></p>
-			<select id="form_mergecandidates" size="2">
-			
-			</select>
-		</div>
-    <ul id="outline" class="text sortable">
-        
-
-    </ul>
-</div>
+	</div>
+	<div id="merge">
+		<p></p>
+		<select id="form_mergecandidates" size="2"></select>
+	</div>
+	<div id="topbar">
+		User: ${sessionScope.user.name }
+	</div>
 </body>
 </html>
