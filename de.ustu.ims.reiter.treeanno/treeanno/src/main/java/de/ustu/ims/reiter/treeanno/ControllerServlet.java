@@ -48,8 +48,8 @@ public class ControllerServlet extends HttpServlet {
 				obj.put("documentId", docId);
 				obj.put("list",
 						new JCasConverter().getJSONArrayFromAnnotations(
-						dr.getJCas(Integer.valueOf(docId)),
-						de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+								dr.getJCas(Integer.valueOf(docId)),
+								de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 				Util.returnJSON(response, obj);
 			}
 		} catch (UIMAException e) {
@@ -73,7 +73,7 @@ public class ControllerServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		Util.returnJSON(response, new JSONObject());
 	}
 
 }
