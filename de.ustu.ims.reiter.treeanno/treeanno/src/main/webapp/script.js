@@ -34,7 +34,16 @@ function init(t) {
 
 	var docid = "2";
 	
-	var username = $("#form_username").val();
+	
+	$( "button.button_save_document" ).button({
+		icons: { primary: "ui-icon-disk", secondary:null },
+		label: "Save"
+	});
+	$( "button.button_edit_user" ).button({
+		icons: { primary: "ui-icon-person", secondary:null }
+	});
+	$("#topbar").buttonset();
+	
 	jQuery.getJSON("ControllerServlet?document="+docid, function(data) {
 		items = data["list"];
 		idCounter = data["list"].length;
