@@ -51,13 +51,13 @@ public class ContextListener implements ServletContextListener {
 		}
 
 		try {
-			dr = new DatabaseIO();
-			sc.setAttribute("databaseReader", dr);
+			sc.setAttribute("documentIndex", new DocumentIndex());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 }
