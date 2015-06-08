@@ -5,6 +5,7 @@ import java.util.Date;
 public class Document {
 	int id;
 	Date modificationDate;
+	Project project;
 
 	public int getId() {
 		return id;
@@ -20,6 +21,14 @@ public class Document {
 
 	public void setModificationDate(Date modificationDate) {
 		this.modificationDate = modificationDate;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 }
