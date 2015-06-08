@@ -96,10 +96,19 @@ function save_document() {
 		}
 	});
 	// alert(JSON.stringify(sitems));
-	$.post( "ControllerServlet", {
-		document:2,
-		items:sitems
-	}).done(alert("done"));
+	$.ajax({
+		type: "POST",
+		url: "ControllerServlet",
+		// processData: false,
+		data: {
+			document:2,
+			items:sitems
+		},
+		contentType:'application/json; charset=UTF-8',
+		success: function() {
+			alert("done");
+		}
+	});
 }
 
 function user_input(e) {
