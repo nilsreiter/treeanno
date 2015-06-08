@@ -21,7 +21,7 @@
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.theme.css" type="text/css"> 
 </head>
 <body>
-	<div>
+	<div id="content">
 	    <ul id="outline" class="text sortable">
     	</ul>
 	</div>
@@ -33,7 +33,8 @@
 		<select id="form_mergecandidates" size="2"></select>
 	</div>
 	<div id="topbar">
-		User: ${sessionScope.user.name }
+		<button id="button-save-document"></button>
+		Logged in as <span class="username">${sessionScope.user.name }</span>
 	</div>
 </body>
 </html>
