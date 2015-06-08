@@ -37,6 +37,22 @@ public class DatabaseIO {
 
 	}
 
+	public boolean updateJCas(int documentId, JCas jcas) throws SQLException {
+
+		// XmiCasSerializer.serialize(jcas.getCas(), );
+
+		Connection connection = dataSource.getConnection();
+
+		PreparedStatement stmt =
+				connection
+						.prepareStatement("UPDATE documents SET xml=? WHERE id=?");
+		stmt.setString(1, jcas.toString());
+		stmt.setInt(2, documentId);
+		int r = stmt.executeUpdate();
+
+		return r == 1;
+	}
+
 	public JCas getJCas(int documentId) throws SQLException, IOException,
 			UIMAException {
 		JCas jcas = null;
