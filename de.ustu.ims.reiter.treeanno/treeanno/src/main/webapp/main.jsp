@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <jsp:directive.page contentType="text/html; charset=UTF-8" 
 		pageEncoding="UTF-8" session="true" import="java.util.*, javax.sql.*"/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<sql:query var="rs" dataSource="jdbc/treeanno">
+SELECT level FROM users_permissions WHERE userId=? AND projectId=?
+	<sql:param value="${sessionScope.user.databaseId}" />
+	<sql:param value="1" />
+</sql:query>
+
+<c:if test="${empty rs || rs.rows[0].level < 10 }">
+	<c:redirect url="index.jsp"/>
+</c:if>
+	
+	
+		
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +50,7 @@
 	</div>
 	<div id="topbar">
 		<button class="button_save_document"></button>
-		<button class="button_edit_user">${sessionScope.user.name }</button>
+		<button class="button_edit_user">${sessionScope.user.name } (${rs.rows[0].level})</button>
 	</div>
 </body>
 </html>
