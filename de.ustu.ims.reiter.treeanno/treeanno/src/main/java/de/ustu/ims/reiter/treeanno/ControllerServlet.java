@@ -78,11 +78,7 @@ public class ControllerServlet extends HttpServlet {
 
 		InputStream is = request.getInputStream();
 		String s = IOUtils.toString(is);
-		System.err.println(s);
-
-		// JSONObject obj =
-		// new JSONObject(new JSONTokener(request.getInputStream()));
-		// System.err.println(obj.toString());
+		JSONObject jObj = new JSONObject(s);
 		Util.returnJSON(response, new JSONObject());
 	}
 }

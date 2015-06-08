@@ -100,10 +100,10 @@ function save_document() {
 		type: "POST",
 		url: "ControllerServlet",
 		// processData: false,
-		data: {
+		data: JSON.stringify({
 			document:2,
 			items:sitems
-		},
+		}),
 		contentType:'application/json; charset=UTF-8',
 		success: function() {
 			alert("done");
