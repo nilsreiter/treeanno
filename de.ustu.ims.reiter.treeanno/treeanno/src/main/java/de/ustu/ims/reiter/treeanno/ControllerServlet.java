@@ -15,8 +15,6 @@ import org.apache.uima.jcas.JCas;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
-
 /**
  * Servlet implementation class ControllerServlet
  */
@@ -39,9 +37,10 @@ public class ControllerServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		DatabaseIO dr =
-				((DatabaseIO) request.getServletContext().getAttribute(
-						"databaseReader"));
+		DocumentIndex di =
+				((DocumentIndex) request.getServletContext().getAttribute(
+						"documentIndex"));
+
 		String[] documents = request.getParameterValues("document");
 		try {
 			if (documents.length > 0) {
@@ -50,7 +49,7 @@ public class ControllerServlet extends HttpServlet {
 				obj.put("documentId", docId);
 				obj.put("list",
 						new JCasConverter().getJSONArrayFromAnnotations(
-								dr.getJCas(Integer.valueOf(docId)),
+								di.getDocument(Integer.valueOf(docId)),
 								de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 				Util.returnJSON(response, obj);
 			}
@@ -75,10 +74,18 @@ public class ControllerServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+		DocumentIndex di =
+				((DocumentIndex) request.getServletContext().getAttribute(
+						"documentIndex"));
 		InputStream is = request.getInputStream();
 		String s = IOUtils.toString(is);
 		JSONObject jObj = new JSONObject(s);
+		try {
+			Util.addAnnotationsToJCas(di.getDocument(jObj.getInt("document")),
+					jObj);
+		} catch (UIMAException | JSONException | SQLException e) {
+			e.printStackTrace();
+		}
 		Util.returnJSON(response, new JSONObject());
 	}
 }

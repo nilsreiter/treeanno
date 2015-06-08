@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.uima.jcas.JCas;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,5 +30,9 @@ public class Util {
 		response.getWriter().print(object.toString());
 		response.getWriter().flush();
 		response.getWriter().close();
+	}
+
+	public static void addAnnotationsToJCas(JCas jcas, JSONObject annotations) {
+
 	}
 }
