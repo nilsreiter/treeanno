@@ -36,6 +36,9 @@ function init(t) {
 	var docid = "2";
 	
 	$(document).ready(function() {
+		$( "button.button_edit_user" ).button({
+			icons: { primary: "ui-icon-person", secondary:null }
+		});
 		$( "button.button_save_document" ).button({
 			icons: { primary: "ui-icon-disk", secondary:null },
 			label: t("save"),
@@ -44,9 +47,6 @@ function init(t) {
 				save_document();
 			}
 		);
-		$( "button.button_edit_user" ).button({
-			icons: { primary: "ui-icon-person", secondary:null }
-		});
 		$("#topbar").buttonset();
 		
 		jQuery.getJSON("ControllerServlet?document="+docid, function(data) {
