@@ -8,7 +8,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 
-import de.ustu.ims.reiter.treeanno.io.DatabaseReader;
+import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
 
 /**
  * Application Lifecycle Listener implementation class ContextListener
@@ -16,7 +16,7 @@ import de.ustu.ims.reiter.treeanno.io.DatabaseReader;
  */
 public class ContextListener implements ServletContextListener {
 
-	DatabaseReader dr;
+	DatabaseIO dr;
 
 	/**
 	 * Default constructor. 
@@ -51,7 +51,7 @@ public class ContextListener implements ServletContextListener {
 		}
 
 		try {
-			dr = new DatabaseReader();
+			dr = new DatabaseIO();
 			sc.setAttribute("databaseReader", dr);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

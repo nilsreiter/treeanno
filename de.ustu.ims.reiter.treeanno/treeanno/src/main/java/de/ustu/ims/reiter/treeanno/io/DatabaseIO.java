@@ -23,11 +23,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.xml.sax.SAXException;
 
-public class DatabaseReader {
+public class DatabaseIO {
 
 	DataSource dataSource;
 
-	public DatabaseReader() throws ClassNotFoundException, NamingException {
+	public DatabaseIO() throws ClassNotFoundException, NamingException {
 		Context initContext;
 		Class.forName("com.mysql.jdbc.Driver");
 
