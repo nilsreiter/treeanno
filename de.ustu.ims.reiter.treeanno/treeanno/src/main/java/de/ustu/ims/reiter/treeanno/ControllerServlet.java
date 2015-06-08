@@ -1,6 +1,7 @@
 package de.ustu.ims.reiter.treeanno;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.json.JSONException;
@@ -73,7 +75,14 @@ public class ControllerServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+
+		InputStream is = request.getInputStream();
+		String s = IOUtils.toString(is);
+		System.err.println(s);
+
+		// JSONObject obj =
+		// new JSONObject(new JSONTokener(request.getInputStream()));
+		// System.err.println(obj.toString());
 		Util.returnJSON(response, new JSONObject());
 	}
-
 }
