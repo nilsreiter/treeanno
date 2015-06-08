@@ -33,8 +33,8 @@
 		<select id="form_mergecandidates" size="2"></select>
 	</div>
 	<div id="topbar">
-		<button id="button-save-document"></button>
-		Logged in as <span class="username">${sessionScope.user.name }</span>
+		<button class="button_save_document"></button>
+		<button class="button_edit_user">${sessionScope.user.name }</button>
 	</div>
 </body>
 </html>
