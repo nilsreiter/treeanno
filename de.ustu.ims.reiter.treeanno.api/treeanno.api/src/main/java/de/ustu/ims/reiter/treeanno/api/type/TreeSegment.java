@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Wed Jun 03 14:38:16 CEST 2015
+ * Updated by JCasGen Mon Jun 08 10:18:42 CEST 2015
  * XML source: /Users/reiterns/Documents/Java/de.ustu.ims.reiter.treeanno.api/treeanno.api/src/main/java/de/ustu/ims/reiter/treeanno/api/typesystem.xml
  * @generated */
 public class TreeSegment extends Annotation {
@@ -118,6 +118,28 @@ public class TreeSegment extends Annotation {
     if (TreeSegment_Type.featOkTst && ((TreeSegment_Type)jcasType).casFeat_Parent == null)
       jcasType.jcas.throwFeatMissing("Parent", "de.ustu.ims.reiter.treeanno.api.type.TreeSegment");
     jcasType.ll_cas.ll_setRefValue(addr, ((TreeSegment_Type)jcasType).casFeatCode_Parent, jcasType.ll_cas.ll_getFSRef(v));}    
+   
+    
+  //*--------------*
+  //* Feature: Id
+
+  /** getter for Id - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public int getId() {
+    if (TreeSegment_Type.featOkTst && ((TreeSegment_Type)jcasType).casFeat_Id == null)
+      jcasType.jcas.throwFeatMissing("Id", "de.ustu.ims.reiter.treeanno.api.type.TreeSegment");
+    return jcasType.ll_cas.ll_getIntValue(addr, ((TreeSegment_Type)jcasType).casFeatCode_Id);}
+    
+  /** setter for Id - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setId(int v) {
+    if (TreeSegment_Type.featOkTst && ((TreeSegment_Type)jcasType).casFeat_Id == null)
+      jcasType.jcas.throwFeatMissing("Id", "de.ustu.ims.reiter.treeanno.api.type.TreeSegment");
+    jcasType.ll_cas.ll_setIntValue(addr, ((TreeSegment_Type)jcasType).casFeatCode_Id, v);}    
   }
 
     

@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Wed Jun 03 14:38:16 CEST 2015
+ * Updated by JCasGen Mon Jun 08 10:18:42 CEST 2015
  * @generated */
 public class TreeSegment_Type extends Annotation_Type {
   /** @generated 
@@ -93,6 +93,30 @@ public class TreeSegment_Type extends Annotation_Type {
     ll_cas.ll_setRefValue(addr, casFeatCode_Parent, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_Id;
+  /** @generated */
+  final int     casFeatCode_Id;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public int getId(int addr) {
+        if (featOkTst && casFeat_Id == null)
+      jcas.throwFeatMissing("Id", "de.ustu.ims.reiter.treeanno.api.type.TreeSegment");
+    return ll_cas.ll_getIntValue(addr, casFeatCode_Id);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setId(int addr, int v) {
+        if (featOkTst && casFeat_Id == null)
+      jcas.throwFeatMissing("Id", "de.ustu.ims.reiter.treeanno.api.type.TreeSegment");
+    ll_cas.ll_setIntValue(addr, casFeatCode_Id, v);}
+    
+  
 
 
 
@@ -112,6 +136,10 @@ public class TreeSegment_Type extends Annotation_Type {
  
     casFeat_Parent = jcas.getRequiredFeatureDE(casType, "Parent", "de.ustu.ims.reiter.treeanno.api.type.TreeSegment", featOkTst);
     casFeatCode_Parent  = (null == casFeat_Parent) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Parent).getCode();
+
+ 
+    casFeat_Id = jcas.getRequiredFeatureDE(casType, "Id", "uima.cas.Integer", featOkTst);
+    casFeatCode_Id  = (null == casFeat_Id) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_Id).getCode();
 
   }
 }
