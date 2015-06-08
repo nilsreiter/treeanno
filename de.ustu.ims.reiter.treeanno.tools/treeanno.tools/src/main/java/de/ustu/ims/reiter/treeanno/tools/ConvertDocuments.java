@@ -38,9 +38,9 @@ public class ConvertDocuments {
 				.createEngineDescription(MapToTreeAnnoClass.class,
 						MapToTreeAnnoClass.PARAM_CLASSNAME,
 						options.getSegmentClassName()), AnalysisEngineFactory
-						.createEngineDescription(XmiWriter.class,
-						XmiWriter.PARAM_TARGET_LOCATION,
-						options.getOutputDirectory()));
+				.createEngineDescription(XmiWriter.class,
+								XmiWriter.PARAM_TARGET_LOCATION,
+								options.getOutputDirectory()));
 	}
 
 	interface Options {
@@ -66,9 +66,10 @@ public class ConvertDocuments {
 			try {
 				Class<? extends Annotation> clObj =
 						(Class<? extends Annotation>) Class.forName(className);
+				int c = 0;
 				for (Annotation anno : JCasUtil.select(jcas, clObj)) {
 					AnnotationFactory.createAnnotation(jcas, anno.getBegin(),
-							anno.getEnd(), TreeSegment.class);
+							anno.getEnd(), TreeSegment.class).setId(c++);
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
