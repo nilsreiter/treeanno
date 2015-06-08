@@ -15,7 +15,7 @@ import org.apache.uima.jcas.JCas;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.ustu.ims.reiter.treeanno.io.DatabaseReader;
+import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
 
 /**
  * Servlet implementation class ControllerServlet
@@ -39,8 +39,8 @@ public class ControllerServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		DatabaseReader dr =
-				((DatabaseReader) request.getServletContext().getAttribute(
+		DatabaseIO dr =
+				((DatabaseIO) request.getServletContext().getAttribute(
 						"databaseReader"));
 		String[] documents = request.getParameterValues("document");
 		try {
