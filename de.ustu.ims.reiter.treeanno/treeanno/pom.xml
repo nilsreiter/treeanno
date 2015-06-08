@@ -59,5 +59,10 @@
     	<artifactId>jstl</artifactId>
     	<version>1.2</version>
     </dependency>
+    <dependency>
+    	<groupId>de.ustu.ims.narratology</groupId>
+    	<artifactId>util</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
