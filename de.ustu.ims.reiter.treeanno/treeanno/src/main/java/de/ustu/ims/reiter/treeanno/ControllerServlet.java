@@ -14,6 +14,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.SAXException;
 
 /**
  * Servlet implementation class ControllerServlet
@@ -80,12 +81,18 @@ public class ControllerServlet extends HttpServlet {
 		InputStream is = request.getInputStream();
 		String s = IOUtils.toString(is);
 		JSONObject jObj = new JSONObject(s);
+		int docId = jObj.getInt("document");
+		boolean r = false;
 		try {
-			Util.addAnnotationsToJCas(di.getDocument(jObj.getInt("document")),
-					jObj);
-		} catch (UIMAException | JSONException | SQLException e) {
+			JCas jcas = Util.addAnnotationsToJCas(di.getDocument(docId), jObj);
+			r = di.getDatabaseIO().updateJCas(docId, jcas);
+		} catch (UIMAException | JSONException | SQLException | SAXException e) {
 			e.printStackTrace();
 		}
-		Util.returnJSON(response, new JSONObject());
+		if (r) {
+			Util.returnJSON(response, new JSONObject());
+		} else {
+			response.sendError(1);
+		}
 	}
 }

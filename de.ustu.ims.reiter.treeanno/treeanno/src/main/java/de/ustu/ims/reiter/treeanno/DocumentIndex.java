@@ -36,4 +36,9 @@ public class DocumentIndex {
 	public Set<Integer> openDocuments() {
 		return map.keySet();
 	}
+
+	public DatabaseIO getDatabaseIO() {
+		return databaseIO;
+	}
+
 }

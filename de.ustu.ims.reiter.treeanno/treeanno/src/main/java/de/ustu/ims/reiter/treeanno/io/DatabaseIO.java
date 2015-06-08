@@ -3,6 +3,7 @@ package de.ustu.ims.reiter.treeanno.io;
 import static org.apache.commons.io.IOUtils.closeQuietly;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -17,6 +18,7 @@ import javax.sql.DataSource;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
+import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.jcas.JCas;
@@ -37,19 +39,22 @@ public class DatabaseIO {
 
 	}
 
-	public boolean updateJCas(int documentId, JCas jcas) throws SQLException {
+	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
+			SAXException, IOException {
 
-		// XmiCasSerializer.serialize(jcas.getCas(), );
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		XmiCasSerializer.serialize(jcas.getCas(), baos);
+		String s = new String(baos.toByteArray(), "UTF-8");
 
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("UPDATE documents SET xml=? WHERE id=?");
-		stmt.setString(1, jcas.toString());
+				.prepareStatement("UPDATE documents SET xmi=? WHERE id=?");
+		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
-
+		stmt.close();
 		return r == 1;
 	}
 
