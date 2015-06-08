@@ -85,9 +85,20 @@ function init(t) {
 }
 
 function save_document() {
+	sitems = items;
+	
+	$("#outline li").each(function(index, element) {
+		parents = $(element).parentsUntil("#outline", "li");
+		if (parents.length > 0) {
+			parent = parents.first();
+			parentId = parent.attr("data-treeanno-id");
+			sitems[$(element).attr("data-treeanno-id")]["parentId"] = parentId;
+		}
+	});
+	// alert(JSON.stringify(sitems));
 	$.post( "ControllerServlet", {
 		document:2,
-		items:items
+		items:sitems
 	}).done(alert("done"));
 }
 
@@ -333,6 +344,7 @@ function indent() {
 	var currentItem = $("#outline li.selected");
 	if ($(".selected").prev("li").length > 0) {
 		prev = $(".selected").prev("li");
+		
 		if ($(prev).children("ul").length == 0)
 			prev.append("<ul></ul>");
 		s = $(".selected").detach();
