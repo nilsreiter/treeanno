@@ -17,6 +17,7 @@ function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
 	$(htmlItem).addClass("tl0");
 	$(htmlItem).attr("data-treeanno-id", i);
+	$(htmlItem).attr("data-treeanno-uid", item['id']);
 	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
 	return htmlItem;
 }
@@ -34,41 +35,60 @@ function init(t) {
 
 	var docid = "2";
 	
-	
-	$( "button.button_save_document" ).button({
-		icons: { primary: "ui-icon-disk", secondary:null },
-		label: "Save"
-	});
-	$( "button.button_edit_user" ).button({
-		icons: { primary: "ui-icon-person", secondary:null }
-	});
-	$("#topbar").buttonset();
-	
-	jQuery.getJSON("ControllerServlet?document="+docid, function(data) {
-		items = data["list"];
-		idCounter = data["list"].length;
-		for (var i = 0; i < data["list"].length; i++) {
-			var item = data["list"][i];
-			var t = item["text"];
-			
-			if (t.length > maxStringLength)
-				t = t.substring(0,maxStringLength-3)+"...";
-			$('#outline').append(get_html_item(item, i));
-		}
-		$('#outline li:first-child').addClass("selected");
-		$('#outline').nestedSortable({
-			handle: 'div',
-			items: 'li',
-			toleranceElement: '> div',
-			listType: 'ul',
-		    placeholder:'placeholder',
-		    forcePlaceholderSize:true
+	$(document).ready(function() {
+		$( "button.button_save_document" ).button({
+			icons: { primary: "ui-icon-disk", secondary:null },
+			label: t("save"),
+		}).click(
+			function() {
+				save_document();
+			}
+		);
+		$( "button.button_edit_user" ).button({
+			icons: { primary: "ui-icon-person", secondary:null }
 		});
-		document.onkeydown = function(e) {
-			user_input(e);
-		}
+		$("#topbar").buttonset();
+		
+		jQuery.getJSON("ControllerServlet?document="+docid, function(data) {
+			items = data["list"];
+			idCounter = data["list"].length;
+			for (var i = 0; i < data["list"].length; i++) {
+				var item = data["list"][i];
+				var t = item["text"];
+				
+				if (t.length > maxStringLength)
+					t = t.substring(0,maxStringLength-3) + "...";
+				if ('parentId' in item) {
+					parentId = item['parentId'];
+					parentItem = $("li[data-treeanno-uid='"+parentId+"']");
+					if (parentItem.children("ul").length == 0)
+						parentItem.append("<ul></ul>");
+					$("li[data-treeanno-uid='"+parentId+"'] > ul").append(get_html_item(item, i));
+				} else {
+					$('#outline').append(get_html_item(item, i));
+				}
+			}
+			$('#outline > li:first-child').addClass("selected");
+			$('#outline').nestedSortable({
+				handle: 'div',
+				items: 'li',
+				toleranceElement: '> div',
+				listType: 'ul',
+			    placeholder:'placeholder',
+			    forcePlaceholderSize:true
+			});
+			document.onkeydown = function(e) {
+				user_input(e);
+			}
+		});
 	});
-	
+}
+
+function save_document() {
+	$.post( "ControllerServlet", {
+		document:2,
+		items:items
+	}).done(alert("done"));
 }
 
 function user_input(e) {
