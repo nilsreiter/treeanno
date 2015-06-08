@@ -3,7 +3,6 @@ package de.ustu.ims.reiter.treeanno.io;
 import static org.apache.commons.io.IOUtils.closeQuietly;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -46,7 +45,7 @@ public class DatabaseReader {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("SELECT * FROM documents WHERE id=?");
+						.prepareStatement("SELECT * FROM documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		ResultSet rs = stmt.executeQuery();
 
@@ -77,16 +76,6 @@ public class DatabaseReader {
 		connection.close();
 		return jcas;
 
-	}
-
-	public JCas loadJCas(File jcasFile, File tsFile) throws UIMAException,
-			IOException {
-		TypeSystemDescription tsd =
-				TypeSystemDescriptionFactory
-				.createTypeSystemDescriptionFromPath(tsFile
-						.getAbsolutePath());
-
-		return JCasFactory.createJCas(jcasFile.getAbsolutePath(), tsd);
 	}
 
 	public void closeConnections() {}
