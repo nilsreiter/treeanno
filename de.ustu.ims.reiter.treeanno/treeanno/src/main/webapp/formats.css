@@ -5,7 +5,11 @@ body{
 li.selected {
 	background-color:yellow;
 }
-
+div#content {
+	margin:10px;
+	position:absolute;
+	top:30px;
+}
 div#controls {
 	float:right;
 }
@@ -38,9 +42,16 @@ div#artifact {
 
 .annocat { font-style:italic; }
 
-#topbar { position:fixed;
+#topbar { 
+	position:fixed;
 	top:0px;
 	left:0px;
-	width:100%;
+	right:0px;
 	background-color:#DDD;
-	padding:3px; }
+	padding:7px; 
+	text-align:right;
+}
+	
+#topbar .username {
+	font-style:italic;
+}
