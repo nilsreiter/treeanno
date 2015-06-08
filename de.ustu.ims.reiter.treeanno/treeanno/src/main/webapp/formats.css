@@ -7,8 +7,8 @@ li.selected {
 }
 div#content {
 	margin:10px;
-	position:absolute;
-	top:30px;
+	position:relative;
+	top:50px;
 }
 div#controls {
 	float:right;
