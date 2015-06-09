@@ -66,6 +66,11 @@ public class Util {
 					AnnotationFactory.createAnnotation(jcas, begin, end,
 							TreeSegment.class);
 			ts.setId(id);
+
+			try {
+				if (!item.getString("category").isEmpty())
+					ts.setCategory(item.getString("category"));
+			} catch (JSONException e) {};
 			idMap.put(id, ts);
 		}
 		for (int i = 0; i < items.length(); i++) {
