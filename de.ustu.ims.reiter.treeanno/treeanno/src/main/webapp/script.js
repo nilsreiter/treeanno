@@ -18,6 +18,8 @@ function get_html_item(item, i) {
 	$(htmlItem).addClass("tl0");
 	$(htmlItem).attr("data-treeanno-id", i);
 	$(htmlItem).attr("data-treeanno-uid", item['id']);
+	if ('category' in item)
+		$(htmlItem).append("<p>"+item['category']+"</p>");
 	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
 	return htmlItem;
 }
@@ -121,14 +123,15 @@ function save_document() {
 	sitems = items;
 	
 	$("#outline li").each(function(index, element) {
+		var id = $(element).attr("data-treeanno-id");
 		parents = $(element).parentsUntil("#outline", "li");
 		if (parents.length > 0) {
 			parent = parents.first();
 			parentId = parent.attr("data-treeanno-id");
-			sitems[$(element).attr("data-treeanno-id")]["parentId"] = parentId;
+			sitems[id]["parentId"] = parentId;
 		}
+		sitems[id]['category'] = $(element).children("p").text();
 	});
-	// alert(JSON.stringify(sitems));
 	$.ajax({
 		type: "POST",
 		url: "ControllerServlet",
