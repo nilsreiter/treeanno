@@ -42,7 +42,7 @@ public class ControllerServlet extends HttpServlet {
 				((DocumentIndex) request.getServletContext().getAttribute(
 						"documentIndex"));
 
-		String[] documents = request.getParameterValues("document");
+		String[] documents = request.getParameterValues("documentId");
 		try {
 			if (documents.length > 0) {
 				String docId = documents[0];
