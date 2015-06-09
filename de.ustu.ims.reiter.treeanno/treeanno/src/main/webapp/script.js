@@ -84,7 +84,7 @@ function init(t) {
 			}
 		);
 		
-		jQuery.getJSON("ControllerServlet?document="+docid, function(data) {
+		jQuery.getJSON("ControllerServlet?documentId="+docid, function(data) {
 			items = data["list"];
 			idCounter = data["list"].length;
 			for (var i = 0; i < data["list"].length; i++) {
@@ -137,7 +137,7 @@ function save_document() {
 		url: "ControllerServlet",
 		// processData: false,
 		data: JSON.stringify({
-			document:2,
+			document:documentId,
 			items:sitems
 		}),
 		contentType:'application/json; charset=UTF-8',
