@@ -28,13 +28,25 @@ function dtext(s) {
 	return s;
 }
 
-function init_projects() {
+function init_all() {
+	$(document).ready(function() {
+		$("#topbar").buttonset();
+		$(".nobutton").button({
+			disabled:true
+		});
 
+	});
+}
+
+function init_projects() {
+	init_all();
 	$( "button.button_edit_user" ).button({
 		icons: { primary: "ui-icon-person", secondary:null }
 	});
-	$("#topbar").buttonset();
 	$("button").button();
+	if (typeof(selected)!=undefined) {
+		$(".documentlist.project-"+selected).show();
+	}
 }
 
 function show_documentlist(id) {
@@ -43,15 +55,23 @@ function show_documentlist(id) {
 }
 
 function init(t) {
+	init_all();
 	i18n = t;
 	
 	$("#split").hide();
 
-	var docid = "2";
+	var docid = documentId;
 	
 	$(document).ready(function() {
 		$( "button.button_edit_user" ).button({
-			icons: { primary: "ui-icon-person", secondary:null }
+			icons: { primary: "ui-icon-person", secondary:null },
+			disabled: true
+		});
+		$( "button.button_change_document" ).button({
+			icons: { primary: "ui-icon-folder-collapsed", secondary:null },
+			label: t("open"),
+		}).click(function() {
+			window.location.href="projects.jsp?projectId="+projectId;
 		});
 		$( "button.button_save_document" ).button({
 			icons: { primary: "ui-icon-disk", secondary:null },
@@ -61,7 +81,6 @@ function init(t) {
 				save_document();
 			}
 		);
-		$("#topbar").buttonset();
 		
 		jQuery.getJSON("ControllerServlet?document="+docid, function(data) {
 			items = data["list"];
@@ -153,6 +172,8 @@ function user_input(e) {
 			$($(allItems).get(index)).toggleClass("selected");
 			$($(allItems).get(index+1)).toggleClass("selected");
 		}
+		if (!isElementInViewport($(".selected")))
+			$(window).scrollTop($(".selected").offset().top - 200);
 		break;
 	case kbkey.up:
 		var index = $(".selected").index("#outline li");
@@ -160,6 +181,8 @@ function user_input(e) {
 			$($(allItems).get(index)).toggleClass("selected");
 			$($(allItems).get(index-1)).toggleClass("selected");
 		}
+		if (!isElementInViewport($(".selected")))
+			$(window).scrollTop($(".selected").offset().top - 200);
 		break;
 	case kbkey.right:
 		indent();
@@ -172,6 +195,24 @@ function user_input(e) {
 		break;
 	}
 }
+
+function isElementInViewport (el) {
+
+    //special bonus for those using jQuery
+    if (typeof jQuery === "function" && el instanceof jQuery) {
+        el = el[0];
+    }
+
+    var rect = el.getBoundingClientRect();
+
+    return (
+        rect.top > 0 &&
+        rect.left > 0 &&
+        rect.bottom < (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+        rect.right < (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+    );
+}
+
 function delete_category() {
 	$(".selected > p.annocat").remove();
 	$(".selected").removeAttr("data-treeanno-categories");
