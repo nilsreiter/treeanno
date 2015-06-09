@@ -41,7 +41,7 @@ public class UserHandling extends HttpServlet {
 				}
 				if (user != null) {
 					session.setAttribute("user", user);
-					response.sendRedirect("main.jsp");
+					response.sendRedirect("projects.jsp");
 					return;
 				}
 			}

@@ -52,6 +52,10 @@ div#artifact {
 	text-align:right;
 }
 	
+.documentlist {
+	display:none;
+}
+	
 #topbar .username {
 	font-style:italic;
 }
