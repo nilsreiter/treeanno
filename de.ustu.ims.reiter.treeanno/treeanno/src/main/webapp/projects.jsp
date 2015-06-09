@@ -29,42 +29,57 @@ SELECT * FROM projects JOIN users_permissions ON users_permissions.`projectId` =
 </c:if>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
-	<script src="jquery-2.1.3.min.js"></script>
-	<script src="jquery-ui/jquery-ui.js"></script>
-	<script src="i18next/i18next-1.8.0.min.js"></script>
-	<script src="script.js"></script>
-	<script><![CDATA[
-	i18n.init({ 
-		resGetPath:'locales/__ns__-__lng__.json',
-		lng: "en-US" }, init);
-	]]>
-	</script>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="formats.css" type="text/css"> </link>
-	<link rel="stylesheet" href="jquery-ui/jquery-ui.css" type="text/css"></link> 
+	<link rel="stylesheet" href="jquery-ui/jquery-ui.css" type="text/css"><![CDATA[]]></link> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.structure.css" type="text/css"></link> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.theme.css" type="text/css"></link> 
+	
+	<script src="jquery-2.1.3.min.js" >
+	//<![CDATA[]]>
+	</script>
+	<script src="jquery-ui/jquery-ui.js" >
+	//<![CDATA[]]>
+	</script>
+	<script src="script.js">
+	//<![CDATA[]]></script>
+	<script>
+	//<![CDATA[
+	$(document).ready(init_projects);
+	//]]></script>
 </head>
 <body>
 	<div id="content">
 		<table>
 		<tr><th>Id</th><th>Name</th></tr>
 		<c:forEach var="row" items="${projects.rows}">
-			<tr><td>${row.id}</td><td>${row.name}</td><td>Open</td></tr>	
-			<sql:query var="docs" dataSource="jdbc/treeanno" sql="SELECT * FROM documents WHERE project=?">
-				<sql:param value="${row.id}" />
-			</sql:query>
-			<div class="display:none;">
-			<c:forEach var="docRow" items="${docs.rows}">
-				<li>${docRow.id}</li>
-			</c:forEach>
-			</div>
+			
+			<tr>
+				<td>${row.id}</td>
+				<td>${row.name}</td>
+				<td><button onclick="show_documentlist(${row.id})">Open</button></td>
+			</tr>	
 		</c:forEach>
 		</table>
+		<hr/>
+		<div class="documentlistarea">
+			<c:forEach var="row" items="${projects.rows}">
+				<sql:query var="docs" dataSource="jdbc/treeanno" sql="SELECT * FROM documents WHERE project=?">
+					<sql:param value="${row.id}" />
+				</sql:query>
+				<table class="documentlist project-${row.id}">
+					<tr><th>id</th><th>name</th><th>last modified</th></tr>
+					<c:forEach var="docRow" items="${docs.rows}">
+						<tr><td>${docRow.id}</td><td>${docRow.name }</td><td>${docRow.modificationDate}</td><td><button onclick="window.location.href='main.jsp?document=${docRow.id}'">Open</button></td></tr>
+					</c:forEach>
+					</table>
+			</c:forEach>
+		</div>
 	</div>
 	<div id="topbar">
 		<button class="button_edit_user">${sessionScope.user.name } (${rs.rows[0].level})</button>
 	</div>
 </body>
+
 </html>
 </jsp:root>

@@ -28,6 +28,20 @@ function dtext(s) {
 	return s;
 }
 
+function init_projects() {
+
+	$( "button.button_edit_user" ).button({
+		icons: { primary: "ui-icon-person", secondary:null }
+	});
+	$("#topbar").buttonset();
+	$("button").button();
+}
+
+function show_documentlist(id) {
+	$(".documentlist").hide();
+	$(".documentlist.project-"+id).show();
+}
+
 function init(t) {
 	i18n = t;
 	
