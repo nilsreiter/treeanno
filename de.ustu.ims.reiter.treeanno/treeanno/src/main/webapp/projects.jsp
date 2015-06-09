@@ -40,13 +40,24 @@ SELECT projects.id, concat(projects.id,'') AS pid, projects.name FROM projects J
 	</script>
 	<script src="script.js">
 	//<![CDATA[]]></script>
+	<c:if test="${not empty param.projectId}">
 	<script>
 	//<![CDATA[
-	var selected = ${param.projectId}
-	$(document).ready(function() {
-		init_projects();
-	});
+		var selected = ${param.projectId};
+		$(document).ready(function() {
+			init_projects();
+		});
 	//]]></script>
+	</c:if>
+	<c:if test="${empty param.projectId}">
+	<script>
+	//<![CDATA[
+		var selected = 0;
+		$(document).ready(function() {
+			init_projects();
+		});
+	//]]></script>
+	</c:if>
 </head>
 <body>
 	<div id="content" class="splitcontent">
