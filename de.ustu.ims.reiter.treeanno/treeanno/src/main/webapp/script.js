@@ -6,7 +6,7 @@ var enable_interaction = true;
 
 var items;
 
-var idCounter;
+var idCounter = 0;
 
 var includeSeparationWhenMerging = true;
 
@@ -104,14 +104,7 @@ function init(t) {
 				}
 			}
 			$('#outline > li:first-child').addClass("selected");
-			$('#outline').nestedSortable({
-				handle: 'div',
-				items: 'li',
-				toleranceElement: '> div',
-				listType: 'ul',
-			    placeholder:'placeholder',
-			    forcePlaceholderSize:true
-			});
+			
 			document.onkeydown = function(e) {
 				user_input(e);
 			}
@@ -301,6 +294,7 @@ function mergedialog_enter() {
 	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
+	nitem['id'] = idCounter++;
 	items[nid] = undefined;
 	items[$(".selected").attr("data-treeanno-id")] = undefined;
 	
@@ -370,17 +364,20 @@ function splitdialog_enter() {
 		litems[0]['begin'] = item['begin'];
 		litems[0]['text'] = lines[0];
 		litems[0]['end'] = item['begin']+lines[0].length;
+		litems[0]['id'] = ++idCounter;
 		litems[1] = new Object();
 		litems[1]['end'] = item['end'];
 		litems[1]['text'] = lines[1];
 		litems[1]['begin'] = litems[0]['end'];
+		litems[1]['id'] = ++idCounter;
 		items[itemid] = undefined;
 		
 		sublist = $(".selected > ul").detach();
-		items[++idCounter] = litems[1];
+		items[litems[1]['id']] = litems[1];
+		
 		$(".selected").after(get_html_item(litems[1], idCounter))
 		$(".selected").next().append(sublist);
-		items[++idCounter] = litems[0];
+		items[litems[0]['id']] = litems[0];
 		$(".selected").after(get_html_item(litems[0], idCounter));
 		nsel = $(".selected").next();
 		$(".selected").remove();
