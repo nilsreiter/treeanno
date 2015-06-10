@@ -24,8 +24,11 @@ public class DocumentIndex {
 
 	public JCas getDocument(int index) throws UIMAException, SQLException,
 			IOException {
-		if (!map.containsKey(index)) map.put(index, databaseIO.getJCas(index));
-		return map.get(index);
+		// we temporarily disable caching and always retrieve from the database
+		return databaseIO.getJCas(index);
+		// if (!map.containsKey(index)) map.put(index,
+		// databaseIO.getJCas(index));
+		// return map.get(index);
 	}
 
 	public JCas getDocument(Document doc) throws UIMAException, SQLException,
