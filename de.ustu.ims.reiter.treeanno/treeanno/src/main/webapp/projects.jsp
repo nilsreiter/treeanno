@@ -14,7 +14,7 @@
 
 
 <sql:query var="projects" dataSource="jdbc/treeanno">
-SELECT projects.id, concat(projects.id,'') AS pid, projects.name FROM projects JOIN users_permissions ON users_permissions.`projectId` = projects.id  WHERE userId=? AND users_permissions.level &gt; 0
+SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_projects.name FROM treeanno_projects JOIN treeanno_users_permissions ON treeanno_users_permissions.`projectId` = treeanno_projects.id  WHERE userId=? AND treeanno_users_permissions.level &gt; 0
 	<sql:param value="${sessionScope.user.databaseId}" />
 </sql:query>
 
