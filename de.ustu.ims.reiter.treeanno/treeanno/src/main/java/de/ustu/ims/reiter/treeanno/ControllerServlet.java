@@ -9,12 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.connector.Response;
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
+
+import de.ustu.ims.reiter.treeanno.beans.User;
 
 /**
  * Servlet implementation class ControllerServlet
@@ -43,9 +46,23 @@ public class ControllerServlet extends HttpServlet {
 						"documentIndex"));
 
 		String[] documents = request.getParameterValues("documentId");
+		if (request.getAttribute("user") == null) {
+			response.setStatus(Response.SC_FORBIDDEN);
+			return;
+		}
 		try {
 			if (documents.length > 0) {
-				String docId = documents[0];
+				int docId = Integer.valueOf(documents[0]);
+
+				int accessLevel =
+						di.getDatabaseIO().getAccessLevel(
+								Integer.valueOf(docId),
+								(User) request.getSession()
+										.getAttribute("user"));
+				if (accessLevel < 10) {
+					response.setStatus(Response.SC_FORBIDDEN);
+					return;
+				}
 				JSONObject obj = new JSONObject();
 				obj.put("documentId", docId);
 				obj.put("list",
