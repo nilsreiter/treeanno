@@ -10,7 +10,7 @@
 </c:if>
 
 <sql:query var="documentRowSet" dataSource="jdbc/treeanno">
-SELECT documents.id,project,documents.name,projects.name,concat(projects.name,'') AS pname FROM documents JOIN projects ON documents.`project` = projects.id  WHERE documents.id=?
+SELECT treeanno_documents.id,project,treeanno_documents.name,treeanno_projects.name,concat(treeanno_projects.name,'') AS pname FROM treeanno_documents JOIN treeanno_projects ON treeanno_documents.`project` = treeanno_projects.id  WHERE treeanno_documents.id=?
 	<sql:param value="${param.documentId}" />
 </sql:query>
 
@@ -27,7 +27,7 @@ SELECT documents.id,project,documents.name,projects.name,concat(projects.name,''
 
 
 <sql:query var="rs" dataSource="jdbc/treeanno">
-SELECT level FROM users_permissions WHERE userId=? AND projectId=?
+SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 	<sql:param value="${sessionScope.user.databaseId}" />
 	<sql:param value="${documentRowSet.rows[0].project}" />
 </sql:query>
