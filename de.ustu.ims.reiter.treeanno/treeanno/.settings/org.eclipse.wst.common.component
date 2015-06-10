@@ -7,9 +7,6 @@
         <dependent-module archiveName="treeanno.api-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/treeanno.api/treeanno.api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="util-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/de.ustu.ims.narratology.util/de.ustu.ims.narratology.util">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="treeanno"/>
         <property name="java-output-path" value="/treeanno/target/classes"/>
     </wb-module>

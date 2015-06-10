@@ -55,7 +55,7 @@ public class UserHandling extends HttpServlet {
 				(DataSource) getServletContext().getAttribute("dataSource");
 		Connection conn = ds.getConnection();
 		PreparedStatement ps =
-				conn.prepareStatement("SELECT * FROM users WHERE id=?");
+				conn.prepareStatement("SELECT * FROM treeanno_users WHERE id=?");
 		ps.setInt(1, username);
 		ResultSet rs = ps.executeQuery();
 		User user = null;

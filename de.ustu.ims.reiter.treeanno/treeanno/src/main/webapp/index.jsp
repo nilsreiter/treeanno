@@ -54,7 +54,7 @@ select id, username from treeanno_users
 					</c:forEach>
 				</select></p>
 				
-				<p><label for="form_password">Password</label> <input type="password" id="form_password" name="password" value="" /></p>
+				<p><label for="form_password">Password</label> <input type="password" id="form_password" name="password" value="test" /></p>
 			</form>
 		</div>
 	</div>

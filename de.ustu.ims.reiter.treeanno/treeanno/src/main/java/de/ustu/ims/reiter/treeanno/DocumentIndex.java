@@ -23,14 +23,14 @@ public class DocumentIndex {
 	}
 
 	public JCas getDocument(int index) throws UIMAException, SQLException,
-	IOException {
+			IOException {
 		if (!map.containsKey(index)) map.put(index, databaseIO.getJCas(index));
 		return map.get(index);
 	}
 
 	public JCas getDocument(Document doc) throws UIMAException, SQLException,
-			IOException {
-		return this.getDocument(doc.getId());
+	IOException {
+		return this.getDocument(doc.getDatabaseId());
 	}
 
 	public Set<Integer> openDocuments() {
