@@ -77,7 +77,7 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 		</div>
 		<div id="documentlistarea">
 			<c:forEach var="p2row" items="${projects.rows}">
-				<sql:query var="docs" dataSource="jdbc/treeanno" sql="SELECT id,name,modificationDate FROM documents WHERE project=?">
+				<sql:query var="docs" dataSource="jdbc/treeanno" sql="SELECT id,name,modificationDate FROM treeanno_documents WHERE project=?">
 					<sql:param value="${p2row.pid}" />
 				</sql:query>
 				<div class="documentlist project-${p2row.pid}">
