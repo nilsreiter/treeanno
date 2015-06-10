@@ -57,21 +57,24 @@ public class Util {
 		Map<Integer, TreeSegment> idMap = new HashMap<Integer, TreeSegment>();
 		JSONArray items = annotations.getJSONArray("items");
 		for (int i = 0; i < items.length(); i++) {
-			JSONObject item = items.getJSONObject(i);
-			int begin = item.getInt("begin");
-			int end = item.getInt("end");
-			int id = item.getInt("id");
+			if (!items.isNull(i)) {
+				JSONObject item = items.getJSONObject(i);
 
-			TreeSegment ts =
-					AnnotationFactory.createAnnotation(jcas, begin, end,
-							TreeSegment.class);
-			ts.setId(id);
+				int begin = item.getInt("begin");
+				int end = item.getInt("end");
+				int id = item.getInt("id");
 
-			try {
-				if (!item.getString("category").isEmpty())
-					ts.setCategory(item.getString("category"));
-			} catch (JSONException e) {};
-			idMap.put(id, ts);
+				TreeSegment ts =
+						AnnotationFactory.createAnnotation(jcas, begin, end,
+								TreeSegment.class);
+				ts.setId(id);
+
+				try {
+					if (!item.getString("category").isEmpty())
+						ts.setCategory(item.getString("category"));
+				} catch (JSONException e) {};
+				idMap.put(id, ts);
+			}
 		}
 		for (int i = 0; i < items.length(); i++) {
 			JSONObject item = items.getJSONObject(i);
