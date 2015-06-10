@@ -77,14 +77,16 @@ public class Util {
 			}
 		}
 		for (int i = 0; i < items.length(); i++) {
-			JSONObject item = items.getJSONObject(i);
-			int parentId = -1;
-			int id = item.getInt("id");
-			try {
-				parentId = item.getInt("parentId");
-			} catch (JSONException e) {}
-			if (parentId >= 0) {
-				idMap.get(id).setParent(idMap.get(parentId));
+			if (!items.isNull(i)) {
+				JSONObject item = items.getJSONObject(i);
+				int parentId = -1;
+				int id = item.getInt("id");
+				try {
+					parentId = item.getInt("parentId");
+				} catch (JSONException e) {}
+				if (parentId >= 0) {
+					idMap.get(id).setParent(idMap.get(parentId));
+				}
 			}
 		}
 		return jcas;
