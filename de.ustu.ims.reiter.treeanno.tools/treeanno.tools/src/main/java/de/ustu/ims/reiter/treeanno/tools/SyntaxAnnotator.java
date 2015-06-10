@@ -19,7 +19,8 @@ public class SyntaxAnnotator {
 
 	public static void main(String[] args) throws UIMAException, IOException {
 		File inputDirectory =
-				new File("/Users/reiterns/Documents/treeanno/arndt/xmi/xmi");
+				new File(
+						"/Users/reiterns/Documents/treeanno/projects/eckbert/xmi");
 
 		CollectionReaderDescription crd =
 				CollectionReaderFactory.createReaderDescription(
@@ -27,13 +28,14 @@ public class SyntaxAnnotator {
 						inputDirectory.getAbsolutePath() + File.separator
 								+ "*.xmi");
 
-		SimplePipeline.runPipeline(
-				crd,
-				createEngineDescription(LanguageToolSegmenter.class),
-				createEngineDescription(StanfordParser.class),
-				createEngineDescription(XmiWriter.class,
-						XmiWriter.PARAM_TARGET_LOCATION,
-						"/Users/reiterns/Documents/treeanno/arndt/xmi2"));
+		SimplePipeline
+				.runPipeline(
+						crd,
+						createEngineDescription(LanguageToolSegmenter.class),
+						createEngineDescription(StanfordParser.class),
+						createEngineDescription(XmiWriter.class,
+								XmiWriter.PARAM_TARGET_LOCATION,
+								"/Users/reiterns/Documents/treeanno/projects/eckbert/xmi2"));
 	}
 
 }
