@@ -25,6 +25,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.xml.sax.SAXException;
 
+import de.ustu.ims.reiter.treeanno.beans.User;
+
 public class DatabaseIO {
 
 	DataSource dataSource;
@@ -39,8 +41,25 @@ public class DatabaseIO {
 
 	}
 
+	public int getAccessLevel(int documentId, User user) throws SQLException {
+		Connection conn = dataSource.getConnection();
+		PreparedStatement stmt =
+				conn.prepareStatement("SELECT level FROM (SELECT projects.id AS pid, documents.id AS did FROM documents, projects WHERE documents.project = projects.id) proj, users_permissions WHERE pid = projectId AND userId=? AND did=?");
+		stmt.setInt(1, user.getDatabaseId());
+		stmt.setInt(2, documentId);
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			int r = rs.getInt(1);
+			rs.close();
+			stmt.close();
+			conn.close();
+			return r;
+		}
+		return 0;
+	}
+
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-			SAXException, IOException {
+	SAXException, IOException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -50,7 +69,7 @@ public class DatabaseIO {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE documents SET xmi=? WHERE id=?");
+						.prepareStatement("UPDATE documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -59,14 +78,14 @@ public class DatabaseIO {
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, IOException,
-			UIMAException {
+	UIMAException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("SELECT * FROM documents WHERE id=?");
+				.prepareStatement("SELECT * FROM documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		ResultSet rs = stmt.executeQuery();
 
