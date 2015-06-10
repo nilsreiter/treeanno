@@ -18,6 +18,7 @@ function get_html_item(item, i) {
 	$(htmlItem).attr("title", item['text']);
 	$(htmlItem).addClass("tl0");
 	$(htmlItem).attr("data-treeanno-id", item['id']);
+	idCounter = Math.max(idCounter, item['id']);
 	//$(htmlItem).attr("data-treeanno-uid", item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
