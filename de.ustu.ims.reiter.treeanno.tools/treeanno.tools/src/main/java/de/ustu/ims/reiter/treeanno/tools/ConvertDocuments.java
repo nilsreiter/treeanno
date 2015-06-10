@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UIMAException;
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
@@ -15,6 +16,7 @@ import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.resource.ResourceInitializationException;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -38,7 +40,7 @@ public class ConvertDocuments {
 				.createEngineDescription(MapToTreeAnnoClass.class,
 						MapToTreeAnnoClass.PARAM_CLASSNAME,
 						options.getSegmentClassName()), AnalysisEngineFactory
-						.createEngineDescription(XmiWriter.class,
+				.createEngineDescription(XmiWriter.class,
 						XmiWriter.PARAM_TARGET_LOCATION,
 						options.getOutputDirectory()));
 	}
@@ -61,25 +63,37 @@ public class ConvertDocuments {
 		@ConfigurationParameter(name = PARAM_CLASSNAME)
 		String className;
 
+		Class<? extends Annotation> annoClass;
+
+		@SuppressWarnings("unchecked")
 		@Override
-		public void process(JCas jcas) throws AnalysisEngineProcessException {
+		public void initialize(final UimaContext context)
+				throws ResourceInitializationException {
+			super.initialize(context);
+
+			Class<?> cl;
 			try {
-				Class<? extends Annotation> clObj =
-						(Class<? extends Annotation>) Class.forName(className);
-				int c = 0;
-				for (Annotation anno : JCasUtil.select(jcas, clObj)) {
-					AnnotationFactory.createAnnotation(jcas, anno.getBegin(),
-							anno.getEnd(), TreeSegment.class).setId(c++);
+				cl = Class.forName(className);
+				if (Annotation.class.isAssignableFrom(cl)) {
+					annoClass = (Class<? extends Annotation>) cl;
+				} else {
+					throw new ResourceInitializationException();
 				}
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				throw new AnalysisEngineProcessException(e);
-			} catch (ClassCastException e) {
-				e.printStackTrace();
-				throw new AnalysisEngineProcessException(e);
+				throw new ResourceInitializationException(e);
 			}
+
 		}
 
+		@Override
+		public void process(JCas jcas) throws AnalysisEngineProcessException {
+			int c = 0;
+			for (Annotation anno : JCasUtil.select(jcas, annoClass)) {
+				AnnotationFactory.createAnnotation(jcas, anno.getBegin(),
+						anno.getEnd(), TreeSegment.class).setId(c++);
+			}
+
+		}
 	}
 
 }
