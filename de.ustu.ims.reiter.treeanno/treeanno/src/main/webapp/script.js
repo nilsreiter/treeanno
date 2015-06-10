@@ -1,4 +1,4 @@
-var maxStringLength = 80;
+var maxStringLength = 160;
 
 var i18n;
 
@@ -15,6 +15,7 @@ var includeSeparationWhenMerging = true;
 
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
+	$(htmlItem).attr("title", item['text']);
 	$(htmlItem).addClass("tl0");
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	//$(htmlItem).attr("data-treeanno-uid", item['id']);
@@ -83,6 +84,7 @@ function init(t) {
 				save_document();
 			}
 		);
+		disableSaveButton();
 		
 		jQuery.getJSON("ControllerServlet?documentId="+docid, function(data) {
 			
@@ -139,10 +141,22 @@ function save_document() {
 		}),
 		contentType:'application/json; charset=UTF-8',
 		success: function() {
-			alert("done");
+			$( "button.button_save_document" ).button( "option", "disabled", true );
+			$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });
 		}
 	});
 }
+
+function enableSaveButton() {
+	$( "button.button_save_document" ).button("option", "disabled", false);
+	$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-disk", secondary:null });
+}
+
+function disableSaveButton() {
+	$( "button.button_save_document" ).button("option", "disabled", true);
+	$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });
+}
+
 
 function user_input(e) {
 	if (!enable_interaction) return;
@@ -394,9 +408,11 @@ function splitdialog_enter() {
 
 function outdent() {
 	var currentItem = $("#outline li.selected");
+	var id = $(currentItem).attr("data-treeanno-id");
+	// if it's not the very first item
 	if ($("ul#outline > li.selected").length == 0) {
 		var newParent = $("#outline li.selected").parentsUntil("li").parent();
-		
+		var parentId = parseInt($(newParent).attr("data-treeanno-id"));
 		siblings = $("#outline li.selected ~ li").detach();
 		
 		if ($("#outline li.selected > ul").length == 0)
@@ -404,8 +420,11 @@ function outdent() {
 		$("#outline li.selected > ul").append(siblings);
 		s = $(currentItem).detach();
 		$(newParent).after(s);
+		delete items[id]['parentId'];
 	}
 	cleanup_list();
+	enableSaveButton();
+
 }
 
 function indent() {
@@ -419,6 +438,7 @@ function indent() {
 		$(prev).children("ul").append(s);
 	}
 	cleanup_list();
+	enableSaveButton();
 }
 
 
