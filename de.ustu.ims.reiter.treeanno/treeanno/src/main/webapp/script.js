@@ -143,6 +143,15 @@ function save_document() {
 		success: function() {
 			$( "button.button_save_document" ).button( "option", "disabled", true );
 			$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });
+		}, 
+		error: function(jqXHR, textStatus, errorThrown) {
+			$("#error").append(textStatus);
+			$("#error").dialog({
+				  dialogClass: "alert",
+				  modal:true,
+				  title:"Error"
+			});
+			console.log(textStatus, errorThrown);			
 		}
 	});
 }
