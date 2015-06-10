@@ -93,6 +93,7 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 		</div>
 	</div>
 	<div id="topbar">
+		<button class="nobutton">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</button>
 		<button class="button_edit_user">${sessionScope.user.name }</button>
 	</div>
 </body>

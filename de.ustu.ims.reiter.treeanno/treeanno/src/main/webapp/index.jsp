@@ -15,10 +15,12 @@ select id, username from treeanno_users
 	<script src="jquery-2.1.3.min.js"></script>
 	<script src="jquery-ui/jquery-ui.js"></script>
 	<script src="i18next/i18next-1.8.0.min.js"></script>
+	<script src="script.js"></script>
 	<script>
 	i18n.init({ 
 		resGetPath:'locales/__ns__-__lng__.json',
 		lng: "en-US" }, function(t) {
+			init_all();
 			$("#login").dialog({
 				title: t("login"),
 				buttons: 
@@ -57,6 +59,9 @@ select id, username from treeanno_users
 				<p><label for="form_password">Password</label> <input type="password" id="form_password" name="password" value="test" /></p>
 			</form>
 		</div>
+	</div>
+	<div id="topbar">
+		<button class="nobutton">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</button>
 	</div>
 </body>
 </html>

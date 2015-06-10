@@ -5,12 +5,18 @@
   <artifactId>treeanno</artifactId>
   <packaging>war</packaging>
   <version>0.3-SNAPSHOT</version>
-  <name>treeanno Maven Webapp</name>
+  <name>TreeAnno</name>
   <url>http://maven.apache.org</url>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
+  	<resources>
+        <resource>
+          <directory>src/main/resources</directory>
+          <filtering>true</filtering>
+        </resource>
+      </resources>  
       <finalName>treeanno</finalName>
       <plugins>
             <plugin>

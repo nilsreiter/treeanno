@@ -1,5 +1,9 @@
 package de.ustu.ims.reiter.treeanno;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -58,6 +62,16 @@ public class ContextListener implements ServletContextListener {
 			e.printStackTrace();
 		}
 
+		Properties properties = new Properties();
+		try {
+			InputStream is =
+					getClass().getResourceAsStream("/project.properties");
+			if (is != null) properties.load(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (String s : properties.stringPropertyNames()) {
+			sc.setAttribute(s, properties.get(s));
+		}
 	}
-
 }

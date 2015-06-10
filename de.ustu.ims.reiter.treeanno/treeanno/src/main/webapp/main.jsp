@@ -74,6 +74,7 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 		<select id="form_mergecandidates" size="2"></select>
 	</div>
 	<div id="topbar">
+		<button class="nobutton">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</button>
 		<button class="nobutton">${requestScope.project.name}</button>
 		<button class="button_change_document"></button>
 		<button class="button_save_document"></button>
