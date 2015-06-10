@@ -46,7 +46,7 @@ public class ControllerServlet extends HttpServlet {
 						"documentIndex"));
 
 		String[] documents = request.getParameterValues("documentId");
-		if (request.getAttribute("user") == null) {
+		if (request.getSession().getAttribute("user") == null) {
 			response.setStatus(Response.SC_FORBIDDEN);
 			return;
 		}
@@ -58,7 +58,7 @@ public class ControllerServlet extends HttpServlet {
 						di.getDatabaseIO().getAccessLevel(
 								Integer.valueOf(docId),
 								(User) request.getSession()
-										.getAttribute("user"));
+								.getAttribute("user"));
 				if (accessLevel < 10) {
 					response.setStatus(Response.SC_FORBIDDEN);
 					return;

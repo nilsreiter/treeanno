@@ -55,11 +55,14 @@ public class DatabaseIO {
 			conn.close();
 			return r;
 		}
+		rs.close();
+		stmt.close();
+		conn.close();
 		return 0;
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-	SAXException, IOException {
+			SAXException, IOException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -69,7 +72,7 @@ public class DatabaseIO {
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("UPDATE documents SET xmi=? WHERE id=?");
+				.prepareStatement("UPDATE documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -78,14 +81,14 @@ public class DatabaseIO {
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, IOException,
-	UIMAException {
+			UIMAException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("SELECT * FROM documents WHERE id=?");
+						.prepareStatement("SELECT * FROM documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		ResultSet rs = stmt.executeQuery();
 
