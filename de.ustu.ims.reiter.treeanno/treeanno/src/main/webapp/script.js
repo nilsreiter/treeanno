@@ -4,7 +4,7 @@ var i18n;
 
 var enable_interaction = true;
 
-var items;
+var items = new Array();
 
 var idCounter = 0;
 
@@ -16,8 +16,8 @@ var includeSeparationWhenMerging = true;
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
 	$(htmlItem).addClass("tl0");
-	$(htmlItem).attr("data-treeanno-id", i);
-	$(htmlItem).attr("data-treeanno-uid", item['id']);
+	$(htmlItem).attr("data-treeanno-id", item['id']);
+	//$(htmlItem).attr("data-treeanno-uid", item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p>"+item['category']+"</p>");
 	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
@@ -85,20 +85,23 @@ function init(t) {
 		);
 		
 		jQuery.getJSON("ControllerServlet?documentId="+docid, function(data) {
-			items = data["list"];
-			idCounter = data["list"].length;
+			
+			// idCounter = data["list"].length;
 			for (var i = 0; i < data["list"].length; i++) {
+				
 				var item = data["list"][i];
+				items[item["id"]] = item;
+				
 				var t = item["text"];
 				
 				if (t.length > maxStringLength)
 					t = t.substring(0,maxStringLength-3) + "...";
 				if ('parentId' in item) {
 					parentId = item['parentId'];
-					parentItem = $("li[data-treeanno-uid='"+parentId+"']");
+					parentItem = $("li[data-treeanno-id='"+parentId+"']");
 					if (parentItem.children("ul").length == 0)
 						parentItem.append("<ul></ul>");
-					$("li[data-treeanno-uid='"+parentId+"'] > ul").append(get_html_item(item, i));
+					$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, i));
 				} else {
 					$('#outline').append(get_html_item(item, i));
 				}
@@ -117,10 +120,11 @@ function save_document() {
 	
 	$("#outline li").each(function(index, element) {
 		var id = $(element).attr("data-treeanno-id");
+		// alert(id);
 		parents = $(element).parentsUntil("#outline", "li");
 		if (parents.length > 0) {
 			parent = parents.first();
-			parentId = parent.attr("data-treeanno-id");
+			parentId = parseInt(parent.attr("data-treeanno-id"));
 			sitems[id]["parentId"] = parentId;
 		}
 		sitems[id]['category'] = $(element).children("p").text();
