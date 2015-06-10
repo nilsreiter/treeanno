@@ -148,13 +148,17 @@ function save_document() {
 }
 
 function enableSaveButton() {
-	$( "button.button_save_document" ).button("option", "disabled", false);
-	$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-disk", secondary:null });
+	if ($( "button.button_save_document" ).button("option", "disabled") == true) {
+		$( "button.button_save_document" ).button("option", "disabled", false);
+		$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-disk", secondary:null });
+	}
 }
 
 function disableSaveButton() {
-	$( "button.button_save_document" ).button("option", "disabled", true);
-	$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });
+	if ($( "button.button_save_document" ).button("option", "disabled") == false) {
+		$( "button.button_save_document" ).button("option", "disabled", true);
+		$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });
+	}
 }
 
 
@@ -260,6 +264,7 @@ function enter_category() {
 	$(".selected").prepend("<p class=\"annocat\">"+value+"</p>");
 	// var oa = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
 	$(".selected").attr("data-treeanno-categories", value);
+	enableSaveButton();
 	enable_interaction = true;
 }
 
@@ -327,6 +332,7 @@ function mergedialog_enter() {
 	$(newsel).addClass("selected");
 	$(".selected").append(sublist0);
 	$(".selected").append(sublist1);
+	enableSaveButton();
 	cleanup_list();
 	mergedialog_cleanup();
 }
@@ -401,6 +407,7 @@ function splitdialog_enter() {
 		$(".selected").remove();
 		$(nsel).addClass("selected");
 	}
+	enableSaveButton();
 	cleanup_list();
 	splitdialog_cleanup();
 }
