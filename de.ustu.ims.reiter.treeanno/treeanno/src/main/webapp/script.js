@@ -19,7 +19,7 @@ function get_html_item(item, i) {
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	//$(htmlItem).attr("data-treeanno-uid", item['id']);
 	if ('category' in item)
-		$(htmlItem).append("<p>"+item['category']+"</p>");
+		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
 	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
 	return htmlItem;
 }
