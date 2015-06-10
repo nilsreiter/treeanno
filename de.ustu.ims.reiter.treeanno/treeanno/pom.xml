@@ -115,4 +115,9 @@
     	<version>2.3</version>
     </dependency>
   </dependencies>
+  <scm>
+  	<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>
+  	<developerConnection>scm:git:ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</developerConnection>
+  	<connection>scm:git:ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</connection>
+  </scm>
 </project>
