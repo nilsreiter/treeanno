@@ -38,9 +38,9 @@ public class ConvertDocuments {
 				.createEngineDescription(MapToTreeAnnoClass.class,
 						MapToTreeAnnoClass.PARAM_CLASSNAME,
 						options.getSegmentClassName()), AnalysisEngineFactory
-				.createEngineDescription(XmiWriter.class,
-								XmiWriter.PARAM_TARGET_LOCATION,
-								options.getOutputDirectory()));
+						.createEngineDescription(XmiWriter.class,
+						XmiWriter.PARAM_TARGET_LOCATION,
+						options.getOutputDirectory()));
 	}
 
 	interface Options {
@@ -73,6 +73,10 @@ public class ConvertDocuments {
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
+				throw new AnalysisEngineProcessException(e);
+			} catch (ClassCastException e) {
+				e.printStackTrace();
+				throw new AnalysisEngineProcessException(e);
 			}
 		}
 
