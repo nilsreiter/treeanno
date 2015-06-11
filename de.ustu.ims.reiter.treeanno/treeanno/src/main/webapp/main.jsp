@@ -48,6 +48,7 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 	<script src="script.js"></script>
 	<script>
 
+	var language = "${sessionScope.user.language}";
 	var documentId = ${param.documentId};
 	var projectId = ${requestScope.project.databaseId};
 	$(document).ready(init_trans(init_main));

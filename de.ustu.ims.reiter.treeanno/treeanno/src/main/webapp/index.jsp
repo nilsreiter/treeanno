@@ -17,6 +17,8 @@ select id, username from treeanno_users
 	<script src="i18next/i18next-1.8.0.min.js"></script>
 	<script src="script.js"></script>
 	<script>
+	var language = "en-US";
+
 	$(document).ready(init_trans(function() {
 		init_all();
 		$("#login").dialog({

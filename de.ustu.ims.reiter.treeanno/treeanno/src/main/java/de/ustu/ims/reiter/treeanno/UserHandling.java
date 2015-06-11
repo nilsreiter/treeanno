@@ -21,6 +21,8 @@ import de.ustu.ims.reiter.treeanno.beans.User;
 public class UserHandling extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	static final String defaultLanguage = "en-US";
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -63,8 +65,11 @@ public class UserHandling extends HttpServlet {
 			user = new User();
 			user.setDatabaseId(rs.getInt(1));
 			user.setName(rs.getString(2));
-
-			// user.setEmail(rs.getString(3));
+			if (rs.getString(3) != null) user.setEmail(rs.getString(3));
+			if (rs.getString(5) != null)
+				user.setLanguage(rs.getString(5));
+			else
+				user.setLanguage(defaultLanguage);
 		}
 		rs.close();
 		ps.close();

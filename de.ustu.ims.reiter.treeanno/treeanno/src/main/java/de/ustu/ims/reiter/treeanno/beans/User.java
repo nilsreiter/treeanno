@@ -4,6 +4,7 @@ public class User {
 	String name;
 	String email;
 	int databaseId;
+	String language;
 
 	public String getName() {
 		return name;
@@ -28,4 +29,13 @@ public class User {
 	public void setDatabaseId(int databaseId) {
 		this.databaseId = databaseId;
 	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
 }

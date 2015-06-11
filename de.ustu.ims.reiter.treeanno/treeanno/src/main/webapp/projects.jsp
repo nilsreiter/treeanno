@@ -47,6 +47,7 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 	<script>
 	//<![CDATA[
 		var selected = ${param.projectId};
+		var language = "${sessionScope.user.language}";
 		$(document).ready(init_trans(init_projects));
 	//]]></script>
 	</c:if>
@@ -54,6 +55,7 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 	<script>
 	//<![CDATA[
 		var selected = 0;
+		var language = "${sessionScope.user.language}";
 		$(document).ready(init_trans(init_projects));
 	//]]></script>
 	</c:if>

@@ -55,7 +55,7 @@ function show_documentlist(id) {
 function init_trans(fnc) {
 	i18n.init({ 
 		resGetPath:'locales/__ns__-__lng__.json',
-		lng: "en-US" }, function(t) {
+		lng: language }, function(t) {
 			$(".trans").each(function(index, element) {
 				var text = $(element).text().trim();
 				$(element).empty();
