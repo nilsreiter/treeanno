@@ -1,0 +1,23 @@
+#help {
+	position:fixed;
+	top:40%;
+	left:0;
+	border:thin solid black;
+	background-color:white;
+	cursor:move;
+}
+
+#help .command {
+	font-family:monospace;
+}
+
+#help ul {
+	list-style-type:none;
+	margin:0px;
+	padding:1px;
+}
+
+#help ul li {
+	margin:0px;
+	padding:5px;
+}

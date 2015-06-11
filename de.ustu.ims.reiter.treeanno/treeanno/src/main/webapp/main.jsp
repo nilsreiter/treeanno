@@ -47,12 +47,13 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 	<script src="nestedSortable-1.3.4/jquery.ui.nestedSortable.js"></script>
 	<script src="script.js"></script>
 	<script>
+
 	var documentId = ${param.documentId};
 	var projectId = ${requestScope.project.databaseId};
-	i18n.init({ 
-		resGetPath:'locales/__ns__-__lng__.json',
-		lng: "en-US" }, init);
+	$(document).ready(init_trans(init_main));
+	
 	</script>
+	<link rel="stylesheet" href="help.css" type="text/css">
 	<link rel="stylesheet" href="formats.css" type="text/css">
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.css" type="text/css"> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.structure.css" type="text/css"> 
@@ -76,16 +77,11 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 	<div id="topbar">
 		<button class="nobutton">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</button>
 		<button class="nobutton">${requestScope.project.name}</button>
-		<button class="button_change_document"></button>
-		<button class="button_save_document"></button>
+		<button class="button_change_document">open</button>
+		<button class="button_save_document">save</button>
 		<button class="button_edit_user">${sessionScope.user.name } (${rs.rows[0].level})</button>
 	</div>
 	<div id="error"></div>
-	<div id="toolbar">
-		<button>&uarr;</button>
-		<button>&darr;</button>
-		<button>&larr;</button>
-		<button>&rarr;</button>
-	</div>
+	<jsp:include page="help.html" />
 </body>
 </html>

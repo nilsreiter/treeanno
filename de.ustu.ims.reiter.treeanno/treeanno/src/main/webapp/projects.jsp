@@ -38,39 +38,38 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 	<script src="jquery-ui/jquery-ui.js" >
 	//<![CDATA[]]>
 	</script>
+	<script src="i18next/i18next-1.8.0.min.js">
+	//<![CDATA[]]>
+	</script>
 	<script src="script.js">
 	//<![CDATA[]]></script>
 	<c:if test="${not empty param.projectId}">
 	<script>
 	//<![CDATA[
 		var selected = ${param.projectId};
-		$(document).ready(function() {
-			init_projects();
-		});
+		$(document).ready(init_trans(init_projects));
 	//]]></script>
 	</c:if>
 	<c:if test="${empty param.projectId}">
 	<script>
 	//<![CDATA[
 		var selected = 0;
-		$(document).ready(function() {
-			init_projects();
-		});
+		$(document).ready(init_trans(init_projects));
 	//]]></script>
 	</c:if>
 </head>
 <body>
 	<div id="content" class="splitcontent">
 		<div id="projectlistarea">
-		<h2>List of Projects</h2>
+		<h2 class="trans">list_of_projects</h2>
 		<table>
-		<tr><th>Id</th><th>Name</th></tr>
+		<tr><th class="trans">project_id</th><th class="trans">project_name</th></tr>
 		<c:forEach var="prow" items="${projects.rows}">
 			
 			<tr>
 				<td>${prow.pid}</td>
 				<td>${prow.name}</td>
-				<td><button onclick="show_documentlist(${prow.pid})">Open</button></td>
+				<td><button onclick="show_documentlist(${prow.pid})" class="trans">open</button></td>
 			</tr>	
 		</c:forEach>
 		</table>
@@ -83,9 +82,9 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 				<div class="documentlist project-${p2row.pid}">
 					<h2>Documents in &quot;${p2row.name}&quot;</h2>
 					<table>
-					<tr><th>id</th><th>name</th><th>last modified</th></tr>
+					<tr><th class="trans">document_id</th><th class="trans">document_name</th><th class="trans">document_mod_date</th></tr>
 					<c:forEach var="docRow" items="${docs.rows}">
-						<tr><td>${docRow.id}</td><td>${docRow.name }</td><td>${docRow.modificationDate}</td><td><button onclick="window.location.href='main.jsp?documentId=${docRow.id}'">Open</button></td></tr>
+						<tr><td>${docRow.id}</td><td>${docRow.name }</td><td>${docRow.modificationDate}</td><td><button class="trans" onclick="window.location.href='main.jsp?documentId=${docRow.id}'">open</button></td></tr>
 					</c:forEach>
 					</table>
 				</div>

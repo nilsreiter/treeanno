@@ -1,4 +1,20 @@
 {
 	"username":"User Name",
-	"ok":"Ok"
+	"password":"Password",
+	"ok":"Ok",
+	"action_up":"Move",
+	"action_down":"Move",
+	"action_indent":"Indent",
+	"action_outdent":"Outdent",
+	"action_split":"Split",
+	"help_title":"Cheat Sheet",
+	"open":"Open",
+	"list_of_projects":"List of Projects",
+	"document_id":"Id",
+	"document_name":"Name",
+	"document_mod_date":"Last change",
+	"project_id":"Id",
+	"project_name":"Name",
+	"login_dialog_title":"Login",
+	"login_dialog_ok":"Enter"
 }

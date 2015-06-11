@@ -20,7 +20,6 @@ div#artifact {
 }
 
 #outline li div .drg { 
-	cursor:move;
 	 padding:1px;
 	  margin:0 .5em 0 0; 
 	  border-left:2px dotted #bbb; 
@@ -28,9 +27,9 @@ div#artifact {
 }
 #outline { margin:.5em 0; }
 #outline li { padding:0; margin:.5em 0 0 0; }
-#outline li div  { cursor:move; margin:0; padding:.25em; position:relative; border:1px solid #aaa; }
+#outline li div  { margin:0; padding:.25em; position:relative; border:1px solid #aaa; }
 #outline, #outline ul { margin:0;list-style-type:none; }
-#outline li div a.del { color:#ccc; top:-5px; right:5px; cursor:pointer; font-size:20px; position:absolute; text-decoration:none; }
+#outline li div a.del { color:#ccc; top:-5px; right:5px;  font-size:20px; position:absolute; text-decoration:none; }
 #outline li div a.del:hover { color:#c33; }
 #outline li.rem > div { border:1px solid #000; }
 .placeholder { background:#eee; }
@@ -67,10 +66,3 @@ div#artifact {
 	float:left;
 }
 
-#toolbar {
-	position:fixed;
-	top:40%;
-	left:0;
-	color:white;
-	width:40px;
-}

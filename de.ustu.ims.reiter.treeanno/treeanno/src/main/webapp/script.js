@@ -1,6 +1,6 @@
 var maxStringLength = 160;
 
-var i18n;
+var i18nObj;
 
 var enable_interaction = true;
 
@@ -9,9 +9,6 @@ var items = new Array();
 var idCounter = 0;
 
 var includeSeparationWhenMerging = true;
-
-
-
 
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
@@ -33,12 +30,9 @@ function dtext(s) {
 }
 
 function init_all() {
-	$(document).ready(function() {
-		$("#topbar").buttonset();
-		$(".nobutton").button({
-			disabled:true
-		});
-
+	$("#topbar").buttonset();
+	$(".nobutton").button({
+		disabled:true
 	});
 }
 
@@ -58,29 +52,35 @@ function show_documentlist(id) {
 	$(".documentlist.project-"+id).show();
 }
 
-function init(t) {
-	init_all();
-	i18n = t;
-	
-	$("#split").hide();
+function init_trans(fnc) {
+	i18n.init({ 
+		resGetPath:'locales/__ns__-__lng__.json',
+		lng: "en-US" }, function(t) {
+			$(".trans").each(function(index, element) {
+				var text = $(element).text().trim();
+				$(element).empty();
+				$(element).append(t(text));
+			});
+			if (fnc) fnc();
+		});
+}
 
-	var docid = documentId;
-	
-	$(document).ready(function() {
-		// $("#toolbar button").button();
+function init_main() {
+		init_all();
+		$("#split").hide();
 		$( "button.button_edit_user" ).button({
 			icons: { primary: "ui-icon-person", secondary:null },
 			disabled: true
 		});
 		$( "button.button_change_document" ).button({
 			icons: { primary: "ui-icon-folder-collapsed", secondary:null },
-			label: t("open"),
+			label: i18n.t("open"),
 		}).click(function() {
 			window.location.href="projects.jsp?projectId="+projectId;
 		});
 		$( "button.button_save_document" ).button({
 			icons: { primary: "ui-icon-disk", secondary:null },
-			label: t("save"),
+			label: i18n.t("save"),
 		}).click(
 			function() {
 				save_document();
@@ -88,7 +88,7 @@ function init(t) {
 		);
 		disableSaveButton();
 		
-		jQuery.getJSON("ControllerServlet?documentId="+docid, function(data) {
+		jQuery.getJSON("ControllerServlet?documentId="+documentId, function(data) {
 			
 			// idCounter = data["list"].length;
 			for (var i = 0; i < data["list"].length; i++) {
@@ -115,7 +115,7 @@ function init(t) {
 			document.onkeydown = function(e) {
 				user_input(e);
 			}
-		});
+		
 	});
 }
 
