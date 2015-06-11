@@ -11,5 +11,18 @@
 	</table>
 </div>
 <script>
-$("#help").draggable();
+$(document).ready(function() {
+	i18n.init({ 
+		resGetPath:'locales/__ns__-__lng__.json',
+		lng: language }, function() {
+		$("#help").draggable();
+		$("#topbar").prepend("<button id=\"show_helper\">show_helper</button>");
+		$("#show_helper").button({
+			icons: { primary: "ui-icon-help", secondary:null },
+			label: i18n.t("show_helper")
+		}).click(function() {
+			$("#help").toggle();
+		});
+	});
+});
 </script>
