@@ -5,6 +5,15 @@
 	border:thin solid black;
 	background-color:white;
 	cursor:move;
+	border-radius:5px;
+}
+
+#help > div {
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	background-color:#DDD;
+	text-align:center;
+	width:100%;
 }
 
 #help .command {

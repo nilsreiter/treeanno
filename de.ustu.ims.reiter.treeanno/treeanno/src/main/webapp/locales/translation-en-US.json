@@ -7,6 +7,8 @@
 	"action_indent":"Indent",
 	"action_outdent":"Outdent",
 	"action_split":"Split",
+	"action_merge":"Merge",
+	"action_assign_category":"Assign category",
 	"help_title":"Cheat Sheet",
 	"open":"Open",
 	"list_of_projects":"List of Projects",
