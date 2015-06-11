@@ -66,3 +66,11 @@ div#artifact {
 .splitcontent div {
 	float:left;
 }
+
+#toolbar {
+	position:fixed;
+	top:40%;
+	left:0;
+	color:white;
+	width:40px;
+}

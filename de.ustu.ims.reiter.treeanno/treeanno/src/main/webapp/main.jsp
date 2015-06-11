@@ -81,5 +81,11 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 		<button class="button_edit_user">${sessionScope.user.name } (${rs.rows[0].level})</button>
 	</div>
 	<div id="error"></div>
+	<div id="toolbar">
+		<button>&uarr;</button>
+		<button>&darr;</button>
+		<button>&larr;</button>
+		<button>&rarr;</button>
+	</div>
 </body>
 </html>

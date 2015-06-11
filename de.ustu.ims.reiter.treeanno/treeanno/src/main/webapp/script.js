@@ -67,6 +67,7 @@ function init(t) {
 	var docid = documentId;
 	
 	$(document).ready(function() {
+		// $("#toolbar button").button();
 		$( "button.button_edit_user" ).button({
 			icons: { primary: "ui-icon-person", secondary:null },
 			disabled: true
