@@ -51,6 +51,24 @@ div#artifact {
 	height:32px;
 }
 
+.searchFound {
+	background-color:red;
+}
+
+span.search_container {
+	width:150px;
+}
+
+.search_container span {
+	display:inline-block;
+	vertical-align:middle;
+}
+.search_container input {
+	display:inline;
+	width:100px;
+	vertical-align:middle;
+}
+
 #topbar a {
 	color:black;
 }
@@ -59,10 +77,12 @@ div#artifact {
 	position:relative;
 	left:0px;
 	padding-left:10px;
-	vertical-align:bottom;
-	padding-top:8px;
-	padding-bottom:8px;
 }
+
+#topbar .middle {
+	position:absolute;
+	left:40%;
+	}
 
 #topbar .right {
 	padding-right:10px;

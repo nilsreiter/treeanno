@@ -83,6 +83,12 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 				${requestScope.document.name}
 			</span>
 		</span>
+		<span class="middle ui-widget" >
+			<span class="search_container">
+				<span class="ui-icon ui-icon-search"></span>
+				<input type="search" id="form_search" class="" />
+			</span>
+		</span>
 		<span class="right">
 			<!-- <button class="button_change_document">open</button> -->
 			<button class="button_save_document">save</button>

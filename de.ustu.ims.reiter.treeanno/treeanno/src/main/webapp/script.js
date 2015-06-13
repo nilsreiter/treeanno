@@ -89,6 +89,14 @@ function init_main() {
 				save_document();
 			}
 		);
+		$("#button_search").button({
+			icons:{primary: "ui-icon-search", secondary: null },
+			label: i18n.t("search")
+		}).click(search);
+		$("#form_search").keyup(search);
+		$("#form_search").focus(function() {enable_interaction=false});
+		$("#form_search").blur(function() {enable_interaction=true});
+		
 		disableSaveButton();
 		
 		jQuery.getJSON("ControllerServlet?documentId="+documentId, function(data) {
@@ -120,6 +128,12 @@ function init_main() {
 			}
 		
 	});
+}
+
+function search() {
+	$("li.searchFound").removeClass("searchFound");
+	var val = $("#form_search").val();
+	$("li[title*=\""+val+"\"]").addClass("searchFound");
 }
 
 function save_document() {
