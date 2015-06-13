@@ -30,7 +30,7 @@ function dtext(s) {
 }
 
 function init_all() {
-	$("#topbar").buttonset();
+	$("#topbar .right").buttonset();
 	$(".nobutton").button({
 		disabled:true
 	});

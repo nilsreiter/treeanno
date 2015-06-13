@@ -76,11 +76,15 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 		<select id="form_mergecandidates" size="2"></select>
 	</div>
 	<div id="topbar">
-		<button class="nobutton">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</button>
-		<button class="nobutton">${requestScope.project.name}</button>
-		<button class="button_change_document">open</button>
-		<button class="button_save_document">save</button>
-		<button class="button_edit_user">${sessionScope.user.name } (${rs.rows[0].level})</button>
+		<span class="left">
+			<button class="nobutton">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</button>
+			<button class="nobutton">${requestScope.project.name}</button>
+		</span>
+		<span class="right">
+			<button class="button_change_document">open</button>
+			<button class="button_save_document">save</button>
+			<button class="button_edit_user">${sessionScope.user.name } (${rs.rows[0].level})</button>
+		</span>
 	</div>
 	<div id="error"></div>
 	<jsp:include page="help.html" />

@@ -47,7 +47,19 @@ div#artifact {
 	left:0px;
 	right:0px;
 	background-color:#DDD;
-	padding:7px; 
+	padding:10px; 
+}
+
+#topbar .left {
+	position:relative;
+	left:0px;
+	padding-left:10px;
+}
+
+#topbar .right {
+	padding-right:10px;
+	position:absolute;
+	right:0px;
 	text-align:right;
 }
 	
