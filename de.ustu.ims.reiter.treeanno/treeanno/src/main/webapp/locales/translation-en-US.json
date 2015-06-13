@@ -18,5 +18,6 @@
 	"project_id":"Id",
 	"project_name":"Name",
 	"login_dialog_title":"Login",
-	"login_dialog_ok":"Enter"
+	"login_dialog_ok":"Enter",
+	"show_helper":"Show Cheat Sheet"
 }
