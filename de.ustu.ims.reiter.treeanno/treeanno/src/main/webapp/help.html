@@ -16,7 +16,7 @@ $(document).ready(function() {
 		resGetPath:'locales/__ns__-__lng__.json',
 		lng: language }, function() {
 		$("#help").draggable();
-		$("#topbar .right").prepend("<button id=\"show_helper\">show_helper</button>");
+		$("#topbar .right").prepend("<input type=\"checkbox\" id=\"show_helper\" checked=\"checked\" /><label for=\"show_helper\"></label>");
 		$("#show_helper").button({
 			icons: { primary: "ui-icon-help", secondary:null },
 			label: i18n.t("show_helper")
