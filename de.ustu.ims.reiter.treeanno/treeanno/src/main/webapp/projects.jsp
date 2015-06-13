@@ -32,32 +32,40 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.structure.css" type="text/css"></link> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.theme.css" type="text/css"></link> 
 	
-	<script src="jquery-2.1.3.min.js" >
-	//<![CDATA[]]>
+	<script src="jquery-2.1.3.min.js">
+	//<![CDATA[
+	//]]>
 	</script>
 	<script src="jquery-ui/jquery-ui.js" >
-	//<![CDATA[]]>
+	// <![CDATA[
+	// ]]>
 	</script>
 	<script src="i18next/i18next-1.8.0.min.js">
-	//<![CDATA[]]>
+	// <![CDATA[
+ 	// ]]>
 	</script>
 	<script src="script.js">
-	//<![CDATA[]]></script>
+	// <![CDATA[
+	// ]]>
+	</script>
+	
 	<c:if test="${not empty param.projectId}">
-	<script>
-	//<![CDATA[
-		var selected = ${param.projectId};
-		var language = "${sessionScope.user.language}";
-		$(document).ready(init_trans(init_projects));
-	//]]></script>
+		<script>
+		//<![CDATA[
+			var selected = ${param.projectId};
+			var language = "${sessionScope.user.language}";
+			$(document).ready(init_trans(init_projects));
+		//]]>
+		</script>
 	</c:if>
 	<c:if test="${empty param.projectId}">
-	<script>
-	//<![CDATA[
-		var selected = 0;
-		var language = "${sessionScope.user.language}";
-		$(document).ready(init_trans(init_projects));
-	//]]></script>
+		<script>
+		//<![CDATA[
+			var selected = 0;
+			var language = "${sessionScope.user.language}";
+			$(document).ready(init_trans(init_projects));
+		//]]>
+		</script>
 	</c:if>
 </head>
 <body>
@@ -66,12 +74,11 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 		<h2 class="trans">list_of_projects</h2>
 		<table>
 		<tr><th class="trans">project_id</th><th class="trans">project_name</th></tr>
-		<c:forEach var="prow" items="${projects.rows}">
-			
+		<c:forEach var="prow" items="${projects.rows}">			
 			<tr>
 				<td>${prow.pid}</td>
 				<td>${prow.name}</td>
-				<td><button onclick="show_documentlist(${prow.pid})" class="trans">open</button></td>
+				<td><button id="project-show-button-${prow.pid}" onclick="show_documentlist(${prow.pid} , '${prow.name}' )" class="trans">open</button></td>
 			</tr>	
 		</c:forEach>
 		</table>
@@ -94,8 +101,12 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 		</div>
 	</div>
 	<div id="topbar">
-		<button class="nobutton">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</button>
-		<button class="button_edit_user">${sessionScope.user.name }</button>
+		<span class="ui-widget left">
+			<span><a href="index.jsp">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</a></span>
+		</span>
+		<span class="right">
+			<button class="button_edit_user">${sessionScope.user.name }</button>
+		</span>
 	</div>
 </body>
 

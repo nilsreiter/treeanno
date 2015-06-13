@@ -63,7 +63,11 @@ select id, username from treeanno_users
 		</div>
 	</div>
 	<div id="topbar">
-		<button class="nobutton">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</button>
+		<span class="left">
+			<span class="ui-widget">
+				<a href="index.jsp">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</a>
+			</span>
+		</span>
 	</div>
 </body>
 </html>

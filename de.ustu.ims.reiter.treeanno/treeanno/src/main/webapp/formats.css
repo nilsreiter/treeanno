@@ -48,12 +48,20 @@ div#artifact {
 	right:0px;
 	background-color:#DDD;
 	padding:10px; 
+	height:32px;
+}
+
+#topbar a {
+	color:black;
 }
 
 #topbar .left {
 	position:relative;
 	left:0px;
 	padding-left:10px;
+	vertical-align:bottom;
+	padding-top:8px;
+	padding-bottom:8px;
 }
 
 #topbar .right {

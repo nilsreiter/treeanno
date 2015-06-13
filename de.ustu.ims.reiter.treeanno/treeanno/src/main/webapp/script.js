@@ -43,13 +43,15 @@ function init_projects() {
 	});
 	$("button").button();
 	if (typeof(selected)!=undefined) {
-		$(".documentlist.project-"+selected).show();
+		$("#project-show-button-"+selected).click();
 	}
 }
 
-function show_documentlist(id) {
+function show_documentlist(id, name) {
 	$(".documentlist").hide();
 	$(".documentlist.project-"+id).show();
+	$("#topbar .left .pname").remove();
+	$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+name+"</span>");
 }
 
 function init_trans(fnc) {
@@ -72,9 +74,10 @@ function init_main() {
 			icons: { primary: "ui-icon-person", secondary:null },
 			disabled: true
 		});
+		
 		$( "button.button_change_document" ).button({
 			icons: { primary: "ui-icon-folder-collapsed", secondary:null },
-			label: i18n.t("open"),
+			//label: i18n.t("open"),
 		}).click(function() {
 			window.location.href="projects.jsp?projectId="+projectId;
 		});

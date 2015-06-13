@@ -10,7 +10,7 @@
 </c:if>
 
 <sql:query var="documentRowSet" dataSource="jdbc/treeanno">
-SELECT treeanno_documents.id,project,treeanno_documents.name,treeanno_projects.name,concat(treeanno_projects.name,'') AS pname FROM treeanno_documents JOIN treeanno_projects ON treeanno_documents.`project` = treeanno_projects.id  WHERE treeanno_documents.id=?
+SELECT treeanno_documents.id,project,treeanno_documents.name,concat(treeanno_documents.name, '') AS dname,treeanno_projects.name,concat(treeanno_projects.name,'') AS pname FROM treeanno_documents JOIN treeanno_projects ON treeanno_documents.`project` = treeanno_projects.id  WHERE treeanno_documents.id=?
 	<sql:param value="${param.documentId}" />
 </sql:query>
 
@@ -20,7 +20,7 @@ SELECT treeanno_documents.id,project,treeanno_documents.name,treeanno_projects.n
 </jsp:useBean>
 
 <jsp:useBean id="document" scope="request" class="de.ustu.ims.reiter.treeanno.beans.Document">
-	<jsp:setProperty property="name" value="${documentRowSet.rows[0].name}" name="document"/>
+	<jsp:setProperty property="name" value="${documentRowSet.rows[0].dname}" name="document"/>
 	<jsp:setProperty property="databaseId" value="${documentRowSet.rows[0].id}" name="document"/>
 	<jsp:setProperty property="project" value="${session.project}" name="document"/>
 </jsp:useBean>
@@ -77,11 +77,14 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 	</div>
 	<div id="topbar">
 		<span class="left">
-			<button class="nobutton">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</button>
-			<button class="nobutton">${requestScope.project.name}</button>
+			<span class="ui-widget">
+				<a href="index.jsp">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</a> &gt;
+				<a href="projects.jsp?projectId=${requestScope.project.databaseId}">${requestScope.project.name}</a> &gt; 
+				${requestScope.document.name}
+			</span>
 		</span>
 		<span class="right">
-			<button class="button_change_document">open</button>
+			<!-- <button class="button_change_document">open</button> -->
 			<button class="button_save_document">save</button>
 			<button class="button_edit_user">${sessionScope.user.name } (${rs.rows[0].level})</button>
 		</span>
