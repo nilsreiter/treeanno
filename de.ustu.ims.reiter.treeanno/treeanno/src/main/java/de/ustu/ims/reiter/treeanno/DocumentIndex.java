@@ -23,7 +23,7 @@ public class DocumentIndex {
 	}
 
 	public JCas getDocument(int index) throws UIMAException, SQLException,
-			IOException {
+	IOException {
 		// we temporarily disable caching and always retrieve from the database
 		return databaseIO.getJCas(index);
 		// if (!map.containsKey(index)) map.put(index,
@@ -32,7 +32,7 @@ public class DocumentIndex {
 	}
 
 	public JCas getDocument(Document doc) throws UIMAException, SQLException,
-	IOException {
+			IOException {
 		return this.getDocument(doc.getDatabaseId());
 	}
 
@@ -42,6 +42,10 @@ public class DocumentIndex {
 
 	public DatabaseIO getDatabaseIO() {
 		return databaseIO;
+	}
+
+	public void cloneDocument(int valueOf) throws SQLException {
+		databaseIO.cloneDocument(valueOf);
 	}
 
 }

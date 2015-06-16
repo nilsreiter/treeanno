@@ -23,7 +23,14 @@ function get_html_item(item, i) {
 	return htmlItem;
 }
 
-function dtext(s) {
+function clone_document(documentId) {
+	jQuery.getJSON("DocumentHandling?action=clone&documentId="+documentId, function(data) {
+		
+		
+	});
+}
+
+function dtextt(s) {
 	if (s.length > maxStringLength)
 		s = s.substring(0,maxStringLength-3)+"...";
 	return s;
