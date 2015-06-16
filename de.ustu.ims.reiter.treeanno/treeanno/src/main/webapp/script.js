@@ -54,26 +54,32 @@ function init_projects() {
 	}
 }
 
-function show_documentlist(id, name) {
+function show_documentlist(id) {
 	$("#documentlistarea").empty();
+	$("#topbar .left .pname").remove();
+
 	jQuery.getJSON("documentlist.jsp?projectId="+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
-		for (var i = 0; i < data.length; i++) {
+		for (var i = 0; i < data['documents'].length; i++) {
 			if (!header) {
-				$(table).append("<thead><tr><th>document_id</th><th>document_name</th><th>document_mod_date</th></tr></thead>");
+				var trh = document.createElement("tr");
+				$(trh).append("<th>"+i18n.t("document_id")+"</th>");
+				$(trh).append("<th>"+i18n.t("document_name")+"</th>");
+				$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
+				$(table).append(trh);
 				header = true;
 			}
 			var tr = document.createElement("tr");
-			$(tr).append("<td>"+data[i]['id']+"</td>");
-			$(tr).append("<td>"+data[i]['name']+"</td>");
-			$(tr).append("<td>"+data[i]['modificationDate']+"</td>");
+			$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
+			$(tr).append("<td>"+data['documents'][i]['name']+"</td>");
+			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
 			$(table).append(tr);
 		}
+		$("#documentlistarea").append("<h2>"+i18n.t("documents_in_X", {"projectname":data['project']['name']})+"</h2>");
 		$("#documentlistarea").append(table);
+		$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+data['project']['name']+"</span>");
 	});
-	$("#topbar .left .pname").remove();
-	$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+name+"</span>");
 }
 
 function init_trans(fnc) {

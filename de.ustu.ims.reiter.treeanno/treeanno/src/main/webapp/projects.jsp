@@ -78,7 +78,7 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 			<tr>
 				<td>${prow.pid}</td>
 				<td>${prow.name}</td>
-				<td><button id="project-show-button-${prow.pid}" onclick="show_documentlist(${prow.pid} , '${prow.name}' )" class="trans">open</button></td>
+				<td><button id="project-show-button-${prow.pid}" onclick="show_documentlist(${prow.pid})" class="trans">open</button></td>
 			</tr>	
 		</c:forEach>
 		</table>
