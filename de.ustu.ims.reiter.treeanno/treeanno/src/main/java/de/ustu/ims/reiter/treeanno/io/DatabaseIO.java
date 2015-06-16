@@ -122,4 +122,9 @@ public class DatabaseIO {
 	}
 
 	public void closeConnections() {}
+
+	public boolean cloneDocument(int documentId) {
+		// TODO: implement
+		return false;
+	}
 }
