@@ -20,7 +20,7 @@
 	]]>
 	<c:forEach var="prow" items="${projects.rows}">
 	<![CDATA[
-		"name":"${prow.name}",
+		"name":"${fn:escapeXml(prow.name)}",
 		"id":${prow.id}
 	},"documents":
 	]]>
@@ -36,7 +36,7 @@
 		</c:if>
 		<![CDATA[
 			{"id":${prow.id},
-			 "name":"${prow.name}",
+			 "name":"${fn:escapeXml(prow.name)}",
 			 "modificationDate":"${prow.modificationDate}"}
 		]]>
 	</c:forEach>
