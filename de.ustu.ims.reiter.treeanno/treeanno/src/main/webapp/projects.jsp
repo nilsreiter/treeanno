@@ -93,7 +93,7 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 					<table>
 					<tr><th class="trans">document_id</th><th class="trans">document_name</th><th class="trans">document_mod_date</th></tr>
 					<c:forEach var="docRow" items="${docs.rows}">
-						<tr><td>${docRow.id}</td><td>${docRow.name }</td><td>${docRow.modificationDate}</td><td><button class="trans" onclick="window.location.href='main.jsp?documentId=${docRow.id}'">open</button></td></tr>
+						<tr><td>${docRow.id}</td><td>${docRow.name }</td><td>${docRow.modificationDate}</td><td><button class="trans" onclick="window.location.href='main.jsp?documentId=${docRow.id}'">open</button><button class="trans">clone</button></td></tr>
 					</c:forEach>
 					</table>
 				</div>
