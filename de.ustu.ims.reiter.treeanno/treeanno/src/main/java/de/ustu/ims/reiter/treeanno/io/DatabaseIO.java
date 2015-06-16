@@ -41,6 +41,25 @@ public class DatabaseIO {
 
 	}
 
+	public boolean isHidden(int documentId) throws SQLException {
+		Connection conn = dataSource.getConnection();
+		PreparedStatement stmt =
+				conn.prepareStatement("SELECT hidden FROM treeanno_documents WHERE id=?");
+		stmt.setInt(1, documentId);
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			boolean b = rs.getBoolean(1);
+			rs.close();
+			stmt.close();
+			conn.close();
+			return b;
+		}
+		rs.close();
+		stmt.close();
+		conn.close();
+		return false;
+	}
+
 	public int getAccessLevel(int documentId, User user) throws SQLException {
 		Connection conn = dataSource.getConnection();
 		PreparedStatement stmt =

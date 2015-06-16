@@ -7,6 +7,7 @@ public class Document {
 	Date modificationDate;
 	Project project;
 	String name;
+	boolean hidden;
 
 	@Deprecated
 	public int getId() {
@@ -48,6 +49,14 @@ public class Document {
 
 	public void setDatabaseId(int databaseId) {
 		this.databaseId = databaseId;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 
 }

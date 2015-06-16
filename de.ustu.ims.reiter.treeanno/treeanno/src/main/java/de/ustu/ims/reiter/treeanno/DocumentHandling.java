@@ -42,8 +42,14 @@ public class DocumentHandling extends HttpServlet {
 		if (action.equalsIgnoreCase("delete")) {
 			String[] docIds = request.getParameterValues("documentId");
 			for (int i = 0; i < docIds.length; i++) {
-				// TODO: delete document
+				try {
+					di.getDatabaseIO().deleteDocument(
+							Integer.valueOf(docIds[i]));
+				} catch (NumberFormatException | SQLException e) {
+					e.printStackTrace();
+				}
 			}
+			Util.returnJSON(response, new JSONObject());
 		} else if (action.equalsIgnoreCase("clone")) {
 			String[] docIds = request.getParameterValues("documentId");
 			for (int i = 0; i < docIds.length; i++) {
