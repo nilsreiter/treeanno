@@ -19,5 +19,6 @@
 	"project_name":"Name",
 	"login_dialog_title":"Login",
 	"login_dialog_ok":"Enter",
-	"show_helper":"Show Cheat Sheet"
+	"show_helper":"Show Cheat Sheet",
+	"documents_in_X":"Documents in project \"__projectname__\""
 }
