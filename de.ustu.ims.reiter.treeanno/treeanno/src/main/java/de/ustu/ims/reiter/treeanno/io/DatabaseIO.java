@@ -123,6 +123,20 @@ public class DatabaseIO {
 
 	public void closeConnections() {}
 
+	public boolean deleteDocument(int documentId) throws SQLException {
+		Connection connection = dataSource.getConnection();
+
+		PreparedStatement stmt =
+				connection
+						.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
+		stmt.setInt(1, documentId);
+		int r = stmt.executeUpdate();
+		stmt.close();
+		connection.close();
+
+		return r == 1;
+	}
+
 	public boolean cloneDocument(int documentId) throws SQLException {
 		Connection connection = dataSource.getConnection();
 
