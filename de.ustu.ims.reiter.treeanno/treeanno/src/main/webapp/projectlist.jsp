@@ -19,9 +19,9 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 	<c:if test="${rowCounter == 0}">
 		<c:set var="rowCounter" scope="page" value="${rowCounter+1}"/>
 	</c:if>
-	<c:out value="{&quot;id&quot;:&quot;"  escapeXml="false"/>
+	<c:out value="{&quot;id&quot;:"  escapeXml="false"/>
 	<c:out value="${prow.pid}" escapeXml="false" />
-	<c:out value="&quot;, &quot;name&quot;:&quot;" escapeXml="false" />
+	<c:out value=", &quot;name&quot;:&quot;" escapeXml="false" />
 	<c:out value="${prow.name}" escapeXml="false" />
 	<c:out value="&quot;}" escapeXml="false"/>
 </c:forEach>

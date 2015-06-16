@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-    xmlns:sql="http://java.sun.com/jsp/jstl/sql">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" 
 		pageEncoding="UTF-8" session="true"/>
 	<jsp:output doctype-root-element="html"
@@ -11,19 +9,6 @@
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="false" />
 
-
-
-<sql:query var="projects" dataSource="jdbc/treeanno">
-SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_projects.name FROM treeanno_projects JOIN treeanno_users_permissions ON treeanno_users_permissions.`projectId` = treeanno_projects.id  WHERE userId=? AND treeanno_users_permissions.level &gt; 0
-	<sql:param value="${sessionScope.user.databaseId}" />
-</sql:query>
-
-
-
-
-<c:if test="${empty projects}">
-	<c:redirect url="index.jsp"/>
-</c:if>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -71,17 +56,11 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 <body>
 	<div id="content" class="splitcontent">
 		<div id="projectlistarea">
-		<h2 class="trans">list_of_projects</h2>
-		<table>
-		<tr><th class="trans">project_id</th><th class="trans">project_name</th></tr>
-		<c:forEach var="prow" items="${projects.rows}">			
-			<tr>
-				<td>${prow.pid}</td>
-				<td>${prow.name}</td>
-				<td><button id="project-show-button-${prow.pid}" onclick="show_documentlist(${prow.pid})" class="trans">open</button></td>
-			</tr>	
-		</c:forEach>
-		</table>
+			<h2 data-i18n="list_of_projects">list_of_projects</h2>
+			<table>
+				<thead><tr><th data-i18n="project_id"></th><th data-i18n="project_name"></th></tr></thead>
+				<tbody>  </tbody>
+			</table>
 		</div>
 		<div id="documentlistarea">
 		</div>
