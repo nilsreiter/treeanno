@@ -55,8 +55,23 @@ function init_projects() {
 }
 
 function show_documentlist(id, name) {
-	$(".documentlist").hide();
-	$(".documentlist.project-"+id).show();
+	$("#documentlistarea").empty();
+	jQuery.getJSON("documentlist.jsp?projectId="+id, function(data) {
+		var header = false;
+		var table = document.createElement("table");
+		for (var i = 0; i < data.length; i++) {
+			if (!header) {
+				$(table).append("<thead><tr><th>document_id</th><th>document_name</th><th>document_mod_date</th></tr></thead>");
+				header = true;
+			}
+			var tr = document.createElement("tr");
+			$(tr).append("<td>"+data[i]['id']+"</td>");
+			$(tr).append("<td>"+data[i]['name']+"</td>");
+			$(tr).append("<td>"+data[i]['modificationDate']+"</td>");
+			$(table).append(tr);
+		}
+		$("#documentlistarea").append(table);
+	});
 	$("#topbar .left .pname").remove();
 	$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+name+"</span>");
 }

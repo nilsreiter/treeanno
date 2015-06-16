@@ -84,20 +84,6 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 		</table>
 		</div>
 		<div id="documentlistarea">
-			<c:forEach var="p2row" items="${projects.rows}">
-				<sql:query var="docs" dataSource="jdbc/treeanno" sql="SELECT id,name,modificationDate FROM treeanno_documents WHERE project=?">
-					<sql:param value="${p2row.pid}" />
-				</sql:query>
-				<div class="documentlist project-${p2row.pid}">
-					<h2>Documents in &quot;${p2row.name}&quot;</h2>
-					<table>
-					<tr><th class="trans">document_id</th><th class="trans">document_name</th><th class="trans">document_mod_date</th></tr>
-					<c:forEach var="docRow" items="${docs.rows}">
-						<tr><td>${docRow.id}</td><td>${docRow.name }</td><td>${docRow.modificationDate}</td><td><button class="trans" onclick="window.location.href='main.jsp?documentId=${docRow.id}'">open</button><button class="trans" onclick="clone_document(${docRow.id})">clone</button></td></tr>
-					</c:forEach>
-					</table>
-				</div>
-			</c:forEach>
 		</div>
 	</div>
 	<div id="topbar">
