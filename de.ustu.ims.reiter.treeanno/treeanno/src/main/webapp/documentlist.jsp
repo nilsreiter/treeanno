@@ -20,9 +20,9 @@
 			<c:set var="rowCounter" scope="page" value="${rowCounter+1}"/>
 		</c:if>
 		<![CDATA[
-			{'id':${prow.id},
-			 'name':"${prow.name}",
-			 'modificationDate':"${prow.modificationDate}"}
+			{"id":${prow.id},
+			 "name":"${prow.name}",
+			 "modificationDate":"${prow.modificationDate}"}
 		]]>
 	</c:forEach>
 	<c:out value="]" />
