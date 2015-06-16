@@ -8,10 +8,11 @@
 		pageEncoding="UTF-8" session="true" trimDirectiveWhitespaces="true"/>
 
 	<sql:query var="projects" dataSource="jdbc/treeanno">
-	SELECT treeanno_projects.id, treeanno_projects.name FROM treeanno_projects JOIN treeanno_users_permissions ON treeanno_users_permissions.`projectId` = treeanno_projects.id  WHERE userId=? AND treeanno_users_permissions.level &gt; 0
+	SELECT treeanno_projects.id, treeanno_projects.name FROM treeanno_projects JOIN treeanno_users_permissions ON treeanno_users_permissions.`projectId` = treeanno_projects.id  WHERE userId=? AND treeanno_users_permissions.level &gt; 0 AND treeanno_projects.id = ?
 		<sql:param value="${sessionScope.user.databaseId}" />
+		<sql:param value="${param.projectId}" />
 	</sql:query>
-	<sql:query var="docs" dataSource="jdbc/treeanno" sql="SELECT treeanno_documents.id, modificationDate, NAME FROM treeanno_documents, treeanno_users_permissions WHERE treeanno_users_permissions.`projectId` = treeanno_documents.`project` AND userId=? AND LEVEL > 50 AND treeanno_documents.project=?">
+	<sql:query var="docs" dataSource="jdbc/treeanno" sql="SELECT treeanno_documents.id, modificationDate, NAME FROM treeanno_documents, treeanno_users_permissions WHERE treeanno_users_permissions.`projectId` = treeanno_documents.`project` AND userId=? AND LEVEL > 50 AND treeanno_documents.project=? AND treeanno_documents.hidden = FALSE">
 		<sql:param value="${sessionScope.user.databaseId }" />
 		<sql:param value="${param.projectId}" />
 	</sql:query>
