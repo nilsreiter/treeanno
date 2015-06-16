@@ -19,11 +19,11 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 	<c:if test="${rowCounter == 0}">
 		<c:set var="rowCounter" scope="page" value="${rowCounter+1}"/>
 	</c:if>
-	<c:out value="{&apos;id&apos;:&quot;"  escapeXml="false"/>
-	<c:out value="${prow.pid}" escapeXml="false" />
-	<c:out value="&quot;, &apos;name&apos;:&quot;" escapeXml="false" />
-	<c:out value="${prow.name}" escapeXml="false" />
-	<c:out value="&quot;}" escapeXml="false"/>
+	<![CDATA[
+	{"id":${prow.id},
+	 "name":"${fn:escapeXml(prow.name)}"
+	}
+	]]>
 </c:forEach>
 <c:out value="]" />
 </jsp:root>

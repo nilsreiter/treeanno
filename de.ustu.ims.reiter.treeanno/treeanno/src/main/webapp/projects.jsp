@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-    xmlns:sql="http://java.sun.com/jsp/jstl/sql">
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" 
 		pageEncoding="UTF-8" session="true"/>
 	<jsp:output doctype-root-element="html"
@@ -11,24 +9,11 @@
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="false" />
 
-
-
-<sql:query var="projects" dataSource="jdbc/treeanno">
-SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_projects.name FROM treeanno_projects JOIN treeanno_users_permissions ON treeanno_users_permissions.`projectId` = treeanno_projects.id  WHERE userId=? AND treeanno_users_permissions.level &gt; 0
-	<sql:param value="${sessionScope.user.databaseId}" />
-</sql:query>
-
-
-
-
-<c:if test="${empty projects}">
-	<c:redirect url="index.jsp"/>
-</c:if>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="formats.css" type="text/css"> </link>
-	<link rel="stylesheet" href="jquery-ui/jquery-ui.css" type="text/css"><![CDATA[]]></link> 
+	<link rel="stylesheet" href="jquery-ui/jquery-ui.css" type="text/css"></link> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.structure.css" type="text/css"></link> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.theme.css" type="text/css"></link> 
 	
@@ -71,33 +56,13 @@ SELECT treeanno_projects.id, concat(treeanno_projects.id,'') AS pid, treeanno_pr
 <body>
 	<div id="content" class="splitcontent">
 		<div id="projectlistarea">
-		<h2 class="trans">list_of_projects</h2>
-		<table>
-		<tr><th class="trans">project_id</th><th class="trans">project_name</th></tr>
-		<c:forEach var="prow" items="${projects.rows}">			
-			<tr>
-				<td>${prow.pid}</td>
-				<td>${prow.name}</td>
-				<td><button id="project-show-button-${prow.pid}" onclick="show_documentlist(${prow.pid} , '${prow.name}' )" class="trans">open</button></td>
-			</tr>	
-		</c:forEach>
-		</table>
+			<h2 data-i18n="list_of_projects">list_of_projects</h2>
+			<table>
+				<thead><tr><th data-i18n="project_id"></th><th data-i18n="project_name"></th></tr></thead>
+				<tbody>  </tbody>
+			</table>
 		</div>
 		<div id="documentlistarea">
-			<c:forEach var="p2row" items="${projects.rows}">
-				<sql:query var="docs" dataSource="jdbc/treeanno" sql="SELECT id,name,modificationDate FROM treeanno_documents WHERE project=?">
-					<sql:param value="${p2row.pid}" />
-				</sql:query>
-				<div class="documentlist project-${p2row.pid}">
-					<h2>Documents in &quot;${p2row.name}&quot;</h2>
-					<table>
-					<tr><th class="trans">document_id</th><th class="trans">document_name</th><th class="trans">document_mod_date</th></tr>
-					<c:forEach var="docRow" items="${docs.rows}">
-						<tr><td>${docRow.id}</td><td>${docRow.name }</td><td>${docRow.modificationDate}</td><td><button class="trans" onclick="window.location.href='main.jsp?documentId=${docRow.id}'">open</button><button class="trans" onclick="clone_document(${docRow.id})">clone</button></td></tr>
-					</c:forEach>
-					</table>
-				</div>
-			</c:forEach>
 		</div>
 	</div>
 	<div id="topbar">

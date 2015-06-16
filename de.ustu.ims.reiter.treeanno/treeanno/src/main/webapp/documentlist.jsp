@@ -6,10 +6,21 @@
     xmlns:sql="http://java.sun.com/jsp/jstl/sql">
 	<jsp:directive.page contentType="application/json; charset=UTF-8" 
 		pageEncoding="UTF-8" session="true" trimDirectiveWhitespaces="true"/>
+
 	<sql:query var="docs" dataSource="jdbc/treeanno" sql="SELECT treeanno_documents.id, modificationDate, NAME FROM treeanno_documents, treeanno_users_permissions WHERE treeanno_users_permissions.`projectId` = treeanno_documents.`project` AND userId=? AND LEVEL > 50 AND treeanno_documents.project=?">
 		<sql:param value="${sessionScope.user.databaseId }" />
 		<sql:param value="${param.projectId}" />
 	</sql:query>
+	<![CDATA[
+	{"project":{
+	]]>
+	<c:forEach var="prow" items="${projects.rows}">
+	<![CDATA[
+		"name":"${fn:escapeXml(prow.name)}",
+		"id":${prow.id}
+	},"documents":
+	]]>
+	</c:forEach>
 	<c:out value="[" />
 	<c:set var="rowCounter" scope="page" value="0"/>
 	<c:forEach var="prow" items="${docs.rows}">
@@ -20,10 +31,11 @@
 			<c:set var="rowCounter" scope="page" value="${rowCounter+1}"/>
 		</c:if>
 		<![CDATA[
-			{'id':${prow.id},
-			 'name':"${prow.name}",
-			 'modificationDate':"${prow.modificationDate}"}
+			{"id":${prow.id},
+			 "name":"${fn:escapeXml(prow.name)}",
+			 "modificationDate":"${prow.modificationDate}"}
 		]]>
 	</c:forEach>
 	<c:out value="]" />
+	<c:out value="}" />
 </jsp:root>
