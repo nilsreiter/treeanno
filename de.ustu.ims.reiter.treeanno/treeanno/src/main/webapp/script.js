@@ -4,6 +4,8 @@ var i18nObj;
 
 var enable_interaction = true;
 
+var shifted = false;
+
 var items = new Array();
 
 var idCounter = 0;
@@ -187,7 +189,10 @@ function init_main() {
 			$('#outline > li:first-child').addClass("selected");
 			
 			document.onkeydown = function(e) {
-				user_input(e);
+				key_down(e);
+			};
+			document.onkeyup = function(e) {
+				key_up(e);
 			}
 		
 	});
@@ -252,15 +257,30 @@ function disableSaveButton() {
 	}
 }
 
+function key_up(e) {
+	if (!enable_interaction) return;
+	e.preventDefault();
+	var keyCode = e.keyCode || e.which,
+		kbkey = { shift:16 };
+	switch(keyCode) {
+	case kbkey.shift:
+		shifted = false;
+		break;
+	}
+}
 
-function user_input(e) {
+
+function key_down(e) {
 	if (!enable_interaction) return;
 	e.preventDefault();
 	var keyCode = e.keyCode || e.which,
     	kbkey = { up: 38, down: 40, right: 39, left: 37, 
-			enter: 13, s: 83, m:77, c:67, d:68 };
+			enter: 13, s: 83, m:77, c:67, d:68, shift: 16 };
 	var allItems = $("#outline li");
 	switch (keyCode) {
+	case kbkey.shift:
+		shifted = true;
+		break;
 	case kbkey.d:
 		delete_category();
 		break;
@@ -274,20 +294,23 @@ function user_input(e) {
 		splitdialog();
 		break;
 	case kbkey.down:
-		var index = $(".selected").index("#outline li");
+		var index = $(".selected").last().index("#outline li");
+		if (!shifted)
+			$(".selected").toggleClass("selected");
+		// alert(index);
 		if (index == -1) {
 			$($(allItems).get(0)).toggleClass("selected");					
 		} else if (index < $(allItems).length-1) {
-			$($(allItems).get(index)).toggleClass("selected");
 			$($(allItems).get(index+1)).toggleClass("selected");
 		}
 		if (!isElementInViewport($(".selected")))
 			$(window).scrollTop($(".selected").offset().top - 200);
 		break;
 	case kbkey.up:
-		var index = $(".selected").index("#outline li");
+		var index = $(".selected").first().index("#outline li");
+		if (!shifted)
+			$(".selected").toggleClass("selected");
 		if (index > 0) {
-			$($(allItems).get(index)).toggleClass("selected");
 			$($(allItems).get(index-1)).toggleClass("selected");
 		}
 		if (!isElementInViewport($(".selected")))
@@ -505,37 +528,37 @@ function splitdialog_enter() {
 
 
 function outdent() {
-	var currentItem = $("#outline li.selected");
-	var id = $(currentItem).attr("data-treeanno-id");
-	// if it's not the very first item
-	if ($("ul#outline > li.selected").length == 0) {
-		var newParent = $("#outline li.selected").parentsUntil("li").parent();
-		var parentId = parseInt($(newParent).attr("data-treeanno-id"));
-		siblings = $("#outline li.selected ~ li").detach();
+	$(".selected").each(function(index, element) {
+		var id = $(element).attr("data-treeanno-id");
 		
-		if ($("#outline li.selected > ul").length == 0)
-			$("#outline li.selected").append("<ul></ul>");
-		$("#outline li.selected > ul").append(siblings);
-		s = $(currentItem).detach();
-		$(newParent).after(s);
-		delete items[id]['parentId'];
-	}
+		// if it's not the very first item
+		if (!$(element).parent("ul#outline").length) {
+			var newParent = $(element).parentsUntil("li").parent();
+			var parentId = parseInt($(newParent).attr("data-treeanno-id"));
+			siblings = $(element).nextAll("li").detach();
+			if ($(element).children("ul").length == 0)
+				$(element).append("<ul></ul>");
+			$(element).children("ul").append(siblings);
+			s = $(element).detach();
+			$(newParent).after(s);
+			delete items[id]['parentId'];
+		}
+	});
 	cleanup_list();
 	enableSaveButton();
-
 }
 
 function indent() {
-	var currentItem = $("#outline li.selected");
-	if ($(".selected").prev("li").length > 0) {
-		prev = $(".selected").prev("li");
-		
-		if ($(prev).children("ul").length == 0)
-			prev.append("<ul></ul>");
-		s = $(".selected").detach();
-		$(prev).children("ul").append(s);
-	}
-	cleanup_list();
+	$(".selected").each(function(index, element) {
+		if ($(element).prev("li").length > 0) {
+			prev = $(element).prev("li");
+			if ($(prev).children("ul").length == 0)
+				prev.append("<ul></ul>");
+			s = $(element).detach();
+			$(prev).children("ul").append(s);
+		}
+		cleanup_list();		
+	});
 	enableSaveButton();
 }
 
