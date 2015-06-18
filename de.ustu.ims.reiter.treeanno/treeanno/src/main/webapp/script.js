@@ -1,6 +1,5 @@
 var maxStringLength = 160;
 
-var i18nObj;
 
 var enable_interaction = true;
 
@@ -303,8 +302,8 @@ function key_down(e) {
 		} else if (index < $(allItems).length-1) {
 			$($(allItems).get(index+1)).toggleClass("selected");
 		}
-		if (!isElementInViewport($(".selected")))
-			$(window).scrollTop($(".selected").offset().top - 200);
+		if (!isElementInViewport($(".selected").last()))
+			$(window).scrollTop($(".selected").last().offset().top - 200);
 		break;
 	case kbkey.up:
 		var index = $(".selected").first().index("#outline li");
@@ -313,8 +312,8 @@ function key_down(e) {
 		if (index > 0) {
 			$($(allItems).get(index-1)).toggleClass("selected");
 		}
-		if (!isElementInViewport($(".selected")))
-			$(window).scrollTop($(".selected").offset().top - 200);
+		if (!isElementInViewport($(".selected").first()))
+			$(window).scrollTop($(".selected").first().offset().top - 200);
 		break;
 	case kbkey.right:
 		indent();
