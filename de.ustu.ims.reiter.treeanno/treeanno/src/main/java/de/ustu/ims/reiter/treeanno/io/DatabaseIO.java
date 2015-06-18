@@ -25,6 +25,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.xml.sax.SAXException;
 
+import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.User;
 
 public class DatabaseIO {
@@ -81,7 +82,7 @@ public class DatabaseIO {
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-			SAXException, IOException {
+	SAXException, IOException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -91,7 +92,7 @@ public class DatabaseIO {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+						.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -99,15 +100,40 @@ public class DatabaseIO {
 		return r == 1;
 	}
 
+	public Document getDocument(int documentId) throws SQLException {
+		Connection connection = dataSource.getConnection();
+
+		PreparedStatement stmt =
+				connection
+				.prepareStatement("SELECT name,modificationDate, project, hidden FROM treeanno_documents WHERE id=?");
+		stmt.setInt(1, documentId);
+		ResultSet rs = stmt.executeQuery();
+		Document document = null;
+		if (rs.next()) {
+			document = new Document();
+			document.setDatabaseId(documentId);
+			document.setName(rs.getString(1));
+			document.setModificationDate(rs.getDate(2));
+			document.setHidden(rs.getBoolean(4));
+
+			return document;
+		}
+		rs.close();
+		stmt.close();
+		connection.close();
+		return document;
+
+	}
+
 	public JCas getJCas(int documentId) throws SQLException, IOException,
-			UIMAException {
+	UIMAException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
+				.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		ResultSet rs = stmt.executeQuery();
 
@@ -147,7 +173,7 @@ public class DatabaseIO {
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
+				.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
@@ -161,7 +187,7 @@ public class DatabaseIO {
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
+				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
