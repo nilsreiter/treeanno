@@ -89,6 +89,7 @@ function show_documentlist(id) {
 			$(tr).append("<td><button class=\"button_open\"></button></td>");
 			$(tr).append("<td><button class=\"button_clone\">clone</button></td>");
 			$(tr).append("<td><button class=\"button_delete\">delete</button></td>");
+			$(tr).append("<td><button class=\"button_export\">export</button></td>");
 			$(tr).find("button.button_open").button({label:i18n.t("open")}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -107,6 +108,11 @@ function show_documentlist(id) {
 				jQuery.getJSON("DocumentHandling?action=delete&documentId="+event.data.documentId, function() {
 					show_documentlist(id);
 				});
+			});
+			$(tr).find("button.button_export").button({label:i18n.t("export")}).click({
+				'documentId':data['documents'][i]['id']
+			}, function(event) {
+				window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
 			});
 			$(table).append(tr);
 		}
