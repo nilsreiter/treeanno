@@ -67,7 +67,7 @@
 	</div>
 	<div id="topbar">
 		<span class="ui-widget left">
-			<span><a href="index.jsp">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</a></span>
+			<span><a href="index.jsp">${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}</a></span>
 		</span>
 		<span class="right">
 			<button class="button_edit_user">${sessionScope.user.name }</button>
