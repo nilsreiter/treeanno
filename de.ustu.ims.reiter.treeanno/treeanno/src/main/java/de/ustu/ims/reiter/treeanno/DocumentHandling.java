@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import de.ustu.ims.reiter.treeanno.util.Util;
+
 /**
  * Servlet implementation class DocumentHandling
  */

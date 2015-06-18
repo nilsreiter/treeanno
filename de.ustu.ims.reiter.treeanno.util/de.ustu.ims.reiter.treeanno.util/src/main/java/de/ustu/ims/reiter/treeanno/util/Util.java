@@ -1,4 +1,4 @@
-package de.ustu.ims.reiter.treeanno;
+package de.ustu.ims.reiter.treeanno.util;
 
 import java.io.IOException;
 import java.util.HashMap;
