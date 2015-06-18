@@ -292,25 +292,37 @@ function key_down(e) {
 		splitdialog();
 		break;
 	case kbkey.down:
+		// get index of last selected item
 		var index = $(".selected").last().index("#outline li");
+		
+		// if shift is not pressed, we remove the selection from everything that is selected
 		if (!shifted)
 			$(".selected").toggleClass("selected");
-		// alert(index);
+		
+		// if nothing is selected
 		if (index == -1) {
-			$($(allItems).get(0)).toggleClass("selected");					
+			// we select the first thing on the page
+			$($(allItems).get(0)).toggleClass("selected");		
+		// if there is something after the last selected item, we select that
 		} else if (index < $(allItems).length-1) {
 			$($(allItems).get(index+1)).toggleClass("selected");
 		}
+		// if the last selected thing is not in viewport, we scroll
 		if (!isElementInViewport($(".selected").last()))
 			$(window).scrollTop($(".selected").last().offset().top - 200);
 		break;
 	case kbkey.up:
+		// get index of first selected item
 		var index = $(".selected").first().index("#outline li");
+		// if shift is not pressed, remove the selection
 		if (!shifted)
 			$(".selected").toggleClass("selected");
+		
+		// if select the new item
 		if (index > 0) {
 			$($(allItems).get(index-1)).toggleClass("selected");
 		}
+		// if not in viewport, scroll
 		if (!isElementInViewport($(".selected").first()))
 			$(window).scrollTop($(".selected").first().offset().top - 200);
 		break;
