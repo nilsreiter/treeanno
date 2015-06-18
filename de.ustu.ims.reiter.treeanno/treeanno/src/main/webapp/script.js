@@ -185,14 +185,16 @@ function init_main() {
 				}
 			}
 			$('#outline > li:first-child').addClass("selected");
-			
 			document.onkeydown = function(e) {
 				key_down(e);
 			};
 			document.onkeyup = function(e) {
 				key_up(e);
-			}
-		
+			};
+			$("#outline li").click(function(e) {
+				$("#outline li").removeClass("selected");
+				$(this).addClass("selected");
+			});		
 	});
 }
 
@@ -296,7 +298,7 @@ function key_down(e) {
 		var index = $(".selected").last().index("#outline li");
 		
 		// if shift is not pressed, we remove the selection from everything that is selected
-		if (!shifted)
+		if (!shifted && index < $("#outline li").length-1)
 			$(".selected").toggleClass("selected");
 		
 		// if nothing is selected
@@ -305,7 +307,12 @@ function key_down(e) {
 			$($(allItems).get(0)).toggleClass("selected");		
 		// if there is something after the last selected item, we select that
 		} else if (index < $(allItems).length-1) {
-			$($(allItems).get(index+1)).toggleClass("selected");
+			// if shift is not pressed, we select the next item of all items
+			if (!shifted)
+				$($(allItems).get(index+1)).toggleClass("selected");
+			// if it is pressed, we select the next sibling
+			if (shifted)
+				$(".selected").last().next().toggleClass("selected");
 		}
 		// if the last selected thing is not in viewport, we scroll
 		if (!isElementInViewport($(".selected").last()))
@@ -315,12 +322,15 @@ function key_down(e) {
 		// get index of first selected item
 		var index = $(".selected").first().index("#outline li");
 		// if shift is not pressed, remove the selection
-		if (!shifted)
+		if (!shifted && index > 0)
 			$(".selected").toggleClass("selected");
 		
 		// if select the new item
 		if (index > 0) {
-			$($(allItems).get(index-1)).toggleClass("selected");
+			if (!shifted)
+				$($(allItems).get(index-1)).toggleClass("selected");
+			if (shifted)
+				$(".selected").first().prev().toggleClass("selected");
 		}
 		// if not in viewport, scroll
 		if (!isElementInViewport($(".selected").first()))
