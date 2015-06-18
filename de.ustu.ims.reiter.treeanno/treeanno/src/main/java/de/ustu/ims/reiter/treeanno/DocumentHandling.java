@@ -91,13 +91,14 @@ public class DocumentHandling extends HttpServlet {
 					String name = doc.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-								.getDocumentTitle();
+						.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-								JCasUtil.selectSingle(jcas,
-										DocumentMetaData.class).getDocumentId();
+						JCasUtil.selectSingle(jcas,
+								DocumentMetaData.class).getDocumentId();
 					ZipOutputStream zos =
 							new ZipOutputStream(response.getOutputStream());
+					zos.setLevel(9);
 					zos.putNextEntry(new ZipEntry(name + "/"));
 					ZipEntry ze = new ZipEntry(name + "/" + docId + ".xmi");
 					zos.putNextEntry(ze);
