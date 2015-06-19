@@ -487,7 +487,7 @@ function mergedialog_cleanup() {
 
 function splitdialog() {
 	enable_interaction = false;
-	var item = items[$(".selected").attr("data-treeanno-id")];
+	var item = items[$(".selected").first().attr("data-treeanno-id")];
 	$("#form_splittext").val(item['text'].trim());
 	$("#split").dialog({
 		title: i18n.t("Split Segment"),
@@ -498,12 +498,13 @@ function splitdialog() {
 		[
 		 	{
 		 		text: i18n.t("ok"),
-		 		
-		 		click: splitdialog_enter
+		 		click: splitdialog_enter,
+		 		tabindex:1
 		    },
 		    {
 		    	text: i18n.t("cancel"),
-		    	click: splitdialog_cleanup
+		    	click: splitdialog_cleanup,
+		    	tabindex:2
 		    }
 		]
 	});
@@ -546,8 +547,8 @@ function splitdialog_enter() {
 		var nsel = $(".selected").next();
 		$(".selected").remove();
 		$(nsel).addClass("selected");
+		enableSaveButton();
 	}
-	enableSaveButton();
 	cleanup_list();
 	splitdialog_cleanup();
 }

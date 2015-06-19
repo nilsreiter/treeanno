@@ -69,7 +69,8 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
     	</ul>
 	</div>
 	<div id="split">
-			<textarea id="form_splittext" rows="5" cols="50" spellcheck="false"></textarea>
+		<p data-i18n="howto_split" class="trans">howto_split</p>
+		<textarea id="form_splittext" rows="5" cols="50" spellcheck="false" tabindex="0"></textarea>
 	</div>
 	<div id="merge">
 		<p></p>
