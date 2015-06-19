@@ -4,8 +4,6 @@ var enable_interaction = true;
 
 var shifted = false;
 
-var items = new Array();
-
 var idCounter = 0;
 
 var includeSeparationWhenMerging = true;
@@ -15,6 +13,8 @@ function get_html_item(item, i) {
 	$(htmlItem).attr("title", item['text']);
 	$(htmlItem).addClass("tl0");
 	$(htmlItem).attr("data-treeanno-id", item['id']);
+	$(htmlItem).attr("data-treeanno-begin", item['begin']);
+	$(htmlItem).attr("data-treeanno-end", item['end']);
 	idCounter = Math.max(idCounter, item['id']);
 	//$(htmlItem).attr("data-treeanno-uid", item['id']);
 	if ('category' in item)
@@ -174,7 +174,7 @@ function init_main() {
 			for (var i = 0; i < data["list"].length; i++) {
 				
 				var item = data["list"][i];
-				items[item["id"]] = item;
+				// items[item["id"]] = item;
 				
 				var t = item["text"];
 				
@@ -211,18 +211,22 @@ function search() {
 }
 
 function save_document() {
-	var sitems = items;
+	var sitems = new Array(); //items;
 	
 	$("#outline li").each(function(index, element) {
-		var id = $(element).attr("data-treeanno-id");
+		var item = new Object();
+		item['id'] = $(element).attr("data-treeanno-id");
+		item['begin'] = $(element).attr("data-treeanno-begin");
+		item['end'] = $(element).attr("data-treeanno-end");
 		// alert(id);
 		var parents = $(element).parentsUntil("#outline", "li");
 		if (parents.length > 0) {
 			var parent = parents.first();
 			var parentId = parseInt(parent.attr("data-treeanno-id"));
-			sitems[id]["parentId"] = parentId;
+			item["parentId"] = parentId;
 		}
-		sitems[id]['category'] = $(element).children("p").text();
+		item['category'] = $(element).children("p").text();
+		sitems.push(item);
 	});
 	$.ajax({
 		type: "POST",
@@ -294,7 +298,11 @@ function key_down(e) {
 		add_category();
 		break;
 	case kbkey.m:
-		mergedialog();
+		if ($(".selected").length == 2) {
+			mergeselected();
+		} else {
+			// mergedialog();
+		}
 		break;
 	case kbkey.s:
 		splitdialog();
@@ -408,17 +416,27 @@ function enter_category() {
 	enable_interaction = true;
 }
 
+function get_item(id) {
+	var obj = new Object();
+	obj['id'] = id;
+	var liElement= $("li[data-treeanno-id=\""+id+"\"]");
+	obj['begin'] = $(liElement).attr("data-treeanno-begin");
+	obj['end'] = $(liElement).attr("data-treeanno-end");
+	obj['text'] = $(liElement).attr("title");
+	return obj;
+}
+
 function mergedialog() {
 	enable_interaction = false;
-	var item = items[$(".selected").data("treeanno-id")];
+	var item = get_item($(".selected").data("treeanno-id"));
 	
 	var prevCand = $(".selected").prev("li").attr("data-treeanno-id");
 	var nextCand = $(".selected").next("li").attr("data-treeanno-id");
 	$("#merge p").append("Merge <span class=\"tt\">&quot;"+dtext(item['text'])+"&quot;</span> with ...");
 	if (typeof prevCand !== 'undefined') 
-		$("#form_mergecandidates").append("<option value=\""+prevCand+"\">"+dtext(items[prevCand]['text'])+"</option>");
+		$("#form_mergecandidates").append("<option value=\""+prevCand+"\">"+dtext(get_item(prevCand)['text'])+"</option>");
 	if (typeof nextCand !== 'undefined' && $(".selected ul").length == 0) 
-		$("#form_mergecandidates").append("<option value=\""+nextCand+"\">"+dtext(items[nextCand]['text'])+"</option>");
+		$("#form_mergecandidates").append("<option value=\""+nextCand+"\">"+dtext(get_item(nextCand)['text'])+"</option>");
 	$('#form_mergecandidates').on('keydown', function(e) {
 	    if (e.which == 13) {
 	        e.preventDefault();
@@ -426,7 +444,7 @@ function mergedialog() {
 	    }
 	});
 	$("#merge").dialog({
-		title: i18n("Merge Segments"),
+		title: i18n.t("Merge Segments"),
 		modal:true,
 		minWidth:400,
 		close: mergedialog_cleanup,
@@ -442,12 +460,14 @@ function mergedialog() {
 	document.getElementById("form_mergecandidates").focus();
 }
 
+function mergeselected() {
+	var item1 = get_item($(".selected").first().attr("data-treeanno-id"));
+	var item0 = get_item($(".selected").last().attr("data-treeanno-id"));
+	merge(item1, item0);
 
-function mergedialog_enter() {
-	var nid = $("#form_mergecandidates").val();
-	var item1 = items[nid];
-	var item0 = items[$(".selected").attr("data-treeanno-id")];
-	
+}
+
+function merge(item1, item0) {
 	var correctOrder = (item1['begin'] > item0['begin']);
 	
 	var nitem = new Object();
@@ -458,12 +478,12 @@ function mergedialog_enter() {
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
 	nitem['id'] = idCounter++;
-	items[nid] = undefined;
-	items[$(".selected").attr("data-treeanno-id")] = undefined;
+	//items[item1['id']] = undefined;
+	//items[item0['id']] = undefined;
 	
-	var sublist0 = $("#outline li[data-treeanno-id='"+nid+"'] > ul").detach();
-	$("#outline li[data-treeanno-id='"+nid+"']").remove();
-	items[++idCounter] = nitem;
+	var sublist0 = $("#outline li[data-treeanno-id='"+item0['id']+"'] > ul").detach();
+	$("#outline li[data-treeanno-id='"+item0['id']+"']").remove();
+	//items[++idCounter] = nitem;
 	
 	$(".selected").after(get_html_item(nitem, idCounter));
 	var newsel = $(".selected").next();
@@ -472,6 +492,14 @@ function mergedialog_enter() {
 	$(newsel).addClass("selected");
 	$(".selected").append(sublist0);
 	$(".selected").append(sublist1);
+}
+
+function mergedialog_enter() {
+	var nid = $("#form_mergecandidates").val();
+	var item1 = get_item(nid);
+	var item0 = get_item($(".selected").attr("data-treeanno-id"));
+	
+	merge(item1, item0);
 	enableSaveButton();
 	cleanup_list();
 	mergedialog_cleanup();
@@ -487,7 +515,7 @@ function mergedialog_cleanup() {
 
 function splitdialog() {
 	enable_interaction = false;
-	var item = items[$(".selected").first().attr("data-treeanno-id")];
+	var item = get_item($(".selected").first().attr("data-treeanno-id"));
 	$("#form_splittext").val(item['text'].trim());
 	$("#split").dialog({
 		title: i18n.t("Split Segment"),
@@ -519,7 +547,7 @@ function splitdialog_cleanup() {
 
 function splitdialog_enter() {
 	var itemid = $(".selected").data("treeanno-id");
-	var item = items[itemid];
+	var item = get_item(itemid);
 	var text = $("#form_splittext").val();
 	var lines = text.split("\n\n");
 	if (lines.length == 2) {
@@ -535,14 +563,14 @@ function splitdialog_enter() {
 		litems[1]['text'] = lines[1];
 		litems[1]['begin'] = litems[0]['end'];
 		litems[1]['id'] = ++idCounter;
-		items[itemid] = undefined;
+		// items[itemid] = undefined;
 		
 		var sublist = $(".selected > ul").detach();
-		items[litems[1]['id']] = litems[1];
+		// items[litems[1]['id']] = litems[1];
 		
 		$(".selected").after(get_html_item(litems[1], idCounter))
 		$(".selected").next().append(sublist);
-		items[litems[0]['id']] = litems[0];
+		// items[litems[0]['id']] = litems[0];
 		$(".selected").after(get_html_item(litems[0], idCounter));
 		var nsel = $(".selected").next();
 		$(".selected").remove();
@@ -568,7 +596,7 @@ function outdent() {
 			$(element).children("ul").append(siblings);
 			var s = $(element).detach();
 			$(newParent).after(s);
-			delete items[id]['parentId'];
+			// delete items[id]['parentId'];
 		}
 	});
 	cleanup_list();
