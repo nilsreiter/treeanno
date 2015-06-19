@@ -20,5 +20,6 @@
 	"login_dialog_title":"Login",
 	"login_dialog_ok":"Enter",
 	"show_helper":"Show Cheat Sheet",
-	"documents_in_X":"Documents in project \"__projectname__\""
+	"documents_in_X":"Documents in project \"__projectname__\"",
+	"howto_split":"Split by hitting Enter twice where you want to split"
 }
