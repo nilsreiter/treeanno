@@ -79,7 +79,7 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 	<div id="topbar">
 		<span class="left">
 			<span class="ui-widget">
-				<a href="index.jsp">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</a> &gt;
+				<a href="index.jsp">${applicationScope['treeanno.name']}&nbsp;${applicationScope['treeanno.version']}</a> &gt;
 				<a href="projects.jsp?projectId=${requestScope.project.databaseId}">${fn:escapeXml(requestScope.project.name)}</a> &gt; 
 				${fn:escapeXml(requestScope.document.name)}
 			</span>
