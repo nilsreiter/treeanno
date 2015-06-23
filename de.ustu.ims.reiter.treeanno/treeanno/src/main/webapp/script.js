@@ -426,40 +426,6 @@ function get_item(id) {
 	return obj;
 }
 
-function mergedialog() {
-	enable_interaction = false;
-	var item = get_item($(".selected").data("treeanno-id"));
-	
-	var prevCand = $(".selected").prev("li").attr("data-treeanno-id");
-	var nextCand = $(".selected").next("li").attr("data-treeanno-id");
-	$("#merge p").append("Merge <span class=\"tt\">&quot;"+dtext(item['text'])+"&quot;</span> with ...");
-	if (typeof prevCand !== 'undefined') 
-		$("#form_mergecandidates").append("<option value=\""+prevCand+"\">"+dtext(get_item(prevCand)['text'])+"</option>");
-	if (typeof nextCand !== 'undefined' && $(".selected ul").length == 0) 
-		$("#form_mergecandidates").append("<option value=\""+nextCand+"\">"+dtext(get_item(nextCand)['text'])+"</option>");
-	$('#form_mergecandidates').on('keydown', function(e) {
-	    if (e.which == 13) {
-	        e.preventDefault();
-	        mergedialog_enter();
-	    }
-	});
-	$("#merge").dialog({
-		title: i18n.t("Merge Segments"),
-		modal:true,
-		minWidth:400,
-		close: mergedialog_cleanup,
-		buttons: [{
-		        	  text: i18n.t("ok"),
-		        	  click: mergedialog_enter
-		        }, {
-		        	text: i18n.t("cancel"),
-		        	click: mergedialog_cleanup
-		        }
-		]
-	});
-	document.getElementById("form_mergecandidates").focus();
-}
-
 function mergeselected() {
 	var item1 = get_item($(".selected").first().attr("data-treeanno-id"));
 	var item0 = get_item($(".selected").last().attr("data-treeanno-id"));
@@ -494,24 +460,7 @@ function merge(item1, item0) {
 	$(".selected").append(sublist1);
 }
 
-function mergedialog_enter() {
-	var nid = $("#form_mergecandidates").val();
-	var item1 = get_item(nid);
-	var item0 = get_item($(".selected").attr("data-treeanno-id"));
-	
-	merge(item1, item0);
-	enableSaveButton();
-	cleanup_list();
-	mergedialog_cleanup();
-}
-function mergedialog_cleanup() {
-	enable_interaction = true;
-	$("#merge p").empty();
-	$("#form_mergecandidates").unbind('keydown');
-	$("#form_mergecandidates").empty();
-	$("#merge").dialog( "destroy" );
-	
-}
+
 
 function splitdialog() {
 	enable_interaction = false;
