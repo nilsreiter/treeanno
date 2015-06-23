@@ -11,7 +11,7 @@ select id, username from treeanno_users
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>Title</title>
+	<title>${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}</title>
 	<script src="jquery-2.1.3.min.js"></script>
 	<script src="jquery-ui/jquery-ui.js"></script>
 	<script src="i18next/i18next-1.8.0.min.js"></script>
