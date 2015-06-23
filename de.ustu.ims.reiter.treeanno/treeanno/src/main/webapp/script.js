@@ -386,8 +386,8 @@ function delete_category() {
 function add_category() {
 	enable_interaction = false;
 	$(".selected > p.annocat").remove();
-	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
-	$(".selected").prepend("<input type=\"text\" id=\"cat_input\" value=\""+val+"\"/>");
+	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):$(".selected").attr("title"));
+	$(".selected").prepend("<input type=\"text\" size=\"100\" id=\"cat_input\" value=\""+val+"\"/>");
 	$("#cat_input").keyup(function(event){
 	    if(event.keyCode == 13){
 	       enter_category();
