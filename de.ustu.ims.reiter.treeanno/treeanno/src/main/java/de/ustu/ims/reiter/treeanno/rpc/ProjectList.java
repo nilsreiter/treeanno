@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import de.ustu.ims.reiter.treeanno.CA;
 import de.ustu.ims.reiter.treeanno.CW;
+import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.util.Util;
@@ -36,7 +37,7 @@ public class ProjectList extends HttpServlet {
 		JSONArray array = new JSONArray();
 		for (Project project : list) {
 			if (CW.getDataLayer(getServletContext()).getAccessLevel(project,
-					user) > 0) {
+					user) >= Perm.READ_ACCESS) {
 				JSONObject obj = new JSONObject(project);
 				array.put(obj);
 			}
