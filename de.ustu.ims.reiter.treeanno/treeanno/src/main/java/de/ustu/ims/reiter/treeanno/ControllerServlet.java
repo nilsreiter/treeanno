@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
+import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
@@ -47,20 +48,21 @@ public class ControllerServlet extends HttpServlet {
 						"documentIndex"));
 
 		String[] documents = request.getParameterValues("documentId");
-		if (request.getSession().getAttribute("user") == null) {
+		if (request.getSession().getAttribute(CA.USER) == null) {
 			response.setStatus(Response.SC_FORBIDDEN);
 			return;
 		}
 		try {
 			if (documents.length > 0) {
 				int docId = Integer.valueOf(documents[0]);
-
+				Document document =
+						CW.getDataLayer(getServletContext()).getDocument(docId);
 				int accessLevel =
 						di.getDatabaseIO().getAccessLevel(
 								Integer.valueOf(docId),
-								(User) request.getSession()
-								.getAttribute("user"));
-				if (accessLevel < 10) {
+								(User) request.getSession().getAttribute(
+										CA.USER));
+				if (accessLevel == Perm.NO_ACCESS) {
 					response.setStatus(Response.SC_FORBIDDEN);
 					return;
 				}
@@ -70,6 +72,7 @@ public class ControllerServlet extends HttpServlet {
 				}
 				JSONObject obj = new JSONObject();
 				obj.put("documentId", docId);
+				obj.put("document", new JSONObject(document));
 				obj.put("list",
 						new JCasConverter().getJSONArrayFromAnnotations(
 								di.getDocument(Integer.valueOf(docId)),

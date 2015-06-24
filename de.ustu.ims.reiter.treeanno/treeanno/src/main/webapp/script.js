@@ -39,20 +39,20 @@ function init_all() {
 
 function init_projects() {
 	init_all();
-	jQuery.getJSON("projectlist.jsp", function(data) {
+	jQuery.getJSON("rpc/projectlist", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
-			var id=data[i]['id'];
-			$(tr).append("<td>"+data[i]['id']+"</td>");
+			var id=data[i]['databaseId'];
+			$(tr).append("<td>"+data[i]['databaseId']+"</td>");
 			$(tr).append("<td>"+data[i]['name']+"</td>");
 			$(tr).append("<td><button class=\"button_open\">open</button></td>");
 			$(tr).find("button.button_open").button({
 				label: i18n.t("open")
-			}).click({'projectId':data[i]['id']}, function(event) {	
+			}).click({'projectId':data[i]['databaseId']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
 			$("#projectlistarea table tbody").append(tr);
-			if (typeof(selected)!=undefined) {
+			if (selected != -1) {
 				if (selected == id)
 					show_documentlist(id);
 			}
@@ -70,7 +70,7 @@ function show_documentlist(id) {
 	$("#documentlistarea").empty();
 	$("#topbar .left .pname").remove();
 
-	jQuery.getJSON("documentlist.jsp?projectId="+id, function(data) {
+	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
 		for (var i = 0; i < data['documents'].length; i++) {
@@ -169,6 +169,8 @@ function init_main() {
 		disableSaveButton();
 		
 		jQuery.getJSON("ControllerServlet?documentId="+documentId, function(data) {
+			
+			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
 			
 			// idCounter = data["list"].length;
 			for (var i = 0; i < data["list"].length; i++) {
