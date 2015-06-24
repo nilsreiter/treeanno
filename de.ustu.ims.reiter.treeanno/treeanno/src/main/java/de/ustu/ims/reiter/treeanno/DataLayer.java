@@ -18,4 +18,6 @@ public interface DataLayer {
 	int getAccessLevel(Project proj, User user);
 
 	Collection<Document> getDocuments(Project proj);
+
+	Collection<Document> getDocuments(int projectId);
 }
