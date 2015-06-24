@@ -21,8 +21,6 @@ public interface DataLayer {
 
 	Collection<Document> getDocuments(Project proj);
 
-	Collection<Document> getDocuments(int projectId);
-
 	JCas getJCas(Document document);
 
 	boolean deleteDocument(Document document);
