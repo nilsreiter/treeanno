@@ -14,6 +14,7 @@ import org.apache.uima.jcas.JCas;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
 
+@Deprecated
 public class DocumentIndex {
 	Map<Integer, JCas> map = new HashMap<Integer, JCas>();
 	DatabaseIO databaseIO;
@@ -23,7 +24,7 @@ public class DocumentIndex {
 	}
 
 	public JCas getDocument(int index) throws UIMAException, SQLException,
-	IOException {
+			IOException {
 		// we temporarily disable caching and always retrieve from the database
 		return databaseIO.getJCas(index);
 		// if (!map.containsKey(index)) map.put(index,
@@ -32,7 +33,7 @@ public class DocumentIndex {
 	}
 
 	public JCas getDocument(Document doc) throws UIMAException, SQLException,
-			IOException {
+	IOException {
 		return this.getDocument(doc.getDatabaseId());
 	}
 
