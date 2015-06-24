@@ -21,4 +21,8 @@ public class CW {
 		return (DataLayer) sc.getAttribute(CA.DATALAYER);
 	}
 
+	public static void setDataLayer(ServletContext sc, DataLayer layer) {
+		sc.setAttribute(CA.DATALAYER, layer);
+	}
+
 }
