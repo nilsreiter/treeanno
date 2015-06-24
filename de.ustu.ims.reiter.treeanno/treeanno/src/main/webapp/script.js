@@ -39,16 +39,16 @@ function init_all() {
 
 function init_projects() {
 	init_all();
-	jQuery.getJSON("projectlist.jsp", function(data) {
+	jQuery.getJSON("rpc/projectlist", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
 			var id=data[i]['id'];
-			$(tr).append("<td>"+data[i]['id']+"</td>");
+			$(tr).append("<td>"+data[i]['databaseId']+"</td>");
 			$(tr).append("<td>"+data[i]['name']+"</td>");
 			$(tr).append("<td><button class=\"button_open\">open</button></td>");
 			$(tr).find("button.button_open").button({
 				label: i18n.t("open")
-			}).click({'projectId':data[i]['id']}, function(event) {	
+			}).click({'projectId':data[i]['databaseId']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
 			$("#projectlistarea table tbody").append(tr);
