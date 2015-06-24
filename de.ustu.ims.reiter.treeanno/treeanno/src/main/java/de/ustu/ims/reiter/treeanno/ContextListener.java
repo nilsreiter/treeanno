@@ -2,7 +2,6 @@ package de.ustu.ims.reiter.treeanno;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -74,6 +73,7 @@ public class ContextListener implements ServletContextListener {
 		for (String s : properties.stringPropertyNames()) {
 			sc.setAttribute(s, properties.get(s));
 		}
+		sc.setAttribute(CA.DATALAYER, dr);
 		initProjects(sc);
 	}
 
@@ -81,7 +81,7 @@ public class ContextListener implements ServletContextListener {
 		try {
 			svContext.setAttribute(CA.PROJECTLIST,
 					new DatabaseIO().getProjects());
-		} catch (ClassNotFoundException | SQLException | NamingException e) {
+		} catch (ClassNotFoundException | NamingException e) {
 			e.printStackTrace();
 		}
 	}
