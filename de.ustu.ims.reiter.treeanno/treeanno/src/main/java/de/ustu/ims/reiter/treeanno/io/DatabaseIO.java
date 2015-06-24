@@ -126,7 +126,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-			SAXException, IOException {
+	SAXException, IOException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -136,7 +136,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -156,7 +156,7 @@ public class DatabaseIO implements DataLayer {
 
 			stmt =
 					connection
-							.prepareStatement("SELECT name,modificationDate, project, hidden FROM treeanno_documents WHERE id=?");
+					.prepareStatement("SELECT name,modificationDate, project, hidden FROM treeanno_documents WHERE id=?");
 			stmt.setInt(1, documentId);
 			rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -165,7 +165,7 @@ public class DatabaseIO implements DataLayer {
 				document.setName(rs.getString(1));
 				document.setModificationDate(rs.getDate(2));
 				document.setHidden(rs.getBoolean(4));
-
+				document.setProject(getProject(rs.getInt(3)));
 				return document;
 			}
 
@@ -181,14 +181,14 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, IOException,
-			UIMAException {
+	UIMAException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
+				.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		ResultSet rs = stmt.executeQuery();
 
@@ -228,7 +228,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
+				.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
@@ -242,7 +242,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
+				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
@@ -261,7 +261,7 @@ public class DatabaseIO implements DataLayer {
 			connection = dataSource.getConnection();
 			stmt =
 					connection
-							.prepareStatement("SELECT * FROM treeanno_projects");
+					.prepareStatement("SELECT * FROM treeanno_projects");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Project p = new Project();
@@ -291,7 +291,7 @@ public class DatabaseIO implements DataLayer {
 			connection = dataSource.getConnection();
 			stmt =
 					connection
-							.prepareStatement("SELECT id,modificationDate,name,hidden FROM treeanno_documents WHERE project=?");
+					.prepareStatement("SELECT id,modificationDate,name,hidden,project FROM treeanno_documents WHERE project=?");
 			stmt.setInt(1, projectId);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -300,6 +300,7 @@ public class DatabaseIO implements DataLayer {
 				doc.setModificationDate(rs.getDate(2));
 				doc.setName(rs.getString(3));
 				doc.setHidden(rs.getBoolean(4));
+				doc.setProject(getProject(rs.getInt(5)));
 				documents.add(doc);
 			}
 		} catch (SQLException e) {
@@ -369,7 +370,7 @@ public class DatabaseIO implements DataLayer {
 		try {
 			conn = dataSource.getConnection();
 			stmt =
-					conn.prepareStatement("SELECT * FROM treeanno_users WHERE id=?");
+					conn.prepareStatement("SELECT id, username,email,language FROM treeanno_users WHERE id=?");
 			stmt.setInt(1, i);
 			rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -377,7 +378,7 @@ public class DatabaseIO implements DataLayer {
 				user.setDatabaseId(rs.getInt(1));
 				user.setName(rs.getString(2));
 				if (rs.getString(3) != null) user.setEmail(rs.getString(3));
-				if (rs.getString(5) != null) user.setLanguage(rs.getString(5));
+				if (rs.getString(4) != null) user.setLanguage(rs.getString(5));
 
 			}
 		} catch (SQLException e) {
