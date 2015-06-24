@@ -73,7 +73,13 @@ public class ContextListener implements ServletContextListener {
 		for (String s : properties.stringPropertyNames()) {
 			sc.setAttribute(s, properties.get(s));
 		}
-		sc.setAttribute(CA.DATALAYER, dr);
+		try {
+			CW.setDataLayer(sc, new DatabaseIO());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
 		initProjects(sc);
 	}
 
