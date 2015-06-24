@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -96,11 +97,36 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public int getAccessLevel(Project project, User user) {
-		return getAccessLevel(project.getDatabaseId(), user);
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = dataSource.getConnection();
+			stmt =
+					conn.prepareStatement("SELECT level FROM treeanno_users_permissions WHERE projectId=? AND userId=?");
+			stmt.setInt(1, project.getDatabaseId());
+			stmt.setInt(2, user.getDatabaseId());
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				int r = rs.getInt(1);
+				rs.close();
+				stmt.close();
+				conn.close();
+				return r;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeQuietly(rs);
+			closeQuietly(stmt);
+			closeQuietly(conn);
+		}
+		return 0;
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-	SAXException, IOException {
+			SAXException, IOException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -110,7 +136,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+						.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -130,7 +156,7 @@ public class DatabaseIO implements DataLayer {
 
 			stmt =
 					connection
-					.prepareStatement("SELECT name,modificationDate, project, hidden FROM treeanno_documents WHERE id=?");
+							.prepareStatement("SELECT name,modificationDate, project, hidden FROM treeanno_documents WHERE id=?");
 			stmt.setInt(1, documentId);
 			rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -155,14 +181,14 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, IOException,
-	UIMAException {
+			UIMAException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
+						.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		ResultSet rs = stmt.executeQuery();
 
@@ -202,7 +228,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
+						.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
@@ -216,7 +242,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
+						.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
@@ -235,7 +261,7 @@ public class DatabaseIO implements DataLayer {
 			connection = dataSource.getConnection();
 			stmt =
 					connection
-					.prepareStatement("SELECT * FROM treeanno_projects");
+							.prepareStatement("SELECT * FROM treeanno_projects");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Project p = new Project();
@@ -256,7 +282,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public List<Document> getDocuments(Project proj) {
+	public List<Document> getDocuments(int projectId) {
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -265,8 +291,8 @@ public class DatabaseIO implements DataLayer {
 			connection = dataSource.getConnection();
 			stmt =
 					connection
-					.prepareStatement("SELECT id,modificationDate,name,hidden FROM treeanno_documents WHERE project=?");
-			stmt.setInt(1, proj.getDatabaseId());
+							.prepareStatement("SELECT id,modificationDate,name,hidden FROM treeanno_documents WHERE project=?");
+			stmt.setInt(1, projectId);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Document doc = new Document();
@@ -363,5 +389,10 @@ public class DatabaseIO implements DataLayer {
 		}
 
 		return user;
+	}
+
+	@Override
+	public Collection<Document> getDocuments(Project proj) {
+		return getDocuments(proj.getDatabaseId());
 	}
 }
