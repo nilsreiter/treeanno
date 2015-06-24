@@ -62,7 +62,7 @@ public class ControllerServlet extends HttpServlet {
 								Integer.valueOf(docId),
 								(User) request.getSession().getAttribute(
 										CA.USER));
-				if (accessLevel < 10) {
+				if (accessLevel == Perm.NO_ACCESS) {
 					response.setStatus(Response.SC_FORBIDDEN);
 					return;
 				}
