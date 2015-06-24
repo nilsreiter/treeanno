@@ -54,14 +54,6 @@ public class ContextListener implements ServletContextListener {
 			e1.printStackTrace();
 		}
 
-		try {
-			sc.setAttribute("documentIndex", new DocumentIndex());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-
 		Properties properties = new Properties();
 		try {
 			InputStream is =
