@@ -11,7 +11,6 @@ var includeSeparationWhenMerging = true;
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
 	$(htmlItem).attr("title", item['text']);
-	$(htmlItem).addClass("tl0");
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
@@ -174,12 +173,10 @@ function init_main() {
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
 			
-			// idCounter = data["list"].length;
-			for (var i = 0; i < data["list"].length; i++) {
-				
-				var item = data["list"][i];
-				// items[item["id"]] = item;
-				
+			var list = data["list"];
+			
+			while (list.length > 0) {
+				var item = list.shift();
 				var t = item["text"];
 				
 				if (t.length > maxStringLength)
@@ -187,13 +184,18 @@ function init_main() {
 				if ('parentId' in item) {
 					var parentId = item['parentId'];
 					var parentItem = $("li[data-treeanno-id='"+parentId+"']");
-					if (parentItem.children("ul").length == 0)
-						parentItem.append("<ul></ul>");
-					$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, i));
+					if (parentItem.length == 0)
+						list.push(item);
+					else {
+						if (parentItem.children("ul").length == 0)
+							parentItem.append("<ul></ul>");
+						$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, 0));
+					}
 				} else {
-					$('#outline').append(get_html_item(item, i));
+					$('#outline').append(get_html_item(item, 0));
 				}
 			}
+			
 			$('#outline > li:first-child').addClass("selected");
 			document.onkeydown = function(e) {
 				key_down(e);
@@ -355,7 +357,10 @@ function key_down(e) {
 			$(window).scrollTop($(".selected").first().offset().top - 200);
 		break;
 	case kbkey.right:
-		indent();
+		if (shifted)
+			force_indent();
+		else
+			indent();
 		break;
 	case kbkey.left:
 		outdent();
@@ -553,6 +558,30 @@ function outdent() {
 		}
 	});
 	cleanup_list();
+	enableSaveButton();
+}
+
+function force_indent() {
+	$(".selected").each(function(index, element) {
+		if ($(element).prev("li").length == 0) {
+			
+			var vitem = new Object();
+			vitem["begin"] = $(element).attr("data-treeanno-begin");
+			vitem["end"] = vitem["begin"];
+			vitem["id"] = ++idCounter;
+			vitem["text"] = "";
+			
+			var htmlItem = get_html_item(vitem, 0);
+			$(element).before(htmlItem);
+			
+			var prev = $(element).prev("li");
+			if ($(prev).children("ul").length == 0)
+				prev.append("<ul></ul>");
+			var s = $(element).detach();
+			$(prev).children("ul").append(s);
+		}
+		cleanup_list();		
+	});
 	enableSaveButton();
 }
 
