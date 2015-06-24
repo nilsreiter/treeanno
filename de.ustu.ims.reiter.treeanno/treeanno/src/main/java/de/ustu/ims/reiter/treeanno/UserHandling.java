@@ -35,14 +35,10 @@ public class UserHandling extends HttpServlet {
 			if (check(unames[0], pwords[0])) {
 				HttpSession session = request.getSession();
 				User user = null;
-				try {
-					user = getUser(Integer.valueOf(unames[0]));
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				DataLayer dl = CW.getDataLayer(getServletContext());
+				user = dl.getUser(Integer.valueOf(unames[0]));
 				if (user != null) {
-					session.setAttribute("user", user);
+					session.setAttribute(CA.USER, user);
 					response.sendRedirect("projects.jsp");
 					return;
 				}
@@ -52,6 +48,7 @@ public class UserHandling extends HttpServlet {
 
 	}
 
+	@Deprecated
 	protected User getUser(int username) throws SQLException {
 		DataSource ds =
 				(DataSource) getServletContext().getAttribute("dataSource");
