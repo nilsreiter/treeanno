@@ -288,7 +288,7 @@ public class DatabaseIO implements DataLayer {
 			connection = dataSource.getConnection();
 			stmt =
 					connection
-					.prepareStatement("SELECT id,modificationDate,name,hidden,project FROM treeanno_documents WHERE project=?");
+					.prepareStatement("SELECT id,modificationDate,name,hidden,project FROM treeanno_documents WHERE project=? AND hidden=0");
 			stmt.setInt(1, projectId);
 			rs = stmt.executeQuery();
 			while (rs.next()) {

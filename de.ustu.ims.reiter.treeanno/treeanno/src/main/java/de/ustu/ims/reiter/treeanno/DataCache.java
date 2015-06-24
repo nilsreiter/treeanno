@@ -88,6 +88,7 @@ public class DataCache implements DataLayer {
 		if (dbio.deleteDocument(document)) {
 			jcasCache.remove(document);
 			documentMap.remove(document.getDatabaseId());
+			documentCollections.remove(document.getProject());
 			return true;
 		}
 		return false;
@@ -95,7 +96,11 @@ public class DataCache implements DataLayer {
 
 	@Override
 	public int cloneDocument(Document document) {
-		return dbio.cloneDocument(document);
+		int r = dbio.cloneDocument(document);
+		if (r >= 0) {
+			documentCollections.remove(document.getProject());
+		}
+		return r;
 	}
 
 	@Override

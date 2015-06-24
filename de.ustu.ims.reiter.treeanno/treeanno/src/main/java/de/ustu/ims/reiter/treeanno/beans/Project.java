@@ -19,4 +19,15 @@ public class Project {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public int hashCode() {
+		return databaseId;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Project)) return false;
+		return this.hashCode() == obj.hashCode();
+	}
 }
