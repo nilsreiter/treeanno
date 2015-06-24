@@ -60,7 +60,7 @@
 		<span class="right">
 			<!-- <button class="button_change_document">open</button> -->
 			<button class="button_save_document">save</button>
-			<button class="button_edit_user">${sessionScope.User.name } (${rs.rows[0].level})</button>
+			<button class="button_edit_user">${sessionScope.User.name}</button>
 		</span>
 	</div>
 	<div id="error"></div>
