@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -26,6 +28,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
+import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
 
 public class DatabaseIO {
@@ -194,5 +197,32 @@ public class DatabaseIO {
 		connection.close();
 
 		return r == 1;
+	}
+
+	public List<Project> getProjects() throws SQLException {
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<Project> projects = new LinkedList<Project>();
+		try {
+			connection = dataSource.getConnection();
+			stmt =
+					connection
+							.prepareStatement("SELECT * FROM treeanno_projects");
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				Project p = new Project();
+				p.setDatabaseId(rs.getInt(1));
+				p.setName(rs.getString(2));
+				projects.add(p);
+			}
+		} finally {
+			rs.close();
+			stmt.close();
+			connection.close();
+		}
+
+		return projects;
+
 	}
 }
