@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.beans.Document;
+import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
@@ -29,8 +30,10 @@ public class DocumentList extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		int projectId =
 				Integer.valueOf(request.getParameterValues("projectId")[0]);
+		Project proj =
+				CW.getDataLayer(getServletContext()).getProject(projectId);
 		Collection<Document> list =
-				CW.getDataLayer(getServletContext()).getDocuments(projectId);
+				CW.getDataLayer(getServletContext()).getDocuments(proj);
 		JSONObject obj = new JSONObject();
 		obj.put("documents", list);
 		obj.put("project", new JSONObject(CW.getDataLayer(getServletContext())

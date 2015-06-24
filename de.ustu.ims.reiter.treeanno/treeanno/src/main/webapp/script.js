@@ -172,6 +172,8 @@ function init_main() {
 			
 			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
 			
+			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
+			
 			// idCounter = data["list"].length;
 			for (var i = 0; i < data["list"].length; i++) {
 				

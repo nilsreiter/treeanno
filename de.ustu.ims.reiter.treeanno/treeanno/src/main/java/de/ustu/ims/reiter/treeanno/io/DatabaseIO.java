@@ -221,8 +221,6 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
-	public void closeConnections() {}
-
 	public boolean deleteDocument(int documentId) throws SQLException {
 		Connection connection = dataSource.getConnection();
 
@@ -281,7 +279,6 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
-	@Override
 	public List<Document> getDocuments(int projectId) {
 		Connection connection = null;
 		PreparedStatement stmt = null;
@@ -291,7 +288,7 @@ public class DatabaseIO implements DataLayer {
 			connection = dataSource.getConnection();
 			stmt =
 					connection
-					.prepareStatement("SELECT id,modificationDate,name,hidden,project FROM treeanno_documents WHERE project=?");
+					.prepareStatement("SELECT id,modificationDate,name,hidden,project FROM treeanno_documents WHERE project=? AND hidden=0");
 			stmt.setInt(1, projectId);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -395,5 +392,64 @@ public class DatabaseIO implements DataLayer {
 	@Override
 	public Collection<Document> getDocuments(Project proj) {
 		return getDocuments(proj.getDatabaseId());
+	}
+
+	@Override
+	public JCas getJCas(Document document) {
+		try {
+			return this.getJCas(document.getDatabaseId());
+		} catch (UIMAException | SQLException | IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public boolean deleteDocument(Document document) {
+		try {
+			return this.deleteDocument(document.getDatabaseId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public int cloneDocument(Document document) {
+		try {
+			if (!cloneDocument(document.getDatabaseId())) return -1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dataSource.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeQuietly(rs);
+			closeQuietly(stmt);
+			closeQuietly(conn);
+		}
+		return -1;
+	}
+
+	@Override
+	public boolean updateJCas(Document document, JCas jcas) {
+		try {
+			return this.updateJCas(document.getDatabaseId(), jcas);
+		} catch (SQLException | SAXException | IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

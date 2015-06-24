@@ -54,14 +54,6 @@ public class ContextListener implements ServletContextListener {
 			e1.printStackTrace();
 		}
 
-		try {
-			sc.setAttribute("documentIndex", new DocumentIndex());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-
 		Properties properties = new Properties();
 		try {
 			InputStream is =
@@ -73,22 +65,14 @@ public class ContextListener implements ServletContextListener {
 		for (String s : properties.stringPropertyNames()) {
 			sc.setAttribute(s, properties.get(s));
 		}
+
 		try {
-			CW.setDataLayer(sc, new DatabaseIO());
+			CW.setDataLayer(sc, new DataCache(new DatabaseIO()));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-		initProjects(sc);
 	}
 
-	protected void initProjects(ServletContext svContext) {
-		try {
-			svContext.setAttribute(CA.PROJECTLIST,
-					new DatabaseIO().getProjects());
-		} catch (ClassNotFoundException | NamingException e) {
-			e.printStackTrace();
-		}
-	}
 }
