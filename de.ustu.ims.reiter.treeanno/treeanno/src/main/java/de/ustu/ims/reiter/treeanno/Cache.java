@@ -1,5 +1,6 @@
 package de.ustu.ims.reiter.treeanno;
 
+import java.util.Collection;
 import java.util.List;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
@@ -21,7 +22,7 @@ public class Cache implements DataLayer {
 	}
 
 	@Override
-	public List<Document> getDocuments(Project proj) {
+	public Collection<Document> getDocuments(Project proj) {
 		return dbio.getDocuments(proj);
 	}
 
@@ -38,5 +39,10 @@ public class Cache implements DataLayer {
 	@Override
 	public Project getProject(int i) {
 		return dbio.getProject(i);
+	}
+
+	@Override
+	public Collection<Document> getDocuments(int projectId) {
+		return dbio.getDocuments(projectId);
 	}
 }
