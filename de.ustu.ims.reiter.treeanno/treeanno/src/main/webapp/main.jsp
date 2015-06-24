@@ -5,37 +5,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<c:if test="${ empty sessionScope.user }">
+<c:if test="${ empty sessionScope.User }">
 	<c:redirect url="index.jsp"/>
 </c:if>
 
-<sql:query var="documentRowSet" dataSource="jdbc/treeanno">
-SELECT treeanno_documents.id,project,treeanno_documents.name,concat(treeanno_documents.name, '') AS dname,treeanno_projects.name,concat(treeanno_projects.name,'') AS pname FROM treeanno_documents JOIN treeanno_projects ON treeanno_documents.`project` = treeanno_projects.id  WHERE treeanno_documents.id=?
-	<sql:param value="${param.documentId}" />
-</sql:query>
 
-<jsp:useBean id="project" scope="request" class="de.ustu.ims.reiter.treeanno.beans.Project">
-	<jsp:setProperty property="name" value="${documentRowSet.rows[0].pname}" name="project"/>
-	<jsp:setProperty property="databaseId" value="${documentRowSet.rows[0].project}" name="project"/>
-</jsp:useBean>
-
-<jsp:useBean id="document" scope="request" class="de.ustu.ims.reiter.treeanno.beans.Document">
-	<jsp:setProperty property="name" value="${documentRowSet.rows[0].dname}" name="document"/>
-	<jsp:setProperty property="databaseId" value="${documentRowSet.rows[0].id}" name="document"/>
-	<jsp:setProperty property="project" value="${session.project}" name="document"/>
-</jsp:useBean>
-
-
-<sql:query var="rs" dataSource="jdbc/treeanno">
-SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
-	<sql:param value="${sessionScope.user.databaseId}" />
-	<sql:param value="${documentRowSet.rows[0].project}" />
-</sql:query>
-
-
-<c:if test="${empty rs || rs.rows[0].level < 10 }">
-	<c:redirect url="index.jsp"/>
-</c:if>
 
 <!DOCTYPE html>
 <html>
@@ -48,9 +22,8 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 	<script src="script.js"></script>
 	<script>
 
-	var language = "${sessionScope.user.language}";
+	var language = "${sessionScope.User.language}";
 	var documentId = ${param.documentId};
-	var projectId = ${requestScope.project.databaseId};
 	$(document).ready(init_trans(init_main));
 	
 	</script>
@@ -74,10 +47,8 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 	</div>
 	<div id="topbar">
 		<span class="left">
-			<span class="ui-widget">
+			<span class="ui-widget breadcrumb">
 				<a href="index.jsp">${applicationScope['treeanno.name']}&nbsp;${applicationScope['treeanno.version']}</a> &gt;
-				<a href="projects.jsp?projectId=${requestScope.project.databaseId}">${fn:escapeXml(requestScope.project.name)}</a> &gt; 
-				${fn:escapeXml(requestScope.document.name)}
 			</span>
 		</span>
 		<span class="middle ui-widget" >
@@ -89,7 +60,7 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
 		<span class="right">
 			<!-- <button class="button_change_document">open</button> -->
 			<button class="button_save_document">save</button>
-			<button class="button_edit_user">${sessionScope.user.name } (${rs.rows[0].level})</button>
+			<button class="button_edit_user">${sessionScope.User.name } (${rs.rows[0].level})</button>
 		</span>
 	</div>
 	<div id="error"></div>

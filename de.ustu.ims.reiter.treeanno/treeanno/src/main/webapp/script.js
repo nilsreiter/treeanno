@@ -42,7 +42,7 @@ function init_projects() {
 	jQuery.getJSON("rpc/projectlist", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
-			var id=data[i]['id'];
+			var id=data[i]['databaseId'];
 			$(tr).append("<td>"+data[i]['databaseId']+"</td>");
 			$(tr).append("<td>"+data[i]['name']+"</td>");
 			$(tr).append("<td><button class=\"button_open\">open</button></td>");
@@ -52,7 +52,7 @@ function init_projects() {
 				show_documentlist(event.data['projectId']); 
 			});
 			$("#projectlistarea table tbody").append(tr);
-			if (typeof(selected)!=undefined) {
+			if (selected != -1) {
 				if (selected == id)
 					show_documentlist(id);
 			}
@@ -169,6 +169,8 @@ function init_main() {
 		disableSaveButton();
 		
 		jQuery.getJSON("ControllerServlet?documentId="+documentId, function(data) {
+			
+			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
 			
 			// idCounter = data["list"].length;
 			for (var i = 0; i < data["list"].length; i++) {
