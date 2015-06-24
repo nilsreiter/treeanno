@@ -70,7 +70,7 @@ function show_documentlist(id) {
 	$("#documentlistarea").empty();
 	$("#topbar .left .pname").remove();
 
-	jQuery.getJSON("documentlist.jsp?projectId="+id, function(data) {
+	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
 		for (var i = 0; i < data['documents'].length; i++) {
