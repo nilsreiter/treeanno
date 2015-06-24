@@ -2,6 +2,8 @@ package de.ustu.ims.reiter.treeanno;
 
 import java.util.Collection;
 
+import org.apache.uima.jcas.JCas;
+
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
@@ -20,4 +22,12 @@ public interface DataLayer {
 	Collection<Document> getDocuments(Project proj);
 
 	Collection<Document> getDocuments(int projectId);
+
+	JCas getJCas(Document document);
+
+	boolean deleteDocument(Document document);
+
+	int cloneDocument(Document document);
+
+	boolean updateJCas(Document document, JCas jcas);
 }
