@@ -1,7 +1,7 @@
 package de.ustu.ims.reiter.treeanno.rpc;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import de.ustu.ims.reiter.treeanno.CA;
+import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.beans.Project;
+import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
@@ -26,10 +29,19 @@ public class ProjectList extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		@SuppressWarnings("unchecked")
-		List<Project> list =
-		(List<Project>) getServletContext()
-						.getAttribute(CA.PROJECTLIST);
-		Util.returnJSON(response, new JSONArray(list));
+		Collection<Project> list =
+				CW.getDataLayer(getServletContext()).getProjects();
+		User user = (User) request.getSession().getAttribute(CA.USER);
+
+		JSONArray array = new JSONArray();
+		for (Project project : list) {
+			if (CW.getDataLayer(getServletContext()).getAccessLevel(project,
+					user) > 0) {
+				JSONObject obj = new JSONObject(project);
+				array.put(obj);
+			}
+		}
+
+		Util.returnJSON(response, array);
 	}
 }
