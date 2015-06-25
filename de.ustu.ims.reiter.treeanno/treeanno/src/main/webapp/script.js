@@ -11,12 +11,10 @@ var includeSeparationWhenMerging = true;
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
 	$(htmlItem).attr("title", item['text']);
-	$(htmlItem).addClass("tl0");
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
 	idCounter = Math.max(idCounter, item['id']);
-	//$(htmlItem).attr("data-treeanno-uid", item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
 	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
@@ -45,9 +43,9 @@ function init_projects() {
 			var id=data[i]['databaseId'];
 			$(tr).append("<td>"+data[i]['databaseId']+"</td>");
 			$(tr).append("<td>"+data[i]['name']+"</td>");
-			$(tr).append("<td><button class=\"button_open\">open</button></td>");
+			$(tr).append("<td><button class=\"button_open\"></button></td>");
 			$(tr).find("button.button_open").button({
-				label: i18n.t("open")
+				label: i18n.t("project_action_open")
 			}).click({'projectId':data[i]['databaseId']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
@@ -90,26 +88,34 @@ function show_documentlist(id) {
 			$(tr).append("<td><button class=\"button_clone\">clone</button></td>");
 			$(tr).append("<td><button class=\"button_delete\">delete</button></td>");
 			$(tr).append("<td><button class=\"button_export\">export</button></td>");
-			$(tr).find("button.button_open").button({label:i18n.t("open")}).click({
+			$(tr).find("button.button_open").button({
+				label:i18n.t("document_action_open")
+			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				window.location.href="main.jsp?documentId="+event.data.documentId;
 			});
-			$(tr).find("button.button_clone").button({label:i18n.t("clone")}).click({
+			$(tr).find("button.button_clone").button({
+				label:i18n.t("document_action_clone")
+			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				jQuery.getJSON("DocumentHandling?action=clone&documentId="+event.data.documentId, function() {
 					show_documentlist(id);
 				});
 			});
-			$(tr).find("button.button_delete").button({label:i18n.t("delete")}).click({
+			$(tr).find("button.button_delete").button({
+				label:i18n.t("document_action_delete")
+			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				jQuery.getJSON("DocumentHandling?action=delete&documentId="+event.data.documentId, function() {
 					show_documentlist(id);
 				});
 			});
-			$(tr).find("button.button_export").button({label:i18n.t("export")}).click({
+			$(tr).find("button.button_export").button({
+				label:i18n.t("document_action_export_xmi")
+			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
