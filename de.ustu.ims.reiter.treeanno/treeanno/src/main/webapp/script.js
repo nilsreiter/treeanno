@@ -86,6 +86,7 @@ function show_documentlist(id) {
 				$(trh).append("<th>"+i18n.t("document_id")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_name")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
+				$(trh).append("<th>"+i18n.t("document_actions")+"</th>");
 				$(table).append(trh);
 				header = true;
 			}
@@ -93,11 +94,13 @@ function show_documentlist(id) {
 			$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
 			$(tr).append("<td>"+data['documents'][i]['name']+"</td>");
 			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
-			$(tr).append("<td><button class=\"button_open\"></button></td>");
-			$(tr).append("<td><button class=\"button_clone\">clone</button></td>");
-			$(tr).append("<td><button class=\"button_delete\">delete</button></td>");
-			$(tr).append("<td><button class=\"button_export\">export</button></td>");
-			$(tr).find("button.button_open").button({
+			
+			var actionCell = document.createElement("td");
+			$(actionCell).append("<button class=\"button_open\"></button>");
+			$(actionCell).append("<button class=\"button_clone\">clone</button>");
+			$(actionCell).append("<button class=\"button_delete\">delete</button>");
+			$(actionCell).append("<button class=\"button_export\">export</button>");
+			$(actionCell).find("button.button_open").button({
 				label:i18n.t("document_action_open"),
 				icons:{primary:"ui-icon-document",secondary:null}
 			}).click({
@@ -105,7 +108,7 @@ function show_documentlist(id) {
 			}, function(event) {
 				window.location.href="main.jsp?documentId="+event.data.documentId;
 			});
-			$(tr).find("button.button_clone").button({
+			$(actionCell).find("button.button_clone").button({
 				label:i18n.t("document_action_clone"),
 				icons:{primary:"ui-icon-copy",secondary:null}
 			}).click({
@@ -115,7 +118,7 @@ function show_documentlist(id) {
 					show_documentlist(id);
 				});
 			});
-			$(tr).find("button.button_delete").button({
+			$(actionCell).find("button.button_delete").button({
 				label:i18n.t("document_action_delete"),
 				icons:{primary:"ui-icon-trash", secondary:null}
 			}).click({
@@ -125,7 +128,7 @@ function show_documentlist(id) {
 					show_documentlist(id);
 				});
 			});
-			$(tr).find("button.button_export").button({
+			$(actionCell).find("button.button_export").button({
 				label:i18n.t("document_action_export_xmi"),
 				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null}
 			}).click({
@@ -133,6 +136,8 @@ function show_documentlist(id) {
 			}, function(event) {
 				window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
 			});
+			$(actionCell).buttonset();
+			$(tr).append(actionCell);
 			$(table).append(tr);
 		}
 		$("#documentlistarea").append("<h2>"+i18n.t("documents_in_X", {"projectname":data['project']['name']})+"</h2>");

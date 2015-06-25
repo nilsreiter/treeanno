@@ -15,6 +15,7 @@
 	"document_id":"Id",
 	"document_name":"Name",
 	"document_mod_date":"Last change",
+	"document_actions":"Actions",
 	"document_action_open":"Open",
 	"document_action_clone":"Clone",
 	"document_action_delete":"Hide",

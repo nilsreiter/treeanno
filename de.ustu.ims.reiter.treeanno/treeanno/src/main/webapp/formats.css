@@ -98,10 +98,13 @@ span.search_container {
 #topbar .username {
 	font-style:italic;
 }
- #projectlistarea,#documentlistarea {
-	width:45%;
+#projectlistarea,#documentlistarea {
 	margin:15px;
 }
+#projectlistarea{
+	width:30%;
+}
+
 .splitcontent div {
 	float:left;
 }
