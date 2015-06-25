@@ -14,6 +14,7 @@ function get_html_item(item, i) {
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
+	if (item['Mark1']) $(htmlItem).addClass("mark1");
 	idCounter = Math.max(idCounter, item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
@@ -246,6 +247,7 @@ function save_document() {
 		item['id'] = $(element).attr("data-treeanno-id");
 		item['begin'] = $(element).attr("data-treeanno-begin");
 		item['end'] = $(element).attr("data-treeanno-end");
+		item['Mark1'] = $(element).hasClass("mark1");
 		// alert(id);
 		var parents = $(element).parentsUntil("#outline", "li");
 		if (parents.length > 0) {
@@ -313,9 +315,13 @@ function key_down(e) {
 	e.preventDefault();
 	var keyCode = e.keyCode || e.which,
     	kbkey = { up: 38, down: 40, right: 39, left: 37, 
-			enter: 13, s: 83, m:77, c:67, d:68, shift: 16 };
+			enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
 	var allItems = $("#outline li");
 	switch (keyCode) {
+	case kbkey.one:
+		$(".selected").toggleClass("mark1");
+		enableSaveButton();
+		break;
 	case kbkey.shift:
 		shifted = true;
 		break;
