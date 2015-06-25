@@ -8,21 +8,25 @@
 		<tr><td><span class="command">s</span></td><td class="trans">action_split</td></tr>
 		<tr><td><span class="command">m</span></td><td class="trans">action_merge</td></tr>
 		<tr><td><span class="command">c</span></td><td class="trans">action_assign_category</td></tr>   
+		<tr><td><span class="command">1</span></td><td data-i18n="action_mark1"></td></tr>
 	</table>
 </div>
 <script>
 $(document).ready(function() {
 	i18n.init({ 
 		resGetPath:'locales/__ns__-__lng__.json',
-		lng: language }, function() {
+		lng: language 
+	}, function() {
 		$("#help").draggable();
-		$("#topbar .right").prepend("<input type=\"checkbox\" id=\"show_helper\" checked=\"checked\" /><label for=\"show_helper\"></label>");
+		$("#help").i18n();
+		$("#topbar .right").prepend("<input type=\"checkbox\" id=\"show_helper\" /><label for=\"show_helper\"></label>");
 		$("#show_helper").button({
 			icons: { primary: "ui-icon-help", secondary:null },
 			label: i18n.t("show_helper")
 		}).click(function() {
 			$("#help").toggle();
 		});
+		$("#help").hide();
 		$("#topbar .right").buttonset();
 	});
 });
