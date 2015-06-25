@@ -298,7 +298,10 @@ function key_down(e) {
 		shifted = true;
 		break;
 	case kbkey.d:
-		delete_category();
+		if (shifted)
+			delete_virtual_node();
+		else
+			delete_category();
 		break;
 	case kbkey.c:
 		add_category();
@@ -583,6 +586,15 @@ function force_indent() {
 		cleanup_list();		
 	});
 	enableSaveButton();
+}
+
+function delete_virtual_node() {
+	$(".selected").each(function(index, element) {
+		if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
+			$(element).prev().addClass("selected");
+			$(element).remove();
+		}
+	});
 }
 
 function indent() {
