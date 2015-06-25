@@ -14,6 +14,7 @@ function get_html_item(item, i) {
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
+	$(htmlItem).addClass("unselectable");
 	if (item['Mark1']) $(htmlItem).addClass("mark1");
 	idCounter = Math.max(idCounter, item['id']);
 	if ('category' in item)
@@ -230,8 +231,16 @@ function init_main() {
 				key_up(e);
 			};
 			$("#outline li").click(function(e) {
-				$("#outline li").removeClass("selected");
-				$(this).addClass("selected");
+				if (shifted) {
+					// if they have the same parent
+					if ($(this).parent().get(0) == $(".selected").last().parent().get(0)) {
+						$(".selected").last().nextUntil(this).addClass("selected");
+						$(this).addClass("selected");
+					}
+				} else {
+					$("#outline li").removeClass("selected");
+					$(this).addClass("selected");
+				}
 			});		
 	});
 }
