@@ -10,6 +10,12 @@
 	"action_merge":"Zusammenfügen",
 	"action_assign_category":"Annotieren",
 	"action_mark1":"Dauerhaft markieren",
+	"action_delete_category":"Annotation entfernen",
+	"action":{
+		"delete_vnode":"Knoten entfernen",
+		"force_indent":"Forc. Einrücken"
+	},
+	"action_category_virtual_nodes":"Virtuelle Knoten",
 	"help_title":"Spickzettel",
 	"open":"Öffnen",
 	"list_of_projects":"Projektliste",
