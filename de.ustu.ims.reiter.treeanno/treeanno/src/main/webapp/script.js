@@ -43,9 +43,10 @@ function init_projects() {
 			var id=data[i]['databaseId'];
 			$(tr).append("<td>"+data[i]['databaseId']+"</td>");
 			$(tr).append("<td>"+data[i]['name']+"</td>");
-			$(tr).append("<td><button class=\"button_open\"></button></td>");
+			$(tr).append("<td><button class=\"button_open project "+data[i]['databaseId']+"\"></button></td>");
 			$(tr).find("button.button_open").button({
-				label: i18n.t("project_action_open")
+				label: i18n.t("project_action_open"),
+				icons:{primary:"ui-icon-folder-collapsed",secondary:null}
 			}).click({'projectId':data[i]['databaseId']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
@@ -65,6 +66,14 @@ function init_projects() {
 }
 
 function show_documentlist(id) {
+	$("button.button_open.project").button({
+		disabled:false,
+		icons:{primary:"ui-icon-folder-collapsed",secondary:null}
+	});
+	$("button.button_open.project."+id).button({
+		disabled:true,
+		icons:{primary:"ui-icon-folder-open",secondary:null}
+	});
 	$("#documentlistarea").empty();
 	$("#topbar .left .pname").remove();
 
@@ -89,14 +98,16 @@ function show_documentlist(id) {
 			$(tr).append("<td><button class=\"button_delete\">delete</button></td>");
 			$(tr).append("<td><button class=\"button_export\">export</button></td>");
 			$(tr).find("button.button_open").button({
-				label:i18n.t("document_action_open")
+				label:i18n.t("document_action_open"),
+				icons:{primary:"ui-icon-document",secondary:null}
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				window.location.href="main.jsp?documentId="+event.data.documentId;
 			});
 			$(tr).find("button.button_clone").button({
-				label:i18n.t("document_action_clone")
+				label:i18n.t("document_action_clone"),
+				icons:{primary:"ui-icon-copy",secondary:null}
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -105,7 +116,8 @@ function show_documentlist(id) {
 				});
 			});
 			$(tr).find("button.button_delete").button({
-				label:i18n.t("document_action_delete")
+				label:i18n.t("document_action_delete"),
+				icons:{primary:"ui-icon-trash", secondary:null}
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -114,7 +126,8 @@ function show_documentlist(id) {
 				});
 			});
 			$(tr).find("button.button_export").button({
-				label:i18n.t("document_action_export_xmi")
+				label:i18n.t("document_action_export_xmi"),
+				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null}
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
