@@ -9,6 +9,8 @@ div#content {
 	margin:10px;
 	position:relative;
 	top:50px;
+	font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size:12pt;
 }
 div#controls {
 	float:right;
