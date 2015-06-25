@@ -11,8 +11,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Mon Jun 08 10:18:42 CEST 2015
- * XML source: /Users/reiterns/Documents/Java/de.ustu.ims.reiter.treeanno.api/treeanno.api/src/main/java/de/ustu/ims/reiter/treeanno/api/typesystem.xml
+ * Updated by JCasGen Thu Jun 25 09:23:07 CEST 2015
+ * XML source: /Users/reiterns/Documents/treeanno/treeanno.git/de.ustu.ims.reiter.treeanno.api/treeanno.api/src/main/java/de/ustu/ims/reiter/treeanno/api/typesystem.xml
  * @generated */
 public class TreeSegment extends Annotation {
   /** @generated
@@ -140,6 +140,28 @@ public class TreeSegment extends Annotation {
     if (TreeSegment_Type.featOkTst && ((TreeSegment_Type)jcasType).casFeat_Id == null)
       jcasType.jcas.throwFeatMissing("Id", "de.ustu.ims.reiter.treeanno.api.type.TreeSegment");
     jcasType.ll_cas.ll_setIntValue(addr, ((TreeSegment_Type)jcasType).casFeatCode_Id, v);}    
+   
+    
+  //*--------------*
+  //* Feature: Mark1
+
+  /** getter for Mark1 - gets 
+   * @generated
+   * @return value of the feature 
+   */
+  public boolean getMark1() {
+    if (TreeSegment_Type.featOkTst && ((TreeSegment_Type)jcasType).casFeat_Mark1 == null)
+      jcasType.jcas.throwFeatMissing("Mark1", "de.ustu.ims.reiter.treeanno.api.type.TreeSegment");
+    return jcasType.ll_cas.ll_getBooleanValue(addr, ((TreeSegment_Type)jcasType).casFeatCode_Mark1);}
+    
+  /** setter for Mark1 - sets  
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setMark1(boolean v) {
+    if (TreeSegment_Type.featOkTst && ((TreeSegment_Type)jcasType).casFeat_Mark1 == null)
+      jcasType.jcas.throwFeatMissing("Mark1", "de.ustu.ims.reiter.treeanno.api.type.TreeSegment");
+    jcasType.ll_cas.ll_setBooleanValue(addr, ((TreeSegment_Type)jcasType).casFeatCode_Mark1, v);}    
   }
 
     
