@@ -2,6 +2,7 @@
 	"username":"Benutzername",
 	"password":"Passwort",
 	"ok":"Ok",
+	"login_open_dialog":"Login",
 	"action_up":"Cursor bewegen",
 	"action_down":"Cursor bewegen",
 	"action_indent":"Einrücken",

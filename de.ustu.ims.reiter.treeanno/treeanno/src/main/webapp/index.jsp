@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<jsp:directive.page contentType="text/html; charset=UTF-8" 
-		pageEncoding="UTF-8" session="false" import="java.util.*, javax.sql.*"/>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<sql:query var="rs" dataSource="jdbc/treeanno">
-select id, username from treeanno_users
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:sql="http://java.sun.com/jsp/jstl/sql">
+	<jsp:directive.page contentType="text/html; charset=UTF-8" 
+		pageEncoding="UTF-8" session="false"/>
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="false" />
+<sql:query var="rs" dataSource="jdbc/treeanno" sql="select id, username from treeanno_users">
 </sql:query>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}</title>
-	<script src="jquery-2.1.3.min.js"></script>
-	<script src="jquery-ui/jquery-ui.js"></script>
-	<script src="i18next/i18next-1.8.0.min.js"></script>
-	<script src="script.js"></script>
+	<script src="jquery-2.1.3.min.js">
+	//<![CDATA[
+	//]]>
+	</script>
+	<script src="jquery-ui/jquery-ui.js">
+	// <![CDATA[
+	// ]]>
+	</script>
+	<script src="i18next/i18next-1.8.0.min.js">
+	//<![CDATA[
+	//]]>
+	</script>
+	<script src="script.js">
+	//<![CDATA[
+	//]]>
+	</script>
 	<script>
+	// <![CDATA[
 	var language = "en-US";
 
 	$(document).ready(init_trans(function() {
 		init_all();
+		$("button.button_login").button({
+			disabled: true,
+			label:i18n.t("login_open_dialog"),
+			
+		}).click(function(event, ui) {
+			$("#login").dialog("open");
+			$("button.button_login").button({disabled:true});
+		});
+
 		$("#login").dialog({
 			title: i18n.t("login_dialog_title"),
 			buttons: 
@@ -34,17 +58,18 @@ select id, username from treeanno_users
 			    	  $("form").submit();
 			      }
 			    }
-			]
+			],
+			close: function( event, ui ) {
+				$("button.button_login").button({disabled:false});
+			}
 		});
 	}));
-
-
+	// ]]>
 	</script>
 	<link rel="stylesheet" href="formats.css" type="text/css" />
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.css" type="text/css" /> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.structure.css" type="text/css" /> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.theme.css" type="text/css" /> 
-
 </head>
 <body>
 	<div>
@@ -65,15 +90,19 @@ select id, username from treeanno_users
 	<div id="topbar">
 		<span class="left">
 			<span class="ui-widget">
-				<a href="index.jsp">${applicationScope['treeanno.name']}&nbsp;${applicationScope['treeanno.version']}</a>
+				<a href="index.jsp">${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}</a>
 			</span>
 		</span>
+		<span class="right">
+			<button class="button_login" data-i18n="user_login">Login</button>
+		</span>		
 	</div>
 	<div id="content">
 	<div id="news">
 		<h1 data-i18n="changelog_h1">Changelog</h1>
-		<%@include file="changelog.html"  %>
+		<jsp:include page="changelog.html" />
 	</div>
 	</div>
 </body>
 </html>
+</jsp:root>

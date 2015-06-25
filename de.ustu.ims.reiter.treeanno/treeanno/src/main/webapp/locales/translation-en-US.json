@@ -2,6 +2,7 @@
 	"username":"User Name",
 	"password":"Password",
 	"ok":"Ok",
+	"login_open_dialog":"Login",
 	"action_up":"Move",
 	"action_down":"Move",
 	"action_indent":"Indent",
