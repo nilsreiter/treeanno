@@ -29,6 +29,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.DataLayer;
+import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
@@ -97,7 +98,7 @@ public class DatabaseIO implements DataLayer {
 			closeQuietly(stmt);
 			closeQuietly(conn);
 		}
-		return 0;
+		return Perm.NO_ACCESS;
 	}
 
 	@Override
@@ -127,7 +128,7 @@ public class DatabaseIO implements DataLayer {
 			closeQuietly(stmt);
 			closeQuietly(conn);
 		}
-		return 0;
+		return Perm.NO_ACCESS;
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
