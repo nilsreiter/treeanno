@@ -1,4 +1,4 @@
-package de.ustu.ims.reiter.treeanno;
+package de.ustu.ims.reiter.treeanno.util;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
