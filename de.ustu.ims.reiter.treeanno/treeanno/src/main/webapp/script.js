@@ -194,7 +194,7 @@ function init_main() {
 		
 		disableSaveButton();
 		
-		jQuery.getJSON("ControllerServlet?documentId="+documentId, function(data) {
+		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
 			
 			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
 			

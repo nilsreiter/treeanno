@@ -23,7 +23,7 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class ControllerServlet
  */
-public class ControllerServlet extends HttpServlet {
+public class DocumentContentHandling extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	JCas jcas;
@@ -32,7 +32,7 @@ public class ControllerServlet extends HttpServlet {
 	 * Default constructor. 
 	 * @throws UIMAException 
 	 */
-	public ControllerServlet() throws UIMAException {
+	public DocumentContentHandling() throws UIMAException {
 
 	}
 

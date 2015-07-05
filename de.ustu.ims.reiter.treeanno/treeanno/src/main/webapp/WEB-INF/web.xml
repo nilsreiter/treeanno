@@ -6,9 +6,9 @@
   </listener>
   <servlet>
     <description></description>
-    <display-name>ControllerServlet</display-name>
-    <servlet-name>ControllerServlet</servlet-name>
-    <servlet-class>de.ustu.ims.reiter.treeanno.ControllerServlet</servlet-class>
+    <display-name>DocumentContentHandling</display-name>
+    <servlet-name>DocumentContentHandling</servlet-name>
+    <servlet-class>de.ustu.ims.reiter.treeanno.DocumentContentHandling</servlet-class>
   </servlet>
   <servlet>
     <description></description>
@@ -17,8 +17,8 @@
     <servlet-class>de.ustu.ims.reiter.treeanno.UserHandling</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ControllerServlet</servlet-name>
-    <url-pattern>/ControllerServlet</url-pattern>
+    <servlet-name>DocumentContentHandling</servlet-name>
+    <url-pattern>/DocumentContentHandling</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>UserHandling</servlet-name>
