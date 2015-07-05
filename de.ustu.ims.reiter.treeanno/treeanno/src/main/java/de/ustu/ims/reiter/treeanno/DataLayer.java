@@ -8,6 +8,12 @@ import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
 
+/**
+ * This interface describes the methods to retrieve data from cache or database.
+ * All data access should go through one of these methods.
+ * @author reiterns
+ *
+ */
 public interface DataLayer {
 	Project getProject(int i);
 
