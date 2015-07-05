@@ -1,12 +1,8 @@
-var maxStringLength = 160;
-
 var enable_interaction = true;
 
 var shifted = false;
 
 var idCounter = 0;
-
-var includeSeparationWhenMerging = true;
 
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
