@@ -1,5 +1,5 @@
 body{
-	font-size:12px;
+	font-size:11pt;
 }
 
 li.selected {
@@ -10,7 +10,7 @@ div#content {
 	position:relative;
 	top:50px;
 	font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
-	font-size:12pt;
+	font-size:11pt;
 }
 div#controls {
 	float:right;
@@ -51,6 +51,7 @@ div#artifact {
 	background-color:#DDD;
 	padding:10px; 
 	height:32px;
+	font-size:10pt;
 }
 
 .searchFound {
