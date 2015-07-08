@@ -10,9 +10,10 @@ import org.apache.uima.jcas.JCas;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
 
 public class DataCache implements DataLayer {
-	DataLayer dbio;
+	DatabaseIO dbio;
 	Map<Integer, User> userMap;
 	Map<Integer, Project> projectMap;
 	Map<Integer, Document> documentMap;
@@ -21,7 +22,7 @@ public class DataCache implements DataLayer {
 	Map<Pair<Project, User>, Integer> permissions;
 	Map<Project, Collection<Document>> documentCollections;
 
-	public DataCache(DataLayer dataLayer) {
+	public DataCache(DatabaseIO dataLayer) {
 		dbio = dataLayer;
 		init();
 	}
