@@ -75,7 +75,9 @@ public class DocumentHandling extends HttpServlet {
 			Util.returnJSON(response, new JSONObject());
 		} else if (action.equalsIgnoreCase("export")) {
 			String[] docIds = request.getParameterValues("documentId");
-			for (int i = 0; i < docIds.length; i++) {
+			// TODO: currently, this only exports the first document in the
+			// list, should be improved since we return a zip file anyway.
+			for (int i = 0; i < docIds.length;) {
 				int docId = Integer.valueOf(docIds[i]);
 				ZipOutputStream zos = null;
 				try {
@@ -89,11 +91,11 @@ public class DocumentHandling extends HttpServlet {
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-						.getDocumentTitle();
+								.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-						JCasUtil.selectSingle(jcas,
-								DocumentMetaData.class).getDocumentId();
+								JCasUtil.selectSingle(jcas,
+										DocumentMetaData.class).getDocumentId();
 					zos = new ZipOutputStream(response.getOutputStream());
 					zos.setLevel(9);
 					zos.putNextEntry(new ZipEntry(name + "/"));
