@@ -65,9 +65,15 @@ select id, username from treeanno_users
 	<div id="topbar">
 		<span class="left">
 			<span class="ui-widget">
-				<a href="index.jsp">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</a>
+				<a href="index.jsp">${applicationScope['treeanno.name']}&nbsp;${applicationScope['treeanno.version']}</a>
 			</span>
 		</span>
+	</div>
+	<div id="content">
+	<div id="news">
+		<h1 data-i18n="changelog_h1">Changelog</h1>
+		<%@include file="changelog.html"  %>
+	</div>
 	</div>
 </body>
 </html>

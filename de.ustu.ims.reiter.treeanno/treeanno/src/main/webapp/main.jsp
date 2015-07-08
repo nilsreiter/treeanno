@@ -69,18 +69,15 @@ SELECT level FROM treeanno_users_permissions WHERE userId=? AND projectId=?
     	</ul>
 	</div>
 	<div id="split">
-			<textarea id="form_splittext" rows="5" cols="50" spellcheck="false"></textarea>
-	</div>
-	<div id="merge">
-		<p></p>
-		<select id="form_mergecandidates" size="2"></select>
+		<p data-i18n="howto_split" class="trans">howto_split</p>
+		<textarea id="form_splittext" rows="5" cols="50" spellcheck="false" tabindex="0"></textarea>
 	</div>
 	<div id="topbar">
 		<span class="left">
 			<span class="ui-widget">
-				<a href="index.jsp">${applicationScope['treeanno.name']} ${applicationScope['treeanno.version']}</a> &gt;
-				<a href="projects.jsp?projectId=${requestScope.project.databaseId}">${requestScope.project.name}</a> &gt; 
-				${requestScope.document.name}
+				<a href="index.jsp">${applicationScope['treeanno.name']}&nbsp;${applicationScope['treeanno.version']}</a> &gt;
+				<a href="projects.jsp?projectId=${requestScope.project.databaseId}">${fn:escapeXml(requestScope.project.name)}</a> &gt; 
+				${fn:escapeXml(requestScope.document.name)}
 			</span>
 		</span>
 		<span class="middle ui-widget" >

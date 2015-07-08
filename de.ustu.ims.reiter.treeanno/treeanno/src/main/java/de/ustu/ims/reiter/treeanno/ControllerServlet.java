@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
  * Servlet implementation class ControllerServlet
@@ -58,9 +59,13 @@ public class ControllerServlet extends HttpServlet {
 						di.getDatabaseIO().getAccessLevel(
 								Integer.valueOf(docId),
 								(User) request.getSession()
-										.getAttribute("user"));
+								.getAttribute("user"));
 				if (accessLevel < 10) {
 					response.setStatus(Response.SC_FORBIDDEN);
+					return;
+				}
+				if (di.getDatabaseIO().isHidden(docId)) {
+					response.setStatus(Response.SC_NOT_FOUND);
 					return;
 				}
 				JSONObject obj = new JSONObject();

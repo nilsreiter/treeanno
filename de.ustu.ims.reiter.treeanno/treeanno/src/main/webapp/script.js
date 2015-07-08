@@ -1,10 +1,8 @@
 var maxStringLength = 160;
 
-var i18nObj;
-
 var enable_interaction = true;
 
-var items = new Array();
+var shifted = false;
 
 var idCounter = 0;
 
@@ -15,6 +13,8 @@ function get_html_item(item, i) {
 	$(htmlItem).attr("title", item['text']);
 	$(htmlItem).addClass("tl0");
 	$(htmlItem).attr("data-treeanno-id", item['id']);
+	$(htmlItem).attr("data-treeanno-begin", item['begin']);
+	$(htmlItem).attr("data-treeanno-end", item['end']);
 	idCounter = Math.max(idCounter, item['id']);
 	//$(htmlItem).attr("data-treeanno-uid", item['id']);
 	if ('category' in item)
@@ -22,6 +22,7 @@ function get_html_item(item, i) {
 	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
 	return htmlItem;
 }
+
 
 function dtext(s) {
 	if (s.length > maxStringLength)
@@ -38,26 +39,94 @@ function init_all() {
 
 function init_projects() {
 	init_all();
+	jQuery.getJSON("projectlist.jsp", function(data) {
+		for (var i = 0; i < data.length; i++) {
+			var tr = document.createElement("tr");
+			var id=data[i]['id'];
+			$(tr).append("<td>"+data[i]['id']+"</td>");
+			$(tr).append("<td>"+data[i]['name']+"</td>");
+			$(tr).append("<td><button class=\"button_open\">open</button></td>");
+			$(tr).find("button.button_open").button({
+				label: i18n.t("open")
+			}).click({'projectId':data[i]['id']}, function(event) {	
+				show_documentlist(event.data['projectId']); 
+			});
+			$("#projectlistarea table tbody").append(tr);
+			if (typeof(selected)!=undefined) {
+				if (selected == id)
+					show_documentlist(id);
+			}
+
+		};
+		
+	});
+	
 	$( "button.button_edit_user" ).button({
 		icons: { primary: "ui-icon-person", secondary:null }
 	});
-	$("button").button();
-	if (typeof(selected)!=undefined) {
-		$("#project-show-button-"+selected).click();
-	}
 }
 
-function show_documentlist(id, name) {
-	$(".documentlist").hide();
-	$(".documentlist.project-"+id).show();
+function show_documentlist(id) {
+	$("#documentlistarea").empty();
 	$("#topbar .left .pname").remove();
-	$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+name+"</span>");
+
+	jQuery.getJSON("documentlist.jsp?projectId="+id, function(data) {
+		var header = false;
+		var table = document.createElement("table");
+		for (var i = 0; i < data['documents'].length; i++) {
+			if (!header) {
+				var trh = document.createElement("tr");
+				$(trh).append("<th>"+i18n.t("document_id")+"</th>");
+				$(trh).append("<th>"+i18n.t("document_name")+"</th>");
+				$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
+				$(table).append(trh);
+				header = true;
+			}
+			var tr = document.createElement("tr");
+			$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
+			$(tr).append("<td>"+data['documents'][i]['name']+"</td>");
+			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
+			$(tr).append("<td><button class=\"button_open\"></button></td>");
+			$(tr).append("<td><button class=\"button_clone\">clone</button></td>");
+			$(tr).append("<td><button class=\"button_delete\">delete</button></td>");
+			$(tr).append("<td><button class=\"button_export\">export</button></td>");
+			$(tr).find("button.button_open").button({label:i18n.t("open")}).click({
+				'documentId':data['documents'][i]['id']
+			}, function(event) {
+				window.location.href="main.jsp?documentId="+event.data.documentId;
+			});
+			$(tr).find("button.button_clone").button({label:i18n.t("clone")}).click({
+				'documentId':data['documents'][i]['id']
+			}, function(event) {
+				jQuery.getJSON("DocumentHandling?action=clone&documentId="+event.data.documentId, function() {
+					show_documentlist(id);
+				});
+			});
+			$(tr).find("button.button_delete").button({label:i18n.t("delete")}).click({
+				'documentId':data['documents'][i]['id']
+			}, function(event) {
+				jQuery.getJSON("DocumentHandling?action=delete&documentId="+event.data.documentId, function() {
+					show_documentlist(id);
+				});
+			});
+			$(tr).find("button.button_export").button({label:i18n.t("export")}).click({
+				'documentId':data['documents'][i]['id']
+			}, function(event) {
+				window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
+			});
+			$(table).append(tr);
+		}
+		$("#documentlistarea").append("<h2>"+i18n.t("documents_in_X", {"projectname":data['project']['name']})+"</h2>");
+		$("#documentlistarea").append(table);
+		$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+data['project']['name']+"</span>");
+	});
 }
 
 function init_trans(fnc) {
 	i18n.init({ 
 		resGetPath:'locales/__ns__-__lng__.json',
 		lng: language }, function(t) {
+			$("body").i18n();
 			$(".trans").each(function(index, element) {
 				var text = $(element).text().trim();
 				$(element).empty();
@@ -105,15 +174,15 @@ function init_main() {
 			for (var i = 0; i < data["list"].length; i++) {
 				
 				var item = data["list"][i];
-				items[item["id"]] = item;
+				// items[item["id"]] = item;
 				
 				var t = item["text"];
 				
 				if (t.length > maxStringLength)
 					t = t.substring(0,maxStringLength-3) + "...";
 				if ('parentId' in item) {
-					parentId = item['parentId'];
-					parentItem = $("li[data-treeanno-id='"+parentId+"']");
+					var parentId = item['parentId'];
+					var parentItem = $("li[data-treeanno-id='"+parentId+"']");
 					if (parentItem.children("ul").length == 0)
 						parentItem.append("<ul></ul>");
 					$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, i));
@@ -122,11 +191,16 @@ function init_main() {
 				}
 			}
 			$('#outline > li:first-child').addClass("selected");
-			
 			document.onkeydown = function(e) {
-				user_input(e);
-			}
-		
+				key_down(e);
+			};
+			document.onkeyup = function(e) {
+				key_up(e);
+			};
+			$("#outline li").click(function(e) {
+				$("#outline li").removeClass("selected");
+				$(this).addClass("selected");
+			});		
 	});
 }
 
@@ -137,18 +211,22 @@ function search() {
 }
 
 function save_document() {
-	sitems = items;
+	var sitems = new Array(); //items;
 	
 	$("#outline li").each(function(index, element) {
-		var id = $(element).attr("data-treeanno-id");
+		var item = new Object();
+		item['id'] = $(element).attr("data-treeanno-id");
+		item['begin'] = $(element).attr("data-treeanno-begin");
+		item['end'] = $(element).attr("data-treeanno-end");
 		// alert(id);
-		parents = $(element).parentsUntil("#outline", "li");
+		var parents = $(element).parentsUntil("#outline", "li");
 		if (parents.length > 0) {
-			parent = parents.first();
-			parentId = parseInt(parent.attr("data-treeanno-id"));
-			sitems[id]["parentId"] = parentId;
+			var parent = parents.first();
+			var parentId = parseInt(parent.attr("data-treeanno-id"));
+			item["parentId"] = parentId;
 		}
-		sitems[id]['category'] = $(element).children("p").text();
+		item['category'] = $(element).children("p").text();
+		sitems.push(item);
 	});
 	$.ajax({
 		type: "POST",
@@ -189,15 +267,30 @@ function disableSaveButton() {
 	}
 }
 
+function key_up(e) {
+	if (!enable_interaction) return;
+	e.preventDefault();
+	var keyCode = e.keyCode || e.which,
+		kbkey = { shift:16 };
+	switch(keyCode) {
+	case kbkey.shift:
+		shifted = false;
+		break;
+	}
+}
 
-function user_input(e) {
+
+function key_down(e) {
 	if (!enable_interaction) return;
 	e.preventDefault();
 	var keyCode = e.keyCode || e.which,
     	kbkey = { up: 38, down: 40, right: 39, left: 37, 
-			enter: 13, s: 83, m:77, c:67, d:68 };
+			enter: 13, s: 83, m:77, c:67, d:68, shift: 16 };
 	var allItems = $("#outline li");
 	switch (keyCode) {
+	case kbkey.shift:
+		shifted = true;
+		break;
 	case kbkey.d:
 		delete_category();
 		break;
@@ -205,30 +298,57 @@ function user_input(e) {
 		add_category();
 		break;
 	case kbkey.m:
-		mergedialog();
+		if ($(".selected").length == 2) {
+			mergeselected();
+		} else {
+			// mergedialog();
+		}
 		break;
 	case kbkey.s:
 		splitdialog();
 		break;
 	case kbkey.down:
-		var index = $(".selected").index("#outline li");
+		// get index of last selected item
+		var index = $(".selected").last().index("#outline li");
+		
+		// if shift is not pressed, we remove the selection from everything that is selected
+		if (!shifted && index < $("#outline li").length-1)
+			$(".selected").toggleClass("selected");
+		
+		// if nothing is selected
 		if (index == -1) {
-			$($(allItems).get(0)).toggleClass("selected");					
+			// we select the first thing on the page
+			$($(allItems).get(0)).toggleClass("selected");		
+		// if there is something after the last selected item, we select that
 		} else if (index < $(allItems).length-1) {
-			$($(allItems).get(index)).toggleClass("selected");
-			$($(allItems).get(index+1)).toggleClass("selected");
+			// if shift is not pressed, we select the next item of all items
+			if (!shifted)
+				$($(allItems).get(index+1)).toggleClass("selected");
+			// if it is pressed, we select the next sibling
+			if (shifted)
+				$(".selected").last().next().toggleClass("selected");
 		}
-		if (!isElementInViewport($(".selected")))
-			$(window).scrollTop($(".selected").offset().top - 200);
+		// if the last selected thing is not in viewport, we scroll
+		if (!isElementInViewport($(".selected").last()))
+			$(window).scrollTop($(".selected").last().offset().top - 200);
 		break;
 	case kbkey.up:
-		var index = $(".selected").index("#outline li");
+		// get index of first selected item
+		var index = $(".selected").first().index("#outline li");
+		// if shift is not pressed, remove the selection
+		if (!shifted && index > 0)
+			$(".selected").toggleClass("selected");
+		
+		// if select the new item
 		if (index > 0) {
-			$($(allItems).get(index)).toggleClass("selected");
-			$($(allItems).get(index-1)).toggleClass("selected");
+			if (!shifted)
+				$($(allItems).get(index-1)).toggleClass("selected");
+			if (shifted)
+				$(".selected").first().prev().toggleClass("selected");
 		}
-		if (!isElementInViewport($(".selected")))
-			$(window).scrollTop($(".selected").offset().top - 200);
+		// if not in viewport, scroll
+		if (!isElementInViewport($(".selected").first()))
+			$(window).scrollTop($(".selected").first().offset().top - 200);
 		break;
 	case kbkey.right:
 		indent();
@@ -266,8 +386,8 @@ function delete_category() {
 function add_category() {
 	enable_interaction = false;
 	$(".selected > p.annocat").remove();
-	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
-	$(".selected").prepend("<input type=\"text\" id=\"cat_input\" value=\""+val+"\"/>");
+	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):$(".selected").attr("title"));
+	$(".selected").prepend("<input type=\"text\" size=\"100\" id=\"cat_input\" value=\""+val+"\"/>");
 	$("#cat_input").keyup(function(event){
 	    if(event.keyCode == 13){
 	       enter_category();
@@ -287,7 +407,7 @@ function cancel_category() {
 
 }
 function enter_category() {
-	value = $("#cat_input").val();
+	var value = $("#cat_input").val();
 	$("#cat_input").remove();
 	$(".selected").prepend("<p class=\"annocat\">"+value+"</p>");
 	// var oa = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
@@ -296,49 +416,27 @@ function enter_category() {
 	enable_interaction = true;
 }
 
-function mergedialog() {
-	enable_interaction = false;
-	var item = items[$(".selected").data("treeanno-id")];
-	
-	var prevCand = $(".selected").prev("li").attr("data-treeanno-id");
-	var nextCand = $(".selected").next("li").attr("data-treeanno-id");
-	$("#merge p").append("Merge <span class=\"tt\">&quot;"+dtext(item['text'])+"&quot;</span> with ...");
-	if (typeof prevCand !== 'undefined') 
-		$("#form_mergecandidates").append("<option value=\""+prevCand+"\">"+dtext(items[prevCand]['text'])+"</option>");
-	if (typeof nextCand !== 'undefined' && $(".selected ul").length == 0) 
-		$("#form_mergecandidates").append("<option value=\""+nextCand+"\">"+dtext(items[nextCand]['text'])+"</option>");
-	$('#form_mergecandidates').on('keydown', function(e) {
-	    if (e.which == 13) {
-	        e.preventDefault();
-	        mergedialog_enter();
-	    }
-	});
-	$("#merge").dialog({
-		title: i18n("Merge Segments"),
-		modal:true,
-		minWidth:400,
-		close: mergedialog_cleanup,
-		buttons: [{
-		        	  text: i18n("ok"),
-		        	  click: mergedialog_enter
-		        }, {
-		        	text: i18n("cancel"),
-		        	click: mergedialog_cleanup
-		        }
-		]
-	});
-	document.getElementById("form_mergecandidates").focus();
+function get_item(id) {
+	var obj = new Object();
+	obj['id'] = id;
+	var liElement= $("li[data-treeanno-id=\""+id+"\"]");
+	obj['begin'] = $(liElement).attr("data-treeanno-begin");
+	obj['end'] = $(liElement).attr("data-treeanno-end");
+	obj['text'] = $(liElement).attr("title");
+	return obj;
 }
 
+function mergeselected() {
+	var item1 = get_item($(".selected").first().attr("data-treeanno-id"));
+	var item0 = get_item($(".selected").last().attr("data-treeanno-id"));
+	merge(item1, item0);
 
-function mergedialog_enter() {
-	nid = $("#form_mergecandidates").val();
-	item1 = items[nid];
-	item0 = items[$(".selected").attr("data-treeanno-id")];
+}
+
+function merge(item1, item0) {
+	var correctOrder = (item1['begin'] > item0['begin']);
 	
-	correctOrder = (item1['begin'] > item0['begin']);
-	
-	nitem = new Object();
+	var nitem = new Object();
 	var distance = (correctOrder?item1['begin']-item0['end']:item0['begin']-item1['end']);
 	var str = (includeSeparationWhenMerging?new Array(distance+1).join(" "):"");
 
@@ -346,52 +444,44 @@ function mergedialog_enter() {
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
 	nitem['id'] = idCounter++;
-	items[nid] = undefined;
-	items[$(".selected").attr("data-treeanno-id")] = undefined;
+	//items[item1['id']] = undefined;
+	//items[item0['id']] = undefined;
 	
-	sublist0 = $("#outline li[data-treeanno-id='"+nid+"'] > ul").detach();
-	$("#outline li[data-treeanno-id='"+nid+"']").remove();
-	items[++idCounter] = nitem;
+	var sublist0 = $("#outline li[data-treeanno-id='"+item0['id']+"'] > ul").detach();
+	$("#outline li[data-treeanno-id='"+item0['id']+"']").remove();
+	//items[++idCounter] = nitem;
 	
 	$(".selected").after(get_html_item(nitem, idCounter));
-	newsel = $(".selected").next();
-	sublist1 = $(".selected > ul").detach();
+	var newsel = $(".selected").next();
+	var sublist1 = $(".selected > ul").detach();
 	$(".selected").remove();
 	$(newsel).addClass("selected");
 	$(".selected").append(sublist0);
 	$(".selected").append(sublist1);
-	enableSaveButton();
-	cleanup_list();
-	mergedialog_cleanup();
 }
-function mergedialog_cleanup() {
-	enable_interaction = true;
-	$("#merge p").empty();
-	$("#form_mergecandidates").unbind('keydown');
-	$("#form_mergecandidates").empty();
-	$("#merge").dialog( "destroy" );
-	
-}
+
+
 
 function splitdialog() {
 	enable_interaction = false;
-	var item = items[$(".selected").attr("data-treeanno-id")];
+	var item = get_item($(".selected").first().attr("data-treeanno-id"));
 	$("#form_splittext").val(item['text'].trim());
 	$("#split").dialog({
-		title: i18n("Split Segment"),
+		title: i18n.t("Split Segment"),
 		modal: true,
 		minWidth: 400,
 		close: splitdialog_cleanup,
 		buttons: 
 		[
 		 	{
-		 		text: i18n("ok"),
-		 		
-		 		click: splitdialog_enter
+		 		text: i18n.t("ok"),
+		 		click: splitdialog_enter,
+		 		tabindex:1
 		    },
 		    {
-		    	text: i18n("cancel"),
-		    	click: splitdialog_cleanup
+		    	text: i18n.t("cancel"),
+		    	click: splitdialog_cleanup,
+		    	tabindex:2
 		    }
 		]
 	});
@@ -405,13 +495,13 @@ function splitdialog_cleanup() {
 }
 
 function splitdialog_enter() {
-	itemid = $(".selected").data("treeanno-id");
-	item = items[itemid];
+	var itemid = $(".selected").data("treeanno-id");
+	var item = get_item(itemid);
 	var text = $("#form_splittext").val();
 	var lines = text.split("\n\n");
 	if (lines.length == 2) {
 		
-		litems = new Array();
+		var litems = new Array();
 		litems[0] = new Object();
 		litems[0]['begin'] = item['begin'];
 		litems[0]['text'] = lines[0];
@@ -422,57 +512,57 @@ function splitdialog_enter() {
 		litems[1]['text'] = lines[1];
 		litems[1]['begin'] = litems[0]['end'];
 		litems[1]['id'] = ++idCounter;
-		items[itemid] = undefined;
+		// items[itemid] = undefined;
 		
-		sublist = $(".selected > ul").detach();
-		items[litems[1]['id']] = litems[1];
+		var sublist = $(".selected > ul").detach();
+		// items[litems[1]['id']] = litems[1];
 		
 		$(".selected").after(get_html_item(litems[1], idCounter))
 		$(".selected").next().append(sublist);
-		items[litems[0]['id']] = litems[0];
+		// items[litems[0]['id']] = litems[0];
 		$(".selected").after(get_html_item(litems[0], idCounter));
-		nsel = $(".selected").next();
+		var nsel = $(".selected").next();
 		$(".selected").remove();
 		$(nsel).addClass("selected");
+		enableSaveButton();
 	}
-	enableSaveButton();
 	cleanup_list();
 	splitdialog_cleanup();
 }
 
 
 function outdent() {
-	var currentItem = $("#outline li.selected");
-	var id = $(currentItem).attr("data-treeanno-id");
-	// if it's not the very first item
-	if ($("ul#outline > li.selected").length == 0) {
-		var newParent = $("#outline li.selected").parentsUntil("li").parent();
-		var parentId = parseInt($(newParent).attr("data-treeanno-id"));
-		siblings = $("#outline li.selected ~ li").detach();
+	$(".selected").each(function(index, element) {
+		var id = $(element).attr("data-treeanno-id");
 		
-		if ($("#outline li.selected > ul").length == 0)
-			$("#outline li.selected").append("<ul></ul>");
-		$("#outline li.selected > ul").append(siblings);
-		s = $(currentItem).detach();
-		$(newParent).after(s);
-		delete items[id]['parentId'];
-	}
+		// if it's not the very first item
+		if (!$(element).parent("ul#outline").length) {
+			var newParent = $(element).parentsUntil("li").parent();
+			var parentId = parseInt($(newParent).attr("data-treeanno-id"));
+			var siblings = $(element).nextAll("li").detach();
+			if ($(element).children("ul").length == 0)
+				$(element).append("<ul></ul>");
+			$(element).children("ul").append(siblings);
+			var s = $(element).detach();
+			$(newParent).after(s);
+			// delete items[id]['parentId'];
+		}
+	});
 	cleanup_list();
 	enableSaveButton();
-
 }
 
 function indent() {
-	var currentItem = $("#outline li.selected");
-	if ($(".selected").prev("li").length > 0) {
-		prev = $(".selected").prev("li");
-		
-		if ($(prev).children("ul").length == 0)
-			prev.append("<ul></ul>");
-		s = $(".selected").detach();
-		$(prev).children("ul").append(s);
-	}
-	cleanup_list();
+	$(".selected").each(function(index, element) {
+		if ($(element).prev("li").length > 0) {
+			var prev = $(element).prev("li");
+			if ($(prev).children("ul").length == 0)
+				prev.append("<ul></ul>");
+			var s = $(element).detach();
+			$(prev).children("ul").append(s);
+		}
+		cleanup_list();		
+	});
 	enableSaveButton();
 }
 
