@@ -1,5 +1,6 @@
 package de.ustu.ims.reiter.treeanno;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -81,7 +82,8 @@ public class DataCache implements DataLayer {
 	}
 
 	@Override
-	public JCas getJCas(Document document) throws UIMAException, SQLException {
+	public JCas getJCas(Document document) throws UIMAException, SQLException,
+			SAXException, IOException {
 		if (!jcasCache.containsKey(document))
 			jcasCache.put(document, dbio.getJCas(document));
 		return jcasCache.get(document);

@@ -1,5 +1,6 @@
 package de.ustu.ims.reiter.treeanno;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 
@@ -30,12 +31,13 @@ public interface DataLayer {
 
 	Collection<Document> getDocuments(Project proj) throws SQLException;
 
-	JCas getJCas(Document document) throws SQLException, UIMAException;
+	JCas getJCas(Document document) throws SQLException, UIMAException,
+			SAXException, IOException;
 
 	boolean deleteDocument(Document document) throws SQLException;
 
 	int cloneDocument(Document document) throws SQLException;
 
 	boolean updateJCas(Document document, JCas jcas) throws SQLException,
-			SAXException;
+	SAXException;
 }

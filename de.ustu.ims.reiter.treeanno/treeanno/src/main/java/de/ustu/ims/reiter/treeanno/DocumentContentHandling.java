@@ -82,9 +82,8 @@ public class DocumentContentHandling extends HttpServlet {
 							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
-					throw new ServletException(
-							"JCas could not be loaded (documentId=" + docId
-									+ ".");
+					throw new ServletException("JCas could not be loaded: "
+							+ docId);
 				}
 
 			}
@@ -92,10 +91,9 @@ public class DocumentContentHandling extends HttpServlet {
 			throw new ServletException(e);
 		} catch (JSONException e) {
 			throw new ServletException(e);
-		} catch (SQLException | UIMAException e) {
+		} catch (SQLException | SAXException | UIMAException e) {
 			throw new ServletException(e);
 		}
-
 	}
 
 	/**
