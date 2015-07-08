@@ -1,6 +1,7 @@
 package de.ustu.ims.reiter.treeanno;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.uima.UIMAException;
 import org.apache.uima.cas.impl.TypeSystem2Xml;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.fit.util.JCasUtil;
@@ -50,32 +52,38 @@ public class DocumentHandling extends HttpServlet {
 		if (action.equalsIgnoreCase("delete")) {
 			String[] docIds = request.getParameterValues("documentId");
 			for (int i = 0; i < docIds.length; i++) {
-				Document document =
-						dataLayer.getDocument(Integer.valueOf(docIds[i]));
 				try {
+					Document document =
+							dataLayer.getDocument(Integer.valueOf(docIds[i]));
 					dataLayer.deleteDocument(document);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
+				} catch (NumberFormatException | SQLException e) {
+					throw new ServletException(e);
 				}
 			}
 			Util.returnJSON(response, new JSONObject());
 		} else if (action.equalsIgnoreCase("clone")) {
 			String[] docIds = request.getParameterValues("documentId");
 			for (int i = 0; i < docIds.length; i++) {
-				Document document =
-						dataLayer.getDocument(Integer.valueOf(docIds[i]));
-				dataLayer.cloneDocument(document);
+				try {
+					Document document =
+							dataLayer.getDocument(Integer.valueOf(docIds[i]));
+					dataLayer.cloneDocument(document);
+				} catch (SQLException e) {
+					throw new ServletException(e);
+				}
 
 			}
 			Util.returnJSON(response, new JSONObject());
 		} else if (action.equalsIgnoreCase("export")) {
 			String[] docIds = request.getParameterValues("documentId");
-			for (int i = 0; i < docIds.length; i++) {
+			// TODO: currently, this only exports the first document in the
+			// list, should be improved since we return a zip file anyway.
+			for (int i = 0; i < docIds.length;) {
 				int docId = Integer.valueOf(docIds[i]);
-				Document document =
-						dataLayer.getDocument(Integer.valueOf(docIds[i]));
 				ZipOutputStream zos = null;
 				try {
+					Document document =
+							dataLayer.getDocument(Integer.valueOf(docIds[i]));
 					response.setContentType("application/zip");
 					response.setHeader("Content-Disposition",
 							"attachment; filename=\"file.zip\"");
@@ -99,8 +107,9 @@ public class DocumentHandling extends HttpServlet {
 					TypeSystem2Xml.typeSystem2Xml(jcas.getTypeSystem(), zos);
 					zos.flush();
 					return;
-				} catch (SAXException e) {
-					e.printStackTrace();
+				} catch (SAXException | NumberFormatException | SQLException
+						| UIMAException e) {
+					throw new ServletException(e);
 				} finally {
 					if (zos != null) zos.close();
 				}

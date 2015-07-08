@@ -36,7 +36,11 @@ public class UserHandling extends HttpServlet {
 				HttpSession session = request.getSession();
 				User user = null;
 				DataLayer dl = CW.getDataLayer(getServletContext());
-				user = dl.getUser(Integer.valueOf(unames[0]));
+				try {
+					user = dl.getUser(Integer.valueOf(unames[0]));
+				} catch (NumberFormatException | SQLException e) {
+					throw new ServletException(e);
+				}
 				if (user != null) {
 					session.setAttribute(CA.USER, user);
 					response.sendRedirect("projects.jsp");
