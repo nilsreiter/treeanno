@@ -2,6 +2,7 @@ package de.ustu.ims.reiter.treeanno;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +15,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.User;
@@ -80,9 +82,8 @@ public class DocumentContentHandling extends HttpServlet {
 							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
-					throw new ServletException(
-							"JCas could not be loaded (documentId=" + docId
-									+ ".");
+					throw new ServletException("JCas could not be loaded: "
+							+ docId);
 				}
 
 			}
@@ -90,8 +91,9 @@ public class DocumentContentHandling extends HttpServlet {
 			throw new ServletException(e);
 		} catch (JSONException e) {
 			throw new ServletException(e);
+		} catch (SQLException | SAXException | UIMAException e) {
+			throw new ServletException(e);
 		}
-
 	}
 
 	/**
@@ -106,14 +108,14 @@ public class DocumentContentHandling extends HttpServlet {
 		String s = IOUtils.toString(is);
 		JSONObject jObj = new JSONObject(s);
 		int docId = jObj.getInt("document");
-		Document document = dataLayer.getDocument(docId);
 		boolean r = false;
 		try {
+			Document document = dataLayer.getDocument(docId);
 			JCas jcas =
 					Util.addAnnotationsToJCas(dataLayer.getJCas(document), jObj);
 			r = dataLayer.updateJCas(document, jcas);
-		} catch (UIMAException | JSONException e) {
-			e.printStackTrace();
+		} catch (UIMAException | JSONException | SQLException | SAXException e) {
+			throw new ServletException(e);
 		}
 		if (r) {
 			Util.returnJSON(response, new JSONObject());

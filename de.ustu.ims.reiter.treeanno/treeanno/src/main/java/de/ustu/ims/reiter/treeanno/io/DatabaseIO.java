@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -72,7 +73,7 @@ public class DatabaseIO implements DataLayer {
 		return false;
 	}
 
-	public int getAccessLevel(int documentId, User user) {
+	public int getAccessLevel(int documentId, User user) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -91,8 +92,6 @@ public class DatabaseIO implements DataLayer {
 				conn.close();
 				return r;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -102,7 +101,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public int getAccessLevel(Project project, User user) {
+	public int getAccessLevel(Project project, User user) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -121,8 +120,6 @@ public class DatabaseIO implements DataLayer {
 				conn.close();
 				return r;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -132,11 +129,18 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-	SAXException, IOException {
+	SAXException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
-		String s = new String(baos.toByteArray(), "UTF-8");
+
+		String s = null;
+		try {
+			s = new String(baos.toByteArray(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// This should not happen.
+			e.printStackTrace();
+		}
 
 		Connection connection = dataSource.getConnection();
 
@@ -151,7 +155,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public Document getDocument(int documentId) {
+	public Document getDocument(int documentId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -175,8 +179,6 @@ public class DatabaseIO implements DataLayer {
 				return document;
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -186,8 +188,8 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
-	public JCas getJCas(int documentId) throws SQLException, IOException,
-	UIMAException {
+	public JCas getJCas(int documentId) throws SQLException, UIMAException,
+	SAXException, IOException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
@@ -208,14 +210,6 @@ public class DatabaseIO implements DataLayer {
 			try {
 				is = new ByteArrayInputStream(textXML.getBytes());
 				XmiCasDeserializer.deserialize(is, jcas.getCas(), true);
-			} catch (SAXException e) {
-				IOException ioe = new IOException(e.getMessage());
-				ioe.initCause(e);
-				throw ioe; // NOPMD
-				// If we were using Java 1.6 and add the wrapped exception
-				// to
-				// the IOException
-				// constructor, we would not get a warning here
 			} finally {
 				IOUtils.closeQuietly(is);
 			}
@@ -256,7 +250,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public List<Project> getProjects() {
+	public List<Project> getProjects() throws SQLException {
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -273,8 +267,6 @@ public class DatabaseIO implements DataLayer {
 				p.setName(rs.getString(2));
 				projects.add(p);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -285,7 +277,7 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
-	public List<Document> getDocuments(int projectId) {
+	public List<Document> getDocuments(int projectId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -306,8 +298,6 @@ public class DatabaseIO implements DataLayer {
 				doc.setProject(getProject(rs.getInt(5)));
 				documents.add(doc);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -337,7 +327,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public Project getProject(int i) {
+	public Project getProject(int i) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -353,8 +343,6 @@ public class DatabaseIO implements DataLayer {
 				proj.setDatabaseId(rs.getInt(1));
 				proj.setName(rs.getString(2));
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -365,7 +353,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public User getUser(int i) {
+	public User getUser(int i) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -384,8 +372,6 @@ public class DatabaseIO implements DataLayer {
 				if (rs.getString(4) != null) user.setLanguage(rs.getString(4));
 
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -396,38 +382,25 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public Collection<Document> getDocuments(Project proj) {
+	public Collection<Document> getDocuments(Project proj) throws SQLException {
 		return getDocuments(proj.getDatabaseId());
 	}
 
 	@Override
-	public JCas getJCas(Document document) {
-		try {
-			return this.getJCas(document.getDatabaseId());
-		} catch (UIMAException | SQLException | IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public JCas getJCas(Document document) throws SQLException, UIMAException,
+			SAXException, IOException {
+		return this.getJCas(document.getDatabaseId());
 	}
 
 	@Override
-	public boolean deleteDocument(Document document) {
-		try {
-			return this.deleteDocument(document.getDatabaseId());
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public boolean deleteDocument(Document document) throws SQLException {
+		return this.deleteDocument(document.getDatabaseId());
+
 	}
 
 	@Override
-	public int cloneDocument(Document document) {
-		try {
-			if (!cloneDocument(document.getDatabaseId())) return -1;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return -1;
-		}
+	public int cloneDocument(Document document) throws SQLException {
+		if (!cloneDocument(document.getDatabaseId())) return -1;
 
 		Connection conn = null;
 		Statement stmt = null;
@@ -439,8 +412,6 @@ public class DatabaseIO implements DataLayer {
 			if (rs.next()) {
 				return rs.getInt(1);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -450,12 +421,8 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public boolean updateJCas(Document document, JCas jcas) {
-		try {
-			return this.updateJCas(document.getDatabaseId(), jcas);
-		} catch (SQLException | SAXException | IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public boolean updateJCas(Document document, JCas jcas)
+			throws SQLException, SAXException {
+		return this.updateJCas(document.getDatabaseId(), jcas);
 	}
 }

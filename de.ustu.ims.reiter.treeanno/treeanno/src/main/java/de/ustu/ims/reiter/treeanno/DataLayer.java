@@ -1,8 +1,12 @@
 package de.ustu.ims.reiter.treeanno;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Collection;
 
+import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
+import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
@@ -15,23 +19,25 @@ import de.ustu.ims.reiter.treeanno.beans.User;
  *
  */
 public interface DataLayer {
-	Project getProject(int i);
+	Project getProject(int i) throws SQLException;
 
-	Collection<Project> getProjects();
+	Collection<Project> getProjects() throws SQLException;
 
-	User getUser(int i);
+	User getUser(int i) throws SQLException;
 
-	Document getDocument(int i);
+	Document getDocument(int i) throws SQLException;
 
-	int getAccessLevel(Project proj, User user);
+	int getAccessLevel(Project proj, User user) throws SQLException;
 
-	Collection<Document> getDocuments(Project proj);
+	Collection<Document> getDocuments(Project proj) throws SQLException;
 
-	JCas getJCas(Document document);
+	JCas getJCas(Document document) throws SQLException, UIMAException,
+			SAXException, IOException;
 
-	boolean deleteDocument(Document document);
+	boolean deleteDocument(Document document) throws SQLException;
 
-	int cloneDocument(Document document);
+	int cloneDocument(Document document) throws SQLException;
 
-	boolean updateJCas(Document document, JCas jcas);
+	boolean updateJCas(Document document, JCas jcas) throws SQLException,
+	SAXException;
 }
