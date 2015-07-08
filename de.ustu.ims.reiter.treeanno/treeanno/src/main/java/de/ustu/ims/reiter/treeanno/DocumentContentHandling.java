@@ -2,6 +2,7 @@ package de.ustu.ims.reiter.treeanno;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -90,6 +91,8 @@ public class DocumentContentHandling extends HttpServlet {
 			throw new ServletException(e);
 		} catch (JSONException e) {
 			throw new ServletException(e);
+		} catch (SQLException e) {
+			throw new ServletException(e);
 		}
 
 	}
@@ -106,14 +109,14 @@ public class DocumentContentHandling extends HttpServlet {
 		String s = IOUtils.toString(is);
 		JSONObject jObj = new JSONObject(s);
 		int docId = jObj.getInt("document");
-		Document document = dataLayer.getDocument(docId);
 		boolean r = false;
 		try {
+			Document document = dataLayer.getDocument(docId);
 			JCas jcas =
 					Util.addAnnotationsToJCas(dataLayer.getJCas(document), jObj);
 			r = dataLayer.updateJCas(document, jcas);
-		} catch (UIMAException | JSONException e) {
-			e.printStackTrace();
+		} catch (UIMAException | JSONException | SQLException e) {
+			throw new ServletException(e);
 		}
 		if (r) {
 			Util.returnJSON(response, new JSONObject());

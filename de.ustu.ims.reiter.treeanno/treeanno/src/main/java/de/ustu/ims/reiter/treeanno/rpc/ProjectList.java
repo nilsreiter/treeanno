@@ -1,6 +1,7 @@
 package de.ustu.ims.reiter.treeanno.rpc;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Collection;
 
 import javax.servlet.ServletException;
@@ -30,19 +31,23 @@ public class ProjectList extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		Collection<Project> list =
-				CW.getDataLayer(getServletContext()).getProjects();
-		User user = (User) request.getSession().getAttribute(CA.USER);
+		try {
+			Collection<Project> list =
+					CW.getDataLayer(getServletContext()).getProjects();
+			User user = (User) request.getSession().getAttribute(CA.USER);
 
-		JSONArray array = new JSONArray();
-		for (Project project : list) {
-			if (CW.getDataLayer(getServletContext()).getAccessLevel(project,
-					user) >= Perm.READ_ACCESS) {
-				JSONObject obj = new JSONObject(project);
-				array.put(obj);
+			JSONArray array = new JSONArray();
+			for (Project project : list) {
+				if (CW.getDataLayer(getServletContext()).getAccessLevel(
+						project, user) >= Perm.READ_ACCESS) {
+					JSONObject obj = new JSONObject(project);
+					array.put(obj);
+				}
 			}
-		}
 
-		Util.returnJSON(response, array);
+			Util.returnJSON(response, array);
+		} catch (SQLException e) {
+			throw new ServletException(e);
+		}
 	}
 }
