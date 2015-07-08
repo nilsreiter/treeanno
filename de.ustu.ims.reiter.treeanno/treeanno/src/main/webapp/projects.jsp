@@ -11,6 +11,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<title>${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}: Projects</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="formats.css" type="text/css"> </link>
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.css" type="text/css"></link> 
@@ -38,7 +39,7 @@
 		<script>
 		//<![CDATA[
 			var selected = ${param.projectId};
-			var language = "${sessionScope.user.language}";
+			var language = "${sessionScope.User.language}";
 			$(document).ready(init_trans(init_projects));
 		//]]>
 		</script>
@@ -46,8 +47,8 @@
 	<c:if test="${empty param.projectId}">
 		<script>
 		//<![CDATA[
-			var selected = 0;
-			var language = "${sessionScope.user.language}";
+			var selected = -1;
+			var language = "${sessionScope.User.language}";
 			$(document).ready(init_trans(init_projects));
 		//]]>
 		</script>
@@ -70,7 +71,7 @@
 			<span><a href="index.jsp">${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}</a></span>
 		</span>
 		<span class="right">
-			<button class="button_edit_user">${sessionScope.user.name }</button>
+			<button class="button_edit_user">${sessionScope.User.name }</button>
 		</span>
 	</div>
 </body>

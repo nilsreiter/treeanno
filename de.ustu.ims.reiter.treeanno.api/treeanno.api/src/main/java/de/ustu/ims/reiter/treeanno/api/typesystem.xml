@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-    <types>
+    <name/>
+  <description/>
+  <version>0.2</version>
+  <vendor/>
+  <types>
     <typeDescription>
       <name>de.ustu.ims.reiter.treeanno.api.type.TreeSegment</name>
       <description/>
@@ -20,6 +24,11 @@
           <name>Id</name>
           <description/>
           <rangeTypeName>uima.cas.Integer</rangeTypeName>
+        </featureDescription>
+      <featureDescription>
+          <name>Mark1</name>
+          <description/>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

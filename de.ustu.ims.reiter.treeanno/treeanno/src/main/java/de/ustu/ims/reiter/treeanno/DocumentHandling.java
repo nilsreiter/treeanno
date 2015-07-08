@@ -48,17 +48,16 @@ public class DocumentHandling extends HttpServlet {
 			return;
 		}
 		String action = request.getParameterValues("action")[0];
-		DocumentIndex di =
-				((DocumentIndex) this.getServletContext().getAttribute(
-						"documentIndex"));
+		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 		if (action.equalsIgnoreCase("delete")) {
 			String[] docIds = request.getParameterValues("documentId");
 			for (int i = 0; i < docIds.length; i++) {
 				try {
-					di.getDatabaseIO().deleteDocument(
-							Integer.valueOf(docIds[i]));
+					Document document =
+							dataLayer.getDocument(Integer.valueOf(docIds[i]));
+					dataLayer.deleteDocument(document);
 				} catch (NumberFormatException | SQLException e) {
-					e.printStackTrace();
+					throw new ServletException(e);
 				}
 			}
 			Util.returnJSON(response, new JSONObject());
@@ -66,29 +65,31 @@ public class DocumentHandling extends HttpServlet {
 			String[] docIds = request.getParameterValues("documentId");
 			for (int i = 0; i < docIds.length; i++) {
 				try {
-					di.cloneDocument(Integer.valueOf(docIds[i]));
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Document document =
+							dataLayer.getDocument(Integer.valueOf(docIds[i]));
+					dataLayer.cloneDocument(document);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new ServletException(e);
 				}
+
 			}
 			Util.returnJSON(response, new JSONObject());
 		} else if (action.equalsIgnoreCase("export")) {
 			String[] docIds = request.getParameterValues("documentId");
-			for (int i = 0; i < docIds.length; i++) {
+			// TODO: currently, this only exports the first document in the
+			// list, should be improved since we return a zip file anyway.
+			for (int i = 0; i < docIds.length;) {
 				int docId = Integer.valueOf(docIds[i]);
-
+				ZipOutputStream zos = null;
 				try {
+					Document document =
+							dataLayer.getDocument(Integer.valueOf(docIds[i]));
 					response.setContentType("application/zip");
 					response.setHeader("Content-Disposition",
 							"attachment; filename=\"file.zip\"");
 
-					JCas jcas = di.getDocument(docId);
-					Document doc = di.getDatabaseIO().getDocument(docId);
-					String name = doc.getName();
+					JCas jcas = dataLayer.getJCas(document);
+					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
 						.getDocumentTitle();
@@ -96,8 +97,7 @@ public class DocumentHandling extends HttpServlet {
 						name =
 						JCasUtil.selectSingle(jcas,
 								DocumentMetaData.class).getDocumentId();
-					ZipOutputStream zos =
-							new ZipOutputStream(response.getOutputStream());
+					zos = new ZipOutputStream(response.getOutputStream());
 					zos.setLevel(9);
 					zos.putNextEntry(new ZipEntry(name + "/"));
 					ZipEntry ze = new ZipEntry(name + "/" + docId + ".xmi");
@@ -106,17 +106,12 @@ public class DocumentHandling extends HttpServlet {
 					zos.putNextEntry(new ZipEntry(name + "/typesystem.xml"));
 					TypeSystem2Xml.typeSystem2Xml(jcas.getTypeSystem(), zos);
 					zos.flush();
-					zos.close();
 					return;
-				} catch (UIMAException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SAXException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (SAXException | NumberFormatException | SQLException
+						| UIMAException e) {
+					throw new ServletException(e);
+				} finally {
+					if (zos != null) zos.close();
 				}
 			}
 		}

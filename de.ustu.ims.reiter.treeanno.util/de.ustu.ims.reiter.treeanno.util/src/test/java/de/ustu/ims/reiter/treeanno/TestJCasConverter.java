@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
+import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 
 public class TestJCasConverter {
 

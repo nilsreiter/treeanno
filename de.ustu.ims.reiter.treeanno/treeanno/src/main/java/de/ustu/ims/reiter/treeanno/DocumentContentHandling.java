@@ -17,13 +17,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
+import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
  * Servlet implementation class ControllerServlet
  */
-public class ControllerServlet extends HttpServlet {
+public class DocumentContentHandling extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	JCas jcas;
@@ -32,7 +34,7 @@ public class ControllerServlet extends HttpServlet {
 	 * Default constructor. 
 	 * @throws UIMAException 
 	 */
-	public ControllerServlet() throws UIMAException {
+	public DocumentContentHandling() throws UIMAException {
 
 	}
 
@@ -42,53 +44,56 @@ public class ControllerServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		DocumentIndex di =
-				((DocumentIndex) this.getServletContext().getAttribute(
-						"documentIndex"));
+		DataLayer dl = CW.getDataLayer(getServletContext());
 
 		String[] documents = request.getParameterValues("documentId");
-		if (request.getSession().getAttribute("user") == null) {
+		if (request.getSession().getAttribute(CA.USER) == null) {
 			response.setStatus(Response.SC_FORBIDDEN);
 			return;
 		}
 		try {
 			if (documents.length > 0) {
 				int docId = Integer.valueOf(documents[0]);
-
+				Document document = dl.getDocument(docId);
+				if (document == null) {
+					throw new ServletException("Document could not be loaded.");
+				}
 				int accessLevel =
-						di.getDatabaseIO().getAccessLevel(
-								Integer.valueOf(docId),
-								(User) request.getSession()
-								.getAttribute("user"));
-				if (accessLevel < 10) {
+						dl.getAccessLevel(document.getProject(), (User) request
+								.getSession().getAttribute(CA.USER));
+				if (accessLevel == Perm.NO_ACCESS) {
 					response.setStatus(Response.SC_FORBIDDEN);
 					return;
 				}
-				if (di.getDatabaseIO().isHidden(docId)) {
+				if (document.isHidden()) {
 					response.setStatus(Response.SC_NOT_FOUND);
 					return;
 				}
-				JSONObject obj = new JSONObject();
-				obj.put("documentId", docId);
-				obj.put("list",
-						new JCasConverter().getJSONArrayFromAnnotations(
-								di.getDocument(Integer.valueOf(docId)),
-								de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
-				Util.returnJSON(response, obj);
-			}
-		} catch (UIMAException e) {
-			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
+				JCas jcas = dl.getJCas(document);
+				if (jcas != null) {
+					JSONObject obj = new JSONObject();
+					obj.put("documentId", docId);
+					obj.put("document", new JSONObject(document));
+					obj.put("list",
+							new JCasConverter()
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					Util.returnJSON(response, obj);
+				} else {
+					throw new ServletException("JCas could not be loaded: "
+							+ docId);
+				}
+
+			}
+		} catch (NumberFormatException e) {
+			throw new ServletException(e);
+		} catch (JSONException e) {
+			throw new ServletException(e);
+		} catch (SQLException | SAXException | UIMAException e) {
+			throw new ServletException(e);
+		}
 	}
 
 	/**
@@ -97,19 +102,20 @@ public class ControllerServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		DocumentIndex di =
-				((DocumentIndex) this.getServletContext().getAttribute(
-						"documentIndex"));
+		DataLayer dataLayer = CW.getDataLayer(getServletContext());
+
 		InputStream is = request.getInputStream();
 		String s = IOUtils.toString(is);
 		JSONObject jObj = new JSONObject(s);
 		int docId = jObj.getInt("document");
 		boolean r = false;
 		try {
-			JCas jcas = Util.addAnnotationsToJCas(di.getDocument(docId), jObj);
-			r = di.getDatabaseIO().updateJCas(docId, jcas);
+			Document document = dataLayer.getDocument(docId);
+			JCas jcas =
+					Util.addAnnotationsToJCas(dataLayer.getJCas(document), jObj);
+			r = dataLayer.updateJCas(document, jcas);
 		} catch (UIMAException | JSONException | SQLException | SAXException e) {
-			e.printStackTrace();
+			throw new ServletException(e);
 		}
 		if (r) {
 			Util.returnJSON(response, new JSONObject());

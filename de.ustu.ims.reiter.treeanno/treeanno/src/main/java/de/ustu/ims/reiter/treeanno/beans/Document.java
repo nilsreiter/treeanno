@@ -59,4 +59,15 @@ public class Document {
 		this.hidden = hidden;
 	}
 
+	@Override
+	public int hashCode() {
+		return databaseId;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Document)) return false;
+		return this.hashCode() == obj.hashCode();
+	}
+
 }

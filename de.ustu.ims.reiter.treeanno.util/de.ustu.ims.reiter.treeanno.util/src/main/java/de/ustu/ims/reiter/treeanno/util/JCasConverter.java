@@ -1,4 +1,4 @@
-package de.ustu.ims.reiter.treeanno;
+package de.ustu.ims.reiter.treeanno.util;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -23,6 +23,7 @@ public class JCasConverter {
 		obj.put("begin", annotation.getBegin());
 		obj.put("end", annotation.getEnd());
 		obj.put("text", annotation.getCoveredText());
+		obj.put("Mark1", annotation.getMark1());
 		if (annotation.getParent() != null)
 			obj.put("parentId", annotation.getParent().getId());
 		if (annotation.getCategory() != null)

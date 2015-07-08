@@ -4,7 +4,7 @@
   <groupId>de.ustu.ims.reiter</groupId>
   <artifactId>treeanno</artifactId>
   <packaging>war</packaging>
-  <version>0.4</version>
+  <version>0.5</version>
   <name>TreeAnno</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -59,7 +59,7 @@
     <dependency>
     	<groupId>de.ustu.ims.reiter</groupId>
     	<artifactId>treeanno.api</artifactId>
-    	<version>0.1-SNAPSHOT</version>
+    	<version>0.2-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>javax.servlet</groupId>
@@ -91,11 +91,6 @@
     	<scope>provided</scope>
     </dependency>
     <dependency>
-    	<groupId>org.apache.uima</groupId>
-    	<artifactId>uimafit-core</artifactId>
-    	<version>2.1.0</version>
-    </dependency>
-    <dependency>
     	<groupId>org.apache.logging.log4j</groupId>
     	<artifactId>log4j-core</artifactId>
     	<version>2.3</version>
@@ -109,6 +104,22 @@
     	<groupId>de.ustu.ims.reiter</groupId>
     	<artifactId>treeanno.util</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.commons</groupId>
+    	<artifactId>commons-math3</artifactId>
+    	<version>3.5</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.mockito</groupId>
+    	<artifactId>mockito-core</artifactId>
+    	<version>2.0.17-beta</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>xerces</groupId>
+    	<artifactId>xercesImpl</artifactId>
+    	<version>2.11.0</version>
     </dependency>
   </dependencies>
   <scm>

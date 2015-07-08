@@ -1,22 +1,18 @@
-var maxStringLength = 160;
-
 var enable_interaction = true;
 
 var shifted = false;
 
 var idCounter = 0;
 
-var includeSeparationWhenMerging = true;
-
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
 	$(htmlItem).attr("title", item['text']);
-	$(htmlItem).addClass("tl0");
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
+	$(htmlItem).addClass("unselectable");
+	if (item['Mark1']) $(htmlItem).addClass("mark1");
 	idCounter = Math.max(idCounter, item['id']);
-	//$(htmlItem).attr("data-treeanno-uid", item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
 	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
@@ -39,20 +35,21 @@ function init_all() {
 
 function init_projects() {
 	init_all();
-	jQuery.getJSON("projectlist.jsp", function(data) {
+	jQuery.getJSON("rpc/projectlist", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
-			var id=data[i]['id'];
-			$(tr).append("<td>"+data[i]['id']+"</td>");
+			var id=data[i]['databaseId'];
+			$(tr).append("<td>"+data[i]['databaseId']+"</td>");
 			$(tr).append("<td>"+data[i]['name']+"</td>");
-			$(tr).append("<td><button class=\"button_open\">open</button></td>");
+			$(tr).append("<td><button class=\"button_open project "+data[i]['databaseId']+"\"></button></td>");
 			$(tr).find("button.button_open").button({
-				label: i18n.t("open")
-			}).click({'projectId':data[i]['id']}, function(event) {	
+				label: i18n.t("project_action_open"),
+				icons:{primary:"ui-icon-folder-collapsed",secondary:null}
+			}).click({'projectId':data[i]['databaseId']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
 			$("#projectlistarea table tbody").append(tr);
-			if (typeof(selected)!=undefined) {
+			if (selected != -1) {
 				if (selected == id)
 					show_documentlist(id);
 			}
@@ -67,10 +64,18 @@ function init_projects() {
 }
 
 function show_documentlist(id) {
+	$("button.button_open.project").button({
+		disabled:false,
+		icons:{primary:"ui-icon-folder-collapsed",secondary:null}
+	});
+	$("button.button_open.project."+id).button({
+		disabled:true,
+		icons:{primary:"ui-icon-folder-open",secondary:null}
+	});
 	$("#documentlistarea").empty();
 	$("#topbar .left .pname").remove();
 
-	jQuery.getJSON("documentlist.jsp?projectId="+id, function(data) {
+	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
 		for (var i = 0; i < data['documents'].length; i++) {
@@ -79,6 +84,7 @@ function show_documentlist(id) {
 				$(trh).append("<th>"+i18n.t("document_id")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_name")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
+				$(trh).append("<th>"+i18n.t("document_actions")+"</th>");
 				$(table).append(trh);
 				header = true;
 			}
@@ -86,34 +92,50 @@ function show_documentlist(id) {
 			$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
 			$(tr).append("<td>"+data['documents'][i]['name']+"</td>");
 			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
-			$(tr).append("<td><button class=\"button_open\"></button></td>");
-			$(tr).append("<td><button class=\"button_clone\">clone</button></td>");
-			$(tr).append("<td><button class=\"button_delete\">delete</button></td>");
-			$(tr).append("<td><button class=\"button_export\">export</button></td>");
-			$(tr).find("button.button_open").button({label:i18n.t("open")}).click({
+			
+			var actionCell = document.createElement("td");
+			$(actionCell).append("<button class=\"button_open\"></button>");
+			$(actionCell).append("<button class=\"button_clone\">clone</button>");
+			$(actionCell).append("<button class=\"button_delete\">delete</button>");
+			$(actionCell).append("<button class=\"button_export\">export</button>");
+			$(actionCell).find("button.button_open").button({
+				label:i18n.t("document_action_open"),
+				icons:{primary:"ui-icon-document",secondary:null}
+			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				window.location.href="main.jsp?documentId="+event.data.documentId;
 			});
-			$(tr).find("button.button_clone").button({label:i18n.t("clone")}).click({
+			$(actionCell).find("button.button_clone").button({
+				label:i18n.t("document_action_clone"),
+				icons:{primary:"ui-icon-copy",secondary:null}
+			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				jQuery.getJSON("DocumentHandling?action=clone&documentId="+event.data.documentId, function() {
 					show_documentlist(id);
 				});
 			});
-			$(tr).find("button.button_delete").button({label:i18n.t("delete")}).click({
+			$(actionCell).find("button.button_delete").button({
+				label:i18n.t("document_action_delete"),
+				icons:{primary:"ui-icon-trash", secondary:null}
+			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				jQuery.getJSON("DocumentHandling?action=delete&documentId="+event.data.documentId, function() {
 					show_documentlist(id);
 				});
 			});
-			$(tr).find("button.button_export").button({label:i18n.t("export")}).click({
+			$(actionCell).find("button.button_export").button({
+				label:i18n.t("document_action_export_xmi"),
+				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null}
+			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
 			});
+			$(actionCell).buttonset();
+			$(tr).append(actionCell);
 			$(table).append(tr);
 		}
 		$("#documentlistarea").append("<h2>"+i18n.t("documents_in_X", {"projectname":data['project']['name']})+"</h2>");
@@ -168,14 +190,16 @@ function init_main() {
 		
 		disableSaveButton();
 		
-		jQuery.getJSON("ControllerServlet?documentId="+documentId, function(data) {
+		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
 			
-			// idCounter = data["list"].length;
-			for (var i = 0; i < data["list"].length; i++) {
-				
-				var item = data["list"][i];
-				// items[item["id"]] = item;
-				
+			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
+			
+			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
+			
+			var list = data["list"];
+			
+			while (list.length > 0) {
+				var item = list.shift();
 				var t = item["text"];
 				
 				if (t.length > maxStringLength)
@@ -183,13 +207,18 @@ function init_main() {
 				if ('parentId' in item) {
 					var parentId = item['parentId'];
 					var parentItem = $("li[data-treeanno-id='"+parentId+"']");
-					if (parentItem.children("ul").length == 0)
-						parentItem.append("<ul></ul>");
-					$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, i));
+					if (parentItem.length == 0)
+						list.push(item);
+					else {
+						if (parentItem.children("ul").length == 0)
+							parentItem.append("<ul></ul>");
+						$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, 0));
+					}
 				} else {
-					$('#outline').append(get_html_item(item, i));
+					$('#outline').append(get_html_item(item, 0));
 				}
 			}
+			
 			$('#outline > li:first-child').addClass("selected");
 			document.onkeydown = function(e) {
 				key_down(e);
@@ -198,8 +227,16 @@ function init_main() {
 				key_up(e);
 			};
 			$("#outline li").click(function(e) {
-				$("#outline li").removeClass("selected");
-				$(this).addClass("selected");
+				if (shifted) {
+					// if they have the same parent
+					if ($(this).parent().get(0) == $(".selected").last().parent().get(0)) {
+						$(".selected").last().nextUntil(this).addClass("selected");
+						$(this).addClass("selected");
+					}
+				} else {
+					$("#outline li").removeClass("selected");
+					$(this).addClass("selected");
+				}
 			});		
 	});
 }
@@ -218,6 +255,7 @@ function save_document() {
 		item['id'] = $(element).attr("data-treeanno-id");
 		item['begin'] = $(element).attr("data-treeanno-begin");
 		item['end'] = $(element).attr("data-treeanno-end");
+		item['Mark1'] = $(element).hasClass("mark1");
 		// alert(id);
 		var parents = $(element).parentsUntil("#outline", "li");
 		if (parents.length > 0) {
@@ -285,14 +323,21 @@ function key_down(e) {
 	e.preventDefault();
 	var keyCode = e.keyCode || e.which,
     	kbkey = { up: 38, down: 40, right: 39, left: 37, 
-			enter: 13, s: 83, m:77, c:67, d:68, shift: 16 };
+			enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
 	var allItems = $("#outline li");
 	switch (keyCode) {
+	case kbkey.one:
+		$(".selected").toggleClass("mark1");
+		enableSaveButton();
+		break;
 	case kbkey.shift:
 		shifted = true;
 		break;
 	case kbkey.d:
-		delete_category();
+		if (shifted)
+			delete_virtual_node();
+		else
+			delete_category();
 		break;
 	case kbkey.c:
 		add_category();
@@ -351,7 +396,10 @@ function key_down(e) {
 			$(window).scrollTop($(".selected").first().offset().top - 200);
 		break;
 	case kbkey.right:
-		indent();
+		if (shifted)
+			force_indent();
+		else
+			indent();
 		break;
 	case kbkey.left:
 		outdent();
@@ -550,6 +598,39 @@ function outdent() {
 	});
 	cleanup_list();
 	enableSaveButton();
+}
+
+function force_indent() {
+	$(".selected").each(function(index, element) {
+		if ($(element).prev("li").length == 0) {
+			
+			var vitem = new Object();
+			vitem["begin"] = $(element).attr("data-treeanno-begin");
+			vitem["end"] = vitem["begin"];
+			vitem["id"] = ++idCounter;
+			vitem["text"] = "";
+			
+			var htmlItem = get_html_item(vitem, 0);
+			$(element).before(htmlItem);
+			
+			var prev = $(element).prev("li");
+			if ($(prev).children("ul").length == 0)
+				prev.append("<ul></ul>");
+			var s = $(element).detach();
+			$(prev).children("ul").append(s);
+		}
+		cleanup_list();		
+	});
+	enableSaveButton();
+}
+
+function delete_virtual_node() {
+	$(".selected").each(function(index, element) {
+		if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
+			$(element).prev().addClass("selected");
+			$(element).remove();
+		}
+	});
 }
 
 function indent() {

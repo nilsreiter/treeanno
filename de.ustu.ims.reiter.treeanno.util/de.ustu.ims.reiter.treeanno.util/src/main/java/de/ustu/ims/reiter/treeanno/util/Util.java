@@ -68,6 +68,7 @@ public class Util {
 						AnnotationFactory.createAnnotation(jcas, begin, end,
 								TreeSegment.class);
 				ts.setId(id);
+				ts.setMark1(item.getBoolean("Mark1"));
 
 				try {
 					if (!item.getString("category").isEmpty())

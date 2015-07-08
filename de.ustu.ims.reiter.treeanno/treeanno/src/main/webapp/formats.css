@@ -1,5 +1,5 @@
 body{
-	font-size:12px;
+	font-size:11pt;
 }
 
 li.selected {
@@ -9,6 +9,8 @@ div#content {
 	margin:10px;
 	position:relative;
 	top:50px;
+	font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size:11pt;
 }
 div#controls {
 	float:right;
@@ -49,6 +51,7 @@ div#artifact {
 	background-color:#DDD;
 	padding:10px; 
 	height:32px;
+	font-size:10pt;
 }
 
 .searchFound {
@@ -98,11 +101,25 @@ span.search_container {
 #topbar .username {
 	font-style:italic;
 }
- #projectlistarea,#documentlistarea {
-	width:45%;
+#projectlistarea,#documentlistarea {
 	margin:15px;
 }
+#projectlistarea{
+	width:30%;
+}
+
 .splitcontent div {
 	float:left;
 }
 
+.mark1 {
+	background-color:#C88;
+}
+
+*.unselectable {
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
