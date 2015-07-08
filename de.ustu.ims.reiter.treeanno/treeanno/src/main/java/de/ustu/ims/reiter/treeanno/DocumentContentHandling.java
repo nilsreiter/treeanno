@@ -53,6 +53,9 @@ public class DocumentContentHandling extends HttpServlet {
 			if (documents.length > 0) {
 				int docId = Integer.valueOf(documents[0]);
 				Document document = dl.getDocument(docId);
+				if (document == null) {
+					throw new ServletException("Document could not be loaded.");
+				}
 				int accessLevel =
 						dl.getAccessLevel(document.getProject(), (User) request
 								.getSession().getAttribute(CA.USER));
@@ -64,21 +67,29 @@ public class DocumentContentHandling extends HttpServlet {
 					response.setStatus(Response.SC_NOT_FOUND);
 					return;
 				}
-				JSONObject obj = new JSONObject();
-				obj.put("documentId", docId);
-				obj.put("document", new JSONObject(document));
-				obj.put("list",
-						new JCasConverter().getJSONArrayFromAnnotations(
-								dl.getJCas(document),
-								de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
-				Util.returnJSON(response, obj);
+
+				JCas jcas = dl.getJCas(document);
+				if (jcas != null) {
+					JSONObject obj = new JSONObject();
+					obj.put("documentId", docId);
+					obj.put("document", new JSONObject(document));
+					obj.put("list",
+							new JCasConverter()
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					Util.returnJSON(response, obj);
+				} else {
+					throw new ServletException(
+							"JCas could not be loaded (documentId=" + docId
+									+ ".");
+				}
+
 			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServletException(e);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServletException(e);
 		}
 
 	}
