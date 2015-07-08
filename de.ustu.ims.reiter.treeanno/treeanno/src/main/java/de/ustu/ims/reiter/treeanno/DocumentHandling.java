@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.uima.UIMAException;
 import org.apache.uima.cas.impl.TypeSystem2Xml;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.fit.util.JCasUtil;
@@ -91,11 +92,11 @@ public class DocumentHandling extends HttpServlet {
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-								.getDocumentTitle();
+						.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-								JCasUtil.selectSingle(jcas,
-										DocumentMetaData.class).getDocumentId();
+						JCasUtil.selectSingle(jcas,
+								DocumentMetaData.class).getDocumentId();
 					zos = new ZipOutputStream(response.getOutputStream());
 					zos.setLevel(9);
 					zos.putNextEntry(new ZipEntry(name + "/"));
@@ -106,7 +107,8 @@ public class DocumentHandling extends HttpServlet {
 					TypeSystem2Xml.typeSystem2Xml(jcas.getTypeSystem(), zos);
 					zos.flush();
 					return;
-				} catch (SAXException | NumberFormatException | SQLException e) {
+				} catch (SAXException | NumberFormatException | SQLException
+						| UIMAException e) {
 					throw new ServletException(e);
 				} finally {
 					if (zos != null) zos.close();

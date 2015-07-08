@@ -15,6 +15,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.User;
@@ -91,7 +92,7 @@ public class DocumentContentHandling extends HttpServlet {
 			throw new ServletException(e);
 		} catch (JSONException e) {
 			throw new ServletException(e);
-		} catch (SQLException e) {
+		} catch (SQLException | UIMAException e) {
 			throw new ServletException(e);
 		}
 
@@ -115,7 +116,7 @@ public class DocumentContentHandling extends HttpServlet {
 			JCas jcas =
 					Util.addAnnotationsToJCas(dataLayer.getJCas(document), jObj);
 			r = dataLayer.updateJCas(document, jcas);
-		} catch (UIMAException | JSONException | SQLException e) {
+		} catch (UIMAException | JSONException | SQLException | SAXException e) {
 			throw new ServletException(e);
 		}
 		if (r) {

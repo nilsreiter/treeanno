@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -49,7 +50,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public DatabaseIO(DataSource ds) throws ClassNotFoundException,
-	NamingException {
+			NamingException {
 		dataSource = ds;
 	}
 
@@ -72,7 +73,7 @@ public class DatabaseIO implements DataLayer {
 		return false;
 	}
 
-	public int getAccessLevel(int documentId, User user) {
+	public int getAccessLevel(int documentId, User user) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -91,8 +92,6 @@ public class DatabaseIO implements DataLayer {
 				conn.close();
 				return r;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -102,7 +101,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public int getAccessLevel(Project project, User user) {
+	public int getAccessLevel(Project project, User user) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -121,8 +120,6 @@ public class DatabaseIO implements DataLayer {
 				conn.close();
 				return r;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -132,17 +129,24 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-	SAXException, IOException {
+			SAXException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
-		String s = new String(baos.toByteArray(), "UTF-8");
+
+		String s = null;
+		try {
+			s = new String(baos.toByteArray(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// This should not happen.
+			e.printStackTrace();
+		}
 
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+						.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -151,7 +155,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public Document getDocument(int documentId) {
+	public Document getDocument(int documentId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -162,7 +166,7 @@ public class DatabaseIO implements DataLayer {
 
 			stmt =
 					connection
-					.prepareStatement("SELECT name,modificationDate, project, hidden FROM treeanno_documents WHERE id=?");
+							.prepareStatement("SELECT name,modificationDate, project, hidden FROM treeanno_documents WHERE id=?");
 			stmt.setInt(1, documentId);
 			rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -175,8 +179,6 @@ public class DatabaseIO implements DataLayer {
 				return document;
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -187,14 +189,14 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, IOException,
-	UIMAException {
+			UIMAException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
+						.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		ResultSet rs = stmt.executeQuery();
 
@@ -232,7 +234,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
+						.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
@@ -246,7 +248,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
+						.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
@@ -256,7 +258,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public List<Project> getProjects() {
+	public List<Project> getProjects() throws SQLException {
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -265,7 +267,7 @@ public class DatabaseIO implements DataLayer {
 			connection = dataSource.getConnection();
 			stmt =
 					connection
-					.prepareStatement("SELECT * FROM treeanno_projects");
+							.prepareStatement("SELECT * FROM treeanno_projects");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Project p = new Project();
@@ -273,8 +275,6 @@ public class DatabaseIO implements DataLayer {
 				p.setName(rs.getString(2));
 				projects.add(p);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -285,7 +285,7 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
-	public List<Document> getDocuments(int projectId) {
+	public List<Document> getDocuments(int projectId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -294,7 +294,7 @@ public class DatabaseIO implements DataLayer {
 			connection = dataSource.getConnection();
 			stmt =
 					connection
-					.prepareStatement("SELECT id,modificationDate,name,hidden,project FROM treeanno_documents WHERE project=? AND hidden=0");
+							.prepareStatement("SELECT id,modificationDate,name,hidden,project FROM treeanno_documents WHERE project=? AND hidden=0");
 			stmt.setInt(1, projectId);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -306,8 +306,6 @@ public class DatabaseIO implements DataLayer {
 				doc.setProject(getProject(rs.getInt(5)));
 				documents.add(doc);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -337,7 +335,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public Project getProject(int i) {
+	public Project getProject(int i) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -353,8 +351,6 @@ public class DatabaseIO implements DataLayer {
 				proj.setDatabaseId(rs.getInt(1));
 				proj.setName(rs.getString(2));
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -365,7 +361,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public User getUser(int i) {
+	public User getUser(int i) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -384,8 +380,6 @@ public class DatabaseIO implements DataLayer {
 				if (rs.getString(4) != null) user.setLanguage(rs.getString(4));
 
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -396,38 +390,29 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public Collection<Document> getDocuments(Project proj) {
+	public Collection<Document> getDocuments(Project proj) throws SQLException {
 		return getDocuments(proj.getDatabaseId());
 	}
 
 	@Override
-	public JCas getJCas(Document document) {
+	public JCas getJCas(Document document) throws SQLException, UIMAException {
 		try {
 			return this.getJCas(document.getDatabaseId());
-		} catch (UIMAException | SQLException | IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
 	@Override
-	public boolean deleteDocument(Document document) {
-		try {
-			return this.deleteDocument(document.getDatabaseId());
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public boolean deleteDocument(Document document) throws SQLException {
+		return this.deleteDocument(document.getDatabaseId());
+
 	}
 
 	@Override
-	public int cloneDocument(Document document) {
-		try {
-			if (!cloneDocument(document.getDatabaseId())) return -1;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return -1;
-		}
+	public int cloneDocument(Document document) throws SQLException {
+		if (!cloneDocument(document.getDatabaseId())) return -1;
 
 		Connection conn = null;
 		Statement stmt = null;
@@ -439,8 +424,6 @@ public class DatabaseIO implements DataLayer {
 			if (rs.next()) {
 				return rs.getInt(1);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			closeQuietly(rs);
 			closeQuietly(stmt);
@@ -450,12 +433,8 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public boolean updateJCas(Document document, JCas jcas) {
-		try {
-			return this.updateJCas(document.getDatabaseId(), jcas);
-		} catch (SQLException | SAXException | IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public boolean updateJCas(Document document, JCas jcas)
+			throws SQLException, SAXException {
+		return this.updateJCas(document.getDatabaseId(), jcas);
 	}
 }
