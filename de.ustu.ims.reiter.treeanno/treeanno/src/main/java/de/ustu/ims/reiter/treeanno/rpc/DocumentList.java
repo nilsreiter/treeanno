@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import de.ustu.ims.reiter.treeanno.CA;
 import de.ustu.ims.reiter.treeanno.CW;
+import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
@@ -33,22 +34,32 @@ public class DocumentList extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		int projectId =
 				Integer.valueOf(request.getParameterValues("projectId")[0]);
+		User user = CW.getUser(request);
 		try {
 			Project proj =
 					CW.getDataLayer(getServletContext()).getProject(projectId);
-			Collection<Document> list =
-					CW.getDataLayer(getServletContext()).getDocuments(proj);
-			JSONObject obj = new JSONObject();
-			obj.put("documents", list);
-			obj.put("project",
-					new JSONObject(CW.getDataLayer(getServletContext())
-							.getProject(projectId)));
-			obj.put("accesslevel",
-					CW.getDataLayer(getServletContext()).getAccessLevel(proj,
-							(User) request.getSession().getAttribute(CA.USER)));
-			Util.returnJSON(response, obj);
+			if (CW.getDataLayer(getServletContext()).getAccessLevel(proj, user) >= Perm.READ_ACCESS) {
+				Collection<Document> list =
+						CW.getDataLayer(getServletContext()).getDocuments(proj);
+				JSONObject obj = new JSONObject();
+				obj.put("documents", list);
+				obj.put("project",
+						new JSONObject(CW.getDataLayer(getServletContext())
+								.getProject(projectId)));
+				obj.put("accesslevel",
+						CW.getDataLayer(getServletContext()).getAccessLevel(
+								proj,
+								(User) request.getSession().getAttribute(
+										CA.USER)));
+				Util.returnJSON(response, obj);
+			} else {
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				return;
+			}
 		} catch (SQLException e) {
 			throw new ServletException(e);
+		} finally {
+
 		}
 	}
 }
