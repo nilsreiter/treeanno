@@ -122,6 +122,7 @@ public class DocumentHandling extends HttpServlet {
 						dataLayer.getDocument(Integer.valueOf(docId));
 				document.setName(request.getParameter("name"));
 				dataLayer.updateDocument(document);
+				Util.returnJSON(response, new JSONObject());
 			} catch (NullPointerException | NumberFormatException
 					| SQLException e) {
 				throw new ServletException(e);
