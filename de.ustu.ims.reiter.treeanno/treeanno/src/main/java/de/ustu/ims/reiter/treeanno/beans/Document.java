@@ -9,7 +9,7 @@ import com.j256.ormlite.field.DatabaseField;
 
 @Entity(name = "treeanno_documents")
 public class Document {
-	@DatabaseField(id = true, generatedId = true)
+	@DatabaseField(generatedId = true)
 	int id;
 
 	@Column

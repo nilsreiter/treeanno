@@ -7,7 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 
 @Entity(name = "treeanno_projects")
 public class Project {
-	@DatabaseField(id = true, generatedId = true)
+	@DatabaseField(generatedId = true)
 	int id;
 
 	@Column

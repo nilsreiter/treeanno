@@ -13,7 +13,7 @@ public class User {
 	@Column
 	String email;
 
-	@DatabaseField(id = true, generatedId = true)
+	@DatabaseField(generatedId = true)
 	int id;
 
 	@Column
