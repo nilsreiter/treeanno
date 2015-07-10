@@ -48,7 +48,7 @@ public class DatabaseIO implements DataLayer {
 	Dao<Document, Integer> documentDao;
 
 	public DatabaseIO() throws ClassNotFoundException, NamingException,
-			SQLException {
+	SQLException {
 		Context initContext;
 		Class.forName("com.mysql.jdbc.Driver");
 
@@ -66,7 +66,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Deprecated
 	public DatabaseIO(DataSource ds) throws ClassNotFoundException,
-	NamingException {
+			NamingException {
 		dataSource = ds;
 	}
 
@@ -91,30 +91,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public int getAccessLevel(int documentId, User user) throws SQLException {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = dataSource.getConnection();
-			stmt =
-					conn.prepareStatement("SELECT level FROM (SELECT treeanno_projects.id AS pid, treeanno_documents.id AS did FROM treeanno_documents, treeanno_projects WHERE treeanno_documents.project = treeanno_projects.id) proj, treeanno_users_permissions WHERE pid = projectId AND userId=? AND did=?");
-			stmt.setInt(1, user.getDatabaseId());
-			stmt.setInt(2, documentId);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				int r = rs.getInt(1);
-				rs.close();
-				stmt.close();
-				conn.close();
-				return r;
-			}
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(conn);
-		}
-		return Perm.NO_ACCESS;
+		return getAccessLevel(getDocument(documentId).getProject(), user);
 	}
 
 	@Override
@@ -146,7 +123,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-	SAXException {
+			SAXException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -163,7 +140,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+						.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -179,7 +156,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,
-	SAXException, IOException {
+			SAXException, IOException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
@@ -188,7 +165,7 @@ public class DatabaseIO implements DataLayer {
 		try {
 			stmt =
 					connection
-							.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
+					.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
 			stmt.setInt(1, documentId);
 			rs = stmt.executeQuery();
 
@@ -197,7 +174,7 @@ public class DatabaseIO implements DataLayer {
 				String textXML = rs.getString(1);
 				TypeSystemDescription tsd =
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription();
+						.createTypeSystemDescription();
 				jcas = JCasFactory.createJCas(tsd);
 				InputStream is = null;
 				try {
@@ -221,11 +198,12 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public boolean cloneDocument(int documentId) throws SQLException {
+
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
+						.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
@@ -282,7 +260,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public JCas getJCas(Document document) throws SQLException, UIMAException,
-	SAXException, IOException {
+			SAXException, IOException {
 		return this.getJCas(document.getDatabaseId());
 	}
 
@@ -294,6 +272,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public int cloneDocument(Document document) throws SQLException {
+
 		if (!cloneDocument(document.getDatabaseId())) return -1;
 
 		Connection conn = null;
