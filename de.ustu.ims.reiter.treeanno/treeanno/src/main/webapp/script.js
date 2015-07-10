@@ -21,8 +21,6 @@ function get_html_item(item, i) {
 
 
 function dtext(s) {
-	if (s.length > maxStringLength)
-		s = s.substring(0,maxStringLength-3)+"...";
 	return s;
 }
 
@@ -200,10 +198,7 @@ function init_main() {
 			
 			while (list.length > 0) {
 				var item = list.shift();
-				var t = item["text"];
 				
-				if (t.length > maxStringLength)
-					t = t.substring(0,maxStringLength-3) + "...";
 				if ('parentId' in item) {
 					var parentId = item['parentId'];
 					var parentItem = $("li[data-treeanno-id='"+parentId+"']");
@@ -218,7 +213,9 @@ function init_main() {
 					$('#outline').append(get_html_item(item, 0));
 				}
 			}
-			
+			$("#outline li > div").smartTruncation({
+			    'truncateCenter'    : true
+			  });
 			$('#outline > li:first-child').addClass("selected");
 			document.onkeydown = function(e) {
 				key_down(e);
@@ -499,7 +496,11 @@ function merge(item1, item0) {
 	$("#outline li[data-treeanno-id='"+item0['id']+"']").remove();
 	//items[++idCounter] = nitem;
 	
-	$(".selected").after(get_html_item(nitem, idCounter));
+	var nitem = get_html_item(nitem, idCounter);
+	$(nitem).children("div").smartTruncation({
+	    'truncateCenter'    : true
+	  });
+	$(".selected").after(nitem);
 	var newsel = $(".selected").next();
 	var sublist1 = $(".selected > ul").detach();
 	$(".selected").remove();
@@ -565,10 +566,19 @@ function splitdialog_enter() {
 		var sublist = $(".selected > ul").detach();
 		// items[litems[1]['id']] = litems[1];
 		
-		$(".selected").after(get_html_item(litems[1], idCounter))
+		var nitem1 = get_html_item(litems[1], idCounter);
+		$(nitem1).children("div").smartTruncation({
+		    'truncateCenter'    : true
+		  });
+		$(".selected").after(nitem1)
 		$(".selected").next().append(sublist);
 		// items[litems[0]['id']] = litems[0];
-		$(".selected").after(get_html_item(litems[0], idCounter));
+		
+		var nitem0 = get_html_item(litems[0], idCounter);
+		$(nitem0).children("div").smartTruncation({
+		    'truncateCenter'    : true
+		  });
+		$(".selected").after(nitem0);
 		var nsel = $(".selected").next();
 		$(".selected").remove();
 		$(nsel).addClass("selected");

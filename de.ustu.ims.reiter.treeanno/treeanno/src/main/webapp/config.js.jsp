@@ -4,6 +4,5 @@
 		pageEncoding="UTF-8" session="false"/>
 <![CDATA[
 var includeSeparationWhenMerging = ${applicationScope['treeanno.includeSeparationWhenMerging']};
-var maxStringLength = ${applicationScope['treeanno.maxStringLength']};
 ]]>
 </jsp:root>
