@@ -7,23 +7,23 @@ import javax.persistence.Id;
 @Entity(name = "treeanno_users")
 public class User {
 	@Column(unique = true)
-	String name;
+	String username;
 
 	@Column
 	String email;
 
 	@Id
-	int databaseId;
+	int id;
 
 	@Column
 	String language;
 
 	public String getName() {
-		return name;
+		return username;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.username = name;
 	}
 
 	public String getEmail() {
@@ -35,11 +35,11 @@ public class User {
 	}
 
 	public int getDatabaseId() {
-		return databaseId;
+		return id;
 	}
 
 	public void setDatabaseId(int databaseId) {
-		this.databaseId = databaseId;
+		this.id = databaseId;
 	}
 
 	public String getLanguage() {
