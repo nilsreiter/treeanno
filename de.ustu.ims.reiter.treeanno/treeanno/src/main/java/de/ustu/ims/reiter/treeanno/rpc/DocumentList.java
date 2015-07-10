@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import de.ustu.ims.reiter.treeanno.CA;
 import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
+import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
@@ -41,6 +43,9 @@ public class DocumentList extends HttpServlet {
 			obj.put("project",
 					new JSONObject(CW.getDataLayer(getServletContext())
 							.getProject(projectId)));
+			obj.put("accesslevel",
+					CW.getDataLayer(getServletContext()).getAccessLevel(proj,
+							(User) request.getSession().getAttribute(CA.USER)));
 			Util.returnJSON(response, obj);
 		} catch (SQLException e) {
 			throw new ServletException(e);
