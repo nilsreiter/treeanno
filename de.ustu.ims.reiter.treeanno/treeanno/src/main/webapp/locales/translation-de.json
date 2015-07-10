@@ -28,6 +28,7 @@
 	"document_action_clone":"Duplizieren",
 	"document_action_delete":"Verstecken",
 	"document_action_export_xmi":"Export",
+	"document_action_rename":"Umbenennen",
 	"project_id":"Id",
 	"project_name":"Name",
 	"project_action_open":"Öffnen",
@@ -35,5 +36,11 @@
 	"login_dialog_ok":"Enter",
 	"show_helper":"Spickzettel",
 	"documents_in_X":"Dokumente in Projekt &bdquo;__projectname__&ldquo;",
-	"howto_split":"An der zu splittenden Stelle zweimal Enter drücken"
+	"howto_split":"An der zu splittenden Stelle zweimal Enter drücken",
+	"rename_dialog":{
+		"title":"Document umbenennen",
+		"ok":"Umbenennen",
+		"cancel":"Abbrechen",
+		"desc":"Neuer Name"
+	}
 }
