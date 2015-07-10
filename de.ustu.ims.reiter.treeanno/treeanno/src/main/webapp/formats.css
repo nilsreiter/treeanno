@@ -1,7 +1,9 @@
 body{
 	font-size:11pt;
 }
-
+.ui-widget {
+    font-size:80% !important;
+}
 li.selected {
 	background-color:yellow;
 }
