@@ -268,7 +268,7 @@ function save_document() {
 	});
 	$.ajax({
 		type: "POST",
-		url: "ControllerServlet",
+		url: "DocumentContentHandling",
 		// processData: false,
 		data: JSON.stringify({
 			document:documentId,
@@ -543,7 +543,7 @@ function splitdialog_cleanup() {
 }
 
 function splitdialog_enter() {
-	var itemid = $(".selected").data("treeanno-id");
+	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
 	var text = $("#form_splittext").val();
 	var lines = text.split("\n\n");
@@ -553,7 +553,7 @@ function splitdialog_enter() {
 		litems[0] = new Object();
 		litems[0]['begin'] = item['begin'];
 		litems[0]['text'] = lines[0];
-		litems[0]['end'] = item['begin']+lines[0].length;
+		litems[0]['end'] = parseInt(item['begin'])+parseInt(lines[0].length);
 		litems[0]['id'] = ++idCounter;
 		litems[1] = new Object();
 		litems[1]['end'] = item['end'];
