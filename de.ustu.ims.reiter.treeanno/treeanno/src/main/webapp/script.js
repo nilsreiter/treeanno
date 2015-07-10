@@ -76,6 +76,7 @@ function show_documentlist(id) {
 	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
+		var al = data['accesslevel'];
 		for (var i = 0; i < data['documents'].length; i++) {
 			if (!header) {
 				var trh = document.createElement("tr");
@@ -92,11 +93,16 @@ function show_documentlist(id) {
 			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
 			
 			var actionCell = document.createElement("td");
-			$(actionCell).append("<button class=\"button_open\"></button>");
-			$(actionCell).append("<button class=\"button_clone\">clone</button>");
-			$(actionCell).append("<button class=\"button_rename\">rename</button>")
-			$(actionCell).append("<button class=\"button_delete\">delete</button>");
-			$(actionCell).append("<button class=\"button_export\">export</button>");
+			if (al >= Perm["READACCESS"])
+				$(actionCell).append("<button class=\"button_open\"></button>");
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_clone\">clone</button>");
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_rename\">rename</button>")
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_delete\">delete</button>");
+			if (al >= Perm["READACCESS"])
+				$(actionCell).append("<button class=\"button_export\">export</button>");
 			$(actionCell).find("button.button_open").button({
 				label:i18n.t("document_action_open"),
 				icons:{primary:"ui-icon-document",secondary:null}
