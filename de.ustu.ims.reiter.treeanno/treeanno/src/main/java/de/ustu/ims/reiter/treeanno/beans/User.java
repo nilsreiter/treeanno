@@ -2,7 +2,8 @@ package de.ustu.ims.reiter.treeanno.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import com.j256.ormlite.field.DatabaseField;
 
 @Entity(name = "treeanno_users")
 public class User {
@@ -12,7 +13,7 @@ public class User {
 	@Column
 	String email;
 
-	@Id
+	@DatabaseField(id = true, generatedId = true)
 	int id;
 
 	@Column

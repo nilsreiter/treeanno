@@ -4,13 +4,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 import com.j256.ormlite.field.DatabaseField;
 
 @Entity(name = "treeanno_documents")
 public class Document {
-	@Id
+	@DatabaseField(id = true, generatedId = true)
 	int id;
 
 	@Column

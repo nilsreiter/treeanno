@@ -2,11 +2,12 @@ package de.ustu.ims.reiter.treeanno.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import com.j256.ormlite.field.DatabaseField;
 
 @Entity(name = "treeanno_projects")
 public class Project {
-	@Id
+	@DatabaseField(id = true, generatedId = true)
 	int id;
 
 	@Column
