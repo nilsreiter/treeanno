@@ -32,7 +32,10 @@
 	// <![CDATA[
  	// ]]>
 	</script>
-	<script src="config.js.jsp"></script>
+	<script src="config.js.jsp">
+	// <![CDATA[
+	// ]]>
+	</script>
 	<script src="script.js">
 	// <![CDATA[
 	// ]]>
