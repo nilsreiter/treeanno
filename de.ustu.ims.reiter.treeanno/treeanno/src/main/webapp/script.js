@@ -543,7 +543,7 @@ function splitdialog_cleanup() {
 }
 
 function splitdialog_enter() {
-	var itemid = $(".selected").data("treeanno-id");
+	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
 	var text = $("#form_splittext").val();
 	var lines = text.split("\n\n");
