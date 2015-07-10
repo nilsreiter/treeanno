@@ -1,9 +1,21 @@
 package de.ustu.ims.reiter.treeanno.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity(name = "treeanno_users")
 public class User {
+	@Column(unique = true)
 	String name;
+
+	@Column
 	String email;
+
+	@Id
 	int databaseId;
+
+	@Column
 	String language;
 
 	public String getName() {
