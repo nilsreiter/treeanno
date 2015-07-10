@@ -68,7 +68,7 @@ public class ContextListener implements ServletContextListener {
 		}
 
 		try {
-			CW.setDataLayer(sc, new DataCache(new DatabaseIO()));
+			CW.setDataLayer(sc, new DatabaseIO());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
