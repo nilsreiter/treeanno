@@ -553,7 +553,7 @@ function splitdialog_enter() {
 		litems[0] = new Object();
 		litems[0]['begin'] = item['begin'];
 		litems[0]['text'] = lines[0];
-		litems[0]['end'] = item['begin']+lines[0].length;
+		litems[0]['end'] = parseInt(item['begin'])+parseInt(lines[0].length);
 		litems[0]['id'] = ++idCounter;
 		litems[1] = new Object();
 		litems[1]['end'] = item['end'];
