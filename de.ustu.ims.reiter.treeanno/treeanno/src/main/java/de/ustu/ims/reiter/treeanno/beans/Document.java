@@ -2,21 +2,38 @@ package de.ustu.ims.reiter.treeanno.beans;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import com.j256.ormlite.field.DatabaseField;
+
+@Entity(name = "treeanno_documents")
 public class Document {
-	int databaseId;
+	@Id
+	int id;
+
+	@Column
 	Date modificationDate;
+
+	@DatabaseField(canBeNull = false, foreign = true, columnName = "project",
+			foreignAutoRefresh = true)
 	Project project;
+
+	@Column
 	String name;
+
+	@Column
 	boolean hidden;
 
 	@Deprecated
 	public int getId() {
-		return databaseId;
+		return id;
 	}
 
 	@Deprecated
 	public void setId(int id) {
-		this.databaseId = id;
+		this.id = id;
 	}
 
 	public Date getModificationDate() {
@@ -44,11 +61,11 @@ public class Document {
 	}
 
 	public int getDatabaseId() {
-		return databaseId;
+		return id;
 	}
 
 	public void setDatabaseId(int databaseId) {
-		this.databaseId = databaseId;
+		this.id = databaseId;
 	}
 
 	public boolean isHidden() {
@@ -61,7 +78,7 @@ public class Document {
 
 	@Override
 	public int hashCode() {
-		return databaseId;
+		return id;
 	}
 
 	@Override

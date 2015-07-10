@@ -11,8 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -44,6 +45,7 @@ public class DatabaseIO implements DataLayer {
 	DataSource dataSource;
 	Dao<User, Integer> userDao;
 	Dao<Project, Integer> projectDao;
+	Dao<Document, Integer> documentDao;
 
 	public DatabaseIO() throws ClassNotFoundException, NamingException,
 			SQLException {
@@ -59,6 +61,7 @@ public class DatabaseIO implements DataLayer {
 						"jdbc:mysql://localhost/de.ustu.ims.reiter.treeanno");
 		userDao = DaoManager.createDao(connectionSource, User.class);
 		projectDao = DaoManager.createDao(connectionSource, Project.class);
+		documentDao = DaoManager.createDao(connectionSource, Document.class);
 	}
 
 	@Deprecated
@@ -67,6 +70,7 @@ public class DatabaseIO implements DataLayer {
 		dataSource = ds;
 	}
 
+	@Deprecated
 	public boolean isHidden(int documentId) throws SQLException {
 		Connection conn = dataSource.getConnection();
 		PreparedStatement stmt =
@@ -169,36 +173,9 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public Document getDocument(int documentId) throws SQLException {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		Document document = null;
-		try {
-			connection = dataSource.getConnection();
-
-			stmt =
-					connection
-					.prepareStatement("SELECT name,modificationDate, project, hidden FROM treeanno_documents WHERE id=?");
-			stmt.setInt(1, documentId);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				document = new Document();
-				document.setDatabaseId(documentId);
-				document.setName(rs.getString(1));
-				document.setModificationDate(rs.getDate(2));
-				document.setHidden(rs.getBoolean(4));
-				document.setProject(getProject(rs.getInt(3)));
-				return document;
-			}
-
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(connection);
-		}
-		return document;
-
+		Document d = documentDao.queryForId(documentId);
+		// projectDao.refresh(d.getProject());
+		return d;
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,
@@ -206,46 +183,41 @@ public class DatabaseIO implements DataLayer {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt =
+					connection
+							.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
+			stmt.setInt(1, documentId);
+			rs = stmt.executeQuery();
 
-		PreparedStatement stmt =
-				connection
-				.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
-		stmt.setInt(1, documentId);
-		ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
 
-		if (rs.next()) {
-
-			String textXML = rs.getString(2);
-			TypeSystemDescription tsd =
-					TypeSystemDescriptionFactory.createTypeSystemDescription();
-			jcas = JCasFactory.createJCas(tsd);
-			InputStream is = null;
-			try {
-				is = new ByteArrayInputStream(textXML.getBytes());
-				XmiCasDeserializer.deserialize(is, jcas.getCas(), true);
-			} finally {
-				IOUtils.closeQuietly(is);
+				String textXML = rs.getString(1);
+				TypeSystemDescription tsd =
+						TypeSystemDescriptionFactory
+								.createTypeSystemDescription();
+				jcas = JCasFactory.createJCas(tsd);
+				InputStream is = null;
+				try {
+					is = new ByteArrayInputStream(textXML.getBytes());
+					XmiCasDeserializer.deserialize(is, jcas.getCas(), true);
+				} finally {
+					IOUtils.closeQuietly(is);
+				}
 			}
+		} finally {
+			closeQuietly(rs);
+			closeQuietly(stmt);
+			closeQuietly(connection);
 		}
-		rs.close();
-		stmt.close();
-		connection.close();
 		return jcas;
 
 	}
 
 	public boolean deleteDocument(int documentId) throws SQLException {
-		Connection connection = dataSource.getConnection();
-
-		PreparedStatement stmt =
-				connection
-				.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
-		stmt.setInt(1, documentId);
-		int r = stmt.executeUpdate();
-		stmt.close();
-		connection.close();
-
-		return r == 1;
+		return (documentDao.deleteById(documentId) == 1);
 	}
 
 	public boolean cloneDocument(int documentId) throws SQLException {
@@ -264,60 +236,14 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public List<Project> getProjects() throws SQLException {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<Project> projects = new LinkedList<Project>();
-		try {
-			connection = dataSource.getConnection();
-			stmt =
-					connection
-					.prepareStatement("SELECT * FROM treeanno_projects");
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				Project p = new Project();
-				p.setDatabaseId(rs.getInt(1));
-				p.setName(rs.getString(2));
-				projects.add(p);
-			}
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(connection);
-		}
-
-		return projects;
-
+		return projectDao.queryForAll();
 	}
 
 	public List<Document> getDocuments(int projectId) throws SQLException {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<Document> documents = new LinkedList<Document>();
-		try {
-			connection = dataSource.getConnection();
-			stmt =
-					connection
-					.prepareStatement("SELECT id,modificationDate,name,hidden,project FROM treeanno_documents WHERE project=? AND hidden=0");
-			stmt.setInt(1, projectId);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				Document doc = new Document();
-				doc.setDatabaseId(rs.getInt(1));
-				doc.setModificationDate(rs.getDate(2));
-				doc.setName(rs.getString(3));
-				doc.setHidden(rs.getBoolean(4));
-				doc.setProject(getProject(rs.getInt(5)));
-				documents.add(doc);
-			}
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(connection);
-		}
-
-		return documents;
+		Map<String, Object> fv = new HashMap<String, Object>();
+		fv.put("project", projectId);
+		fv.put("hidden", 0);
+		return documentDao.queryForFieldValues(fv);
 
 	}
 
