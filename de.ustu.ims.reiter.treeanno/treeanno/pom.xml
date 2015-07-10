@@ -126,6 +126,11 @@
     	<artifactId>ormlite-core</artifactId>
     	<version>4.48</version>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.openjpa</groupId>
+    	<artifactId>openjpa-all</artifactId>
+    	<version>2.4.0</version>
+    </dependency>
   </dependencies>
   <scm>
   	<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>
