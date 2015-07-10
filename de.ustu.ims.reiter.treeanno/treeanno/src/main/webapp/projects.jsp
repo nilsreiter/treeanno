@@ -9,7 +9,9 @@
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="false" />
 	<jsp:useBean id="Perm" class="de.ustu.ims.reiter.treeanno.Perm" scope="page"/>
-
+<c:if test="${ empty sessionScope.User }">
+	<c:redirect url="index.jsp"/>
+</c:if>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}: Projects</title>
