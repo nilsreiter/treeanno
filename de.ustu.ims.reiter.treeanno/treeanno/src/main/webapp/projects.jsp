@@ -8,7 +8,6 @@
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="false" />
-	<jsp:useBean id="Perm" class="de.ustu.ims.reiter.treeanno.Perm" scope="page"/>
 <c:if test="${ empty sessionScope.User }">
 	<c:redirect url="index.jsp"/>
 </c:if>
@@ -33,6 +32,7 @@
 	// <![CDATA[
  	// ]]>
 	</script>
+	<script src="config.js.jsp"></script>
 	<script src="script.js">
 	// <![CDATA[
 	// ]]>
