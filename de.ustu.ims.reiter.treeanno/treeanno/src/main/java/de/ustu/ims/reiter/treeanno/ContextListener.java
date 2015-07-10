@@ -2,6 +2,7 @@ package de.ustu.ims.reiter.treeanno;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -71,6 +72,8 @@ public class ContextListener implements ServletContextListener {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
