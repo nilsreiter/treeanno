@@ -92,11 +92,11 @@ public class DocumentHandling extends HttpServlet {
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-						.getDocumentTitle();
+								.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-						JCasUtil.selectSingle(jcas,
-								DocumentMetaData.class).getDocumentId();
+								JCasUtil.selectSingle(jcas,
+										DocumentMetaData.class).getDocumentId();
 					zos = new ZipOutputStream(response.getOutputStream());
 					zos.setLevel(9);
 					zos.putNextEntry(new ZipEntry(name + "/"));
@@ -113,6 +113,18 @@ public class DocumentHandling extends HttpServlet {
 				} finally {
 					if (zos != null) zos.close();
 				}
+			}
+		} else if (action.equalsIgnoreCase("rename")) {
+			// TODO: Renaming documents
+			try {
+				String docId = request.getParameterValues("documentId")[0];
+				Document document =
+						dataLayer.getDocument(Integer.valueOf(docId));
+				document.setName(request.getParameter("name"));
+				dataLayer.updateDocument(document);
+			} catch (NullPointerException | NumberFormatException
+					| SQLException e) {
+				throw new ServletException(e);
 			}
 		}
 
