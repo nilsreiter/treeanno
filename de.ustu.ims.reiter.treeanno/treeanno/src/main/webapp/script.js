@@ -94,6 +94,7 @@ function show_documentlist(id) {
 			var actionCell = document.createElement("td");
 			$(actionCell).append("<button class=\"button_open\"></button>");
 			$(actionCell).append("<button class=\"button_clone\">clone</button>");
+			$(actionCell).append("<button class=\"button_rename\">rename</button>")
 			$(actionCell).append("<button class=\"button_delete\">delete</button>");
 			$(actionCell).append("<button class=\"button_export\">export</button>");
 			$(actionCell).find("button.button_open").button({
@@ -113,6 +114,40 @@ function show_documentlist(id) {
 				jQuery.getJSON("DocumentHandling?action=clone&documentId="+event.data.documentId, function() {
 					show_documentlist(id);
 				});
+			});
+			$(actionCell).find("button.button_rename").button({
+				label:i18n.t("document_action_rename"),
+				icons:{primary:"ui-icon-pencil",secondary:null}
+			}).click({
+				'document':data['documents'][i]
+			}, function(event) {
+				var diagDiv = document.createElement("div");
+				$(diagDiv).append(i18n.t("rename_dialog.desc")+"<input type=\"text\" value=\""+event.data.document['name']+"\" />");
+				$("body").append(diagDiv);
+				
+				$(diagDiv).dialog({
+					title:i18n.t("rename_dialog.title"),
+					dialogClass: "no-close",
+					buttons: [{ text: i18n.t("rename_dialog.ok"),
+					            click: function() {
+					            	// alert($(diagDiv).children("input").val());
+									jQuery.getJSON("DocumentHandling?action=rename&name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
+										show_documentlist(id);
+									});
+
+					              $( this ).dialog( "close" );
+					            }
+					          },{
+					        	  text:i18n.t("rename_dialog.cancel"),
+					        	  click: function() {
+					        		  $(this).dialog("destroy");
+					        		  document.getElementsByTagName("BODY")[0].removeChild(diagDiv);
+					        	  }
+					          }],
+					closeOnEscape: true,
+					modal:true	
+				}).show();
+				
 			});
 			$(actionCell).find("button.button_delete").button({
 				label:i18n.t("document_action_delete"),
