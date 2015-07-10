@@ -42,8 +42,9 @@
 	<c:if test="${empty param.documentId}">
 		<p>Need to give a document parameter</p>
 	</c:if>
+	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>
 	<div id="content">
-	    <ul id="outline" class="text sortable">
+		<ul id="outline" class="text sortable">
     	</ul>
 	</div>
 	<div id="split">
