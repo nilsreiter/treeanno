@@ -268,7 +268,7 @@ function save_document() {
 	});
 	$.ajax({
 		type: "POST",
-		url: "ControllerServlet",
+		url: "DocumentContentHandling",
 		// processData: false,
 		data: JSON.stringify({
 			document:documentId,
