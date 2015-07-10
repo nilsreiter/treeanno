@@ -38,6 +38,10 @@ public class DocumentList extends HttpServlet {
 		try {
 			Project proj =
 					CW.getDataLayer(getServletContext()).getProject(projectId);
+			if (proj == null) {
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				return;
+			}
 			if (CW.getDataLayer(getServletContext()).getAccessLevel(proj, user) >= Perm.READ_ACCESS) {
 				Collection<Document> list =
 						CW.getDataLayer(getServletContext()).getDocuments(proj);
