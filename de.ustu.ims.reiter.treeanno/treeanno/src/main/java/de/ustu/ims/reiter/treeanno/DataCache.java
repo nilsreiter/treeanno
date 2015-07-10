@@ -83,7 +83,7 @@ public class DataCache implements DataLayer {
 
 	@Override
 	public JCas getJCas(Document document) throws UIMAException, SQLException,
-			SAXException, IOException {
+	SAXException, IOException {
 		if (!jcasCache.containsKey(document))
 			jcasCache.put(document, dbio.getJCas(document));
 		return jcasCache.get(document);
@@ -117,5 +117,13 @@ public class DataCache implements DataLayer {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean updateDocument(Document document) throws SQLException {
+		this.documentMap.remove(document);
+		this.jcasCache.remove(document);
+		this.documentCollections.remove(document.getProject());
+		return dbio.updateDocument(document);
 	}
 }

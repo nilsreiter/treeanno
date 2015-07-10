@@ -425,4 +425,25 @@ public class DatabaseIO implements DataLayer {
 			throws SQLException, SAXException {
 		return this.updateJCas(document.getDatabaseId(), jcas);
 	}
+
+	@Override
+	public boolean updateDocument(Document document) throws SQLException {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		int r = 0;
+		try {
+			conn = dataSource.getConnection();
+
+			stmt =
+					conn.prepareStatement("UPDATE treeanno_documents SET project=?, name=? WHERE id=?");
+			stmt.setInt(1, document.getProject().getDatabaseId());
+			stmt.setString(2, document.getName());
+			stmt.setInt(3, document.getDatabaseId());
+			r = stmt.executeUpdate();
+		} finally {
+			stmt.close();
+			conn.close();
+		}
+		return r == 1;
+	}
 }
