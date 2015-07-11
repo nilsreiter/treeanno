@@ -1,15 +1,24 @@
 package de.ustu.ims.reiter.treeanno.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+import com.j256.ormlite.field.DatabaseField;
+
+@Entity(name = "treeanno_projects")
 public class Project {
-	int databaseId;
+	@DatabaseField(generatedId = true)
+	int id;
+
+	@Column
 	String name;
 
 	public int getDatabaseId() {
-		return databaseId;
+		return id;
 	}
 
 	public void setDatabaseId(int databaseId) {
-		this.databaseId = databaseId;
+		this.id = databaseId;
 	}
 
 	public String getName() {
@@ -22,7 +31,7 @@ public class Project {
 
 	@Override
 	public int hashCode() {
-		return databaseId;
+		return id;
 	}
 
 	@Override
