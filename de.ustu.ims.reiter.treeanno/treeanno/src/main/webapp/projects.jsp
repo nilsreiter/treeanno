@@ -56,6 +56,7 @@
 </head>
 <body>
 	<div id="content" class="splitcontent">
+		<div class="splitleft">
 		<div id="projectlistarea">
 			<h2 data-i18n="list_of_projects">list_of_projects</h2>
 			<table>
@@ -63,7 +64,10 @@
 				<tbody>  </tbody>
 			</table>
 		</div>
+		</div>
+		<div class="splitright">
 		<div id="documentlistarea">
+		</div>
 		</div>
 	</div>
 	<div id="topbar">

@@ -33,6 +33,8 @@ function init_all() {
 
 function init_projects() {
 	init_all();
+	$("#content .splitleft").append("<img src=\"gfx/loading1.gif\" />");
+	$("#projectlistarea").hide();
 	jQuery.getJSON("rpc/projectlist", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
@@ -53,7 +55,8 @@ function init_projects() {
 			}
 
 		};
-		
+		$("#content .splitleft img").remove();
+		$("#projectlistarea").show();		
 	});
 	
 	$( "button.button_edit_user" ).button({
@@ -62,6 +65,8 @@ function init_projects() {
 }
 
 function show_documentlist(id) {
+	$("#content .splitright").append("<img src=\"gfx/loading1.gif\" />");
+
 	$("button.button_open.project").button({
 		disabled:false,
 		icons:{primary:"ui-icon-folder-collapsed",secondary:null}
@@ -72,6 +77,7 @@ function show_documentlist(id) {
 	});
 	$("#documentlistarea").empty();
 	$("#topbar .left .pname").remove();
+	$("#documentlistarea").hide();		
 
 	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
 		var header = false;
@@ -139,6 +145,10 @@ function show_documentlist(id) {
 		$("#documentlistarea").append("<h2>"+i18n.t("documents_in_X", {"projectname":data['project']['name']})+"</h2>");
 		$("#documentlistarea").append(table);
 		$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+data['project']['name']+"</span>");
+		
+		$("#content .splitright img").remove();
+		$("#documentlistarea").show();		
+
 	});
 }
 
@@ -234,7 +244,9 @@ function init_main() {
 					$("#outline li").removeClass("selected");
 					$(this).addClass("selected");
 				}
-			});		
+			});
+			$("#status .loading").hide();
+			$("#outline").show();
 	});
 }
 

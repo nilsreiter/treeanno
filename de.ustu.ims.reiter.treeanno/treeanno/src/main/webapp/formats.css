@@ -7,6 +7,9 @@ body{
 li.selected {
 	background-color:yellow;
 }
+div#status {
+	text-align:center;
+}
 div#content {
 	margin:10px;
 	position:relative;
@@ -103,15 +106,14 @@ span.search_container {
 #topbar .username {
 	font-style:italic;
 }
-#projectlistarea,#documentlistarea {
-	margin:15px;
-}
-#projectlistarea{
-	width:30%;
-}
 
 .splitcontent div {
 	float:left;
+	margin:15px;
+}
+
+.splitcontent .splitleft {
+		width:30%;	
 }
 
 .mark1 {
