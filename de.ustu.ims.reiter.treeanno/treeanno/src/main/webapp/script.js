@@ -33,8 +33,8 @@ function init_all() {
 
 function init_projects() {
 	init_all();
-	$("#content .splitleft").append("<img src=\"gfx/loading1.gif\" />");
-	$("#projectlistarea").hide();
+	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
+	$(".splitleft #projectlistarea").hide();
 	jQuery.getJSON("rpc/projectlist", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
@@ -55,8 +55,8 @@ function init_projects() {
 			}
 
 		};
-		$("#content .splitleft img").remove();
-		$("#projectlistarea").show();		
+		$(".splitleft img").remove();
+		$(".splitleft #projectlistarea").show();		
 	});
 	
 	$( "button.button_edit_user" ).button({

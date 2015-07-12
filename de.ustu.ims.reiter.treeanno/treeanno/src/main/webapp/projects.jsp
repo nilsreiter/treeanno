@@ -61,21 +61,6 @@
 	</c:if>
 </head>
 <body>
-	<div id="content" class="splitcontent">
-		<div class="splitleft">
-		<div id="projectlistarea">
-			<h2 data-i18n="list_of_projects">list_of_projects</h2>
-			<table>
-				<thead><tr><th data-i18n="project_id"></th><th data-i18n="project_name"></th></tr></thead>
-				<tbody>  </tbody>
-			</table>
-		</div>
-		</div>
-		<div class="splitright">
-		<div id="documentlistarea">
-		</div>
-		</div>
-	</div>
 	<div id="topbar">
 		<span class="ui-widget left">
 			<span><a href="index.jsp">${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}</a></span>
@@ -84,7 +69,22 @@
 			<button class="button_edit_user">${sessionScope.User.name }</button>
 		</span>
 	</div>
-</body>
+	<div id="content" class="splitcontent">
+		<div class="splitleft">
+			<div id="projectlistarea">
+				<h2 data-i18n="list_of_projects">list_of_projects</h2>
+				<table>
+					<thead><tr><th data-i18n="project_id"></th><th data-i18n="project_name"></th></tr></thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+		<div class="splitright">
+			<div id="documentlistarea">
+			</div>
+		</div>
+	</div>
 
+</body>
 </html>
 </jsp:root>
