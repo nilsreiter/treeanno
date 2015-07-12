@@ -550,10 +550,10 @@ function merge(item1, item0) {
 	//items[++idCounter] = nitem;
 	
 	var nitem = get_html_item(nitem, idCounter);
+	$(".selected").after(nitem);
 	$(nitem).children("div").smartTruncation({
 	    'truncateCenter'    : true
 	  });
-	$(".selected").after(nitem);
 	var newsel = $(".selected").next();
 	var sublist1 = $(".selected > ul").detach();
 	$(".selected").remove();
