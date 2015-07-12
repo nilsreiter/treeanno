@@ -188,7 +188,12 @@ function show_documentlist(id) {
 		$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+data['project']['name']+"</span>");
 		
 		$("#content .splitright img").remove();
-		$("#documentlistarea").show();		
+		
+		$("#documentlistarea").append("<form class=\"upload\" method=\"POST\" action=\"rpc/NewDocument\" enctype=\"multipart/form-data\"><input class=\"fileupload\" type=\"file\" name=\"files[]\" multiple=\"multiple\"><input type=\"submit\" data-i18n=\"upload\" /></form>");
+
+		$("#documentlistarea form input[type='submit']").button();
+		
+		$("#documentlistarea").show();	
 
 	});
 }
