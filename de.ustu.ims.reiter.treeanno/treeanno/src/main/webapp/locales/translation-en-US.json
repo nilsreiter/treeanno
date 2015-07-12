@@ -28,6 +28,7 @@
 	"document_action_clone":"Clone",
 	"document_action_delete":"Hide",
 	"document_action_export_xmi":"Export",
+	"document_action_rename":"Rename",
 	"project_id":"Id",
 	"project_name":"Name",
 	"project_action_open":"Open",
@@ -35,5 +36,11 @@
 	"login_dialog_ok":"Enter",
 	"show_helper":"Show Cheat Sheet",
 	"documents_in_X":"Documents in project \"__projectname__\"",
-	"howto_split":"Split by hitting Enter twice where you want to split"
+	"howto_split":"Split by hitting Enter twice where you want to split",
+	"rename_dialog":{
+		"title":"Rename Document",
+		"ok":"Rename",
+		"cancel":"Cancel",
+		"desc":"New Name"
+	}
 }

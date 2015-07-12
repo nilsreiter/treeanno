@@ -40,4 +40,6 @@ public interface DataLayer {
 
 	boolean updateJCas(Document document, JCas jcas) throws SQLException,
 	SAXException;
+
+	boolean updateDocument(Document document) throws SQLException;
 }

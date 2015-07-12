@@ -8,7 +8,9 @@
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="false" />
-
+<c:if test="${ empty sessionScope.User }">
+	<c:redirect url="index.jsp"/>
+</c:if>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}: Projects</title>
@@ -29,6 +31,10 @@
 	<script src="i18next/i18next-1.8.0.min.js">
 	// <![CDATA[
  	// ]]>
+	</script>
+	<script src="config.js.jsp">
+	// <![CDATA[
+	// ]]>
 	</script>
 	<script src="script.js">
 	// <![CDATA[

@@ -82,6 +82,7 @@ function show_documentlist(id) {
 	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
+		var al = data['accesslevel'];
 		for (var i = 0; i < data['documents'].length; i++) {
 			if (!header) {
 				var trh = document.createElement("tr");
@@ -98,10 +99,16 @@ function show_documentlist(id) {
 			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
 			
 			var actionCell = document.createElement("td");
-			$(actionCell).append("<button class=\"button_open\"></button>");
-			$(actionCell).append("<button class=\"button_clone\">clone</button>");
-			$(actionCell).append("<button class=\"button_delete\">delete</button>");
-			$(actionCell).append("<button class=\"button_export\">export</button>");
+			if (al >= Perm["READACCESS"])
+				$(actionCell).append("<button class=\"button_open\"></button>");
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_clone\">clone</button>");
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_rename\">rename</button>")
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_delete\">delete</button>");
+			if (al >= Perm["READACCESS"])
+				$(actionCell).append("<button class=\"button_export\">export</button>");
 			$(actionCell).find("button.button_open").button({
 				label:i18n.t("document_action_open"),
 				icons:{primary:"ui-icon-document",secondary:null}
@@ -119,6 +126,40 @@ function show_documentlist(id) {
 				jQuery.getJSON("DocumentHandling?action=clone&documentId="+event.data.documentId, function() {
 					show_documentlist(id);
 				});
+			});
+			$(actionCell).find("button.button_rename").button({
+				label:i18n.t("document_action_rename"),
+				icons:{primary:"ui-icon-pencil",secondary:null}
+			}).click({
+				'document':data['documents'][i]
+			}, function(event) {
+				var diagDiv = document.createElement("div");
+				$(diagDiv).append(i18n.t("rename_dialog.desc")+"<input type=\"text\" value=\""+event.data.document['name']+"\" />");
+				$("body").append(diagDiv);
+				
+				$(diagDiv).dialog({
+					title:i18n.t("rename_dialog.title"),
+					dialogClass: "no-close",
+					buttons: [{ text: i18n.t("rename_dialog.ok"),
+					            click: function() {
+					            	// alert($(diagDiv).children("input").val());
+									jQuery.getJSON("DocumentHandling?action=rename&name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
+										show_documentlist(id);
+									});
+
+					              $( this ).dialog( "close" );
+					            }
+					          },{
+					        	  text:i18n.t("rename_dialog.cancel"),
+					        	  click: function() {
+					        		  $(this).dialog("destroy");
+					        		  document.getElementsByTagName("BODY")[0].removeChild(diagDiv);
+					        	  }
+					          }],
+					closeOnEscape: true,
+					modal:true	
+				}).show();
+				
 			});
 			$(actionCell).find("button.button_delete").button({
 				label:i18n.t("document_action_delete"),
