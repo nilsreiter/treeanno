@@ -126,4 +126,9 @@ public class DataCache implements DataLayer {
 		this.documentCollections.remove(document.getProject());
 		return dbio.updateDocument(document);
 	}
+
+	@Override
+	public Document getNewDocument(Project p) throws SQLException {
+		return dbio.getNewDocument(p);
+	}
 }
