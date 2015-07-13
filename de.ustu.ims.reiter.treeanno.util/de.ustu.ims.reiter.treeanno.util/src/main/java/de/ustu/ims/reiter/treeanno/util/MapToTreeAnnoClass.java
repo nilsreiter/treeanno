@@ -1,4 +1,4 @@
-package de.ustu.ims.reiter.treeanno.tools;
+package de.ustu.ims.reiter.treeanno.util;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;

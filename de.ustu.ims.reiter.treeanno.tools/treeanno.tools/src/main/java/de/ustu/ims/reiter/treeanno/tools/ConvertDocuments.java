@@ -14,6 +14,7 @@ import com.lexicalscope.jewel.cli.Option;
 
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiReader;
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
+import de.ustu.ims.reiter.treeanno.util.MapToTreeAnnoClass;
 
 public class ConvertDocuments {
 
