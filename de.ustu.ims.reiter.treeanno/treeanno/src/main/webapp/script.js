@@ -189,7 +189,31 @@ function show_documentlist(id) {
 		
 		$("#content .splitright img").remove();
 		
-		$("#documentlistarea").append("<form class=\"upload\" method=\"POST\" action=\"rpc/NewDocument\" enctype=\"multipart/form-data\"><input class=\"fileupload\" type=\"file\" name=\"files[]\" multiple=\"multiple\"><input type=\"submit\" data-i18n=\"upload\" /><input type=\"hidden\" name=\"projectId\" value=\""+id+"\"/></form>");
+		var upArea = document.createElement("div");
+		$(upArea).attr("id", "documentuploadarea");
+		$(upArea).append("<p>"+i18n.t("new_document.title")+"</p>")
+		
+		
+		var newDocForm = document.createElement("form");
+		$(newDocForm).attr("class", "upload");
+		$(newDocForm).attr("method", "POST");
+		$(newDocForm).attr("action", "rpc/NewDocument");
+		$(newDocForm).attr("enctype", "multipart/form-data");
+		
+		$(newDocForm).append("<div><input class=\"fileupload\" type=\"file\" name=\"files[]\" multiple=\"multiple\" accept=\"text/plain\"></div>");
+		$(newDocForm).append("<div><label for=\"segmenttype\">"+i18n.t("new_document.type_description")+"</label> <select name=\"segmenttype\" id=\"segmenttype\"><option value=\"sentence\">"+i18n.t("new_document.sentence")+"</option><option value=\"token\">"+i18n.t("new_document.token")+"</option></select></div>");
+		$(newDocForm).append("<div style=\"text-align:right;\"><input type=\"submit\" value=\""+i18n.t("new_document.submit")+"\" /></div>");
+		$(newDocForm).append("<input type=\"hidden\" name=\"projectId\" value=\""+id+"\"/>");
+	
+		$(upArea).append(newDocForm);
+		$("#documentlistarea").append(upArea);
+		
+		$(newDocForm).find("select").selectmenu({'width':200});
+		
+		$(upArea).accordion({"collapsible":true,
+			"header":"> p",
+			"active":false,
+			"heightStyle":"fill"});
 
 		$("#documentlistarea form input[type='submit']").button();
 		
