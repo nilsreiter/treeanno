@@ -20,10 +20,12 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.xml.sax.SAXException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.beans.Document;
@@ -64,30 +66,44 @@ public class NewDocument extends HttpServlet {
 
 			DataLayer dbio = CW.getDataLayer(getServletContext());
 			// Parse the request
+			Project p = null;
 			try {
-				Project p = null;
 				List<FileItem> items = upload.parseRequest(request);
+				PlainTextPreprocess<? extends Annotation> pp = null;
 				for (FileItem fi : items) {
 					if (fi.isFormField()) {
 						String fname = fi.getFieldName();
 						String value = fi.getString();
 						if (fname.equalsIgnoreCase("projectId")) {
 							p = dbio.getProject(Integer.valueOf(value));
+						} else if (fname.equalsIgnoreCase("segmenttype")) {
+							if (value.equalsIgnoreCase("token")) {
+								pp =
+										new PlainTextPreprocess<Token>(
+												Token.class);
+
+							} else
+								pp =
+										new PlainTextPreprocess<Sentence>(
+												Sentence.class);
 						}
 					} else {
-						IOUtils.copy(fi.getInputStream(), new BufferedWriter(
-								new FileWriter(new File(temp, fi.getName()))));
+						BufferedWriter bw =
+								new BufferedWriter(new FileWriter(new File(
+										temp, fi.getName())));
+						IOUtils.copy(fi.getInputStream(), bw);
+						bw.flush();
+						bw.close();
 					}
 				}
-				PlainTextPreprocess<Sentence> pp =
-						new PlainTextPreprocess<Sentence>(Sentence.class);
 				Iterator<JCas> iterator = pp.process(temp, "de");
 				while (iterator.hasNext()) {
 					Document document = dbio.getNewDocument(p);
 					dbio.updateJCas(document, iterator.next());
 
 				}
-				response.sendRedirect("projects.jsp");
+				response.sendRedirect("../projects.jsp?projectId="
+						+ p.getDatabaseId());
 				return;
 			} catch (FileUploadException | ResourceInitializationException
 					| SQLException | SAXException e) {
