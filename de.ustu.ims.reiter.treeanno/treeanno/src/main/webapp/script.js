@@ -4,6 +4,9 @@ var shifted = false;
 
 var idCounter = 0;
 
+var documents_selected_for_diff = new Array();
+var max_documents_for_diff = 2;
+
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
 	$(htmlItem).attr("title", item['text']);
@@ -79,6 +82,8 @@ function show_documentlist(id) {
 	$("#topbar .left .pname").remove();
 	$("#documentlistarea").hide();		
 
+	
+	var showText = false;
 	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
@@ -109,9 +114,14 @@ function show_documentlist(id) {
 				$(actionCell).append("<button class=\"button_delete\">delete</button>");
 			if (al >= Perm["READACCESS"])
 				$(actionCell).append("<button class=\"button_export\">export</button>");
+			if (al >= Perm["PADMINACCESS"]) 
+				$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+data['documents'][i]['id']+"\" type=\"checkbox\" name=\"diff\" value=\""+data['documents'][i]['id']+"\"/><label for=\"diffselect-"+data['documents'][i]['id']+"\"></label>");
+			
+			
 			$(actionCell).find("button.button_open").button({
 				label:i18n.t("document_action_open"),
-				icons:{primary:"ui-icon-document",secondary:null}
+				icons:{primary:"ui-icon-document",secondary:null},
+				text:showText
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -120,7 +130,8 @@ function show_documentlist(id) {
 			$(actionCell).find("button.button_clone").button({
 				label:i18n.t("document_action_clone"),
 				icons:{primary:"ui-icon-copy",secondary:null},
-				disabled:('cloneOf' in data['documents'][i])
+				disabled:('cloneOf' in data['documents'][i]),
+				text:showText
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -130,7 +141,8 @@ function show_documentlist(id) {
 			});
 			$(actionCell).find("button.button_rename").button({
 				label:i18n.t("document_action_rename"),
-				icons:{primary:"ui-icon-pencil",secondary:null}
+				icons:{primary:"ui-icon-pencil",secondary:null},
+				text:showText
 			}).click({
 				'document':data['documents'][i]
 			}, function(event) {
@@ -164,7 +176,8 @@ function show_documentlist(id) {
 			});
 			$(actionCell).find("button.button_delete").button({
 				label:i18n.t("document_action_delete"),
-				icons:{primary:"ui-icon-trash", secondary:null}
+				icons:{primary:"ui-icon-trash", secondary:null},
+				text:showText
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -172,14 +185,30 @@ function show_documentlist(id) {
 					show_documentlist(id);
 				});
 			});
+			
+			// export button
 			$(actionCell).find("button.button_export").button({
 				label:i18n.t("document_action_export_xmi"),
-				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null}
+				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null},
+				text:showText
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
 			});
+			
+			// diff select button
+			$(actionCell).find("input.button_diff").button({
+				label:i18n.t("document_action.diff"),
+				icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
+				text:showText,
+				disabled:!('cloneOf' in data['documents'][i])
+			}).click({
+				documentId:data['documents'][i]['id']
+			}, function (event) {
+				select_document_for_diff(event.data.documentId);
+			}); 
+			
 			$(actionCell).buttonset();
 			$(tr).append(actionCell);
 			$(table).append(tr);
@@ -192,6 +221,20 @@ function show_documentlist(id) {
 		$("#documentlistarea").show();		
 
 	});
+}
+
+function select_document_for_diff(did) {
+	if ($("#diffselect-"+did).val() == did) {
+		if (documents_selected_for_diff.push(did) > max_documents_for_diff) {
+			var d = documents_selected_for_diff.shift();
+			// alert("unchecking "+d);
+			$("#diffselect-"+d).removeAttr('checked');
+			$("#diffselect-"+d).button( "refresh" )
+		}
+	} else {
+		documents_selected_for_diff.splice(documents_selected_for_diff.indexOf(did),1);
+	}
+	
 }
 
 function init_trans(fnc) {
