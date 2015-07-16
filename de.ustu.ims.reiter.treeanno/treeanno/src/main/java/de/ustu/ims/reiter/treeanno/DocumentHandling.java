@@ -67,7 +67,11 @@ public class DocumentHandling extends HttpServlet {
 				try {
 					Document document =
 							dataLayer.getDocument(Integer.valueOf(docIds[i]));
-					dataLayer.cloneDocument(document);
+					if (document.getCloneOf() == null)
+						dataLayer.cloneDocument(document);
+					else
+						throw new ServletException(
+								"Can't clone cloned documents.");
 				} catch (SQLException e) {
 					throw new ServletException(e);
 				}
@@ -92,11 +96,11 @@ public class DocumentHandling extends HttpServlet {
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-								.getDocumentTitle();
+						.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-								JCasUtil.selectSingle(jcas,
-										DocumentMetaData.class).getDocumentId();
+						JCasUtil.selectSingle(jcas,
+								DocumentMetaData.class).getDocumentId();
 					zos = new ZipOutputStream(response.getOutputStream());
 					zos.setLevel(9);
 					zos.putNextEntry(new ZipEntry(name + "/"));
