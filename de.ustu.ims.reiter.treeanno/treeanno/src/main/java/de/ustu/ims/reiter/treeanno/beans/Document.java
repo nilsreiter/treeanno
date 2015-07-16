@@ -25,6 +25,9 @@ public class Document {
 	@Column
 	boolean hidden;
 
+	@DatabaseField(canBeNull = true, foreign = true, columnName = "cloneOf")
+	Document cloneOf;
+
 	@Deprecated
 	public int getId() {
 		return id;
@@ -84,6 +87,10 @@ public class Document {
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Document)) return false;
 		return this.hashCode() == obj.hashCode();
+	}
+
+	public Document getCloneOf() {
+		return cloneOf;
 	}
 
 }

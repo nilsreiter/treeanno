@@ -119,7 +119,8 @@ function show_documentlist(id) {
 			});
 			$(actionCell).find("button.button_clone").button({
 				label:i18n.t("document_action_clone"),
-				icons:{primary:"ui-icon-copy",secondary:null}
+				icons:{primary:"ui-icon-copy",secondary:null},
+				disabled:('cloneOf' in data['documents'][i])
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
