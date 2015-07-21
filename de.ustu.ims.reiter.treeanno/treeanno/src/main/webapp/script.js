@@ -33,6 +33,18 @@ function init_all() {
 
 function init_projects() {
 	init_all();
+	$("#documentuploaddialog").dialog({
+		hide:false,
+		title:i18n.t("new_document.title"),
+		buttons:[{
+			text:i18n.t("new_document.submit"),
+			click:function() {
+				$("#documentuploaddialog form").submit();
+			}
+		}]
+	});
+	$("#documentuploaddialog").dialog("close");
+	
 	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
 	$(".splitleft #projectlistarea").hide();
 	jQuery.getJSON("rpc/projectlist", function(data) {
@@ -189,33 +201,16 @@ function show_documentlist(id) {
 		
 		$("#content .splitright img").remove();
 		
-		var upArea = document.createElement("div");
-		$(upArea).attr("id", "documentuploadarea");
-		$(upArea).append("<p>"+i18n.t("new_document.title")+"</p>")
+		$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");
 		
+		$("button#new_document_open_dialog").button({
+			label:i18n.t("new_document.open_dialog"),
+			icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null }
+		}).click(function() {
+			$("#documentuploaddialog").dialog("open");
+		});
 		
-		var newDocForm = document.createElement("form");
-		$(newDocForm).attr("class", "upload");
-		$(newDocForm).attr("method", "POST");
-		$(newDocForm).attr("action", "rpc/NewDocument");
-		$(newDocForm).attr("enctype", "multipart/form-data");
-		
-		$(newDocForm).append("<div><input class=\"fileupload\" type=\"file\" name=\"files[]\" multiple=\"multiple\" accept=\"text/plain\"></div>");
-		$(newDocForm).append("<div><label for=\"segmenttype\">"+i18n.t("new_document.type_description")+"</label> <select name=\"segmenttype\" id=\"segmenttype\"><option value=\"sentence\">"+i18n.t("new_document.sentence")+"</option><option value=\"token\">"+i18n.t("new_document.token")+"</option></select></div>");
-		$(newDocForm).append("<div style=\"text-align:right;\"><input type=\"submit\" value=\""+i18n.t("new_document.submit")+"\" /></div>");
-		$(newDocForm).append("<input type=\"hidden\" name=\"projectId\" value=\""+id+"\"/>");
-	
-		$(upArea).append(newDocForm);
-		$("#documentlistarea").append(upArea);
-		
-		$(newDocForm).find("select").selectmenu({'width':200});
-		
-		$(upArea).accordion({"collapsible":true,
-			"header":"> p",
-			"active":false,
-			"heightStyle":"fill"});
 
-		$("#documentlistarea form input[type='submit']").button();
 		
 		$("#documentlistarea").show();	
 
