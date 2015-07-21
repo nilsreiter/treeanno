@@ -214,6 +214,21 @@ function show_documentlist(id) {
 		$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+data['project']['name']+"</span>");
 		
 		$("#content .splitright img").remove();
+		
+		$("#documentlistarea").append("<button id=\"button_open_diff\"></button>")
+		
+		$("button#button_open_diff").button({
+			label:i18n.t("diff.open_view")
+		}).click(function() {
+			if($("input.button_diff:checked").length == 2) {
+				var doc = new Array();
+				$("input.button_diff:checked").each(function(index, element) {
+					doc[index] = $(element).val();
+				});
+ 				window.location.href="parallel.jsp?documentId="+doc[0]+"&documentId="+doc[1];
+			}
+		});
+		
 		$("#documentlistarea").show();
 
 	});
