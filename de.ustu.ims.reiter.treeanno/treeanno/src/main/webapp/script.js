@@ -203,10 +203,6 @@ function show_documentlist(id) {
 				icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
 				text:showText,
 				disabled:!('cloneOf' in data['documents'][i])
-			}).click({
-				documentId:data['documents'][i]['id']
-			}, function (event) {
-				select_document_for_diff(event.data.documentId);
 			}); 
 			
 			$(actionCell).buttonset();
@@ -218,7 +214,7 @@ function show_documentlist(id) {
 		$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+data['project']['name']+"</span>");
 		
 		$("#content .splitright img").remove();
-		$("#documentlistarea").show();		
+		$("#documentlistarea").show();
 
 	});
 }
@@ -227,14 +223,13 @@ function select_document_for_diff(did) {
 	if ($("#diffselect-"+did).val() == did) {
 		if (documents_selected_for_diff.push(did) > max_documents_for_diff) {
 			var d = documents_selected_for_diff.shift();
-			// alert("unchecking "+d);
 			$("#diffselect-"+d).removeAttr('checked');
-			$("#diffselect-"+d).button( "refresh" )
+			$("#diffselect-"+d).button( "refresh" );
 		}
 	} else {
 		documents_selected_for_diff.splice(documents_selected_for_diff.indexOf(did),1);
+		$("#diffselect-"+did).button( "refresh" );
 	}
-	
 }
 
 function init_trans(fnc) {
