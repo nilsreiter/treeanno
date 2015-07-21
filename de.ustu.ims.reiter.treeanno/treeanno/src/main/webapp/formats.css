@@ -107,7 +107,7 @@ span.search_container {
 	font-style:italic;
 }
 
-.splitcontent div {
+.splitcontent > div {
 	float:left;
 	margin:15px;
 }
@@ -126,4 +126,9 @@ span.search_container {
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+#documentuploadarea {
+	width:50%;
+	min-width:100px;
 }

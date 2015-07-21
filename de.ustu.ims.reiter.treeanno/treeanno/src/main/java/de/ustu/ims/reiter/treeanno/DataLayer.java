@@ -42,4 +42,6 @@ public interface DataLayer {
 	SAXException;
 
 	boolean updateDocument(Document document) throws SQLException;
+
+	Document getNewDocument(Project p) throws SQLException;
 }

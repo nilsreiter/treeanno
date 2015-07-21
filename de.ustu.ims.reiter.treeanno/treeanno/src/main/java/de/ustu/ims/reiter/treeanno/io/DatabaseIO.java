@@ -48,7 +48,7 @@ public class DatabaseIO implements DataLayer {
 	Dao<Document, Integer> documentDao;
 
 	public DatabaseIO() throws ClassNotFoundException, NamingException,
-	SQLException {
+			SQLException {
 		Context initContext;
 		Class.forName("com.mysql.jdbc.Driver");
 
@@ -71,7 +71,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Deprecated
 	public DatabaseIO(DataSource ds) throws ClassNotFoundException,
-			NamingException {
+	NamingException {
 		dataSource = ds;
 	}
 
@@ -130,7 +130,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-			SAXException {
+	SAXException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -147,7 +147,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -163,7 +163,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,
-			SAXException, IOException {
+	SAXException, IOException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
@@ -172,7 +172,7 @@ public class DatabaseIO implements DataLayer {
 		try {
 			stmt =
 					connection
-					.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
+							.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
 			stmt.setInt(1, documentId);
 			rs = stmt.executeQuery();
 
@@ -181,7 +181,7 @@ public class DatabaseIO implements DataLayer {
 				String textXML = rs.getString(1);
 				TypeSystemDescription tsd =
 						TypeSystemDescriptionFactory
-						.createTypeSystemDescription();
+								.createTypeSystemDescription();
 				jcas = JCasFactory.createJCas(tsd);
 				InputStream is = null;
 				try {
@@ -210,7 +210,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-						.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
+				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
@@ -267,7 +267,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public JCas getJCas(Document document) throws SQLException, UIMAException,
-			SAXException, IOException {
+	SAXException, IOException {
 		return this.getJCas(document.getDatabaseId());
 	}
 
@@ -309,5 +309,12 @@ public class DatabaseIO implements DataLayer {
 	@Override
 	public boolean updateDocument(Document document) throws SQLException {
 		return (documentDao.update(document) == 1);
+	}
+
+	public Document getNewDocument(Project p) throws SQLException {
+		Document document = new Document();
+		document.setProject(p);
+		documentDao.create(document);
+		return document;
 	}
 }

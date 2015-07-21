@@ -10,6 +10,7 @@ import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
 
 public class CW {
+	@Deprecated
 	public static DatabaseIO getDatabaseIO(ServletContext sc) {
 		return (DatabaseIO) sc.getAttribute(CA.DATABASEIO);
 	}

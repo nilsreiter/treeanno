@@ -25,6 +25,9 @@ public class Document {
 	@Column
 	boolean hidden;
 
+	@Column
+	private String xmi = "";
+
 	@Deprecated
 	public int getId() {
 		return id;

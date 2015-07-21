@@ -33,6 +33,18 @@ function init_all() {
 
 function init_projects() {
 	init_all();
+	$("#documentuploaddialog").dialog({
+		hide:false,
+		title:i18n.t("new_document.title"),
+		buttons:[{
+			text:i18n.t("new_document.submit"),
+			click:function() {
+				$("#documentuploaddialog form").submit();
+			}
+		}]
+	});
+	$("#documentuploaddialog").dialog("close");
+	
 	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
 	$(".splitleft #projectlistarea").hide();
 	jQuery.getJSON("rpc/projectlist", function(data) {
@@ -188,7 +200,19 @@ function show_documentlist(id) {
 		$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+data['project']['name']+"</span>");
 		
 		$("#content .splitright img").remove();
-		$("#documentlistarea").show();		
+		
+		$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");
+		
+		$("button#new_document_open_dialog").button({
+			label:i18n.t("new_document.open_dialog"),
+			icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null }
+		}).click(function() {
+			$("#documentuploaddialog").dialog("open");
+		});
+		
+
+		
+		$("#documentlistarea").show();	
 
 	});
 }

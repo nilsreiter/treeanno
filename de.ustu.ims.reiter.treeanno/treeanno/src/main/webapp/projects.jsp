@@ -84,7 +84,21 @@
 			</div>
 		</div>
 	</div>
-
+	<div id="documentuploaddialog">
+		<form class="upload" method="POST" action="rpc/NewDocument" enctype="multipart/form-data">
+			<div>
+				<input class="fileupload" type="file" name="files[]" multiple="multiple" accept="text/plain" />
+			</div>
+			<div>
+				<label for="segmenttype" data-i18n="new_document.type_description">new_document.type_description</label>
+				<select name="segmenttype" id="segmenttype">
+					<option value="sentence" data-i18n="new_document.sentence">new_document.sentence</option>
+					<option value="token" data-i18n="new_document.token">new_document.token</option>
+				</select>
+			</div>
+			<input type="hidden" name="projectId" value="1" />
+		</form>
+	</div>
 </body>
 </html>
 </jsp:root>
