@@ -35,7 +35,7 @@ div#artifact {
 }
 #outline,
 .outline { margin:.5em 0;
-		float:left;max-width:50% }
+		float:left;max-width:40% }
 #outline li,
 .outline li { padding:0; margin:.5em 0 0 0; }
 #outline li div,
