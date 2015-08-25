@@ -261,6 +261,11 @@ function init_trans(fnc) {
 		});
 }
 
+// Source: http://stackoverflow.com/questions/280634/endswith-in-javascript
+function ends_with(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
 function init_parallel() {
 	init_all();
 	$("#split").hide();
@@ -292,13 +297,19 @@ function init_parallel() {
 	$("#form_search").blur(function() {enable_interaction=true});
 	
 	disableSaveButton();
-	$(".outline").each(function(index, element) {
+
+	$(".outline").hide();
+	$("#content > .outline").each(function(index, element) {
 		var documentId = documentIds[index];
 		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
 			
-			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
-			
-			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
+			if (ends_with($(".breadcrumb").text().trim(), ">")) {
+				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"]);
+				document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
+			} else {
+				$(".breadcrumb").append(", "+data["document"]["name"]);
+				document.title = document.title + ", " + data["document"]["name"];
+			} 
 			
 			var list = data["list"];
 			
@@ -307,21 +318,19 @@ function init_parallel() {
 				
 				if ('parentId' in item) {
 					var parentId = item['parentId'];
-					var parentItem = $("li[data-treeanno-id='"+parentId+"']");
+					var parentItem = $("li[data-treeanno-id='"+parentId+"']", element);
 					if (parentItem.length == 0)
 						list.push(item);
 					else {
 						if (parentItem.children("ul").length == 0)
 							parentItem.append("<ul></ul>");
-						$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, 0));
+						$("li[data-treeanno-id='"+parentId+"'] > ul", element).append(get_html_item(item, 0));
 					}
 				} else {
 					$(element).append(get_html_item(item, 0));
 				}
 			}
-			$("li > div", element).smartTruncation({
-			    'truncateCenter'    : true
-			  });
+		
 			// $(element).children('li:first-child').addClass("selected");
 			/*document.onkeydown = function(e) {
 				key_down(e);
@@ -346,7 +355,9 @@ function init_parallel() {
 		});
 	});
 	
-	
+	$(".outline li > div").smartTruncation({
+	    'truncateCenter'    : true
+	  });
 }
 
 function init_main() {
