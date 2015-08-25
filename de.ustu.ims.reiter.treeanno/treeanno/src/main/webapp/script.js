@@ -417,9 +417,7 @@ function init_main() {
 					$('#outline').append(get_html_item(item, 0));
 				}
 			}
-			$("#outline li > div").smartTruncation({
-			    'truncateCenter'    : true
-			  });
+
 			$('#outline > li:first-child').addClass("selected");
 			document.onkeydown = function(e) {
 				key_down(e);
@@ -441,7 +439,13 @@ function init_main() {
 			});
 			$("#status .loading").hide();
 			$("#outline").show();
+			
+			
 	});
+		
+		$("#outline li > div").smartTruncation({
+			'truncateCenter': true
+		});
 }
 
 function search() {
