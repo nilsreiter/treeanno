@@ -89,4 +89,14 @@
     <servlet-name>AccessLevel</servlet-name>
     <url-pattern>/rpc/AccessLevel</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>NewDocument</display-name>
+    <servlet-name>NewDocument</servlet-name>
+    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.NewDocument</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NewDocument</servlet-name>
+    <url-pattern>/rpc/NewDocument</url-pattern>
+  </servlet-mapping>
 </web-app>

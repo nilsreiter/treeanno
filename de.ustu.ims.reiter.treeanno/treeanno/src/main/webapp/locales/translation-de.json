@@ -42,5 +42,13 @@
 		"ok":"Umbenennen",
 		"cancel":"Abbrechen",
 		"desc":"Neuer Name"
+	},
+	"new_document":{
+		"title":"Neues Dokument hochladen",
+		"submit":"Hochladen",
+		"type_description":"Segment-Typ",
+		"sentence":"Sätze",
+		"token":"Tokens",
+		"open_dialog":"Neues Dokument"
 	}
 }
