@@ -28,7 +28,8 @@ public class UserDocument {
 	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
 
-	@DatabaseField(columnName = FIELD_USER, foreign = true)
+	@DatabaseField(columnName = FIELD_USER, foreign = true,
+			foreignAutoRefresh = true)
 	User user;
 
 	public String getXmi() {
