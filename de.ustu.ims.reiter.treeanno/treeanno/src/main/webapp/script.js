@@ -76,8 +76,49 @@ function init_projects() {
 	});
 }
 
+function show_annodoclist(id) {
+	$("#annodoclistarea").remove();
+	
+	$("#content .splitright").append("<div id=\"annodoclistarea\"></div>");
+	$("#annodoclistarea").hide();
+	
+	jQuery.getJSON("rpc/userdocumentlist?documentId="+id, function(data) {
+		var header = false;
+		var table = document.createElement("table");
+
+		for (var i = 0; i < data['documents'].length; i++) {
+			if (!header) {
+				var trh = document.createElement("tr");
+				$(trh).append("<th>"+i18n.t("document_id")+"</th>");
+				$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
+				$(trh).append("<th>"+i18n.t("document_actions")+"</th>");
+				$(table).append(trh);
+				header = true;
+			}
+			var tr = document.createElement("tr");
+			$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
+			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
+			
+			var actionCell = document.createElement("td");
+			
+			$(actionCell).buttonset();
+			$(tr).append(actionCell);
+			$(table).append(tr);
+
+
+
+		}
+		$("#annodoclistarea").append("<h2>"+i18n.t("userdocuments_for_X", {"projectname":data['src']['id']})+"</h2>");
+		$("#annodoclistarea").append(table);
+		$("#annodoclistarea").show();
+	});
+
+}
+
 function show_documentlist(id) {
+	$("#content .splitright").empty();
 	$("#content .splitright").append("<img src=\"gfx/loading1.gif\" />");
+	$("#content .splitright").append("<div id=\"documentlistarea\"></div>");
 
 	$("button.button_open.project").button({
 		disabled:false,
@@ -87,7 +128,6 @@ function show_documentlist(id) {
 		disabled:true,
 		icons:{primary:"ui-icon-folder-open",secondary:null}
 	});
-	$("#documentlistarea").empty();
 	$("#topbar .left .pname").remove();
 	$("#documentlistarea").hide();		
 
@@ -100,7 +140,7 @@ function show_documentlist(id) {
 				var trh = document.createElement("tr");
 				$(trh).append("<th>"+i18n.t("document_id")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_name")+"</th>");
-				$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
+				//$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_actions")+"</th>");
 				$(table).append(trh);
 				header = true;
@@ -108,7 +148,7 @@ function show_documentlist(id) {
 			var tr = document.createElement("tr");
 			$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
 			$(tr).append("<td>"+data['documents'][i]['name']+"</td>");
-			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
+			//$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
 			
 			var actionCell = document.createElement("td");
 			if (al >= Perm["READACCESS"])
@@ -117,6 +157,8 @@ function show_documentlist(id) {
 				$(actionCell).append("<button class=\"button_rename\">rename</button>")
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_delete\">delete</button>");
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_view_annodoc\">view annotation</button>");
 			if (al >= Perm["READACCESS"])
 				$(actionCell).append("<button class=\"button_export\">export</button>");
 			$(actionCell).find("button.button_open").button({
@@ -161,6 +203,7 @@ function show_documentlist(id) {
 				}).show();
 				
 			});
+			
 			$(actionCell).find("button.button_delete").button({
 				label:i18n.t("document_action_delete"),
 				icons:{primary:"ui-icon-trash", secondary:null}
@@ -171,6 +214,18 @@ function show_documentlist(id) {
 					show_documentlist(id);
 				});
 			});
+			
+			$(actionCell).find("button.button_view_annodoc").button({
+				label:i18n.t("document_action_view_annodoc"),
+				icons:{primary:"ui-icon-cart", secondary:null}
+			}).click({
+				'documentId':data['documents'][i]['id']
+			}, function(event) {
+				show_annodoclist(event.data.documentId);
+			});
+			
+			
+			
 			$(actionCell).find("button.button_export").button({
 				label:i18n.t("document_action_export_xmi"),
 				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null}
