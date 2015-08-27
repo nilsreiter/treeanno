@@ -21,7 +21,6 @@ import org.xml.sax.SAXException;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.User;
-import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
@@ -66,23 +65,6 @@ public class DocumentHandling extends HttpServlet {
 			Util.returnJSON(response, new JSONObject());
 		} else if (action.equalsIgnoreCase("clone")) {
 			throw new UnsupportedOperationException();
-		} else if (action.equalsIgnoreCase("show-annodoc")) {
-			for (int i = 0; i < docIds.length; i++) {
-				Document document;
-				try {
-					JSONObject json = new JSONObject();
-					document =
-							dataLayer.getDocument(Integer.valueOf(docIds[i]));
-					if (dataLayer.getAccessLevel(document.getProject(), user) >= Perm.PADMIN_ACCESS) {
-						for (UserDocument ud : document.getUserDocuments()) {
-							json.append("documents", JSONUtil.getJSONObject(ud));
-						}
-					}
-					Util.returnJSON(response, json);
-				} catch (NumberFormatException | SQLException e) {
-					throw new ServletException(e);
-				}
-			}
 		} else if (action.equalsIgnoreCase("export")) {
 			// TODO: currently, this only exports the first document in the
 			// list, should be improved since we return a zip file anyway.
@@ -101,11 +83,11 @@ public class DocumentHandling extends HttpServlet {
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-								.getDocumentTitle();
+						.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-								JCasUtil.selectSingle(jcas,
-										DocumentMetaData.class).getDocumentId();
+						JCasUtil.selectSingle(jcas,
+								DocumentMetaData.class).getDocumentId();
 					zos = new ZipOutputStream(response.getOutputStream());
 					zos.setLevel(9);
 					zos.putNextEntry(new ZipEntry(name + "/"));
