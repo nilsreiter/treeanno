@@ -143,6 +143,7 @@ function show_documentlist(id) {
 		var header = false;
 		var table = document.createElement("table");
 		var al = data['accesslevel'];
+		if ("documents" in data) {
 		for (var i = 0; i < data['documents'].length; i++) {
 			if (!header) {
 				var trh = document.createElement("tr");
@@ -246,13 +247,16 @@ function show_documentlist(id) {
 			$(tr).append(actionCell);
 			$(table).append(tr);
 		}
+		}
 		$("#documentlistarea").append("<h2>"+i18n.t("documents_in_X", {"projectname":data['project']['name']})+"</h2>");
 		$("#documentlistarea").append(table);
 		$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+data['project']['name']+"</span>");
 		
+		
 		$("#content .splitright img").remove();
 		
 		if (al >= Perm["PADMINACCESS"]) {
+			$("#documentuploaddialog input[name='projectId']").attr("value", data['project']['databaseId']);
 			$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");	
 			$("button#new_document_open_dialog").button({
 				label:i18n.t("new_document.open_dialog"),
