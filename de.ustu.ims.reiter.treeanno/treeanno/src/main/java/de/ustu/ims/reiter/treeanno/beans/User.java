@@ -10,13 +10,13 @@ public class User {
 	@Column(unique = true)
 	String username;
 
-	@Column
+	@DatabaseField
 	String email;
 
 	@DatabaseField(generatedId = true)
 	int id;
 
-	@Column
+	@DatabaseField
 	String language;
 
 	public String getName() {
@@ -35,12 +35,8 @@ public class User {
 		this.email = email;
 	}
 
-	public int getDatabaseId() {
+	public int getId() {
 		return id;
-	}
-
-	public void setDatabaseId(int databaseId) {
-		this.id = databaseId;
 	}
 
 	public String getLanguage() {

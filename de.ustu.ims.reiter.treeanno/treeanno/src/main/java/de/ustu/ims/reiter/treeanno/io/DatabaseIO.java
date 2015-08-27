@@ -125,7 +125,7 @@ public class DatabaseIO implements DataLayer {
 			stmt =
 					conn.prepareStatement("SELECT level FROM treeanno_users_permissions WHERE projectId=? AND userId=?");
 			stmt.setInt(1, project.getDatabaseId());
-			stmt.setInt(2, user.getDatabaseId());
+			stmt.setInt(2, user.getId());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
 				int r = rs.getInt(1);
