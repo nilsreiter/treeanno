@@ -78,7 +78,8 @@ function init_projects() {
 
 function show_annodoclist(id) {
 	$("#annodoclistarea").remove();
-	
+	$("#topbar .left .adocname").remove();
+
 	$("#content .splitright").append("<div id=\"annodoclistarea\"></div>");
 	$("#annodoclistarea").hide();
 	
@@ -108,9 +109,9 @@ function show_annodoclist(id) {
 				$(tr).append(actionCell);
 				$(table).append(tr);
 			}
-			$("#annodoclistarea").append("<h2>"+i18n.t("annodoclistarea.title_for_X", {"projectname":data['src']['id']})+"</h2>");
+			$("#annodoclistarea").append("<h2>"+i18n.t("annodoclistarea.title_for_X", {"document":data['src']['id']})+"</h2>");
 			$("#annodoclistarea").append(table);
-			$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+i18n.t("annodoclistarea.breadcrumb_for_X", {"document":data['src']['id']})+"</span>");
+			$("#topbar .left").append("<span class=\"adocname\">&nbsp;&gt; "+i18n.t("annodoclistarea.breadcrumb_for_X", {"document":data['src']['id']})+"</span>");
 
 		} else {
 			$("#annodoclistarea").append("<p>"+i18n.t("annodoclistarea.no-documents")+"</p>");
