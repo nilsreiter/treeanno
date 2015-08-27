@@ -12,6 +12,7 @@ public class Document {
 	@DatabaseField(generatedId = true)
 	int id;
 
+	@Deprecated
 	@Column
 	Date modificationDate;
 
