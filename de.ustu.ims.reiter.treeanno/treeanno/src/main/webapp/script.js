@@ -167,7 +167,7 @@ function show_documentlist(id) {
 				$(actionCell).append("<button class=\"button_delete\">delete</button>");
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_view_annodoc\">view annotation</button>");
-			if (al >= Perm["READACCESS"])
+			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_export\">export</button>");
 			$(actionCell).find("button.button_open").button({
 				label:i18n.t("document_action_open"),
@@ -252,17 +252,15 @@ function show_documentlist(id) {
 		
 		$("#content .splitright img").remove();
 		
-		$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");
-		
-		$("button#new_document_open_dialog").button({
-			label:i18n.t("new_document.open_dialog"),
-			icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null }
-		}).click(function() {
-			$("#documentuploaddialog").dialog("open");
-		});
-		
-
-		
+		if (al >= Perm["PADMINACCESS"]) {
+			$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");	
+			$("button#new_document_open_dialog").button({
+				label:i18n.t("new_document.open_dialog"),
+				icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null }
+			}).click(function() {
+				$("#documentuploaddialog").dialog("open");
+			});
+		}
 		$("#documentlistarea").show();	
 
 	});
