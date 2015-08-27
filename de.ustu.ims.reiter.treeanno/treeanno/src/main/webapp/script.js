@@ -135,6 +135,7 @@ function show_documentlist(id) {
 		disabled:true,
 		icons:{primary:"ui-icon-folder-open",secondary:null}
 	});
+	$("#topbar .left .adocname").remove();
 	$("#topbar .left .pname").remove();
 	$("#documentlistarea").hide();		
 
