@@ -48,6 +48,7 @@
 		"submit":"Hochladen",
 		"type_description":"Segment-Typ",
 		"sentence":"Sätze",
-		"token":"Tokens"
+		"token":"Tokens",
+		"open_dialog":"Neues Dokument"
 	}
 }
