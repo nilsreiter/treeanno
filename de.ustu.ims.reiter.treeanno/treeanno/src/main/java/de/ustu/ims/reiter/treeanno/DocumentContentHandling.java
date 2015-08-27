@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
-import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
@@ -59,27 +59,25 @@ public class DocumentContentHandling extends HttpServlet {
 					throw new ServletException("Document could not be loaded.");
 				}
 				int accessLevel =
-						dl.getAccessLevel(document.getProject(), (User) request
-								.getSession().getAttribute(CA.USER));
+						dl.getAccessLevel(document.getProject(),
+								CW.getUser(request));
 				if (accessLevel == Perm.NO_ACCESS) {
 					response.setStatus(Response.SC_FORBIDDEN);
 					return;
 				}
-				if (document.isHidden()) {
-					response.setStatus(Response.SC_NOT_FOUND);
-					return;
-				}
 
-				JCas jcas = dl.getJCas(document);
+				UserDocument udoc =
+						dl.getUserDocument(CW.getUser(request), document);
+				JCas jcas = JCasConverter.getJCas(udoc.getXmi());
 				if (jcas != null) {
 					JSONObject obj = new JSONObject();
 					obj.put("documentId", docId);
 					obj.put("document", new JSONObject(document));
 					obj.put("list",
 							new JCasConverter()
-					.getJSONArrayFromAnnotations(
-							jcas,
-							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+									.getJSONArrayFromAnnotations(
+											jcas,
+											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -110,10 +108,15 @@ public class DocumentContentHandling extends HttpServlet {
 		int docId = jObj.getInt("document");
 		boolean r = false;
 		try {
-			Document document = dataLayer.getDocument(docId);
+			UserDocument document =
+					dataLayer.getUserDocument(CW.getUser(request),
+							dataLayer.getDocument(docId));
 			JCas jcas =
-					Util.addAnnotationsToJCas(dataLayer.getJCas(document), jObj);
-			r = dataLayer.updateJCas(document, jcas);
+					Util.addAnnotationsToJCas(
+							JCasConverter.getJCas(document.getXmi()), jObj);
+			document.setXmi(JCasConverter.getXmi(jcas));
+
+			r = dataLayer.updateUserDocument(document);
 		} catch (UIMAException | JSONException | SQLException | SAXException e) {
 			throw new ServletException(e);
 		}
