@@ -23,13 +23,13 @@ public class Document {
 	@Column
 	String name;
 
+	@Deprecated
 	@Column
 	boolean hidden;
 
 	@Column
-	private String xmi = "";
+	String xmi;
 
-	@Deprecated
 	public int getId() {
 		return id;
 	}
@@ -39,10 +39,12 @@ public class Document {
 		this.id = id;
 	}
 
+	@Deprecated
 	public Date getModificationDate() {
 		return modificationDate;
 	}
 
+	@Deprecated
 	public void setModificationDate(Date modificationDate) {
 		this.modificationDate = modificationDate;
 	}
@@ -71,10 +73,12 @@ public class Document {
 		this.id = databaseId;
 	}
 
+	@Deprecated
 	public boolean isHidden() {
 		return hidden;
 	}
 
+	@Deprecated
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}
@@ -88,6 +92,14 @@ public class Document {
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Document)) return false;
 		return this.hashCode() == obj.hashCode();
+	}
+
+	public String getXmi() {
+		return xmi;
+	}
+
+	public void setXmi(String xmi) {
+		this.xmi = xmi;
 	}
 
 }

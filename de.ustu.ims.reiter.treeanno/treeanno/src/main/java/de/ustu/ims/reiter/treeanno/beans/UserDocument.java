@@ -14,6 +14,8 @@ public class UserDocument {
 	public static final String FIELD_XMI = "xmi";
 	public static final String FIELD_USER = "user";
 
+	public static final String INDEX_USER_DOCUMENT = "idx_user_document";
+
 	@DatabaseField(generatedId = true, columnName = FIELD_ID)
 	int id;
 
@@ -23,10 +25,42 @@ public class UserDocument {
 	@DatabaseField(columnName = FIELD_SRC_DOCUMENT, foreign = true)
 	Document document;
 
-	@DatabaseField(columnName = FIELD_XMI)
+	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
 
 	@DatabaseField(columnName = FIELD_USER, foreign = true)
 	User user;
+
+	public String getXmi() {
+		return xmi;
+	}
+
+	public void setXmi(String xmi) {
+		this.xmi = xmi;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public Date getModificationDate() {
+		return modificationDate;
+	}
+
+	public Document getDocument() {
+		return document;
+	}
+
+	public void setDocument(Document document) {
+		this.document = document;
+	}
 
 }
