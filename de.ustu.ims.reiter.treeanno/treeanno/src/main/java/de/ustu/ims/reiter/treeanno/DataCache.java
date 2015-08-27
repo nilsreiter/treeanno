@@ -14,8 +14,10 @@ import org.xml.sax.SAXException;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
 
+@Deprecated
 public class DataCache implements DataLayer {
 	DatabaseIO dbio;
 	Map<Integer, User> userMap;
@@ -83,7 +85,7 @@ public class DataCache implements DataLayer {
 
 	@Override
 	public JCas getJCas(Document document) throws UIMAException, SQLException,
-	SAXException, IOException {
+			SAXException, IOException {
 		if (!jcasCache.containsKey(document))
 			jcasCache.put(document, dbio.getJCas(document));
 		return jcasCache.get(document);
@@ -130,5 +132,24 @@ public class DataCache implements DataLayer {
 	@Override
 	public Document getNewDocument(Project p) throws SQLException {
 		return dbio.getNewDocument(p);
+	}
+
+	@Override
+	public UserDocument getUserDocument(User user, Document document)
+			throws SQLException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public UserDocument getUserDocument(int u, int d) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean updateUserDocument(UserDocument document)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
