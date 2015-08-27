@@ -24,7 +24,7 @@
 	"document_name":"Name",
 	"document_mod_date":"Letzte Änderung",
 	"document_actions":"Aktionen",
-	"document_action_open":"Öffnen",
+	"document_action_open":"Annotieren",
 	"document_action_clone":"Duplizieren",
 	"document_action_delete":"Verstecken",
 	"document_action_export_xmi":"Export",
