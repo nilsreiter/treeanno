@@ -1,11 +1,14 @@
 package de.ustu.ims.reiter.treeanno.beans;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 
 @Entity(name = "treeanno_documents")
 public class Document {
@@ -31,6 +34,9 @@ public class Document {
 
 	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
+
+	@ForeignCollectionField(eager = false)
+	ForeignCollection<UserDocument> userDocuments;
 
 	public int getId() {
 		return id;
@@ -103,4 +109,9 @@ public class Document {
 	public void setXmi(String xmi) {
 		this.xmi = xmi;
 	}
+
+	public Collection<UserDocument> getUserDocuments() {
+		return userDocuments;
+	}
+
 }

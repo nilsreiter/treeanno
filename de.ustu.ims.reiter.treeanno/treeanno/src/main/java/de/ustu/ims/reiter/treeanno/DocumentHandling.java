@@ -20,6 +20,8 @@ import org.xml.sax.SAXException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.ims.reiter.treeanno.beans.Document;
+import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
@@ -49,8 +51,9 @@ public class DocumentHandling extends HttpServlet {
 		}
 		String action = request.getParameterValues("action")[0];
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
+		User user = CW.getUser(request);
+		String[] docIds = request.getParameterValues("documentId");
 		if (action.equalsIgnoreCase("delete")) {
-			String[] docIds = request.getParameterValues("documentId");
 			for (int i = 0; i < docIds.length; i++) {
 				try {
 					Document document =
@@ -63,10 +66,27 @@ public class DocumentHandling extends HttpServlet {
 			Util.returnJSON(response, new JSONObject());
 		} else if (action.equalsIgnoreCase("clone")) {
 			throw new UnsupportedOperationException();
+		} else if (action.equalsIgnoreCase("show-annodoc")) {
+			for (int i = 0; i < docIds.length; i++) {
+				Document document;
+				try {
+					JSONObject json = new JSONObject();
+					document =
+							dataLayer.getDocument(Integer.valueOf(docIds[i]));
+					if (dataLayer.getAccessLevel(document.getProject(), user) >= Perm.PADMIN_ACCESS) {
+						for (UserDocument ud : document.getUserDocuments()) {
+							json.append("documents", JSONUtil.getJSONObject(ud));
+						}
+					}
+					Util.returnJSON(response, json);
+				} catch (NumberFormatException | SQLException e) {
+					throw new ServletException(e);
+				}
+			}
 		} else if (action.equalsIgnoreCase("export")) {
-			String[] docIds = request.getParameterValues("documentId");
 			// TODO: currently, this only exports the first document in the
 			// list, should be improved since we return a zip file anyway.
+			// TODO: This should also include the annotated documents
 			for (int i = 0; i < docIds.length;) {
 				int docId = Integer.valueOf(docIds[i]);
 				ZipOutputStream zos = null;
@@ -81,11 +101,11 @@ public class DocumentHandling extends HttpServlet {
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-						.getDocumentTitle();
+								.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-						JCasUtil.selectSingle(jcas,
-								DocumentMetaData.class).getDocumentId();
+								JCasUtil.selectSingle(jcas,
+										DocumentMetaData.class).getDocumentId();
 					zos = new ZipOutputStream(response.getOutputStream());
 					zos.setLevel(9);
 					zos.putNextEntry(new ZipEntry(name + "/"));
@@ -104,7 +124,6 @@ public class DocumentHandling extends HttpServlet {
 				}
 			}
 		} else if (action.equalsIgnoreCase("rename")) {
-			// TODO: Renaming documents
 			try {
 				String docId = request.getParameterValues("documentId")[0];
 				Document document =
