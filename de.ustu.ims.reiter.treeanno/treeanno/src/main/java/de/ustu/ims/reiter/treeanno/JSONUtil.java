@@ -20,7 +20,7 @@ public class JSONUtil {
 		JSONObject json = new JSONObject();
 		json.put("id", document.getId());
 		json.put("name", document.getName());
-		json.put("project", document.getProject());
+		json.put("project", document.getProject().getDatabaseId());
 		return json;
 	}
 }
