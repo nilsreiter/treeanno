@@ -62,18 +62,7 @@ public class DocumentHandling extends HttpServlet {
 			}
 			Util.returnJSON(response, new JSONObject());
 		} else if (action.equalsIgnoreCase("clone")) {
-			String[] docIds = request.getParameterValues("documentId");
-			for (int i = 0; i < docIds.length; i++) {
-				try {
-					Document document =
-							dataLayer.getDocument(Integer.valueOf(docIds[i]));
-					dataLayer.cloneDocument(document);
-				} catch (SQLException e) {
-					throw new ServletException(e);
-				}
-
-			}
-			Util.returnJSON(response, new JSONObject());
+			throw new UnsupportedOperationException();
 		} else if (action.equalsIgnoreCase("export")) {
 			String[] docIds = request.getParameterValues("documentId");
 			// TODO: currently, this only exports the first document in the
@@ -92,11 +81,11 @@ public class DocumentHandling extends HttpServlet {
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-								.getDocumentTitle();
+						.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-								JCasUtil.selectSingle(jcas,
-										DocumentMetaData.class).getDocumentId();
+						JCasUtil.selectSingle(jcas,
+								DocumentMetaData.class).getDocumentId();
 					zos = new ZipOutputStream(response.getOutputStream());
 					zos.setLevel(9);
 					zos.putNextEntry(new ZipEntry(name + "/"));

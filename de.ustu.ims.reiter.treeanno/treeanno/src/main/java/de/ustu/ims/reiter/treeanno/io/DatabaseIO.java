@@ -246,6 +246,7 @@ public class DatabaseIO implements DataLayer {
 		return (documentDao.deleteById(documentId) == 1);
 	}
 
+	@Deprecated
 	public boolean cloneDocument(int documentId) throws SQLException {
 
 		Connection connection = dataSource.getConnection();
@@ -319,6 +320,7 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
+	@Deprecated
 	@Override
 	public int cloneDocument(Document document) throws SQLException {
 
