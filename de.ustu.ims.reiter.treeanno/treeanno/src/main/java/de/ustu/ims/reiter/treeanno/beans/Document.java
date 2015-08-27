@@ -9,6 +9,8 @@ import com.j256.ormlite.field.DatabaseField;
 
 @Entity(name = "treeanno_documents")
 public class Document {
+	private static final String FIELD_XMI = "xmi";
+
 	@DatabaseField(generatedId = true)
 	int id;
 
@@ -27,7 +29,7 @@ public class Document {
 	@Column
 	boolean hidden;
 
-	@Column
+	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
 
 	public int getId() {
@@ -101,5 +103,4 @@ public class Document {
 	public void setXmi(String xmi) {
 		this.xmi = xmi;
 	}
-
 }
