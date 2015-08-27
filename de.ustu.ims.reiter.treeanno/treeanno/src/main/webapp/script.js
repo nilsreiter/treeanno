@@ -86,31 +86,37 @@ function show_annodoclist(id) {
 		var header = false;
 		var table = document.createElement("table");
 
-		for (var i = 0; i < data['documents'].length; i++) {
-			if (!header) {
-				var trh = document.createElement("tr");
-				$(trh).append("<th>"+i18n.t("document_id")+"</th>");
-				$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
-				$(trh).append("<th>"+i18n.t("document_actions")+"</th>");
-				$(table).append(trh);
-				header = true;
+		if ('documents' in data) {
+			for (var i = 0; i < data['documents'].length; i++) {
+				if (!header) {
+					var trh = document.createElement("tr");
+					$(trh).append("<th>"+i18n.t("annodoclistarea.id")+"</th>");
+					$(trh).append("<th>"+i18n.t("annodoclistarea.username")+"</th>");
+					$(trh).append("<th>"+i18n.t("annodoclistarea.mod_date")+"</th>");
+					$(trh).append("<th>"+i18n.t("annodoclistarea.actions")+"</th>");
+					$(table).append(trh);
+					header = true;
+				}
+				var tr = document.createElement("tr");
+				$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
+				$(tr).append("<td>"+data['documents'][i]['user']['name']+"</td>");
+				$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
+			
+				var actionCell = document.createElement("td");
+			
+				$(actionCell).buttonset();
+				$(tr).append(actionCell);
+				$(table).append(tr);
 			}
-			var tr = document.createElement("tr");
-			$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
-			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
-			
-			var actionCell = document.createElement("td");
-			
-			$(actionCell).buttonset();
-			$(tr).append(actionCell);
-			$(table).append(tr);
+			$("#annodoclistarea").append("<h2>"+i18n.t("annodoclistarea.title_for_X", {"projectname":data['src']['id']})+"</h2>");
+			$("#annodoclistarea").append(table);
+			$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+i18n.t("annodoclistarea.breadcrumb_for_X", {"document":data['src']['id']})+"</span>");
 
-
-
+		} else {
+			$("#annodoclistarea").append("<p>"+i18n.t("annodoclistarea.no-documents")+"</p>");
 		}
-		$("#annodoclistarea").append("<h2>"+i18n.t("userdocuments_for_X", {"projectname":data['src']['id']})+"</h2>");
-		$("#annodoclistarea").append(table);
 		$("#annodoclistarea").show();
+
 	});
 
 }
