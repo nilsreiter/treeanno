@@ -42,5 +42,13 @@
 		"ok":"Rename",
 		"cancel":"Cancel",
 		"desc":"New Name"
+	},
+	"new_document":{
+		"title":"Upload New Document",
+		"submit":"Upload",
+		"type_description":"Segment type",
+		"sentence":"Sentences",
+		"token":"Tokens",
+		"open_dialog":"New Document"
 	}
 }
