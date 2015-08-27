@@ -112,9 +112,9 @@ public class DataCache implements DataLayer {
 	}
 
 	@Override
-	public boolean updateJCas(Document document, JCas jcas)
+	public boolean setJCas(Document document, JCas jcas)
 			throws SQLException, SAXException {
-		if (dbio.updateJCas(document, jcas)) {
+		if (dbio.setJCas(document, jcas)) {
 			jcasCache.remove(document);
 			return true;
 		}

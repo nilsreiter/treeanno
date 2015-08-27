@@ -99,7 +99,7 @@ public class NewDocument extends HttpServlet {
 				Iterator<JCas> iterator = pp.process(temp, "de");
 				while (iterator.hasNext()) {
 					Document document = dbio.getNewDocument(p);
-					dbio.updateJCas(document, iterator.next());
+					dbio.setJCas(document, iterator.next());
 
 				}
 				response.sendRedirect("../projects.jsp?projectId="

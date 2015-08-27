@@ -38,16 +38,15 @@ public interface DataLayer {
 	Collection<Document> getDocuments(Project proj) throws SQLException;
 
 	JCas getJCas(Document document) throws SQLException, UIMAException,
-			SAXException, IOException;
+	SAXException, IOException;
 
 	boolean deleteDocument(Document document) throws SQLException;
 
 	@Deprecated
 	int cloneDocument(Document document) throws SQLException;
 
-	@Deprecated
-	boolean updateJCas(Document document, JCas jcas) throws SQLException,
-	SAXException;
+	boolean setJCas(Document document, JCas jcas) throws SQLException,
+			SAXException;
 
 	boolean updateDocument(Document document) throws SQLException;
 
