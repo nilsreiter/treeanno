@@ -85,7 +85,7 @@ public class DataCache implements DataLayer {
 
 	@Override
 	public JCas getJCas(Document document) throws UIMAException, SQLException,
-			SAXException, IOException {
+	SAXException, IOException {
 		if (!jcasCache.containsKey(document))
 			jcasCache.put(document, dbio.getJCas(document));
 		return jcasCache.get(document);
@@ -112,8 +112,8 @@ public class DataCache implements DataLayer {
 	}
 
 	@Override
-	public boolean setJCas(Document document, JCas jcas)
-			throws SQLException, SAXException {
+	public boolean setJCas(Document document, JCas jcas) throws SQLException,
+			SAXException {
 		if (dbio.setJCas(document, jcas)) {
 			jcasCache.remove(document);
 			return true;
@@ -151,5 +151,11 @@ public class DataCache implements DataLayer {
 			throws SQLException {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Document createNewDocument(Document d) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

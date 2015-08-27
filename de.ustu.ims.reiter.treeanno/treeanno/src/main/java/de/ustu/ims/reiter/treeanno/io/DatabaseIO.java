@@ -345,8 +345,8 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public boolean setJCas(Document document, JCas jcas)
-			throws SQLException, SAXException {
+	public boolean setJCas(Document document, JCas jcas) throws SQLException,
+	SAXException {
 		return this.updateJCas(document.getDatabaseId(), jcas);
 	}
 
@@ -362,10 +362,24 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
+	@Deprecated
 	public Document getNewDocument(Project p) throws SQLException {
 		Document document = new Document();
 		document.setProject(p);
 		documentDao.create(document);
 		return document;
+	}
+
+	public Dao<Document, Integer> getDocumentDao() {
+		return documentDao;
+	}
+
+	@Override
+	public Document createNewDocument(Document d) throws SQLException {
+		int r = documentDao.create(d);
+		if (r == 1)
+			return d;
+		else
+			return null;
 	}
 }

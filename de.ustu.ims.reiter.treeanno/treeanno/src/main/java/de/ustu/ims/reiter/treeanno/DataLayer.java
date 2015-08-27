@@ -38,7 +38,7 @@ public interface DataLayer {
 	Collection<Document> getDocuments(Project proj) throws SQLException;
 
 	JCas getJCas(Document document) throws SQLException, UIMAException,
-	SAXException, IOException;
+			SAXException, IOException;
 
 	boolean deleteDocument(Document document) throws SQLException;
 
@@ -46,11 +46,14 @@ public interface DataLayer {
 	int cloneDocument(Document document) throws SQLException;
 
 	boolean setJCas(Document document, JCas jcas) throws SQLException,
-			SAXException;
+	SAXException;
 
 	boolean updateDocument(Document document) throws SQLException;
 
+	@Deprecated
 	Document getNewDocument(Project p) throws SQLException;
+
+	Document createNewDocument(Document d) throws SQLException;
 
 	boolean updateUserDocument(UserDocument document) throws SQLException;
 }
