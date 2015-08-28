@@ -83,32 +83,6 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
-	@Deprecated
-	public DatabaseIO(DataSource ds) throws ClassNotFoundException,
-	NamingException {
-		dataSource = ds;
-	}
-
-	@Deprecated
-	public boolean isHidden(int documentId) throws SQLException {
-		Connection conn = dataSource.getConnection();
-		PreparedStatement stmt =
-				conn.prepareStatement("SELECT hidden FROM treeanno_documents WHERE id=?");
-		stmt.setInt(1, documentId);
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			boolean b = rs.getBoolean(1);
-			rs.close();
-			stmt.close();
-			conn.close();
-			return b;
-		}
-		rs.close();
-		stmt.close();
-		conn.close();
-		return false;
-	}
-
 	public int getAccessLevel(int documentId, User user) throws SQLException {
 		return getAccessLevel(getDocument(documentId).getProject(), user);
 	}
@@ -246,23 +220,6 @@ public class DatabaseIO implements DataLayer {
 		return (documentDao.deleteById(documentId) == 1);
 	}
 
-	@Deprecated
-	public boolean cloneDocument(int documentId) throws SQLException {
-
-		Connection connection = dataSource.getConnection();
-
-		PreparedStatement stmt =
-				connection
-				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name,cloneOf) SELECT xmi,typesystemId,project,name,? FROM treeanno_documents WHERE id=?");
-		stmt.setInt(1, documentId);
-		stmt.setInt(2, documentId);
-		int r = stmt.executeUpdate();
-		stmt.close();
-		connection.close();
-
-		return r == 1;
-	}
-
 	@Override
 	public List<Project> getProjects() throws SQLException {
 		return projectDao.queryForAll();
@@ -321,30 +278,6 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
-	@Deprecated
-	@Override
-	public int cloneDocument(Document document) throws SQLException {
-
-		if (!cloneDocument(document.getDatabaseId())) return -1;
-
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			conn = dataSource.getConnection();
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
-			if (rs.next()) {
-				return rs.getInt(1);
-			}
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(conn);
-		}
-		return -1;
-	}
-
 	@Override
 	public boolean setJCas(Document document, JCas jcas) throws SQLException,
 	SAXException {
@@ -360,15 +293,6 @@ public class DatabaseIO implements DataLayer {
 	public boolean updateUserDocument(UserDocument document)
 			throws SQLException {
 		return (userDocumentDao.update(document) == 1);
-	}
-
-	@Override
-	@Deprecated
-	public Document getNewDocument(Project p) throws SQLException {
-		Document document = new Document();
-		document.setProject(p);
-		documentDao.create(document);
-		return document;
 	}
 
 	public Dao<Document, Integer> getDocumentDao() {
