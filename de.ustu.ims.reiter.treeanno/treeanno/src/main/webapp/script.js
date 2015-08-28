@@ -379,11 +379,11 @@ function init_parallel() {
 		jQuery.getJSON("DocumentContentHandling?userDocumentId="+documentId, function(data) {
 			
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
-				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"]);
-				document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
+				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["document"]["name"]}));
+				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["document"]["name"]});
 			} else {
-				$(".breadcrumb").append(", "+data["document"]["name"]);
-				document.title = document.title + ", " + data["document"]["name"];
+				//$(".breadcrumb").append(", "+data["document"]["name"]);
+				// document.title = document.title + ", " + data["document"]["name"];
 			} 
 			
 			var list = data["list"];
