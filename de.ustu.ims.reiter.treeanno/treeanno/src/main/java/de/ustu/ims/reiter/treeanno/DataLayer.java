@@ -37,8 +37,10 @@ public interface DataLayer {
 
 	int getAccessLevel(Project proj, User user) throws SQLException;
 
+	@Deprecated
 	Collection<Document> getDocuments(Project proj) throws SQLException;
 
+	@Deprecated
 	JCas getJCas(Document document) throws SQLException, UIMAException,
 			SAXException, IOException;
 

@@ -78,15 +78,15 @@ public class DocumentHandling extends HttpServlet {
 					response.setHeader("Content-Disposition",
 							"attachment; filename=\"file.zip\"");
 
-					JCas jcas = dataLayer.getJCas(document);
+					JCas jcas = JCasConverter.getJCas(document.getXmi());
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-						.getDocumentTitle();
+								.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-								JCasUtil.selectSingle(jcas,
-										DocumentMetaData.class).getDocumentId();
+						JCasUtil.selectSingle(jcas,
+								DocumentMetaData.class).getDocumentId();
 
 					// root folder
 					zos.putNextEntry(new ZipEntry(name + "/"));

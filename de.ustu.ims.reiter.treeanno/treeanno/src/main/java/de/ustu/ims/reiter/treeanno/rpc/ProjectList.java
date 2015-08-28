@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import de.ustu.ims.reiter.treeanno.CA;
 import de.ustu.ims.reiter.treeanno.CW;
+import de.ustu.ims.reiter.treeanno.JSONUtil;
 import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
@@ -40,8 +40,7 @@ public class ProjectList extends HttpServlet {
 			for (Project project : list) {
 				if (CW.getDataLayer(getServletContext()).getAccessLevel(
 						project, user) >= Perm.READ_ACCESS) {
-					JSONObject obj = new JSONObject(project);
-					array.put(obj);
+					array.put(JSONUtil.getJSONObject(project));
 				}
 			}
 

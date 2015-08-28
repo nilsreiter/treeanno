@@ -53,7 +53,7 @@ public class DatabaseIO implements DataLayer {
 	Dao<UserDocument, Integer> userDocumentDao;
 
 	public DatabaseIO() throws ClassNotFoundException, NamingException,
-			SQLException {
+	SQLException {
 		Context initContext;
 		Class.forName("com.mysql.jdbc.Driver");
 
@@ -98,7 +98,7 @@ public class DatabaseIO implements DataLayer {
 			conn = dataSource.getConnection();
 			stmt =
 					conn.prepareStatement("SELECT level FROM treeanno_users_permissions WHERE projectId=? AND userId=?");
-			stmt.setInt(1, project.getDatabaseId());
+			stmt.setInt(1, project.getId());
 			stmt.setInt(2, user.getId());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -118,7 +118,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-	SAXException {
+			SAXException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -135,7 +135,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+						.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -145,20 +145,22 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public Document getDocument(int documentId) throws SQLException {
+		// TODO: prevent immediate retrieval of xmi column
 		Document d = documentDao.queryForId(documentId);
-		// projectDao.refresh(d.getProject());
 		return d;
 	}
 
 	@Override
 	public UserDocument getUserDocument(User user, Document document)
 			throws SQLException {
+		// TODO: prevent immediate retrieval of xmi column
+
 		QueryBuilder<UserDocument, Integer> queryBuilder =
 				userDocumentDao.queryBuilder();
 		PreparedQuery<UserDocument> pq =
 				queryBuilder.where()
-				.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
-				.eq(UserDocument.FIELD_USER, user).prepare();
+						.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
+						.eq(UserDocument.FIELD_USER, user).prepare();
 		List<UserDocument> ret = userDocumentDao.query(pq);
 		if (ret.isEmpty()) {
 			UserDocument ud = new UserDocument();
@@ -175,11 +177,14 @@ public class DatabaseIO implements DataLayer {
 	@Override
 	public UserDocument getUserDocument(int user, int document)
 			throws SQLException {
+		// TODO: prevent immediate retrieval of xmi column
+		// TODO: also, make more efficient
+
 		return getUserDocument(getUser(user), getDocument(document));
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,
-	SAXException, IOException {
+			SAXException, IOException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
@@ -188,7 +193,7 @@ public class DatabaseIO implements DataLayer {
 		try {
 			stmt =
 					connection
-							.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
+					.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
 			stmt.setInt(1, documentId);
 			rs = stmt.executeQuery();
 
@@ -197,7 +202,7 @@ public class DatabaseIO implements DataLayer {
 				String textXML = rs.getString(1);
 				TypeSystemDescription tsd =
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription();
+						.createTypeSystemDescription();
 				jcas = JCasFactory.createJCas(tsd);
 				InputStream is = null;
 				try {
@@ -262,13 +267,15 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
+	@Deprecated
 	public Collection<Document> getDocuments(Project proj) throws SQLException {
-		return getDocuments(proj.getDatabaseId());
+		return getDocuments(proj.getId());
 	}
 
 	@Override
+	@Deprecated
 	public JCas getJCas(Document document) throws SQLException, UIMAException,
-	SAXException, IOException {
+			SAXException, IOException {
 		return this.getJCas(document.getDatabaseId());
 	}
 
@@ -280,7 +287,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public boolean setJCas(Document document, JCas jcas) throws SQLException,
-	SAXException {
+			SAXException {
 		return this.updateJCas(document.getDatabaseId(), jcas);
 	}
 
@@ -310,6 +317,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public UserDocument getUserDocument(int id) throws SQLException {
+		// TODO: prevent immediate retrieval of xmi column
 		return userDocumentDao.queryForId(id);
 	}
 }
