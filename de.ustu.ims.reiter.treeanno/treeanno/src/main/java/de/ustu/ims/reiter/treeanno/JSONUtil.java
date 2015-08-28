@@ -11,8 +11,8 @@ public class JSONUtil {
 		json.put(UserDocument.FIELD_ID, ud.getId());
 		json.put(UserDocument.FIELD_MODIFICATION_DATE, ud.getModificationDate());
 		json.put(UserDocument.FIELD_USER, new JSONObject(ud.getUser()));
-		json.put(UserDocument.FIELD_SRC_DOCUMENT, ud.getDocument()
-				.getDatabaseId());
+		json.put(UserDocument.FIELD_SRC_DOCUMENT,
+				getJSONObject(ud.getDocument()));
 		json.put("project", new JSONObject(ud.getDocument().getProject()));
 		return json;
 	}
