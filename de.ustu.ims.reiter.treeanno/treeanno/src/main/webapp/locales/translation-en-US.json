@@ -64,7 +64,8 @@
 	"parallel":{
 		"annotations_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
 		"annotations_title_for_X":"Annotations for __document__",
-		"annotations_from_X":"Annotations from __user__"
+		"annotations_from_X":"Annotations from __user__",
+		"open_view":"Compare annotations"
 	}
 	
 }
