@@ -129,7 +129,9 @@ function show_annodoclist(id) {
 			$("#annodoclistarea").append("<button id=\"button_open_diff\"></button>");
 			
 			$("button#button_open_diff").button({
-				label:i18n.t("diff.open_view")
+				label:i18n.t("parallel.open_view"),
+				icons:{primary:"ui-icon-zoomin",secondary:null},
+				text:showText
 			}).click(function() {
 				if($("input.button_diff:checked").length == 2) {
 					var doc = new Array();
