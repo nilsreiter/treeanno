@@ -21,7 +21,7 @@ public class JSONUtil {
 		JSONObject json = new JSONObject();
 		json.put("id", document.getId());
 		json.put("name", document.getName());
-		json.put("project", document.getProject().getDatabaseId());
+		json.put("project", new JSONObject(document.getProject()));
 		return json;
 	}
 }
