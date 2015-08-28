@@ -118,7 +118,7 @@ function show_annodoclist(id) {
 				
 				// diff select button
 				$(actionCell).find("input.button_diff").button({
-					label:i18n.t("document_action.diff"),
+					label:i18n.t("parallel.select"),
 					icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
 					text:showText
 				}); 
