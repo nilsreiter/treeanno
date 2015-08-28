@@ -35,7 +35,6 @@ public class DocumentHandling extends HttpServlet {
 	 */
 	public DocumentHandling() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -82,11 +81,11 @@ public class DocumentHandling extends HttpServlet {
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-								.getDocumentTitle();
+						.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-						JCasUtil.selectSingle(jcas,
-								DocumentMetaData.class).getDocumentId();
+								JCasUtil.selectSingle(jcas,
+										DocumentMetaData.class).getDocumentId();
 
 					// root folder
 					zos.putNextEntry(new ZipEntry(name + "/"));
