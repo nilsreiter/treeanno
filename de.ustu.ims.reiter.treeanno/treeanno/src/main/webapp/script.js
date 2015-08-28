@@ -427,12 +427,12 @@ function init_parallel() {
 			});*/
 			$("#status .loading").hide();
 			$(element).show();
+			$("li > div", element).smartTruncation({
+			    'truncateCenter'    : true
+			 });
 		});
 	});
 	
-	$(".outline li > div").smartTruncation({
-	    'truncateCenter'    : true
-	  });
 }
 
 function init_main() {
