@@ -49,8 +49,10 @@
 	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>
 	<div id="content">
 		<c:forEach items="${paramValues.userDocumentId }">
-			<ul  class="outline text sortable">
+			<div class="outline_container">
+			<ul class="outline text">
     		</ul>
+    		</div>
 		</c:forEach>
 	</div>
 	<div id="split">

@@ -44,8 +44,10 @@
 	</c:if>
 	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>
 	<div id="content">
+		<div class="outline_container">
 		<ul id="outline" class="text sortable">
     	</ul>
+    	</div>
 	</div>
 	<div id="split">
 		<p data-i18n="howto_split" class="trans">howto_split</p>

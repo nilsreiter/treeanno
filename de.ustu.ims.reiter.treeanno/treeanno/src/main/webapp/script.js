@@ -374,10 +374,10 @@ function init_parallel() {
 	disableSaveButton();
 
 	$(".outline").hide();
-	$("#content > .outline").each(function(index, element) {
+	$("#content > div > .outline").each(function(index, element) {
 		var documentId = userDocumentIds[index];
 		jQuery.getJSON("DocumentContentHandling?userDocumentId="+documentId, function(data) {
-			
+			$(element).parent().prepend("<h2>"+i18n.t("parallel.annotations_from_X",{"user":data["document"]["user"]["name"]})+"</h2>");
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
 				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["document"]["name"]}));
 				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["document"]["name"]});
