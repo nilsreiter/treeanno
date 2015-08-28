@@ -25,7 +25,11 @@
 	<script>
 
 	var language = "${sessionScope.User.language}";
-	var userDocumentIds = [ "${paramValues.userDocumentId[0]}", "${paramValues.userDocumentId[1]}" ];
+	var userDocumentIds = new Array();
+	<c:forEach items="${paramValues.userDocumentId }" var="id">
+	userDocumentIds[userDocumentIds.length] = ${id};
+	</c:forEach>
+	[ "${paramValues.userDocumentId[0]}", "${paramValues.userDocumentId[1]}" ];
 	var treeanno = new Object();
 	treeanno["version"] = "${applicationScope['treeanno.version']}";
 	treeanno["name"] = "${applicationScope['treeanno.name']}";
@@ -44,10 +48,10 @@
 	</c:if>
 	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>
 	<div id="content">
-		<ul  class="outline text sortable">
-    	</ul>
-    	<ul  class="outline text sortable">
-    	</ul>
+		<c:forEach items="${paramValues.userDocumentId }">
+			<ul  class="outline text sortable">
+    		</ul>
+		</c:forEach>
 	</div>
 	<div id="split">
 		<p data-i18n="howto_split" class="trans">howto_split</p>
