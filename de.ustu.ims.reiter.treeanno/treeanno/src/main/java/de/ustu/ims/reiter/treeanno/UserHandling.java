@@ -1,9 +1,6 @@
 package de.ustu.ims.reiter.treeanno;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -11,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 
 import de.ustu.ims.reiter.treeanno.beans.User;
 
@@ -50,33 +46,6 @@ public class UserHandling extends HttpServlet {
 		}
 		response.sendRedirect("index.jsp");
 
-	}
-
-	@Deprecated
-	protected User getUser(int username) throws SQLException {
-		DataSource ds =
-				(DataSource) getServletContext().getAttribute("dataSource");
-		Connection conn = ds.getConnection();
-		PreparedStatement ps =
-				conn.prepareStatement("SELECT * FROM treeanno_users WHERE id=?");
-		ps.setInt(1, username);
-		ResultSet rs = ps.executeQuery();
-		User user = null;
-		if (rs.next()) {
-			user = new User();
-			user.setDatabaseId(rs.getInt(1));
-			user.setName(rs.getString(2));
-			if (rs.getString(3) != null) user.setEmail(rs.getString(3));
-			if (rs.getString(5) != null)
-				user.setLanguage(rs.getString(5));
-			else
-				user.setLanguage(defaultLanguage);
-		}
-		rs.close();
-		ps.close();
-		conn.close();
-
-		return user;
 	}
 
 	protected boolean check(String username, String password) {

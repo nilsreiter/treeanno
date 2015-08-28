@@ -36,6 +36,18 @@ function init_all() {
 
 function init_projects() {
 	init_all();
+	$("#documentuploaddialog").dialog({
+		hide:false,
+		title:i18n.t("new_document.title"),
+		buttons:[{
+			text:i18n.t("new_document.submit"),
+			click:function() {
+				$("#documentuploaddialog form").submit();
+			}
+		}]
+	});
+	$("#documentuploaddialog").dialog("close");
+	
 	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
 	$(".splitleft #projectlistarea").hide();
 	jQuery.getJSON("rpc/projectlist", function(data) {
@@ -67,8 +79,78 @@ function init_projects() {
 	});
 }
 
+function show_annodoclist(id) {
+	$("#annodoclistarea").remove();
+	$("#topbar .left .adocname").remove();
+
+	$("#content .splitright").append("<div id=\"annodoclistarea\"></div>");
+	$("#annodoclistarea").hide();
+	var showText = true;
+
+	jQuery.getJSON("rpc/userdocumentlist?documentId="+id, function(data) {
+		var header = false;
+		var table = document.createElement("table");
+
+		if ('documents' in data) {
+			for (var i = 0; i < data['documents'].length; i++) {
+				if (!header) {
+					var trh = document.createElement("tr");
+					$(trh).append("<th>"+i18n.t("annodoclistarea.id")+"</th>");
+					$(trh).append("<th>"+i18n.t("annodoclistarea.username")+"</th>");
+					$(trh).append("<th>"+i18n.t("annodoclistarea.mod_date")+"</th>");
+					$(trh).append("<th>"+i18n.t("annodoclistarea.actions")+"</th>");
+					$(table).append(trh);
+					header = true;
+				}
+				var tr = document.createElement("tr");
+				$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
+				$(tr).append("<td>"+data['documents'][i]['user']['name']+"</td>");
+				$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
+			
+				var actionCell = document.createElement("td");
+				// if (al >= Perm["PADMINACCESS"]) 
+					$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+data['documents'][i]['id']+"\" type=\"checkbox\" name=\"diff\" value=\""+data['documents'][i]['id']+"\"/><label for=\"diffselect-"+data['documents'][i]['id']+"\"></label>");
+
+				$(actionCell).buttonset();
+				$(tr).append(actionCell);
+				$(table).append(tr);
+				
+				// diff select button
+				$(actionCell).find("input.button_diff").button({
+					label:i18n.t("document_action.diff"),
+					icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
+					text:showText
+				}); 
+			}
+			$("#annodoclistarea").append("<h2>"+i18n.t("annodoclistarea.title_for_X", {"document":data['src']['name']})+"</h2>");
+			$("#annodoclistarea").append(table);
+			$("#topbar .left").append("<span class=\"adocname\">&nbsp;&gt; "+i18n.t("annodoclistarea.breadcrumb_for_X", {"document":data['src']['name']})+"</span>");
+			$("#annodoclistarea").append("<button id=\"button_open_diff\"></button>");
+			
+			$("button#button_open_diff").button({
+				label:i18n.t("diff.open_view")
+			}).click(function() {
+				if($("input.button_diff:checked").length == 2) {
+					var doc = new Array();
+					$("input.button_diff:checked").each(function(index, element) {
+						doc[index] = $(element).val();
+					});
+	 				window.location.href="parallel.jsp?userDocumentId="+doc[0]+"&userDocumentId="+doc[1];
+				}
+			});
+		} else {
+			$("#annodoclistarea").append("<p>"+i18n.t("annodoclistarea.no-documents")+"</p>");
+		}
+		$("#annodoclistarea").show();
+
+	});
+
+}
+
 function show_documentlist(id) {
+	$("#content .splitright").empty();
 	$("#content .splitright").append("<img src=\"gfx/loading1.gif\" />");
+	$("#content .splitright").append("<div id=\"documentlistarea\"></div>");
 
 	$("button.button_open.project").button({
 		disabled:false,
@@ -78,22 +160,23 @@ function show_documentlist(id) {
 		disabled:true,
 		icons:{primary:"ui-icon-folder-open",secondary:null}
 	});
-	$("#documentlistarea").empty();
+	$("#topbar .left .adocname").remove();
 	$("#topbar .left .pname").remove();
 	$("#documentlistarea").hide();		
 
 	
-	var showText = false;
+	var showText = true;
 	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
 		var al = data['accesslevel'];
+		if ("documents" in data) {
 		for (var i = 0; i < data['documents'].length; i++) {
 			if (!header) {
 				var trh = document.createElement("tr");
 				$(trh).append("<th>"+i18n.t("document_id")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_name")+"</th>");
-				$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
+				//$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_actions")+"</th>");
 				$(table).append(trh);
 				header = true;
@@ -101,21 +184,19 @@ function show_documentlist(id) {
 			var tr = document.createElement("tr");
 			$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
 			$(tr).append("<td>"+data['documents'][i]['name']+"</td>");
-			$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
+			//$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
 			
 			var actionCell = document.createElement("td");
 			if (al >= Perm["READACCESS"])
 				$(actionCell).append("<button class=\"button_open\"></button>");
 			if (al >= Perm["PADMINACCESS"])
-				$(actionCell).append("<button class=\"button_clone\">clone</button>");
-			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_rename\">rename</button>")
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_delete\">delete</button>");
-			if (al >= Perm["READACCESS"])
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_view_annodoc\">view annotation</button>");
+			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_export\">export</button>");
-			if (al >= Perm["PADMINACCESS"]) 
-				$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+data['documents'][i]['id']+"\" type=\"checkbox\" name=\"diff\" value=\""+data['documents'][i]['id']+"\"/><label for=\"diffselect-"+data['documents'][i]['id']+"\"></label>");
 			
 			
 			$(actionCell).find("button.button_open").button({
@@ -126,18 +207,6 @@ function show_documentlist(id) {
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				window.location.href="main.jsp?documentId="+event.data.documentId;
-			});
-			$(actionCell).find("button.button_clone").button({
-				label:i18n.t("document_action_clone"),
-				icons:{primary:"ui-icon-copy",secondary:null},
-				disabled:('cloneOf' in data['documents'][i]),
-				text:showText
-			}).click({
-				'documentId':data['documents'][i]['id']
-			}, function(event) {
-				jQuery.getJSON("DocumentHandling?action=clone&documentId="+event.data.documentId, function() {
-					show_documentlist(id);
-				});
 			});
 			$(actionCell).find("button.button_rename").button({
 				label:i18n.t("document_action_rename"),
@@ -174,6 +243,7 @@ function show_documentlist(id) {
 				}).show();
 				
 			});
+			
 			$(actionCell).find("button.button_delete").button({
 				label:i18n.t("document_action_delete"),
 				icons:{primary:"ui-icon-trash", secondary:null},
@@ -186,7 +256,18 @@ function show_documentlist(id) {
 				});
 			});
 			
-			// export button
+			$(actionCell).find("button.button_view_annodoc").button({
+				label:i18n.t("document_action_view_annodoc"),
+				icons:{primary:"ui-icon-cart", secondary:null},
+				text:showText
+			}).click({
+				'documentId':data['documents'][i]['id']
+			}, function(event) {
+				show_annodoclist(event.data.documentId);
+			});
+			
+			
+			
 			$(actionCell).find("button.button_export").button({
 				label:i18n.t("document_action_export_xmi"),
 				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null},
@@ -197,39 +278,33 @@ function show_documentlist(id) {
 				window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
 			});
 			
-			// diff select button
-			$(actionCell).find("input.button_diff").button({
-				label:i18n.t("document_action.diff"),
-				icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
-				text:showText,
-				disabled:!('cloneOf' in data['documents'][i])
-			}); 
+			
 			
 			$(actionCell).buttonset();
 			$(tr).append(actionCell);
 			$(table).append(tr);
 		}
+		}
 		$("#documentlistarea").append("<h2>"+i18n.t("documents_in_X", {"projectname":data['project']['name']})+"</h2>");
 		$("#documentlistarea").append(table);
 		$("#topbar .left").append("<span class=\"pname\">&nbsp;&gt; "+data['project']['name']+"</span>");
 		
+		
 		$("#content .splitright img").remove();
 		
-		$("#documentlistarea").append("<button id=\"button_open_diff\"></button>")
 		
-		$("button#button_open_diff").button({
-			label:i18n.t("diff.open_view")
-		}).click(function() {
-			if($("input.button_diff:checked").length == 2) {
-				var doc = new Array();
-				$("input.button_diff:checked").each(function(index, element) {
-					doc[index] = $(element).val();
-				});
- 				window.location.href="parallel.jsp?documentId="+doc[0]+"&documentId="+doc[1];
-			}
-		});
-		
-		$("#documentlistarea").show();
+
+		if (al >= Perm["PADMINACCESS"]) {
+			$("#documentuploaddialog input[name='projectId']").attr("value", data['project']['databaseId']);
+			$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");	
+			$("button#new_document_open_dialog").button({
+				label:i18n.t("new_document.open_dialog"),
+				icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null }
+			}).click(function() {
+				$("#documentuploaddialog").dialog("open");
+			});
+		}
+		$("#documentlistarea").show();	
 
 	});
 }
@@ -300,8 +375,8 @@ function init_parallel() {
 
 	$(".outline").hide();
 	$("#content > .outline").each(function(index, element) {
-		var documentId = documentIds[index];
-		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
+		var documentId = userDocumentIds[index];
+		jQuery.getJSON("DocumentContentHandling?userDocumentId="+documentId, function(data) {
 			
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
 				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"]);
@@ -417,7 +492,9 @@ function init_main() {
 					$('#outline').append(get_html_item(item, 0));
 				}
 			}
-
+			$("#outline li > div").smartTruncation({
+			    'truncateCenter'    : true
+			  });
 			$('#outline > li:first-child').addClass("selected");
 			document.onkeydown = function(e) {
 				key_down(e);
@@ -442,10 +519,6 @@ function init_main() {
 			
 			
 	});
-		
-		$("#outline li > div").smartTruncation({
-			'truncateCenter': true
-		});
 }
 
 function search() {

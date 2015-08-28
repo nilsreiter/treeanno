@@ -20,6 +20,8 @@ import org.xml.sax.SAXException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.ims.reiter.treeanno.beans.Document;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
+import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
@@ -49,8 +51,8 @@ public class DocumentHandling extends HttpServlet {
 		}
 		String action = request.getParameterValues("action")[0];
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
+		String[] docIds = request.getParameterValues("documentId");
 		if (action.equalsIgnoreCase("delete")) {
-			String[] docIds = request.getParameterValues("documentId");
 			for (int i = 0; i < docIds.length; i++) {
 				try {
 					Document document =
@@ -62,29 +64,13 @@ public class DocumentHandling extends HttpServlet {
 			}
 			Util.returnJSON(response, new JSONObject());
 		} else if (action.equalsIgnoreCase("clone")) {
-			String[] docIds = request.getParameterValues("documentId");
-			for (int i = 0; i < docIds.length; i++) {
-				try {
-					Document document =
-							dataLayer.getDocument(Integer.valueOf(docIds[i]));
-					if (document.getCloneOf() == null)
-						dataLayer.cloneDocument(document);
-					else
-						throw new ServletException(
-								"Can't clone cloned documents.");
-				} catch (SQLException e) {
-					throw new ServletException(e);
-				}
-
-			}
-			Util.returnJSON(response, new JSONObject());
+			throw new UnsupportedOperationException();
 		} else if (action.equalsIgnoreCase("export")) {
-			String[] docIds = request.getParameterValues("documentId");
-			// TODO: currently, this only exports the first document in the
-			// list, should be improved since we return a zip file anyway.
+			ZipOutputStream zos = null;
+			zos = new ZipOutputStream(response.getOutputStream());
+			zos.setLevel(9);
 			for (int i = 0; i < docIds.length;) {
 				int docId = Integer.valueOf(docIds[i]);
-				ZipOutputStream zos = null;
 				try {
 					Document document =
 							dataLayer.getDocument(Integer.valueOf(docIds[i]));
@@ -99,18 +85,30 @@ public class DocumentHandling extends HttpServlet {
 						.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-						JCasUtil.selectSingle(jcas,
-								DocumentMetaData.class).getDocumentId();
-					zos = new ZipOutputStream(response.getOutputStream());
-					zos.setLevel(9);
+								JCasUtil.selectSingle(jcas,
+										DocumentMetaData.class).getDocumentId();
+
+					// root folder
 					zos.putNextEntry(new ZipEntry(name + "/"));
-					ZipEntry ze = new ZipEntry(name + "/" + docId + ".xmi");
-					zos.putNextEntry(ze);
+
+					// original document
+					zos.putNextEntry(new ZipEntry(name + "/" + docId + ".xmi"));
 					XmiCasSerializer.serialize(jcas.getCas(), zos);
+
+					// type system
 					zos.putNextEntry(new ZipEntry(name + "/typesystem.xml"));
 					TypeSystem2Xml.typeSystem2Xml(jcas.getTypeSystem(), zos);
-					zos.flush();
-					return;
+
+					// annotations folder
+					zos.putNextEntry(new ZipEntry(name + "/annotations/"));
+
+					for (UserDocument ud : document.getUserDocuments()) {
+						zos.putNextEntry(new ZipEntry(name + "/annotations/"
+								+ ud.getId() + ".xmi"));
+						XmiCasSerializer.serialize(
+								JCasConverter.getJCas(ud.getXmi()).getCas(),
+								zos);
+					}
 				} catch (SAXException | NumberFormatException | SQLException
 						| UIMAException e) {
 					throw new ServletException(e);
@@ -118,8 +116,10 @@ public class DocumentHandling extends HttpServlet {
 					if (zos != null) zos.close();
 				}
 			}
+			zos.flush();
+			return;
+
 		} else if (action.equalsIgnoreCase("rename")) {
-			// TODO: Renaming documents
 			try {
 				String docId = request.getParameterValues("documentId")[0];
 				Document document =

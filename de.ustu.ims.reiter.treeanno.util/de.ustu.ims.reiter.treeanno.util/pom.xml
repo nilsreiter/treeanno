@@ -59,5 +59,19 @@
     	<artifactId>treeanno.api</artifactId>
     	<version>0.2-SNAPSHOT</version>
     </dependency>
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>
+    		de.tudarmstadt.ukp.dkpro.core.io.text-asl
+    	</artifactId>
+    	<version>1.7.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>
+    		de.tudarmstadt.ukp.dkpro.core.languagetool-asl
+    	</artifactId>
+    	<version>1.7.0</version>
+    </dependency>
   </dependencies>
 </project>

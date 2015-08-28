@@ -25,7 +25,7 @@
 	<script>
 
 	var language = "${sessionScope.User.language}";
-	var documentIds = [ "${paramValues.documentId[0]}", "${paramValues.documentId[1]}" ];
+	var userDocumentIds = [ "${paramValues.userDocumentId[0]}", "${paramValues.userDocumentId[1]}" ];
 	var treeanno = new Object();
 	treeanno["version"] = "${applicationScope['treeanno.version']}";
 	treeanno["name"] = "${applicationScope['treeanno.name']}";
@@ -39,7 +39,7 @@
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.theme.css" type="text/css"> 
 </head>
 <body>
-	<c:if test="${empty param.documentId}">
+	<c:if test="${empty param.userDocumentId}">
 		<p>Need to give a document parameter</p>
 	</c:if>
 	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>

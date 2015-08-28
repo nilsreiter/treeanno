@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import de.ustu.ims.reiter.treeanno.CA;
 import de.ustu.ims.reiter.treeanno.CW;
+import de.ustu.ims.reiter.treeanno.JSONUtil;
 import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
@@ -46,7 +47,9 @@ public class DocumentList extends HttpServlet {
 				Collection<Document> list =
 						CW.getDataLayer(getServletContext()).getDocuments(proj);
 				JSONObject obj = new JSONObject();
-				obj.put("documents", list);
+				for (Document doc : list) {
+					obj.append("documents", JSONUtil.getJSONObject(doc));
+				}
 				obj.put("project",
 						new JSONObject(CW.getDataLayer(getServletContext())
 								.getProject(projectId)));
