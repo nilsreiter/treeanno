@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
-import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
@@ -44,6 +44,66 @@ public class DocumentContentHandling extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+
+		if (request.getParameter("documentId") != null) {
+			processDocumentId(request, response);
+		} else if (request.getParameter("userDocumentId") != null) {
+			processUserDocumentId(request, response);
+		}
+
+	}
+
+	protected void processUserDocumentId(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		DataLayer dl = CW.getDataLayer(getServletContext());
+
+		String[] documents = request.getParameterValues("userDocumentId");
+		if (request.getSession().getAttribute(CA.USER) == null) {
+			response.setStatus(Response.SC_FORBIDDEN);
+			return;
+		}
+		try {
+			if (documents.length > 0) {
+				int docId = Integer.valueOf(documents[0]);
+				UserDocument userDocument = dl.getUserDocument(docId);// dl.getDocument(docId);
+				if (userDocument == null) {
+					throw new ServletException("Document could not be loaded.");
+				}
+				int accessLevel =
+						dl.getAccessLevel(userDocument.getDocument()
+								.getProject(), CW.getUser(request));
+				if (accessLevel == Perm.NO_ACCESS) {
+					response.setStatus(Response.SC_FORBIDDEN);
+					return;
+				}
+				JCas jcas = JCasConverter.getJCas(userDocument.getXmi());
+				if (jcas != null) {
+					JSONObject obj = new JSONObject();
+					obj.put("documentId", docId);
+					obj.put("document", JSONUtil.getJSONObject(userDocument));
+					obj.put("list",
+							new JCasConverter()
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					Util.returnJSON(response, obj);
+				} else {
+					throw new ServletException("JCas could not be loaded: "
+							+ docId);
+				}
+
+			}
+		} catch (NumberFormatException e) {
+			throw new ServletException(e);
+		} catch (JSONException e) {
+			throw new ServletException(e);
+		} catch (SQLException | SAXException | UIMAException e) {
+			throw new ServletException(e);
+		}
+	}
+
+	protected void processDocumentId(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		DataLayer dl = CW.getDataLayer(getServletContext());
 
 		String[] documents = request.getParameterValues("documentId");
@@ -59,22 +119,20 @@ public class DocumentContentHandling extends HttpServlet {
 					throw new ServletException("Document could not be loaded.");
 				}
 				int accessLevel =
-						dl.getAccessLevel(document.getProject(), (User) request
-								.getSession().getAttribute(CA.USER));
+						dl.getAccessLevel(document.getProject(),
+								CW.getUser(request));
 				if (accessLevel == Perm.NO_ACCESS) {
 					response.setStatus(Response.SC_FORBIDDEN);
 					return;
 				}
-				if (document.isHidden()) {
-					response.setStatus(Response.SC_NOT_FOUND);
-					return;
-				}
 
-				JCas jcas = dl.getJCas(document);
+				UserDocument udoc =
+						dl.getUserDocument(CW.getUser(request), document);
+				JCas jcas = JCasConverter.getJCas(udoc.getXmi());
 				if (jcas != null) {
 					JSONObject obj = new JSONObject();
 					obj.put("documentId", docId);
-					obj.put("document", new JSONObject(document));
+					obj.put("document", JSONUtil.getJSONObject(document));
 					obj.put("list",
 							new JCasConverter()
 					.getJSONArrayFromAnnotations(
@@ -110,10 +168,15 @@ public class DocumentContentHandling extends HttpServlet {
 		int docId = jObj.getInt("document");
 		boolean r = false;
 		try {
-			Document document = dataLayer.getDocument(docId);
+			UserDocument document =
+					dataLayer.getUserDocument(CW.getUser(request),
+							dataLayer.getDocument(docId));
 			JCas jcas =
-					Util.addAnnotationsToJCas(dataLayer.getJCas(document), jObj);
-			r = dataLayer.updateJCas(document, jcas);
+					Util.addAnnotationsToJCas(
+							JCasConverter.getJCas(document.getXmi()), jObj);
+			document.setXmi(JCasConverter.getXmi(jcas));
+
+			r = dataLayer.updateUserDocument(document);
 		} catch (UIMAException | JSONException | SQLException | SAXException e) {
 			throw new ServletException(e);
 		}

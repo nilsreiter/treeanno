@@ -19,17 +19,20 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.xml.sax.SAXException;
 
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
+import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.PlainTextPreprocess;
 
 /**
@@ -81,7 +84,6 @@ public class NewDocument extends HttpServlet {
 								pp =
 										new PlainTextPreprocess<Token>(
 												Token.class);
-
 							} else
 								pp =
 										new PlainTextPreprocess<Sentence>(
@@ -98,9 +100,13 @@ public class NewDocument extends HttpServlet {
 				}
 				Iterator<JCas> iterator = pp.process(temp, "de");
 				while (iterator.hasNext()) {
-					Document document = dbio.getNewDocument(p);
-					dbio.updateJCas(document, iterator.next());
-
+					JCas jcas = iterator.next();
+					Document document = new Document();
+					document.setProject(p);
+					document.setName(JCasUtil.selectSingle(jcas,
+							DocumentMetaData.class).getDocumentId());
+					document.setXmi(JCasConverter.getXmi(jcas));
+					dbio.createNewDocument(document);
 				}
 				response.sendRedirect("../projects.jsp?projectId="
 						+ p.getDatabaseId());

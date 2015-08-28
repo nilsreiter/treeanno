@@ -24,11 +24,12 @@
 	"document_name":"Name",
 	"document_mod_date":"Letzte Änderung",
 	"document_actions":"Aktionen",
-	"document_action_open":"Öffnen",
+	"document_action_open":"Annotieren",
 	"document_action_clone":"Duplizieren",
 	"document_action_delete":"Verstecken",
 	"document_action_export_xmi":"Export",
 	"document_action_rename":"Umbenennen",
+	"document_action_view_annodoc":"Annotationen ansehen",
 	"project_id":"Id",
 	"project_name":"Name",
 	"project_action_open":"Öffnen",
@@ -50,5 +51,22 @@
 		"sentence":"Sätze",
 		"token":"Tokens",
 		"open_dialog":"Neues Dokument"
+	},
+	"annodoclistarea":{
+		"title_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
+		"breadcrumb_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
+		"id":"Id",
+		"username":"Annotator/in",
+		"mod_date":"Letzte Änderung",
+		"actions":"Aktionen",
+		"no-documents":"Keine annotierten Dokumente vorhanden."
+	},
+	"parallel":{
+		"annotations_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
+		"annotations_title_for_X":"Annotationen für __document__",
+		"annotations_from_X":"Annotationen von __user__",
+		"open_view":"Annotationen vergleichen",
+		"select":"Auswählen"
 	}
+
 }

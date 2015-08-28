@@ -33,12 +33,16 @@ import org.xml.sax.SAXException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.DataSourceConnectionSource;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.table.TableUtils;
 
 import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 
 public class DatabaseIO implements DataLayer {
 
@@ -46,6 +50,7 @@ public class DatabaseIO implements DataLayer {
 	Dao<User, Integer> userDao;
 	Dao<Project, Integer> projectDao;
 	Dao<Document, Integer> documentDao;
+	Dao<UserDocument, Integer> userDocumentDao;
 
 	public DatabaseIO() throws ClassNotFoundException, NamingException,
 			SQLException {
@@ -63,10 +68,19 @@ public class DatabaseIO implements DataLayer {
 		userDao = DaoManager.createDao(connectionSource, User.class);
 		projectDao = DaoManager.createDao(connectionSource, Project.class);
 		documentDao = DaoManager.createDao(connectionSource, Document.class);
+		userDocumentDao =
+				DaoManager.createDao(connectionSource, UserDocument.class);
 
 		userDao.setObjectCache(true);
 		projectDao.setObjectCache(true);
 		documentDao.setObjectCache(true);
+		userDocumentDao.setObjectCache(true);
+
+		TableUtils.createTableIfNotExists(connectionSource, User.class);
+		TableUtils.createTableIfNotExists(connectionSource, Project.class);
+		TableUtils.createTableIfNotExists(connectionSource, Document.class);
+		TableUtils.createTableIfNotExists(connectionSource, UserDocument.class);
+
 	}
 
 	@Deprecated
@@ -111,7 +125,7 @@ public class DatabaseIO implements DataLayer {
 			stmt =
 					conn.prepareStatement("SELECT level FROM treeanno_users_permissions WHERE projectId=? AND userId=?");
 			stmt.setInt(1, project.getDatabaseId());
-			stmt.setInt(2, user.getDatabaseId());
+			stmt.setInt(2, user.getId());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
 				int r = rs.getInt(1);
@@ -162,6 +176,34 @@ public class DatabaseIO implements DataLayer {
 		return d;
 	}
 
+	@Override
+	public UserDocument getUserDocument(User user, Document document)
+			throws SQLException {
+		QueryBuilder<UserDocument, Integer> queryBuilder =
+				userDocumentDao.queryBuilder();
+		PreparedQuery<UserDocument> pq =
+				queryBuilder.where()
+				.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
+				.eq(UserDocument.FIELD_USER, user).prepare();
+		List<UserDocument> ret = userDocumentDao.query(pq);
+		if (ret.isEmpty()) {
+			UserDocument ud = new UserDocument();
+			ud.setUser(user);
+			ud.setDocument(document);
+			ud.setXmi(document.getXmi());
+			userDocumentDao.create(ud);
+			return ud;
+		} else {
+			return ret.get(0);
+		}
+	}
+
+	@Override
+	public UserDocument getUserDocument(int user, int document)
+			throws SQLException {
+		return getUserDocument(getUser(user), getDocument(document));
+	}
+
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,
 	SAXException, IOException {
 		JCas jcas = null;
@@ -204,14 +246,16 @@ public class DatabaseIO implements DataLayer {
 		return (documentDao.deleteById(documentId) == 1);
 	}
 
+	@Deprecated
 	public boolean cloneDocument(int documentId) throws SQLException {
 
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
+				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name,cloneOf) SELECT xmi,typesystemId,project,name,? FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
+		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
 		connection.close();
@@ -277,6 +321,7 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
+	@Deprecated
 	@Override
 	public int cloneDocument(Document document) throws SQLException {
 
@@ -301,8 +346,8 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public boolean updateJCas(Document document, JCas jcas)
-			throws SQLException, SAXException {
+	public boolean setJCas(Document document, JCas jcas) throws SQLException,
+	SAXException {
 		return this.updateJCas(document.getDatabaseId(), jcas);
 	}
 
@@ -311,10 +356,36 @@ public class DatabaseIO implements DataLayer {
 		return (documentDao.update(document) == 1);
 	}
 
+	@Override
+	public boolean updateUserDocument(UserDocument document)
+			throws SQLException {
+		return (userDocumentDao.update(document) == 1);
+	}
+
+	@Override
+	@Deprecated
 	public Document getNewDocument(Project p) throws SQLException {
 		Document document = new Document();
 		document.setProject(p);
 		documentDao.create(document);
 		return document;
+	}
+
+	public Dao<Document, Integer> getDocumentDao() {
+		return documentDao;
+	}
+
+	@Override
+	public Document createNewDocument(Document d) throws SQLException {
+		int r = documentDao.create(d);
+		if (r == 1)
+			return d;
+		else
+			return null;
+	}
+
+	@Override
+	public UserDocument getUserDocument(int id) throws SQLException {
+		return userDocumentDao.queryForId(id);
 	}
 }

@@ -11,5 +11,7 @@ Perm["READACCESS"] = ${Perm.READACCESS};
 Perm["WRITEACCESS"] = ${Perm.WRITEACCESS};
 Perm["PADMINACCESS"] = ${Perm.PADMINACCESS};
 Perm["ADMINACCESS"] = ${Perm.ADMINACCESS};
+var showText = ${applicationScope['treeanno.showTextOnButtons']};
+
 ]]>
 </jsp:root>

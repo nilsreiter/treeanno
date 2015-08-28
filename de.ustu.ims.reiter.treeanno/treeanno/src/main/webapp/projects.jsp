@@ -80,8 +80,6 @@
 			</div>
 		</div>
 		<div class="splitright">
-			<div id="documentlistarea">
-			</div>
 		</div>
 	</div>
 	<div id="documentuploaddialog">

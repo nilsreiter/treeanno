@@ -25,11 +25,15 @@
 	<script>
 
 	var language = "${sessionScope.User.language}";
-	var documentId = ${param.documentId};
+	var userDocumentIds = new Array();
+	<c:forEach items="${paramValues.userDocumentId }" var="id">
+	userDocumentIds[userDocumentIds.length] = ${id};
+	</c:forEach>
+	[ "${paramValues.userDocumentId[0]}", "${paramValues.userDocumentId[1]}" ];
 	var treeanno = new Object();
 	treeanno["version"] = "${applicationScope['treeanno.version']}";
 	treeanno["name"] = "${applicationScope['treeanno.name']}";
-	$(document).ready(init_trans(init_main));
+	$(document).ready(init_trans(init_parallel));
 	
 	</script>
 	<link rel="stylesheet" href="help.css" type="text/css">
@@ -39,15 +43,17 @@
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.theme.css" type="text/css"> 
 </head>
 <body>
-	<c:if test="${empty param.documentId}">
+	<c:if test="${empty param.userDocumentId}">
 		<p>Need to give a document parameter</p>
 	</c:if>
 	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>
 	<div id="content">
-		<div class="outline_container">
-		<ul id="outline" class="text sortable">
-    	</ul>
-    	</div>
+		<c:forEach items="${paramValues.userDocumentId }">
+			<div class="outline_container">
+			<ul class="outline text">
+    		</ul>
+    		</div>
+		</c:forEach>
 	</div>
 	<div id="split">
 		<p data-i18n="howto_split" class="trans">howto_split</p>
@@ -67,11 +73,11 @@
 		</span>
 		<span class="right">
 			<!-- <button class="button_change_document">open</button> -->
-			<button class="button_save_document">save</button>
+			<!-- <button class="button_save_document">save</button> -->
 			<button class="button_edit_user">${sessionScope.User.name}</button>
 		</span>
 	</div>
 	<div id="error"></div>
-	<jsp:include page="help.html" />
+	
 </body>
 </html>

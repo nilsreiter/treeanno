@@ -26,18 +26,39 @@ div#artifact {
 	padding:5px;
 }
 
-#outline li div .drg { 
+#outline li div .drg, 
+.outline li div .drg { 
 	 padding:1px;
 	  margin:0 .5em 0 0; 
 	  border-left:2px dotted #bbb; 
 	  border-right:2px dotted #bbb;
 }
-#outline { margin:.5em 0; }
-#outline li { padding:0; margin:.5em 0 0 0; }
-#outline li div  { margin:0; padding:.25em; position:relative; border:1px solid #aaa; }
-#outline, #outline ul { margin:0;list-style-type:none; }
+.outline_container {
+	float:left;
+	max-width:40%;
+	padding:5px;
+	margin:5px;
+	border-radius:3px;
+	
+}
+
+#outline,
+.outline { 
+	margin:.5em 0;
+		 }
+#outline li,
+.outline li { padding:0; margin:.5em 0 0 0; }
+#outline li div,
+.outline li div { margin:0; padding:.25em; position:relative; border:1px solid #aaa; }
+#outline, 
+.outline,
+#outline ul,
+.outline ul { margin:0;list-style-type:none; }
+.outline li div a.del,
 #outline li div a.del { color:#ccc; top:-5px; right:5px;  font-size:20px; position:absolute; text-decoration:none; }
+.outline li div a.del:hover,
 #outline li div a.del:hover { color:#c33; }
+.outline li.rem > div,
 #outline li.rem > div { border:1px solid #000; }
 .placeholder { background:#eee; }
 .nesttoodeep { background:#ffdedd; }

@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 
 /**
  * This interface describes the methods to retrieve data from cache or database.
@@ -27,21 +28,34 @@ public interface DataLayer {
 
 	Document getDocument(int i) throws SQLException;
 
+	UserDocument getUserDocument(int id) throws SQLException;
+
+	UserDocument getUserDocument(int u, int d) throws SQLException;
+
+	UserDocument getUserDocument(User user, Document document)
+			throws SQLException;
+
 	int getAccessLevel(Project proj, User user) throws SQLException;
 
 	Collection<Document> getDocuments(Project proj) throws SQLException;
 
 	JCas getJCas(Document document) throws SQLException, UIMAException,
-			SAXException, IOException;
+	SAXException, IOException;
 
 	boolean deleteDocument(Document document) throws SQLException;
 
+	@Deprecated
 	int cloneDocument(Document document) throws SQLException;
 
-	boolean updateJCas(Document document, JCas jcas) throws SQLException,
-	SAXException;
+	boolean setJCas(Document document, JCas jcas) throws SQLException,
+			SAXException;
 
 	boolean updateDocument(Document document) throws SQLException;
 
+	@Deprecated
 	Document getNewDocument(Project p) throws SQLException;
+
+	Document createNewDocument(Document d) throws SQLException;
+
+	boolean updateUserDocument(UserDocument document) throws SQLException;
 }
