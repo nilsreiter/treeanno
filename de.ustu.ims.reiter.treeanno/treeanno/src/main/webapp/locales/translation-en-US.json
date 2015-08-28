@@ -60,5 +60,11 @@
 		"mod_date":"Last change",
 		"actions":"Actions",
 		"no-documents":"No annotated documents."
+	},
+	"parallel":{
+		"annotations_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
+		"annotations_title_for_X":"Annotations for __document__",
+		"annotations_from_X":"Annotations from __user__"
 	}
+	
 }
