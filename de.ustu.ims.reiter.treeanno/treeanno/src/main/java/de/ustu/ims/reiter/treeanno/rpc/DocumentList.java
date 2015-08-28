@@ -28,7 +28,7 @@ public class DocumentList extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 * TODO: Add permission check
+	 * 
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request,
