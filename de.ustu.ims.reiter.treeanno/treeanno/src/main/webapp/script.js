@@ -59,7 +59,8 @@ function init_projects() {
 			$(tr).append("<td><button class=\"button_open project "+data[i]['databaseId']+"\"></button></td>");
 			$(tr).find("button.button_open").button({
 				label: i18n.t("project_action_open"),
-				icons:{primary:"ui-icon-folder-collapsed",secondary:null}
+				icons:{primary:"ui-icon-folder-collapsed",secondary:null},
+				text:showText
 			}).click({'projectId':data[i]['databaseId']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
@@ -75,7 +76,8 @@ function init_projects() {
 	});
 	
 	$( "button.button_edit_user" ).button({
-		icons: { primary: "ui-icon-person", secondary:null }
+		icons: { primary: "ui-icon-person", secondary:null },
+		text:showText
 	});
 }
 
@@ -85,7 +87,6 @@ function show_annodoclist(id) {
 
 	$("#content .splitright").append("<div id=\"annodoclistarea\"></div>");
 	$("#annodoclistarea").hide();
-	var showText = true;
 
 	jQuery.getJSON("rpc/userdocumentlist?documentId="+id, function(data) {
 		var header = false;
@@ -165,7 +166,6 @@ function show_documentlist(id) {
 	$("#documentlistarea").hide();		
 
 	
-	var showText = true;
 	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
@@ -299,7 +299,8 @@ function show_documentlist(id) {
 			$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");	
 			$("button#new_document_open_dialog").button({
 				label:i18n.t("new_document.open_dialog"),
-				icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null }
+				icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null },
+				text:showText
 			}).click(function() {
 				$("#documentuploaddialog").dialog("open");
 			});
@@ -440,11 +441,13 @@ function init_main() {
 		$("#split").hide();
 		$( "button.button_edit_user" ).button({
 			icons: { primary: "ui-icon-person", secondary:null },
-			disabled: true
+			disabled: true,
+			text:showText
 		});
 		
 		$( "button.button_change_document" ).button({
 			icons: { primary: "ui-icon-folder-collapsed", secondary:null },
+			text:showText
 			//label: i18n.t("open"),
 		}).click(function() {
 			window.location.href="projects.jsp?projectId="+projectId;
@@ -452,6 +455,7 @@ function init_main() {
 		$( "button.button_save_document" ).button({
 			icons: { primary: "ui-icon-disk", secondary:null },
 			label: i18n.t("save"),
+			text:showText
 		}).click(
 			function() {
 				save_document();

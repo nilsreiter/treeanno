@@ -26,7 +26,8 @@ $(document).ready(function() {
 		$("#topbar .right").prepend("<input type=\"checkbox\" id=\"show_helper\" /><label for=\"show_helper\"></label>");
 		$("#show_helper").button({
 			icons: { primary: "ui-icon-help", secondary:null },
-			label: i18n.t("show_helper")
+			label: i18n.t("show_helper"),
+			text:showText
 		}).click(function() {
 			$("#help").toggle();
 		});
