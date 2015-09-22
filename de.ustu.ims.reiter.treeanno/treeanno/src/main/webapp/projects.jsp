@@ -8,7 +8,9 @@
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="false" />
-
+<c:if test="${ empty sessionScope.User }">
+	<c:redirect url="index.jsp"/>
+</c:if>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}: Projects</title>
@@ -29,6 +31,10 @@
 	<script src="i18next/i18next-1.8.0.min.js">
 	// <![CDATA[
  	// ]]>
+	</script>
+	<script src="config.js.jsp">
+	// <![CDATA[
+	// ]]>
 	</script>
 	<script src="script.js">
 	// <![CDATA[
@@ -55,17 +61,6 @@
 	</c:if>
 </head>
 <body>
-	<div id="content" class="splitcontent">
-		<div id="projectlistarea">
-			<h2 data-i18n="list_of_projects">list_of_projects</h2>
-			<table>
-				<thead><tr><th data-i18n="project_id"></th><th data-i18n="project_name"></th></tr></thead>
-				<tbody>  </tbody>
-			</table>
-		</div>
-		<div id="documentlistarea">
-		</div>
-	</div>
 	<div id="topbar">
 		<span class="ui-widget left">
 			<span><a href="index.jsp">${applicationScope['treeanno.name']}&#160;${applicationScope['treeanno.version']}</a></span>
@@ -74,7 +69,34 @@
 			<button class="button_edit_user">${sessionScope.User.name }</button>
 		</span>
 	</div>
+	<div id="content" class="splitcontent">
+		<div class="splitleft">
+			<div id="projectlistarea">
+				<h2 data-i18n="list_of_projects">list_of_projects</h2>
+				<table>
+					<thead><tr><th data-i18n="project_id"></th><th data-i18n="project_name"></th></tr></thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+		<div class="splitright">
+		</div>
+	</div>
+	<div id="documentuploaddialog">
+		<form class="upload" method="POST" action="rpc/NewDocument" enctype="multipart/form-data">
+			<div>
+				<input class="fileupload" type="file" name="files[]" multiple="multiple" accept="text/plain" />
+			</div>
+			<div>
+				<label for="segmenttype" data-i18n="new_document.type_description">new_document.type_description</label>
+				<select name="segmenttype" id="segmenttype">
+					<option value="sentence" data-i18n="new_document.sentence">new_document.sentence</option>
+					<option value="token" data-i18n="new_document.token">new_document.token</option>
+				</select>
+			</div>
+			<input type="hidden" name="projectId" value="1" />
+		</form>
+	</div>
 </body>
-
 </html>
 </jsp:root>

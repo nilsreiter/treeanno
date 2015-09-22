@@ -4,7 +4,7 @@
 
   <groupId>de.ustu.ims.reiter</groupId>
   <artifactId>treeanno.tools</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>treeanno.tools</name>
@@ -75,6 +75,11 @@
     		de.tudarmstadt.ukp.dkpro.core.languagetool-asl
     	</artifactId>
     	<version>1.7.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>de.ustu.ims.reiter</groupId>
+    	<artifactId>treeanno.util</artifactId>
+    	<version>0.2-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

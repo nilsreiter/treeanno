@@ -11,8 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -29,17 +30,30 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.xml.sax.SAXException;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.jdbc.DataSourceConnectionSource;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.table.TableUtils;
+
 import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 
 public class DatabaseIO implements DataLayer {
 
 	DataSource dataSource;
+	Dao<User, Integer> userDao;
+	Dao<Project, Integer> projectDao;
+	Dao<Document, Integer> documentDao;
+	Dao<UserDocument, Integer> userDocumentDao;
 
-	public DatabaseIO() throws ClassNotFoundException, NamingException {
+	public DatabaseIO() throws ClassNotFoundException, NamingException,
+			SQLException {
 		Context initContext;
 		Class.forName("com.mysql.jdbc.Driver");
 
@@ -47,13 +61,35 @@ public class DatabaseIO implements DataLayer {
 		Context envContext = (Context) initContext.lookup("java:/comp/env");
 		dataSource = (DataSource) envContext.lookup("jdbc/treeanno");
 
+		DataSourceConnectionSource connectionSource =
+				new DataSourceConnectionSource(dataSource,
+						"jdbc:mysql://localhost/de.ustu.ims.reiter.treeanno");
+
+		userDao = DaoManager.createDao(connectionSource, User.class);
+		projectDao = DaoManager.createDao(connectionSource, Project.class);
+		documentDao = DaoManager.createDao(connectionSource, Document.class);
+		userDocumentDao =
+				DaoManager.createDao(connectionSource, UserDocument.class);
+
+		userDao.setObjectCache(true);
+		projectDao.setObjectCache(true);
+		documentDao.setObjectCache(true);
+		userDocumentDao.setObjectCache(true);
+
+		TableUtils.createTableIfNotExists(connectionSource, User.class);
+		TableUtils.createTableIfNotExists(connectionSource, Project.class);
+		TableUtils.createTableIfNotExists(connectionSource, Document.class);
+		TableUtils.createTableIfNotExists(connectionSource, UserDocument.class);
+
 	}
 
+	@Deprecated
 	public DatabaseIO(DataSource ds) throws ClassNotFoundException,
 	NamingException {
 		dataSource = ds;
 	}
 
+	@Deprecated
 	public boolean isHidden(int documentId) throws SQLException {
 		Connection conn = dataSource.getConnection();
 		PreparedStatement stmt =
@@ -74,34 +110,12 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public int getAccessLevel(int documentId, User user) throws SQLException {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = dataSource.getConnection();
-			stmt =
-					conn.prepareStatement("SELECT level FROM (SELECT treeanno_projects.id AS pid, treeanno_documents.id AS did FROM treeanno_documents, treeanno_projects WHERE treeanno_documents.project = treeanno_projects.id) proj, treeanno_users_permissions WHERE pid = projectId AND userId=? AND did=?");
-			stmt.setInt(1, user.getDatabaseId());
-			stmt.setInt(2, documentId);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				int r = rs.getInt(1);
-				rs.close();
-				stmt.close();
-				conn.close();
-				return r;
-			}
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(conn);
-		}
-		return Perm.NO_ACCESS;
+		return getAccessLevel(getDocument(documentId).getProject(), user);
 	}
 
 	@Override
 	public int getAccessLevel(Project project, User user) throws SQLException {
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -111,7 +125,7 @@ public class DatabaseIO implements DataLayer {
 			stmt =
 					conn.prepareStatement("SELECT level FROM treeanno_users_permissions WHERE projectId=? AND userId=?");
 			stmt.setInt(1, project.getDatabaseId());
-			stmt.setInt(2, user.getDatabaseId());
+			stmt.setInt(2, user.getId());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
 				int r = rs.getInt(1);
@@ -126,6 +140,7 @@ public class DatabaseIO implements DataLayer {
 			closeQuietly(conn);
 		}
 		return Perm.NO_ACCESS;
+
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
@@ -156,36 +171,37 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public Document getDocument(int documentId) throws SQLException {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
+		Document d = documentDao.queryForId(documentId);
+		// projectDao.refresh(d.getProject());
+		return d;
+	}
 
-		Document document = null;
-		try {
-			connection = dataSource.getConnection();
-
-			stmt =
-					connection
-					.prepareStatement("SELECT name,modificationDate, project, hidden FROM treeanno_documents WHERE id=?");
-			stmt.setInt(1, documentId);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				document = new Document();
-				document.setDatabaseId(documentId);
-				document.setName(rs.getString(1));
-				document.setModificationDate(rs.getDate(2));
-				document.setHidden(rs.getBoolean(4));
-				document.setProject(getProject(rs.getInt(3)));
-				return document;
-			}
-
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(connection);
+	@Override
+	public UserDocument getUserDocument(User user, Document document)
+			throws SQLException {
+		QueryBuilder<UserDocument, Integer> queryBuilder =
+				userDocumentDao.queryBuilder();
+		PreparedQuery<UserDocument> pq =
+				queryBuilder.where()
+				.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
+				.eq(UserDocument.FIELD_USER, user).prepare();
+		List<UserDocument> ret = userDocumentDao.query(pq);
+		if (ret.isEmpty()) {
+			UserDocument ud = new UserDocument();
+			ud.setUser(user);
+			ud.setDocument(document);
+			ud.setXmi(document.getXmi());
+			userDocumentDao.create(ud);
+			return ud;
+		} else {
+			return ret.get(0);
 		}
-		return document;
+	}
 
+	@Override
+	public UserDocument getUserDocument(int user, int document)
+			throws SQLException {
+		return getUserDocument(getUser(user), getDocument(document));
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,
@@ -193,55 +209,53 @@ public class DatabaseIO implements DataLayer {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt =
+					connection
+							.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
+			stmt.setInt(1, documentId);
+			rs = stmt.executeQuery();
 
-		PreparedStatement stmt =
-				connection
-				.prepareStatement("SELECT * FROM treeanno_documents WHERE id=?");
-		stmt.setInt(1, documentId);
-		ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
 
-		if (rs.next()) {
-
-			String textXML = rs.getString(2);
-			TypeSystemDescription tsd =
-					TypeSystemDescriptionFactory.createTypeSystemDescription();
-			jcas = JCasFactory.createJCas(tsd);
-			InputStream is = null;
-			try {
-				is = new ByteArrayInputStream(textXML.getBytes());
-				XmiCasDeserializer.deserialize(is, jcas.getCas(), true);
-			} finally {
-				IOUtils.closeQuietly(is);
+				String textXML = rs.getString(1);
+				TypeSystemDescription tsd =
+						TypeSystemDescriptionFactory
+								.createTypeSystemDescription();
+				jcas = JCasFactory.createJCas(tsd);
+				InputStream is = null;
+				try {
+					is = new ByteArrayInputStream(textXML.getBytes());
+					XmiCasDeserializer.deserialize(is, jcas.getCas(), true);
+				} finally {
+					IOUtils.closeQuietly(is);
+				}
 			}
+		} finally {
+			closeQuietly(rs);
+			closeQuietly(stmt);
+			closeQuietly(connection);
 		}
-		rs.close();
-		stmt.close();
-		connection.close();
 		return jcas;
 
 	}
 
 	public boolean deleteDocument(int documentId) throws SQLException {
-		Connection connection = dataSource.getConnection();
-
-		PreparedStatement stmt =
-				connection
-				.prepareStatement("UPDATE treeanno_documents SET hidden=1 WHERE id=?");
-		stmt.setInt(1, documentId);
-		int r = stmt.executeUpdate();
-		stmt.close();
-		connection.close();
-
-		return r == 1;
+		return (documentDao.deleteById(documentId) == 1);
 	}
 
+	@Deprecated
 	public boolean cloneDocument(int documentId) throws SQLException {
+
 		Connection connection = dataSource.getConnection();
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name) SELECT xmi,typesystemId,project,name FROM treeanno_documents WHERE id=?");
+				.prepareStatement("INSERT INTO treeanno_documents(xmi,typesystemId,project,name,cloneOf) SELECT xmi,typesystemId,project,name,? FROM treeanno_documents WHERE id=?");
 		stmt.setInt(1, documentId);
+		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
 		stmt.close();
 		connection.close();
@@ -251,60 +265,14 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public List<Project> getProjects() throws SQLException {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<Project> projects = new LinkedList<Project>();
-		try {
-			connection = dataSource.getConnection();
-			stmt =
-					connection
-					.prepareStatement("SELECT * FROM treeanno_projects");
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				Project p = new Project();
-				p.setDatabaseId(rs.getInt(1));
-				p.setName(rs.getString(2));
-				projects.add(p);
-			}
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(connection);
-		}
-
-		return projects;
-
+		return projectDao.queryForAll();
 	}
 
 	public List<Document> getDocuments(int projectId) throws SQLException {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		List<Document> documents = new LinkedList<Document>();
-		try {
-			connection = dataSource.getConnection();
-			stmt =
-					connection
-					.prepareStatement("SELECT id,modificationDate,name,hidden,project FROM treeanno_documents WHERE project=? AND hidden=0");
-			stmt.setInt(1, projectId);
-			rs = stmt.executeQuery();
-			while (rs.next()) {
-				Document doc = new Document();
-				doc.setDatabaseId(rs.getInt(1));
-				doc.setModificationDate(rs.getDate(2));
-				doc.setName(rs.getString(3));
-				doc.setHidden(rs.getBoolean(4));
-				doc.setProject(getProject(rs.getInt(5)));
-				documents.add(doc);
-			}
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(connection);
-		}
-
-		return documents;
+		Map<String, Object> fv = new HashMap<String, Object>();
+		fv.put("project", projectId);
+		fv.put("hidden", 0);
+		return documentDao.queryForFieldValues(fv);
 
 	}
 
@@ -328,57 +296,12 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public Project getProject(int i) throws SQLException {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		Project proj = null;
-		try {
-			conn = dataSource.getConnection();
-			stmt =
-					conn.prepareStatement("SELECT * FROM treeanno_projects WHERE id=?");
-			stmt.setInt(1, i);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				proj = new Project();
-				proj.setDatabaseId(rs.getInt(1));
-				proj.setName(rs.getString(2));
-			}
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(conn);
-		}
-
-		return proj;
+		return projectDao.queryForId(i);
 	}
 
 	@Override
 	public User getUser(int i) throws SQLException {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		User user = null;
-		try {
-			conn = dataSource.getConnection();
-			stmt =
-					conn.prepareStatement("SELECT id, username,email,language FROM treeanno_users WHERE id=?");
-			stmt.setInt(1, i);
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				user = new User();
-				user.setDatabaseId(rs.getInt(1));
-				user.setName(rs.getString(2));
-				if (rs.getString(3) != null) user.setEmail(rs.getString(3));
-				if (rs.getString(4) != null) user.setLanguage(rs.getString(4));
-
-			}
-		} finally {
-			closeQuietly(rs);
-			closeQuietly(stmt);
-			closeQuietly(conn);
-		}
-
-		return user;
+		return userDao.queryForId(i);
 	}
 
 	@Override
@@ -388,7 +311,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public JCas getJCas(Document document) throws SQLException, UIMAException,
-			SAXException, IOException {
+	SAXException, IOException {
 		return this.getJCas(document.getDatabaseId());
 	}
 
@@ -398,8 +321,10 @@ public class DatabaseIO implements DataLayer {
 
 	}
 
+	@Deprecated
 	@Override
 	public int cloneDocument(Document document) throws SQLException {
+
 		if (!cloneDocument(document.getDatabaseId())) return -1;
 
 		Connection conn = null;
@@ -421,8 +346,46 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public boolean updateJCas(Document document, JCas jcas)
-			throws SQLException, SAXException {
+	public boolean setJCas(Document document, JCas jcas) throws SQLException,
+	SAXException {
 		return this.updateJCas(document.getDatabaseId(), jcas);
+	}
+
+	@Override
+	public boolean updateDocument(Document document) throws SQLException {
+		return (documentDao.update(document) == 1);
+	}
+
+	@Override
+	public boolean updateUserDocument(UserDocument document)
+			throws SQLException {
+		return (userDocumentDao.update(document) == 1);
+	}
+
+	@Override
+	@Deprecated
+	public Document getNewDocument(Project p) throws SQLException {
+		Document document = new Document();
+		document.setProject(p);
+		documentDao.create(document);
+		return document;
+	}
+
+	public Dao<Document, Integer> getDocumentDao() {
+		return documentDao;
+	}
+
+	@Override
+	public Document createNewDocument(Document d) throws SQLException {
+		int r = documentDao.create(d);
+		if (r == 1)
+			return d;
+		else
+			return null;
+	}
+
+	@Override
+	public UserDocument getUserDocument(int id) throws SQLException {
+		return userDocumentDao.queryForId(id);
 	}
 }

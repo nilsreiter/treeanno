@@ -79,4 +79,34 @@
     <servlet-name>DocumentList</servlet-name>
     <url-pattern>/rpc/documentlist</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AccessLevel</display-name>
+    <servlet-name>AccessLevel</servlet-name>
+    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.AccessLevel</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AccessLevel</servlet-name>
+    <url-pattern>/rpc/AccessLevel</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>NewDocument</display-name>
+    <servlet-name>NewDocument</servlet-name>
+    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.NewDocument</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NewDocument</servlet-name>
+    <url-pattern>/rpc/NewDocument</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UserDocumentList</display-name>
+    <servlet-name>UserDocumentList</servlet-name>
+    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.UserDocumentList</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserDocumentList</servlet-name>
+    <url-pattern>/rpc/userdocumentlist</url-pattern>
+  </servlet-mapping>
 </web-app>

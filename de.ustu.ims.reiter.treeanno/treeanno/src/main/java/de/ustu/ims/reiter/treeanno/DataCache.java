@@ -14,8 +14,10 @@ import org.xml.sax.SAXException;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
 
+@Deprecated
 public class DataCache implements DataLayer {
 	DatabaseIO dbio;
 	Map<Integer, User> userMap;
@@ -110,12 +112,56 @@ public class DataCache implements DataLayer {
 	}
 
 	@Override
-	public boolean updateJCas(Document document, JCas jcas)
-			throws SQLException, SAXException {
-		if (dbio.updateJCas(document, jcas)) {
+	public boolean setJCas(Document document, JCas jcas) throws SQLException,
+	SAXException {
+		if (dbio.setJCas(document, jcas)) {
 			jcasCache.remove(document);
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean updateDocument(Document document) throws SQLException {
+		this.documentMap.remove(document);
+		this.jcasCache.remove(document);
+		this.documentCollections.remove(document.getProject());
+		return dbio.updateDocument(document);
+	}
+
+	@Override
+	public Document getNewDocument(Project p) throws SQLException {
+		return dbio.getNewDocument(p);
+	}
+
+	@Override
+	public UserDocument getUserDocument(User user, Document document)
+			throws SQLException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public UserDocument getUserDocument(int u, int d) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean updateUserDocument(UserDocument document)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Document createNewDocument(Document d) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserDocument getUserDocument(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

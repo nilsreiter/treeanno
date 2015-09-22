@@ -1,17 +1,30 @@
 package de.ustu.ims.reiter.treeanno.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+import com.j256.ormlite.field.DatabaseField;
+
+@Entity(name = "treeanno_users")
 public class User {
-	String name;
+	@Column(unique = true)
+	String username;
+
+	@DatabaseField
 	String email;
-	int databaseId;
+
+	@DatabaseField(generatedId = true)
+	int id;
+
+	@DatabaseField
 	String language;
 
 	public String getName() {
-		return name;
+		return username;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.username = name;
 	}
 
 	public String getEmail() {
@@ -22,12 +35,8 @@ public class User {
 		this.email = email;
 	}
 
-	public int getDatabaseId() {
-		return databaseId;
-	}
-
-	public void setDatabaseId(int databaseId) {
-		this.databaseId = databaseId;
+	public int getId() {
+		return id;
 	}
 
 	public String getLanguage() {
