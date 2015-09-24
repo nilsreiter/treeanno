@@ -42,6 +42,7 @@ import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
+import de.ustu.ims.reiter.treeanno.beans.UserPermission;
 
 public class DatabaseIO implements DataLayer {
 
@@ -50,9 +51,10 @@ public class DatabaseIO implements DataLayer {
 	Dao<Project, Integer> projectDao;
 	Dao<Document, Integer> documentDao;
 	Dao<UserDocument, Integer> userDocumentDao;
+	Dao<UserPermission, Integer> userPermissionDao;
 
 	public DatabaseIO() throws ClassNotFoundException, NamingException,
-			SQLException {
+	SQLException {
 		Context initContext;
 		Class.forName("com.mysql.jdbc.Driver");
 
@@ -69,17 +71,21 @@ public class DatabaseIO implements DataLayer {
 		documentDao = DaoManager.createDao(connectionSource, Document.class);
 		userDocumentDao =
 				DaoManager.createDao(connectionSource, UserDocument.class);
+		userPermissionDao =
+				DaoManager.createDao(connectionSource, UserPermission.class);
 
 		userDao.setObjectCache(true);
 		projectDao.setObjectCache(true);
 		documentDao.setObjectCache(true);
 		userDocumentDao.setObjectCache(true);
+		userPermissionDao.setObjectCache(false);
 
 		TableUtils.createTableIfNotExists(connectionSource, User.class);
 		TableUtils.createTableIfNotExists(connectionSource, Project.class);
 		TableUtils.createTableIfNotExists(connectionSource, Document.class);
 		TableUtils.createTableIfNotExists(connectionSource, UserDocument.class);
-
+		TableUtils.createTableIfNotExists(connectionSource,
+				UserPermission.class);
 	}
 
 	public int getAccessLevel(int documentId, User user) throws SQLException {
@@ -117,7 +123,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-	SAXException {
+			SAXException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -134,7 +140,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+						.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -158,8 +164,8 @@ public class DatabaseIO implements DataLayer {
 				userDocumentDao.queryBuilder();
 		PreparedQuery<UserDocument> pq =
 				queryBuilder.where()
-				.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
-				.eq(UserDocument.FIELD_USER, user).prepare();
+						.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
+						.eq(UserDocument.FIELD_USER, user).prepare();
 		List<UserDocument> ret = userDocumentDao.query(pq);
 		if (ret.isEmpty()) {
 			UserDocument ud = new UserDocument();
@@ -183,7 +189,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,
-	SAXException, IOException {
+			SAXException, IOException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
@@ -192,7 +198,7 @@ public class DatabaseIO implements DataLayer {
 		try {
 			stmt =
 					connection
-							.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
+					.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
 			stmt.setInt(1, documentId);
 			rs = stmt.executeQuery();
 
@@ -201,7 +207,7 @@ public class DatabaseIO implements DataLayer {
 				String textXML = rs.getString(1);
 				TypeSystemDescription tsd =
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription();
+						.createTypeSystemDescription();
 				jcas = JCasFactory.createJCas(tsd);
 				InputStream is = null;
 				try {
@@ -273,7 +279,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public boolean setJCas(Document document, JCas jcas) throws SQLException,
-	SAXException {
+			SAXException {
 		return this.updateJCas(document.getDatabaseId(), jcas);
 	}
 
