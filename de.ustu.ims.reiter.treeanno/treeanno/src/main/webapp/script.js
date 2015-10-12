@@ -901,7 +901,6 @@ function outdent() {
 
 function force_indent() {
 	$(".selected").each(function(index, element) {
-		if ($(element).prev("li").length == 0) {
 			
 			var vitem = new Object();
 			vitem["begin"] = $(element).attr("data-treeanno-begin");
@@ -917,7 +916,6 @@ function force_indent() {
 				prev.append("<ul></ul>");
 			var s = $(element).detach();
 			$(prev).children("ul").append(s);
-		}
 		cleanup_list();		
 	});
 	enableSaveButton();
