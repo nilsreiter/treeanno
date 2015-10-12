@@ -922,6 +922,7 @@ function force_indent() {
 }
 
 function delete_virtual_node() {
+	// TODO: Don't also delete sub nodes
 	$(".selected").each(function(index, element) {
 		if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
 			$(element).prev().addClass("selected");
