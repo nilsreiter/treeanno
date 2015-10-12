@@ -3,7 +3,9 @@ package de.ustu.ims.reiter.treeanno.beans;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 
 @Entity(name = "treeanno_projects")
 public class Project {
@@ -13,10 +15,15 @@ public class Project {
 	@Column
 	String name;
 
+	@ForeignCollectionField(eager = false)
+	ForeignCollection<Document> documents;
+
+	@Deprecated
 	public int getDatabaseId() {
 		return id;
 	}
 
+	@Deprecated
 	public void setDatabaseId(int databaseId) {
 		this.id = databaseId;
 	}
@@ -38,5 +45,13 @@ public class Project {
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Project)) return false;
 		return this.hashCode() == obj.hashCode();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public ForeignCollection<Document> getDocuments() {
+		return documents;
 	}
 }
