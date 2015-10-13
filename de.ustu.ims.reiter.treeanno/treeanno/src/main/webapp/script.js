@@ -54,14 +54,14 @@ function init_projects() {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
 			var id=data[i]['databaseId'];
-			$(tr).append("<td>"+data[i]['databaseId']+"</td>");
+			$(tr).append("<td>"+data[i]['id']+"</td>");
 			$(tr).append("<td>"+data[i]['name']+"</td>");
-			$(tr).append("<td><button class=\"button_open project "+data[i]['databaseId']+"\"></button></td>");
+			$(tr).append("<td><button class=\"button_open project "+data[i]['id']+"\"></button></td>");
 			$(tr).find("button.button_open").button({
 				label: i18n.t("project_action_open"),
 				icons:{primary:"ui-icon-folder-collapsed",secondary:null},
 				text:showText
-			}).click({'projectId':data[i]['databaseId']}, function(event) {	
+			}).click({'projectId':data[i]['id']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
 			$("#projectlistarea table tbody").append(tr);
@@ -382,7 +382,7 @@ function init_parallel() {
 		jQuery.getJSON("DocumentContentHandling?userDocumentId="+documentId, function(data) {
 			$(element).parent().prepend("<h2>"+i18n.t("parallel.annotations_from_X",{"user":data["document"]["user"]["name"]})+"</h2>");
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
-				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["document"]["name"]}));
+				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["document"]["project"]["id"]+"\">"+data["document"]["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["document"]["name"]}));
 				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["document"]["name"]});
 			} else {
 				//$(".breadcrumb").append(", "+data["document"]["name"]);
@@ -901,7 +901,6 @@ function outdent() {
 
 function force_indent() {
 	$(".selected").each(function(index, element) {
-		if ($(element).prev("li").length == 0) {
 			
 			var vitem = new Object();
 			vitem["begin"] = $(element).attr("data-treeanno-begin");
@@ -917,13 +916,13 @@ function force_indent() {
 				prev.append("<ul></ul>");
 			var s = $(element).detach();
 			$(prev).children("ul").append(s);
-		}
 		cleanup_list();		
 	});
 	enableSaveButton();
 }
 
 function delete_virtual_node() {
+	// TODO: Don't also delete sub nodes
 	$(".selected").each(function(index, element) {
 		if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
 			$(element).prev().addClass("selected");

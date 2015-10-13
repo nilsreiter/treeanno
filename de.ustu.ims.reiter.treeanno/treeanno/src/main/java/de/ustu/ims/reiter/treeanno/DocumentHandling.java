@@ -35,7 +35,6 @@ public class DocumentHandling extends HttpServlet {
 	 */
 	public DocumentHandling() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -78,7 +77,7 @@ public class DocumentHandling extends HttpServlet {
 					response.setHeader("Content-Disposition",
 							"attachment; filename=\"file.zip\"");
 
-					JCas jcas = dataLayer.getJCas(document);
+					JCas jcas = JCasConverter.getJCas(document.getXmi());
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
