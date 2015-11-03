@@ -9,6 +9,10 @@ import com.j256.ormlite.field.ForeignCollectionField;
 
 @Entity(name = "treeanno_projects")
 public class Project {
+	enum Type {
+		DEFAULT, ARNDT
+	};
+
 	@DatabaseField(generatedId = true)
 	int id;
 
@@ -17,6 +21,9 @@ public class Project {
 
 	@ForeignCollectionField(eager = false)
 	ForeignCollection<Document> documents;
+
+	@Column
+	Type type;
 
 	@Deprecated
 	public int getDatabaseId() {
