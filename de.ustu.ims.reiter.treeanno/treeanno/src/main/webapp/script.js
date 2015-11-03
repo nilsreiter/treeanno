@@ -7,6 +7,7 @@ var idCounter = 0;
 var documents_selected_for_diff = new Array();
 var max_documents_for_diff = 2;
 
+
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
 	$(htmlItem).attr("title", item['text']);
@@ -877,23 +878,25 @@ function splitdialog_enter() {
 	splitdialog_cleanup();
 }
 
+function outdentElement(element) {
+	var id = $(element).attr("data-treeanno-id");
+	
+	// if it's not the very first item
+	if (!$(element).parent("ul#outline").length) {
+		var newParent = $(element).parentsUntil("li").parent();
+		var parentId = parseInt($(newParent).attr("data-treeanno-id"));
+		var siblings = $(element).nextAll("li").detach();
+		if ($(element).children("ul").length == 0)
+			$(element).append("<ul></ul>");
+		$(element).children("ul").append(siblings);
+		var s = $(element).detach();
+		$(newParent).after(s);
+	}
+}
 
 function outdent() {
 	$(".selected").each(function(index, element) {
-		var id = $(element).attr("data-treeanno-id");
-		
-		// if it's not the very first item
-		if (!$(element).parent("ul#outline").length) {
-			var newParent = $(element).parentsUntil("li").parent();
-			var parentId = parseInt($(newParent).attr("data-treeanno-id"));
-			var siblings = $(element).nextAll("li").detach();
-			if ($(element).children("ul").length == 0)
-				$(element).append("<ul></ul>");
-			$(element).children("ul").append(siblings);
-			var s = $(element).detach();
-			$(newParent).after(s);
-			// delete items[id]['parentId'];
-		}
+		outdentElement(element);
 	});
 	cleanup_list();
 	enableSaveButton();
@@ -901,7 +904,6 @@ function outdent() {
 
 function force_indent() {
 	$(".selected").each(function(index, element) {
-			
 			var vitem = new Object();
 			vitem["begin"] = $(element).attr("data-treeanno-begin");
 			vitem["end"] = vitem["begin"];
@@ -922,24 +924,36 @@ function force_indent() {
 }
 
 function delete_virtual_node() {
-	// TODO: Don't also delete sub nodes
 	$(".selected").each(function(index, element) {
+		
+		// check if it's really a virtual node
 		if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
+			console.log("TreeAnno: Found a virtual node to delete")
+			
+			$(element).children("ul").children("li").each(function(i2, e2) {
+				console.log("TreeAnno: Outdenting children of virtual node");
+				outdentElement(e2);
+			});
+			
 			$(element).prev().addClass("selected");
 			$(element).remove();
 		}
 	});
 }
 
+function indentElement(element) {
+	if ($(element).prev("li").length > 0) {
+		var prev = $(element).prev("li");
+		if ($(prev).children("ul").length == 0)
+			prev.append("<ul></ul>");
+		var s = $(element).detach();
+		$(prev).children("ul").append(s);
+	}
+}
+
 function indent() {
 	$(".selected").each(function(index, element) {
-		if ($(element).prev("li").length > 0) {
-			var prev = $(element).prev("li");
-			if ($(prev).children("ul").length == 0)
-				prev.append("<ul></ul>");
-			var s = $(element).detach();
-			$(prev).children("ul").append(s);
-		}
+		indentElement(element);
 		cleanup_list();		
 	});
 	enableSaveButton();
