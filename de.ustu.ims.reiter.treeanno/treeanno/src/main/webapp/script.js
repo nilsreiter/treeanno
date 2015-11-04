@@ -8,6 +8,62 @@ var documents_selected_for_diff = new Array();
 var max_documents_for_diff = 2;
 
 
+var kbkey = { up: 38, down: 40, right: 39, left: 37, 
+		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
+var operations = {
+		39:{
+			// right
+			'id':'indent',
+			fun:indent
+		},
+		37:{
+			// left
+			'id':'outdent',
+			fun:outdent
+		},
+		49:{
+			// one
+			'id':'mark1',
+			fun:function() {
+				$(".selected").toggleClass("mark1");
+				enableSaveButton();
+			}
+		},
+		67:{
+			// c
+			'id':'categorize',
+			fun:add_category
+		},
+		68:{
+			// d
+			'id':'delete_category',
+			fun:delete_category
+		},
+		77:{
+			// m
+			'id':'merge',
+			fun:function() {
+				if ($(".selected").length == 2) mergeselected();
+			}
+		},
+		83:{
+			// s
+			'id':'split',
+			fun:splitdialog
+		},
+		1039:{
+			// shift + right
+			'id':'force_indent',
+			fun:force_indent
+		},
+		1068:{
+			// shift + d
+			'id':'delete_virtual_node',
+			fun:delete_virtual_node
+		}
+		
+};
+
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
 	$(htmlItem).attr("title", item['text']);
@@ -298,7 +354,7 @@ function show_documentlist(id) {
 		
 
 		if (al >= Perm["PADMINACCESS"]) {
-			$("#documentuploaddialog input[name='projectId']").attr("value", data['project']['databaseId']);
+			$("#documentuploaddialog input[name='projectId']").attr("value", data['project']['id']);
 			$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");	
 			$("button#new_document_open_dialog").button({
 				label:i18n.t("new_document.open_dialog"),
@@ -439,6 +495,20 @@ function init_parallel() {
 	
 }
 
+function init_operations(projectType) {
+	switch(projectType){
+	case ProjectType["ARNDT"]:
+		operations[49]['disabled'] = 1;
+		operations[67]['fun'] = function() {
+			force_indent();
+			move_selection_up();
+			add_category();
+		}
+		break;
+	}
+
+}
+
 function init_main() {
 		init_all();
 		$("#split").hide();
@@ -481,6 +551,8 @@ function init_main() {
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
 			
 			var list = data["list"];
+			
+			init_operations(data['document']['project']['type']);
 			
 			while (list.length > 0) {
 				var item = list.shift();
@@ -595,8 +667,7 @@ function disableSaveButton() {
 function key_up(e) {
 	if (!enable_interaction) return;
 	e.preventDefault();
-	var keyCode = e.keyCode || e.which,
-		kbkey = { shift:16 };
+	var keyCode = e.keyCode || e.which;
 	switch(keyCode) {
 	case kbkey.shift:
 		shifted = false;
@@ -604,40 +675,34 @@ function key_up(e) {
 	}
 }
 
+function move_selection_up() {
+	var allItems = $("#outline li");
+	// get index of first selected item
+	var index = $(".selected").first().index("#outline li");
+	// if shift is not pressed, remove the selection
+	if (!shifted && index > 0)
+		$(".selected").toggleClass("selected");
+	
+	// if select the new item
+	if (index > 0) {
+		if (!shifted)
+			$($(allItems).get(index-1)).toggleClass("selected");
+		if (shifted)
+			$(".selected").first().prev().toggleClass("selected");
+	}
+	// if not in viewport, scroll
+	if (!isElementInViewport($(".selected").first()))
+		$(window).scrollTop($(".selected").first().offset().top - 200);
+}
 
 function key_down(e) {
 	if (!enable_interaction) return;
 	e.preventDefault();
-	var keyCode = e.keyCode || e.which,
-    	kbkey = { up: 38, down: 40, right: 39, left: 37, 
-			enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
+	var keyCode = e.keyCode || e.which;
 	var allItems = $("#outline li");
 	switch (keyCode) {
-	case kbkey.one:
-		$(".selected").toggleClass("mark1");
-		enableSaveButton();
-		break;
 	case kbkey.shift:
 		shifted = true;
-		break;
-	case kbkey.d:
-		if (shifted)
-			delete_virtual_node();
-		else
-			delete_category();
-		break;
-	case kbkey.c:
-		add_category();
-		break;
-	case kbkey.m:
-		if ($(".selected").length == 2) {
-			mergeselected();
-		} else {
-			// mergedialog();
-		}
-		break;
-	case kbkey.s:
-		splitdialog();
 		break;
 	case kbkey.down:
 		// get index of last selected item
@@ -665,36 +730,19 @@ function key_down(e) {
 			$(window).scrollTop($(".selected").last().offset().top - 200);
 		break;
 	case kbkey.up:
-		// get index of first selected item
-		var index = $(".selected").first().index("#outline li");
-		// if shift is not pressed, remove the selection
-		if (!shifted && index > 0)
-			$(".selected").toggleClass("selected");
-		
-		// if select the new item
-		if (index > 0) {
-			if (!shifted)
-				$($(allItems).get(index-1)).toggleClass("selected");
-			if (shifted)
-				$(".selected").first().prev().toggleClass("selected");
-		}
-		// if not in viewport, scroll
-		if (!isElementInViewport($(".selected").first()))
-			$(window).scrollTop($(".selected").first().offset().top - 200);
-		break;
-	case kbkey.right:
-		if (shifted)
-			force_indent();
-		else
-			indent();
-		break;
-	case kbkey.left:
-		outdent();
+		move_selection_up();
 		break;
 	case kbkey.enter:
 		$(this).prev().attr('checked', !$(this).prev().attr('checked'));
 		break;
+	default:
+		kc = keyCode;
+		if (shifted)
+			kc = keyCode + 1000;
+		if (kc in operations && !operations[kc]['disabled'])
+			operations[kc].fun();
 	}
+	
 }
 
 function isElementInViewport (el) {

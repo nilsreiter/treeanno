@@ -29,6 +29,7 @@ public class JSONUtil {
 		JSONObject json = new JSONObject();
 		json.put("id", project.getId());
 		json.put("name", project.getName());
+		json.put("type", project.getType());
 		return json;
 	}
 }
