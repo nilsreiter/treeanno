@@ -10,6 +10,17 @@ var max_documents_for_diff = 2;
 
 var kbkey = { up: 38, down: 40, right: 39, left: 37, 
 		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
+var keyString = {
+		37:'&larr;',
+		39:'&rarr;',
+		49:'1',
+		67:'c',
+		68:'d',
+		77:'m',
+		83:'s',
+		1039:'&#8679;&rarr;',
+		1068:'&#8679;d'
+}
 var operations = {
 		39:{
 			// right
@@ -30,7 +41,7 @@ var operations = {
 				$(".selected").toggleClass("mark1");
 				enableSaveButton();
 			},
-			desc:action_mark1
+			desc:'action_mark1'
 		},
 		67:{
 			// c
@@ -72,6 +83,7 @@ var operations = {
 		}
 		
 };
+
 
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
@@ -518,6 +530,35 @@ function init_operations(projectType) {
 
 }
 
+function init_help() {
+	var helpElement = document.createElement("div");
+	$(helpElement).attr("id", "help");
+	$(helpElement).append("<div class=\"trans\">"+i18n.t('help_title')+"</div>");
+	var helpTable = document.createElement("table");
+	for (key in operations) {
+		if (!operations[key]['disabled']) {
+			$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key]['desc'])+"</td></tr>");
+		}
+	}
+	$(helpElement).append(helpTable);
+	
+	$("body").append(helpElement);
+	
+	$(helpElement).draggable();
+	$(helpElement).i18n();
+	$("#topbar .right").prepend("<input type=\"checkbox\" id=\"show_helper\" /><label for=\"show_helper\"></label>");
+	$("#show_helper").button({
+		icons: { primary: "ui-icon-help", secondary:null },
+		label: i18n.t("show_helper"),
+		text:showText
+	}).click(function() {
+		$(helpElement).toggle();
+	});
+	$(helpElement).hide();
+	$("#topbar .right").buttonset();
+}
+
+
 function init_main() {
 		init_all();
 		$("#split").hide();
@@ -602,6 +643,7 @@ function init_main() {
 					$(this).addClass("selected");
 				}
 			});
+			init_help();
 			$("#status .loading").hide();
 			$("#outline").show();
 			
