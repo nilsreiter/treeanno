@@ -952,6 +952,7 @@ function outdent() {
 
 function force_indent() {
 	$(".selected").each(function(index, element) {
+		if (index == 0) {
 			var vitem = new Object();
 			vitem["begin"] = $(element).attr("data-treeanno-begin");
 			vitem["end"] = vitem["begin"];
@@ -960,13 +961,11 @@ function force_indent() {
 			
 			var htmlItem = get_html_item(vitem, 0);
 			$(element).before(htmlItem);
-			
-			var prev = $(element).prev("li");
-			if ($(prev).children("ul").length == 0)
-				prev.append("<ul></ul>");
-			var s = $(element).detach();
-			$(prev).children("ul").append(s);
-		cleanup_list();		
+			cleanup_list();
+		}
+		indentElement(element);
+		cleanup_list();	
+		
 	});
 	enableSaveButton();
 }
