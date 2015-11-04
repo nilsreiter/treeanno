@@ -14,12 +14,14 @@ var operations = {
 		39:{
 			// right
 			'id':'indent',
-			fun:indent
+			fun:indent,
+			'desc':'action_indent'
 		},
 		37:{
 			// left
 			'id':'outdent',
-			fun:outdent
+			fun:outdent,
+			'desc':'action_outdent'
 		},
 		49:{
 			// one
@@ -27,39 +29,46 @@ var operations = {
 			fun:function() {
 				$(".selected").toggleClass("mark1");
 				enableSaveButton();
-			}
+			},
+			desc:action_mark1
 		},
 		67:{
 			// c
-			'id':'categorize',
-			fun:add_category
+			id:'categorize',
+			fun:add_category,
+			desc:'action_assign_category'
 		},
 		68:{
 			// d
 			'id':'delete_category',
-			fun:delete_category
+			fun:delete_category,
+			desc:'action_delete_category'
 		},
 		77:{
 			// m
 			'id':'merge',
 			fun:function() {
 				if ($(".selected").length == 2) mergeselected();
-			}
+			},
+			desc:'action_merge'
 		},
 		83:{
 			// s
 			'id':'split',
-			fun:splitdialog
+			fun:splitdialog,
+			'desc':'action_split'
 		},
 		1039:{
 			// shift + right
 			'id':'force_indent',
-			fun:force_indent
+			fun:force_indent,
+			desc:'action.force_indent'
 		},
 		1068:{
 			// shift + d
 			'id':'delete_virtual_node',
-			fun:delete_virtual_node
+			fun:delete_virtual_node,
+			desc:'action.delete_vnode'
 		}
 		
 };
