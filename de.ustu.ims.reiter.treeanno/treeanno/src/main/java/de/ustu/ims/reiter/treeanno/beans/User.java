@@ -17,7 +17,7 @@ public class User {
 	int id;
 
 	@DatabaseField
-	String language;
+	String language = "en";
 
 	public String getName() {
 		return username;

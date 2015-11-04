@@ -406,7 +406,8 @@ function select_document_for_diff(did) {
 function init_trans(fnc) {
 	i18n.init({ 
 		resGetPath:'locales/__ns__-__lng__.json',
-		lng: language }, function(t) {
+		nsseparator:'::',
+		lng: language.substring(0,2) }, function(t) {
 			$("body").i18n();
 			$(".trans").each(function(index, element) {
 				var text = $(element).text().trim();
@@ -525,6 +526,8 @@ function init_operations(projectType) {
 			move_selection_up();
 			add_category();
 		}
+		operations[67]['desc'] = 'action.assign_category_t2';
+		operations[68]['desc'] = "action.delete_category_t2";
 		break;
 	}
 

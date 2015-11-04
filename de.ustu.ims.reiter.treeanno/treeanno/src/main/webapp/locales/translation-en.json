@@ -14,7 +14,9 @@
 	"action_delete_category":"Remove category",
 	"action":{
 		"delete_vnode":"Remove node",
-		"force_indent":"Force indent"
+		"force_indent":"Force indent",
+		"assign_category_t2":"Create Node and Assign Question",
+		"delete_category_t2":"Delete Question"
 	},
 	"action_category_virtual_nodes":"Virtual Nodes",
 	"help_title":"Cheat Sheet",
