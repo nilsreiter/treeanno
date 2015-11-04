@@ -528,6 +528,7 @@ function init_operations(projectType) {
 		}
 		operations[67]['desc'] = 'action.assign_category_t2';
 		operations[68]['desc'] = "action.delete_category_t2";
+		operations[1039]['desc'] = 'action.force_indent_t2';
 		break;
 	}
 
