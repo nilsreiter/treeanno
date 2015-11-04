@@ -52,10 +52,12 @@ var operations = {
 			fun:splitdialog
 		},
 		1039:{
+			// shift + right
 			'id':'force_indent',
 			fun:force_indent
 		},
 		1068:{
+			// shift + d
 			'id':'delete_virtual_node',
 			fun:delete_virtual_node
 		}
@@ -352,7 +354,7 @@ function show_documentlist(id) {
 		
 
 		if (al >= Perm["PADMINACCESS"]) {
-			$("#documentuploaddialog input[name='projectId']").attr("value", data['project']['databaseId']);
+			$("#documentuploaddialog input[name='projectId']").attr("value", data['project']['id']);
 			$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");	
 			$("button#new_document_open_dialog").button({
 				label:i18n.t("new_document.open_dialog"),
@@ -535,6 +537,12 @@ function init_main() {
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
 			
 			var list = data["list"];
+			
+			switch(data['document']['project']['type']){
+			case ProjectType["ARNDT"]:
+				operations[49]['disabled'] = 1;
+				break;
+			}
 			
 			while (list.length > 0) {
 				var item = list.shift();
