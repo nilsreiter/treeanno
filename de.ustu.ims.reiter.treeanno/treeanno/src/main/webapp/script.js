@@ -495,6 +495,20 @@ function init_parallel() {
 	
 }
 
+function init_operations(projectType) {
+	switch(projectType){
+	case ProjectType["ARNDT"]:
+		operations[49]['disabled'] = 1;
+		operations[67]['fun'] = function() {
+			force_indent();
+			move_selection_up();
+			add_category();
+		}
+		break;
+	}
+
+}
+
 function init_main() {
 		init_all();
 		$("#split").hide();
@@ -538,11 +552,7 @@ function init_main() {
 			
 			var list = data["list"];
 			
-			switch(data['document']['project']['type']){
-			case ProjectType["ARNDT"]:
-				operations[49]['disabled'] = 1;
-				break;
-			}
+			init_operations(data['document']['project']['type']);
 			
 			while (list.length > 0) {
 				var item = list.shift();
@@ -665,6 +675,25 @@ function key_up(e) {
 	}
 }
 
+function move_selection_up() {
+	var allItems = $("#outline li");
+	// get index of first selected item
+	var index = $(".selected").first().index("#outline li");
+	// if shift is not pressed, remove the selection
+	if (!shifted && index > 0)
+		$(".selected").toggleClass("selected");
+	
+	// if select the new item
+	if (index > 0) {
+		if (!shifted)
+			$($(allItems).get(index-1)).toggleClass("selected");
+		if (shifted)
+			$(".selected").first().prev().toggleClass("selected");
+	}
+	// if not in viewport, scroll
+	if (!isElementInViewport($(".selected").first()))
+		$(window).scrollTop($(".selected").first().offset().top - 200);
+}
 
 function key_down(e) {
 	if (!enable_interaction) return;
@@ -701,22 +730,7 @@ function key_down(e) {
 			$(window).scrollTop($(".selected").last().offset().top - 200);
 		break;
 	case kbkey.up:
-		// get index of first selected item
-		var index = $(".selected").first().index("#outline li");
-		// if shift is not pressed, remove the selection
-		if (!shifted && index > 0)
-			$(".selected").toggleClass("selected");
-		
-		// if select the new item
-		if (index > 0) {
-			if (!shifted)
-				$($(allItems).get(index-1)).toggleClass("selected");
-			if (shifted)
-				$(".selected").first().prev().toggleClass("selected");
-		}
-		// if not in viewport, scroll
-		if (!isElementInViewport($(".selected").first()))
-			$(window).scrollTop($(".selected").first().offset().top - 200);
+		move_selection_up();
 		break;
 	case kbkey.enter:
 		$(this).prev().attr('checked', !$(this).prev().attr('checked'));
