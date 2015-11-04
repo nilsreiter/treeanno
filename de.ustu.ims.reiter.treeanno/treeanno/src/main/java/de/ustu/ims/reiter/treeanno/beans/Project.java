@@ -20,7 +20,7 @@ public class Project {
 	ForeignCollection<Document> documents;
 
 	@Column
-	int type;
+	int type = 1;
 
 	@Deprecated
 	public int getDatabaseId() {
