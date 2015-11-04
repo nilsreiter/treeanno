@@ -8,6 +8,15 @@ var documents_selected_for_diff = new Array();
 var max_documents_for_diff = 2;
 
 
+var kbkey = { up: 38, down: 40, right: 39, left: 37, 
+		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
+var operations = {
+		'indent':{},
+		'outdent':{},
+		'categorize':{},
+		'mark':{}
+};
+
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
 	$(htmlItem).attr("title", item['text']);
@@ -595,8 +604,7 @@ function disableSaveButton() {
 function key_up(e) {
 	if (!enable_interaction) return;
 	e.preventDefault();
-	var keyCode = e.keyCode || e.which,
-		kbkey = { shift:16 };
+	var keyCode = e.keyCode || e.which;
 	switch(keyCode) {
 	case kbkey.shift:
 		shifted = false;
@@ -608,9 +616,7 @@ function key_up(e) {
 function key_down(e) {
 	if (!enable_interaction) return;
 	e.preventDefault();
-	var keyCode = e.keyCode || e.which,
-    	kbkey = { up: 38, down: 40, right: 39, left: 37, 
-			enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
+	var keyCode = e.keyCode || e.which;
 	var allItems = $("#outline li");
 	switch (keyCode) {
 	case kbkey.one:
