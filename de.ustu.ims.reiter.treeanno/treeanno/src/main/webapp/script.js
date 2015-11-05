@@ -597,7 +597,12 @@ function init_main() {
 		$("#form_search").blur(function() {enable_interaction=true});
 		
 		disableSaveButton();
-		
+		document.onkeydown = function(e) {
+			key_down(e);
+		};
+		document.onkeyup = function(e) {
+			key_up(e);
+		};
 		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
 			
 			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
@@ -629,12 +634,7 @@ function init_main() {
 			    'truncateCenter'    : true
 			  });
 			$('#outline > li:first-child').addClass("selected");
-			document.onkeydown = function(e) {
-				key_down(e);
-			};
-			document.onkeyup = function(e) {
-				key_up(e);
-			};
+			
 			$("#outline li").click(function(e) {
 				if (shifted) {
 					// if they have the same parent
