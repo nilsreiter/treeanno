@@ -131,7 +131,7 @@ function init_projects() {
 	jQuery.getJSON("rpc/projectlist", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
-			var id=data[i]['databaseId'];
+			var id=data[i]['id'];
 			$(tr).append("<td>"+data[i]['id']+"</td>");
 			$(tr).append("<td>"+data[i]['name']+"</td>");
 			$(tr).append("<td><button class=\"button_open project "+data[i]['id']+"\"></button></td>");
