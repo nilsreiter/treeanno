@@ -83,9 +83,9 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
 							new JCasConverter()
-					.getJSONArrayFromAnnotations(
-							jcas,
-							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+									.getJSONArrayFromAnnotations(
+											jcas,
+											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -131,13 +131,12 @@ public class DocumentContentHandling extends HttpServlet {
 				JCas jcas = JCasConverter.getJCas(udoc.getXmi());
 				if (jcas != null) {
 					JSONObject obj = new JSONObject();
-					obj.put("documentId", docId);
 					obj.put("document", JSONUtil.getJSONObject(document));
 					obj.put("list",
 							new JCasConverter()
-					.getJSONArrayFromAnnotations(
-							jcas,
-							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+									.getJSONArrayFromAnnotations(
+											jcas,
+											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "

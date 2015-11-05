@@ -1,1 +1,75 @@
-{}
+{
+	"username":"User Name",
+	"password":"Password",
+	"ok":"Ok",
+	"login_open_dialog":"Login",
+	"action_up":"Move",
+	"action_down":"Move",
+	"action_indent":"Indent",
+	"action_outdent":"Outdent",
+	"action_split":"Split",
+	"action_merge":"Merge",
+	"action_assign_category":"Assign category",
+	"action_mark1":"Mark",
+	"action_delete_category":"Remove category",
+	"action":{
+		"delete_vnode":"Remove node",
+		"force_indent":"Force indent",
+		"assign_category_t2":"Create Node and Assign Question",
+		"delete_category_t2":"Delete Question",
+		"force_indent_t2":"Create Node"
+	},
+	"action_category_virtual_nodes":"Virtual Nodes",
+	"help_title":"Cheat Sheet",
+	"open":"Open",
+	"list_of_projects":"List of Projects",
+	"document_id":"Id",
+	"document_name":"Name",
+	"document_mod_date":"Last change",
+	"document_actions":"Actions",
+	"document_action_open":"Annotate",
+	"document_action_clone":"Clone",
+	"document_action_delete":"Hide",
+	"document_action_export_xmi":"Export",
+	"document_action_rename":"Rename",
+	"document_action_view_annodoc":"View annotations",
+	"project_id":"Id",
+	"project_name":"Name",
+	"project_action_open":"Open",
+	"login_dialog_title":"Login",
+	"login_dialog_ok":"Enter",
+	"show_helper":"Show Cheat Sheet",
+	"documents_in_X":"Documents in project \"__projectname__\"",
+	"howto_split":"Split by hitting Enter twice where you want to split",
+	"rename_dialog":{
+		"title":"Rename Document",
+		"ok":"Rename",
+		"cancel":"Cancel",
+		"desc":"New Name"
+	},
+	"new_document":{
+		"title":"Upload New Document",
+		"submit":"Upload",
+		"type_description":"Segment type",
+		"sentence":"Sentences",
+		"token":"Tokens",
+		"open_dialog":"New Document"
+	},
+	"annodoclistarea":{
+		"title_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
+		"breadcrumb_for_X":"Annotations for document &bdquo;__document__&ldquo;",
+		"id":"Id",
+		"username":"Annotator",
+		"mod_date":"Last change",
+		"actions":"Actions",
+		"no-documents":"No annotated documents."
+	},
+	"parallel":{
+		"annotations_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
+		"annotations_title_for_X":"Annotations for __document__",
+		"annotations_from_X":"Annotations from __user__",
+		"open_view":"Compare annotations",
+		"select":"Select"
+	}
+	
+}

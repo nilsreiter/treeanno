@@ -72,6 +72,5 @@
 		</span>
 	</div>
 	<div id="error"></div>
-	<jsp:include page="help.html" />
 </body>
 </html>

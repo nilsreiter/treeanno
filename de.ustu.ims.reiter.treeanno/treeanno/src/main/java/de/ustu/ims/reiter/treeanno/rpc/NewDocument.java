@@ -61,7 +61,7 @@ public class NewDocument extends HttpServlet {
 					this.getServletConfig().getServletContext();
 			File repository =
 					(File) servletContext
-							.getAttribute("javax.servlet.context.tempdir");
+					.getAttribute("javax.servlet.context.tempdir");
 			factory.setRepository(repository);
 
 			// Create a new file upload handler
@@ -86,8 +86,8 @@ public class NewDocument extends HttpServlet {
 												Token.class);
 							} else
 								pp =
-										new PlainTextPreprocess<Sentence>(
-												Sentence.class);
+								new PlainTextPreprocess<Sentence>(
+										Sentence.class);
 						}
 					} else {
 						BufferedWriter bw =
@@ -108,8 +108,7 @@ public class NewDocument extends HttpServlet {
 					document.setXmi(JCasConverter.getXmi(jcas));
 					dbio.createNewDocument(document);
 				}
-				response.sendRedirect("../projects.jsp?projectId="
-						+ p.getDatabaseId());
+				response.sendRedirect("../projects.jsp?projectId=" + p.getId());
 				return;
 			} catch (FileUploadException | ResourceInitializationException
 					| SQLException | SAXException e) {

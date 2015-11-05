@@ -7,6 +7,11 @@ body{
 li.selected {
 	background-color:yellow;
 }
+
+li.selected > div {
+	background-color:#CCCC99;
+}
+
 div#status {
 	text-align:center;
 }
