@@ -600,7 +600,7 @@ function init_main() {
 		
 		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
 			
-			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
+			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
 			
