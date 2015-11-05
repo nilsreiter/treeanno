@@ -28,7 +28,7 @@ public class DocumentList extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 * TODO: Add permission check
+	 * 
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -44,15 +44,12 @@ public class DocumentList extends HttpServlet {
 				return;
 			}
 			if (CW.getDataLayer(getServletContext()).getAccessLevel(proj, user) >= Perm.READ_ACCESS) {
-				Collection<Document> list =
-						CW.getDataLayer(getServletContext()).getDocuments(proj);
+				Collection<Document> list = proj.getDocuments();
 				JSONObject obj = new JSONObject();
 				for (Document doc : list) {
 					obj.append("documents", JSONUtil.getJSONObject(doc));
 				}
-				obj.put("project",
-						new JSONObject(CW.getDataLayer(getServletContext())
-								.getProject(projectId)));
+				obj.put("project", JSONUtil.getJSONObject(proj));
 				obj.put("accesslevel",
 						CW.getDataLayer(getServletContext()).getAccessLevel(
 								proj,

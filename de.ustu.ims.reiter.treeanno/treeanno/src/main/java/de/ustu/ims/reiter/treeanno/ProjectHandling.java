@@ -29,7 +29,8 @@ public class ProjectHandling extends HttpServlet {
 		int projectId =
 				Integer.valueOf(request.getParameterValues("projectId")[0]);
 		try {
-			request.getSession().setAttribute("project", getProject(projectId));
+			request.getSession().setAttribute("project",
+					CW.getDataLayer(getServletContext()).getProject(projectId));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ServletException(e);
@@ -38,6 +39,7 @@ public class ProjectHandling extends HttpServlet {
 		return;
 	}
 
+	@Deprecated
 	protected Project getProject(int projectId) throws SQLException {
 		DataSource ds =
 				(DataSource) getServletContext().getAttribute("dataSource");

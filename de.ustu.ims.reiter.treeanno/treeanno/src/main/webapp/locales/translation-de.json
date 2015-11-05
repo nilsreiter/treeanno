@@ -14,7 +14,10 @@
 	"action_delete_category":"Annotation entfernen",
 	"action":{
 		"delete_vnode":"Knoten entfernen",
-		"force_indent":"Forc. Einrücken"
+		"force_indent":"Forc. Einrücken",
+		"assign_category_t2":"Knoten erzeugen und Frage eingeben",
+		"delete_category_t2":"Frage löschen",
+		"force_indent_t2":"Knoten erzeugen"
 	},
 	"action_category_virtual_nodes":"Virtuelle Knoten",
 	"help_title":"Spickzettel",
