@@ -19,7 +19,8 @@ var keyString = {
 		77:'m',
 		83:'s',
 		1039:'&#8679;&rarr;',
-		1068:'&#8679;d'
+		1068:'&#8679;d',
+		1083:'&#8679;s'
 }
 var operations = {
 		39:{
@@ -80,6 +81,12 @@ var operations = {
 			'id':'delete_virtual_node',
 			fun:delete_virtual_node,
 			desc:'action.delete_vnode'
+		},
+		1083:{
+			// shift + s
+			d:'save_document',
+			fun:save_document,
+			desc:'action.save_document'
 		}
 		
 };
