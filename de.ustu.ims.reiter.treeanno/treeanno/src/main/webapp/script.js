@@ -19,7 +19,8 @@ var keyString = {
 		77:'m',
 		83:'s',
 		1039:'&#8679;&rarr;',
-		1068:'&#8679;d'
+		1068:'&#8679;d',
+		1083:'&#8679;s'
 }
 var operations = {
 		39:{
@@ -80,6 +81,12 @@ var operations = {
 			'id':'delete_virtual_node',
 			fun:delete_virtual_node,
 			desc:'action.delete_vnode'
+		},
+		1083:{
+			// shift + s
+			d:'save_document',
+			fun:save_document,
+			desc:'action.save_document'
 		}
 		
 };
@@ -131,7 +138,7 @@ function init_projects() {
 	jQuery.getJSON("rpc/projectlist", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
-			var id=data[i]['databaseId'];
+			var id=data[i]['id'];
 			$(tr).append("<td>"+data[i]['id']+"</td>");
 			$(tr).append("<td>"+data[i]['name']+"</td>");
 			$(tr).append("<td><button class=\"button_open project "+data[i]['id']+"\"></button></td>");
@@ -597,10 +604,15 @@ function init_main() {
 		$("#form_search").blur(function() {enable_interaction=true});
 		
 		disableSaveButton();
-		
+		document.onkeydown = function(e) {
+			key_down(e);
+		};
+		document.onkeyup = function(e) {
+			key_up(e);
+		};
 		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
 			
-			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["databaseId"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
+			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
 			
@@ -629,12 +641,7 @@ function init_main() {
 			    'truncateCenter'    : true
 			  });
 			$('#outline > li:first-child').addClass("selected");
-			document.onkeydown = function(e) {
-				key_down(e);
-			};
-			document.onkeyup = function(e) {
-				key_up(e);
-			};
+			
 			$("#outline li").click(function(e) {
 				if (shifted) {
 					// if they have the same parent
