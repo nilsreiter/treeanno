@@ -4,7 +4,7 @@
 
   <groupId>de.ustu.ims.reiter</groupId>
   <artifactId>treeanno.api</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   <packaging>jar</packaging>
 
   <name>treeanno.api</name>
