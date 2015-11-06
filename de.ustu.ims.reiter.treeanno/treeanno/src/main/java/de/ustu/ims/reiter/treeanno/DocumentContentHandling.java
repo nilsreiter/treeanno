@@ -28,18 +28,9 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 public class DocumentContentHandling extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	JCas jcas;
-
 	/**
-	 * Default constructor. 
-	 * @throws UIMAException 
-	 */
-	public DocumentContentHandling() throws UIMAException {
-
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -154,7 +145,8 @@ public class DocumentContentHandling extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request,
