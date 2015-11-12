@@ -629,7 +629,7 @@ function init_main() {
 					var parentItem = $("li[data-treeanno-id='"+parentId+"']");
 					if (parentItem.length == 0 && ! item['id'] in treehistory) {
 						// if items are ordered on the server, we don't need to push
-						console.log("Postponing item "+item['id']);
+						console.warn("Postponing item "+item['id']);
 						list.push(item);
 						treehistory[item['id']] = 1;
 					} else {
@@ -663,7 +663,7 @@ function init_main() {
 			
 			
 		}).error(function(xhr) {
-            alert(xhr)
+			console.error(xhr);
         });
 }
 
