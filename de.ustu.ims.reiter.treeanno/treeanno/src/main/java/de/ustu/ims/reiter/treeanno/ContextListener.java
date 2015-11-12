@@ -24,9 +24,10 @@ public class ContextListener implements ServletContextListener {
 	DatabaseIO dr;
 
 	/**
-	 * Default constructor. 
-	 * @throws NamingException 
-	 * @throws ClassNotFoundException 
+	 * Default constructor.
+	 * 
+	 * @throws NamingException
+	 * @throws ClassNotFoundException
 	 */
 	public ContextListener() {}
 
@@ -49,7 +50,7 @@ public class ContextListener implements ServletContextListener {
 			envContext =
 					(Context) new InitialContext().lookup("java:/comp/env");
 			DataSource dataSource =
-					(DataSource) envContext.lookup("jdbc/treeanno");
+					(DataSource) envContext.lookup("jdbc/treeanno-mirror");
 			sc.setAttribute("dataSource", dataSource);
 		} catch (NamingException e1) {
 			e1.printStackTrace();

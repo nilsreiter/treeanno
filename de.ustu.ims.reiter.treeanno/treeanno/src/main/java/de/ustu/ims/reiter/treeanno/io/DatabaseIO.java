@@ -60,11 +60,11 @@ public class DatabaseIO implements DataLayer {
 
 		initContext = new InitialContext();
 		Context envContext = (Context) initContext.lookup("java:/comp/env");
-		dataSource = (DataSource) envContext.lookup("jdbc/treeanno");
+		dataSource = (DataSource) envContext.lookup("jdbc/treeanno-mirror");
 
 		DataSourceConnectionSource connectionSource =
 				new DataSourceConnectionSource(dataSource,
-						"jdbc:mysql://localhost/de.ustu.ims.reiter.treeanno");
+						"jdbc:mysql://localhost/de.ustu.ims.reiter.treeanno.mirror");
 
 		userDao = DaoManager.createDao(connectionSource, User.class);
 		projectDao = DaoManager.createDao(connectionSource, Project.class);
