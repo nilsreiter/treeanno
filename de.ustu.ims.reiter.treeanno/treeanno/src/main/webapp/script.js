@@ -972,17 +972,11 @@ function splitdialog_enter() {
 		// items[litems[1]['id']] = litems[1];
 		
 		var nitem1 = get_html_item(litems[1], idCounter);
-		$(nitem1).children("div").smartTruncation({
-		    'truncateCenter'    : true
-		  });
 		$(".selected").after(nitem1)
 		$(".selected").next().append(sublist);
 		// items[litems[0]['id']] = litems[0];
 		
 		var nitem0 = get_html_item(litems[0], idCounter);
-		$(nitem0).children("div").smartTruncation({
-		    'truncateCenter'    : true
-		  });
 		$(".selected").after(nitem0);
 		var nsel = $(".selected").next();
 		$(".selected").remove();
