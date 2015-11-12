@@ -26,7 +26,8 @@ public class ProjectList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -43,9 +44,10 @@ public class ProjectList extends HttpServlet {
 					array.put(JSONUtil.getJSONObject(project));
 				}
 			}
-
+			this.log(user.getId() + " requests project list.");
 			Util.returnJSON(response, array);
 		} catch (SQLException e) {
+			this.log(e.getMessage(), e);
 			throw new ServletException(e);
 		}
 	}

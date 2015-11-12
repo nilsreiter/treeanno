@@ -27,7 +27,8 @@ public class DocumentList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 * 
 	 */
 	@Override
@@ -55,12 +56,18 @@ public class DocumentList extends HttpServlet {
 								proj,
 								(User) request.getSession().getAttribute(
 										CA.USER)));
+				this.log(user.getId() + " requests document list.");
+
 				Util.returnJSON(response, obj);
 			} else {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+				this.log(user.getId()
+						+ " was denied document list for project "
+						+ proj.getId());
 				return;
 			}
 		} catch (SQLException e) {
+			this.log(e.getMessage(), e);
 			throw new ServletException(e);
 		} finally {
 

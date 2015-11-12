@@ -20,7 +20,8 @@ public class UserHandling extends HttpServlet {
 	static final String defaultLanguage = "en-US";
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request,
@@ -35,11 +36,13 @@ public class UserHandling extends HttpServlet {
 				try {
 					user = dl.getUser(Integer.valueOf(unames[0]));
 				} catch (NumberFormatException | SQLException e) {
+					this.log(e.getMessage(), e);
 					throw new ServletException(e);
 				}
 				if (user != null) {
 					session.setAttribute(CA.USER, user);
 					response.sendRedirect("projects.jsp");
+					this.log("User " + user.getId() + " logged in.");
 					return;
 				}
 			}
