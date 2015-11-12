@@ -103,7 +103,7 @@ function get_html_item(item, i) {
 	idCounter = Math.max(idCounter, item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
-	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
+	$(htmlItem).append("<div>"+item['begin']+dtext(item['text'])+"</div>");
 	return htmlItem;
 }
 
@@ -610,8 +610,9 @@ function init_main() {
 		document.onkeyup = function(e) {
 			key_up(e);
 		};
+		console.log("Querying for document content");
 		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
-			
+			console.log("Received document content");
 			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
@@ -620,15 +621,18 @@ function init_main() {
 			
 			init_operations(data['document']['project']['type']);
 			
+			var treehistory = {};
 			while (list.length > 0) {
 				var item = list.shift();
-				
 				if ('parentId' in item) {
 					var parentId = item['parentId'];
 					var parentItem = $("li[data-treeanno-id='"+parentId+"']");
-					if (parentItem.length == 0)
+					if (parentItem.length == 0 && ! item['id'] in treehistory) {
+						// if items are ordered on the server, we don't need to push
+						console.log("Postponing item "+item['id']);
 						list.push(item);
-					else {
+						treehistory[item['id']] = 1;
+					} else {
 						if (parentItem.children("ul").length == 0)
 							parentItem.append("<ul></ul>");
 						$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, 0));
@@ -658,7 +662,9 @@ function init_main() {
 			$("#outline").show();
 			
 			
-	});
+		}).error(function(xhr) {
+            alert(xhr)
+        });
 }
 
 function search() {
