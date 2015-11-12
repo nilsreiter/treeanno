@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
@@ -25,9 +27,26 @@ public class JCasConverter {
 
 	public JSONArray getJSONArrayFromAnnotations(JCas jcas,
 			Class<? extends TreeSegment> annoClass) {
-		JSONArray arr = new JSONArray();
+		TreeSet<JSONObject> ts =
+				new TreeSet<JSONObject>(new Comparator<JSONObject>() {
+					@Override
+					public int compare(JSONObject o1, JSONObject o2) {
+						int b1 = o1.getInt("begin"), b2 = o2.getInt("begin");
+						int c = Integer.compare(b1, b2);
+						if (c == 0) {
+							int e1 = o1.getInt("end"), e2 = o2.getInt("end");
+							return Integer.compare(e1, e2);
+						}
+						return c;
+					}
+				});
+
 		for (TreeSegment anno : JCasUtil.select(jcas, annoClass)) {
-			arr.put(getJSONObject(jcas, anno));
+			ts.add(getJSONObject(jcas, anno));
+		}
+		JSONArray arr = new JSONArray();
+		for (JSONObject obj : ts) {
+			arr.put(obj);
 		}
 		return arr;
 	}
