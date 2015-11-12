@@ -640,16 +640,17 @@ function init_main() {
 
 			$('#outline > li:first-child').addClass("selected");
 			
-			$("#outline li").click(function(e) {
+			$("#outline li > div").click(function(e) {
+				var liElement = $(this).parent();
 				if (shifted) {
 					// if they have the same parent
-					if ($(this).parent().get(0) == $(".selected").last().parent().get(0)) {
-						$(".selected").last().nextUntil(this).addClass("selected");
-						$(this).addClass("selected");
+					if ($(liElement).parent().get(0) == $(".selected").last().parent().get(0)) {
+						$(".selected").last().nextUntil(liElement).addClass("selected");
+						$(liElement).addClass("selected");
 					}
 				} else {
 					$("#outline li").removeClass("selected");
-					$(this).addClass("selected");
+					$(liElement).addClass("selected");
 				}
 			});
 			init_help();
