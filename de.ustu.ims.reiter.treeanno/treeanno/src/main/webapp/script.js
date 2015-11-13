@@ -610,8 +610,9 @@ function init_main() {
 		document.onkeyup = function(e) {
 			key_up(e);
 		};
+		console.log("Querying for document content");
 		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
-			
+			console.log("Received document content");
 			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
@@ -620,15 +621,18 @@ function init_main() {
 			
 			init_operations(data['document']['project']['type']);
 			
+			var treehistory = {};
 			while (list.length > 0) {
 				var item = list.shift();
-				
 				if ('parentId' in item) {
 					var parentId = item['parentId'];
 					var parentItem = $("li[data-treeanno-id='"+parentId+"']");
-					if (parentItem.length == 0)
+					if (parentItem.length == 0 && ! item['id'] in treehistory) {
+						// if items are ordered on the server, we don't need to push
+						console.warn("Postponing item "+item['id']);
 						list.push(item);
-					else {
+						treehistory[item['id']] = 1;
+					} else {
 						if (parentItem.children("ul").length == 0)
 							parentItem.append("<ul></ul>");
 						$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, 0));
@@ -637,21 +641,20 @@ function init_main() {
 					$('#outline').append(get_html_item(item, 0));
 				}
 			}
-			$("#outline li > div").smartTruncation({
-			    'truncateCenter'    : true
-			  });
+
 			$('#outline > li:first-child').addClass("selected");
 			
-			$("#outline li").click(function(e) {
+			$("#outline li > div").click(function(e) {
+				var liElement = $(this).parent();
 				if (shifted) {
 					// if they have the same parent
-					if ($(this).parent().get(0) == $(".selected").last().parent().get(0)) {
-						$(".selected").last().nextUntil(this).addClass("selected");
-						$(this).addClass("selected");
+					if ($(liElement).parent().get(0) == $(".selected").last().parent().get(0)) {
+						$(".selected").last().nextUntil(liElement).addClass("selected");
+						$(liElement).addClass("selected");
 					}
 				} else {
 					$("#outline li").removeClass("selected");
-					$(this).addClass("selected");
+					$(liElement).addClass("selected");
 				}
 			});
 			init_help();
@@ -659,7 +662,9 @@ function init_main() {
 			$("#outline").show();
 			
 			
-	});
+		}).error(function(xhr) {
+			console.error(xhr);
+        });
 }
 
 function search() {
@@ -888,7 +893,7 @@ function merge(item1, item0) {
 	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
-	nitem['id'] = idCounter++;
+	nitem['id'] = ++idCounter;
 	//items[item1['id']] = undefined;
 	//items[item0['id']] = undefined;
 	
@@ -898,9 +903,7 @@ function merge(item1, item0) {
 	
 	var nitem = get_html_item(nitem, idCounter);
 	$(".selected").after(nitem);
-	$(nitem).children("div").smartTruncation({
-	    'truncateCenter'    : true
-	  });
+	
 	var newsel = $(".selected").next();
 	var sublist1 = $(".selected > ul").detach();
 	$(".selected").remove();
@@ -937,9 +940,9 @@ function splitdialog() {
 }
 
 function splitdialog_cleanup() {
-	$("#form_splittext").val("");
 	enable_interaction = true;
 	$("#split").dialog( "destroy" );
+	$("#form_splittext").val("");
 	
 }
 
@@ -967,17 +970,11 @@ function splitdialog_enter() {
 		// items[litems[1]['id']] = litems[1];
 		
 		var nitem1 = get_html_item(litems[1], idCounter);
-		$(nitem1).children("div").smartTruncation({
-		    'truncateCenter'    : true
-		  });
 		$(".selected").after(nitem1)
 		$(".selected").next().append(sublist);
 		// items[litems[0]['id']] = litems[0];
 		
 		var nitem0 = get_html_item(litems[0], idCounter);
-		$(nitem0).children("div").smartTruncation({
-		    'truncateCenter'    : true
-		  });
 		$(".selected").after(nitem0);
 		var nsel = $(".selected").next();
 		$(".selected").remove();
