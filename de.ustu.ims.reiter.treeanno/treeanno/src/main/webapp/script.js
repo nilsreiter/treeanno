@@ -893,7 +893,7 @@ function merge(item1, item0) {
 	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
-	nitem['id'] = idCounter++;
+	nitem['id'] = ++idCounter;
 	//items[item1['id']] = undefined;
 	//items[item0['id']] = undefined;
 	
@@ -903,9 +903,7 @@ function merge(item1, item0) {
 	
 	var nitem = get_html_item(nitem, idCounter);
 	$(".selected").after(nitem);
-	$(nitem).children("div").smartTruncation({
-	    'truncateCenter'    : true
-	  });
+	
 	var newsel = $(".selected").next();
 	var sublist1 = $(".selected > ul").detach();
 	$(".selected").remove();
@@ -942,9 +940,9 @@ function splitdialog() {
 }
 
 function splitdialog_cleanup() {
-	$("#form_splittext").val("");
 	enable_interaction = true;
 	$("#split").dialog( "destroy" );
+	$("#form_splittext").val("");
 	
 }
 
