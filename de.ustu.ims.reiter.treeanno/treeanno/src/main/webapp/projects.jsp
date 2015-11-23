@@ -40,6 +40,10 @@
 	// <![CDATA[
 	// ]]>
 	</script>
+	<script src="script-projects.js">
+	// <![CDATA[
+	// ]]>
+	</script>
 	
 	<c:if test="${not empty param.projectId}">
 		<script>
