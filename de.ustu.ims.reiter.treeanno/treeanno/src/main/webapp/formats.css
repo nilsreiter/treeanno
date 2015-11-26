@@ -158,3 +158,11 @@ span.search_container {
 	width:50%;
 	min-width:100px;
 }
+
+#rsidebar {
+	width:200px;
+	position:fixed;
+	top:50px;
+	right:0px;
+	border:thin solid black;
+}

@@ -464,7 +464,7 @@ function mergeselected() {
 	var item1 = get_item($(".selected").first().attr("data-treeanno-id"));
 	var item0 = get_item($(".selected").last().attr("data-treeanno-id"));
 	merge(item1, item0);
-
+	add_operation(77, [item1, item0]);
 }
 
 function merge(item1, item0) {
@@ -589,6 +589,7 @@ function outdentElement(element) {
 }
 
 function outdent() {
+	add_operation(37, $(".selected"));	
 	$(".selected").each(function(index, element) {
 		outdentElement(element);
 	});
@@ -629,6 +630,7 @@ function delete_virtual_node() {
 			});
 			
 			$(element).prev().addClass("selected");
+			add_operation(1068, [element]);
 			$(element).remove();
 		}
 	});
@@ -645,6 +647,7 @@ function indentElement(element) {
 }
 
 function indent() {
+	add_operation(39, $(".selected"));
 	$(".selected").each(function(index, element) {
 		indentElement(element);
 		cleanup_list();		
@@ -655,4 +658,13 @@ function indent() {
 
 function cleanup_list() {
 	$("#outline ul:not(:has(*))").remove();
+}
+
+
+function add_operation(kc, tgts) {
+	var s = [];
+	$(tgts).each(function(index, element) {
+		s.push($(element).attr("data-treeanno-id"));
+	});
+	$("#history").prepend("<li>"+operations[kc]['desc']+": ["+s.join(",")+"]</li>");
 }

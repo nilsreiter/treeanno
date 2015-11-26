@@ -73,5 +73,9 @@
 		</span>
 	</div>
 	<div id="error"></div>
+	<div id="rsidebar">
+		<h1>Sidebar</h1>
+		<ul id="history"></ul>
+	</div>
 </body>
 </html>
