@@ -454,8 +454,8 @@ function get_item(id) {
 	var obj = new Object();
 	obj['id'] = id;
 	var liElement= $("li[data-treeanno-id=\""+id+"\"]");
-	obj['begin'] = $(liElement).attr("data-treeanno-begin");
-	obj['end'] = $(liElement).attr("data-treeanno-end");
+	obj['begin'] = parseInt($(liElement).attr("data-treeanno-begin"));
+	obj['end'] = parseInt($(liElement).attr("data-treeanno-end"));
 	obj['text'] = $(liElement).attr("title");
 	return obj;
 }
