@@ -463,8 +463,8 @@ function get_item(id) {
 function mergeselected() {
 	var item1 = get_item($(".selected").first().attr("data-treeanno-id"));
 	var item0 = get_item($(".selected").last().attr("data-treeanno-id"));
+	add_operation(77, [$(".selected").last(), $(".selected").first()]);
 	merge(item1, item0);
-	add_operation(77, [item1, item0]);
 }
 
 function merge(item1, item0) {
@@ -472,6 +472,7 @@ function merge(item1, item0) {
 	
 	var nitem = new Object();
 	var distance = (correctOrder?item1['begin']-item0['end']:item0['begin']-item1['end']);
+	alert(distance);
 	var str = (includeSeparationWhenMerging?new Array(distance+1).join(" "):"");
 
 	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
@@ -539,7 +540,8 @@ function splitdialog_enter() {
 	var text = $("#form_splittext").val();
 	var lines = text.split("\n\n");
 	if (lines.length == 2) {
-		
+		add_operation(83, $(".selected"), {pos:lines[0].length});
+
 		var litems = new Array();
 		litems[0] = new Object();
 		litems[0]['begin'] = item['begin'];
@@ -567,6 +569,7 @@ function splitdialog_enter() {
 		$(".selected").remove();
 		$(nsel).addClass("selected");
 		enableSaveButton();
+		
 	}
 	cleanup_list();
 	splitdialog_cleanup();
@@ -660,11 +663,17 @@ function cleanup_list() {
 	$("#outline ul:not(:has(*))").remove();
 }
 
-
 function add_operation(kc, tgts) {
+	add_operation(kc, tgts, {});
+}
+
+function add_operation(kc, tgts, opts) {
 	var s = [];
 	$(tgts).each(function(index, element) {
 		s.push($(element).attr("data-treeanno-id"));
 	});
-	$("#history").prepend("<li>"+operations[kc]['desc']+": ["+s.join(",")+"]</li>");
+	var logObj = {op:operations[kc]['desc'], arg:s, opt:opts};
+	console.log(logObj);
+	$("#history").prepend("<li>"+JSON.stringify(logObj)+"</li>");
 }
+

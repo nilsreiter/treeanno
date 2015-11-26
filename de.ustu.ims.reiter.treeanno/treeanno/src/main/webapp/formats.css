@@ -160,7 +160,8 @@ span.search_container {
 }
 
 #rsidebar {
-	width:200px;
+	font:sans-serif;
+	width:400px;
 	position:fixed;
 	top:50px;
 	right:0px;
