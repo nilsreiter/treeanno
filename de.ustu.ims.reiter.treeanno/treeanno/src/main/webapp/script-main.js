@@ -494,6 +494,9 @@ function merge(item1, item0) {
 	$(newsel).addClass("selected");
 	$(".selected").append(sublist0);
 	$(".selected").append(sublist1);
+	
+	enableSaveButton();
+
 }
 
 
