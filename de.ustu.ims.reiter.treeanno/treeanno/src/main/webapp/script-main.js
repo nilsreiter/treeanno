@@ -504,7 +504,7 @@ function merge(item1, item0) {
 function splitdialog() {
 	enable_interaction = false;
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
-	$("#form_splittext").val(item['text'].trim());
+	$("#form_splittext").val(item['text']);
 	$("#split").dialog({
 		title: i18n.t("Split Segment"),
 		modal: true,
