@@ -205,17 +205,15 @@ function init_main() {
 			
 			init_operations(data['document']['project']['type']);
 			
-			var treehistory = {};
 			while (list.length > 0) {
 				var item = list.shift();
 				if ('parentId' in item) {
 					var parentId = item['parentId'];
 					var parentItem = $("li[data-treeanno-id='"+parentId+"']");
-					if (parentItem.length == 0 && ! item['id'] in treehistory) {
+					if (parentItem.length == 0) {
 						// if items are ordered on the server, we don't need to push
 						console.warn("Postponing item "+item['id']);
 						list.push(item);
-						treehistory[item['id']] = 1;
 					} else {
 						if (parentItem.children("ul").length == 0)
 							parentItem.append("<ul></ul>");
