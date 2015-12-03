@@ -470,7 +470,6 @@ function merge(item1, item0) {
 	
 	var nitem = new Object();
 	var distance = (correctOrder?item1['begin']-item0['end']:item0['begin']-item1['end']);
-	alert(distance);
 	var str = (includeSeparationWhenMerging?new Array(distance+1).join(" "):"");
 
 	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
