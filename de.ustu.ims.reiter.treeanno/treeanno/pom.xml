@@ -4,7 +4,7 @@
   <groupId>de.ustu.ims.reiter</groupId>
   <artifactId>treeanno</artifactId>
   <packaging>war</packaging>
-  <version>0.6.2-SNAPSHOT</version>
+  <version>0.6.3-SNAPSHOT</version>
   <name>TreeAnno</name>
   <url>http://maven.apache.org</url>
   <properties>
