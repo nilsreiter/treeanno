@@ -35,8 +35,12 @@ public class JCasConverter {
 						int c = Integer.compare(b1, b2);
 						if (c == 0) {
 							int e1 = o1.getInt("end"), e2 = o2.getInt("end");
-							return Integer.compare(e1, e2);
+							c = Integer.compare(e1, e2);
 						}
+						if (c == 0)
+							c =
+									Integer.compare(o1.getInt("id"),
+											o2.getInt("id"));
 						return c;
 					}
 				});
@@ -66,7 +70,7 @@ public class JCasConverter {
 	}
 
 	public static JCas getJCas(String xmi) throws UIMAException, SAXException,
-			IOException {
+	IOException {
 		JCas jcas = null;
 
 		TypeSystemDescription tsd =
