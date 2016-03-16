@@ -187,6 +187,13 @@ function init_main() {
 		$("#form_search").focus(function() {enable_interaction=false});
 		$("#form_search").blur(function() {enable_interaction=true});
 		
+		$("#show_history").button({
+			icons:{primary:null,secondary:null},
+			label:i18n.t("show_history")
+		}).click(function() {
+			$("#rsidebar").toggle();
+		});
+		
 		disableSaveButton();
 		document.onkeydown = function(e) {
 			key_down(e);
@@ -388,8 +395,10 @@ function key_down(e) {
 		kc = keyCode;
 		if (shifted)
 			kc = keyCode + 1000;
-		if (kc in operations && !operations[kc]['disabled'])
+		if (kc in operations && !operations[kc]['disabled']) {
+			add_operation(kc, $(".selected"));
 			operations[kc].fun();
+		}
 	}
 	
 }
@@ -461,8 +470,8 @@ function get_item(id) {
 function mergeselected() {
 	var item1 = get_item($(".selected").first().attr("data-treeanno-id"));
 	var item0 = get_item($(".selected").last().attr("data-treeanno-id"));
+	// add_operation(77, [$(".selected").last(), $(".selected").first()]);
 	merge(item1, item0);
-
 }
 
 function merge(item1, item0) {
@@ -528,7 +537,8 @@ function splitdialog_cleanup() {
 	enable_interaction = true;
 	$("#split").dialog( "destroy" );
 	$("#form_splittext").val("");
-	
+	add_operation(83, $(".selected"),[null]);
+
 }
 
 function splitdialog_enter() {
@@ -537,7 +547,8 @@ function splitdialog_enter() {
 	var text = $("#form_splittext").val();
 	var lines = text.split("\n\n");
 	if (lines.length == 2) {
-		
+		add_operation(83, $(".selected"), {pos:lines[0].length});
+
 		var litems = new Array();
 		litems[0] = new Object();
 		litems[0]['begin'] = item['begin'];
@@ -565,6 +576,7 @@ function splitdialog_enter() {
 		$(".selected").remove();
 		$(nsel).addClass("selected");
 		enableSaveButton();
+		
 	}
 	cleanup_list();
 	splitdialog_cleanup();
@@ -654,3 +666,18 @@ function indent() {
 function cleanup_list() {
 	$("#outline ul:not(:has(*))").remove();
 }
+
+function add_operation(kc, tgts) {
+	add_operation(kc, tgts, {});
+}
+
+function add_operation(kc, tgts, opts) {
+	var s = [];
+	$(tgts).each(function(index, element) {
+		s.push($(element).attr("data-treeanno-id"));
+	});
+	var logObj = {op:operations[kc]['desc'], arg:s, opt:opts};
+	console.log(logObj);
+	$("#history").prepend("<li>"+JSON.stringify(logObj)+"</li>");
+}
+
