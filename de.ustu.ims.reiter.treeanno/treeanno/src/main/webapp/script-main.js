@@ -388,8 +388,10 @@ function key_down(e) {
 		kc = keyCode;
 		if (shifted)
 			kc = keyCode + 1000;
-		if (kc in operations && !operations[kc]['disabled'])
+		if (kc in operations && !operations[kc]['disabled']) {
+			add_operation(kc, $(".selected"));
 			operations[kc].fun();
+		}
 	}
 	
 }
@@ -461,7 +463,7 @@ function get_item(id) {
 function mergeselected() {
 	var item1 = get_item($(".selected").first().attr("data-treeanno-id"));
 	var item0 = get_item($(".selected").last().attr("data-treeanno-id"));
-	add_operation(77, [$(".selected").last(), $(".selected").first()]);
+	// add_operation(77, [$(".selected").last(), $(".selected").first()]);
 	merge(item1, item0);
 }
 
@@ -528,7 +530,8 @@ function splitdialog_cleanup() {
 	enable_interaction = true;
 	$("#split").dialog( "destroy" );
 	$("#form_splittext").val("");
-	
+	add_operation(83, $(".selected"),[null]);
+
 }
 
 function splitdialog_enter() {
@@ -589,7 +592,6 @@ function outdentElement(element) {
 }
 
 function outdent() {
-	add_operation(37, $(".selected"));	
 	$(".selected").each(function(index, element) {
 		outdentElement(element);
 	});
@@ -630,7 +632,6 @@ function delete_virtual_node() {
 			});
 			
 			$(element).prev().addClass("selected");
-			add_operation(1068, [element]);
 			$(element).remove();
 		}
 	});
@@ -647,7 +648,6 @@ function indentElement(element) {
 }
 
 function indent() {
-	add_operation(39, $(".selected"));
 	$(".selected").each(function(index, element) {
 		indentElement(element);
 		cleanup_list();		
