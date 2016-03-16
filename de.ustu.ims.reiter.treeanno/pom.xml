@@ -56,11 +56,6 @@
     	<version>1.7.0</version>
     </dependency>
     <dependency>
-    	<groupId>de.ustu.ims.reiter</groupId>
-    	<artifactId>treeanno.api</artifactId>
-    	<version>0.2</version>
-    </dependency>
-    <dependency>
     	<groupId>javax.servlet</groupId>
     	<artifactId>jstl</artifactId>
     	<version>1.2</version>
@@ -158,6 +153,11 @@
     	<artifactId>tomcat-dbcp</artifactId>
     	<version>8.0.32</version>
     	<scope>provided</scope>
+    </dependency>
+    <dependency>
+    	<groupId>de.unistuttgart.ims.reiter</groupId>
+    	<artifactId>treeanno.api</artifactId>
+    	<version>0.2</version>
     </dependency>
   </dependencies>
   <scm>
