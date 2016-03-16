@@ -154,6 +154,12 @@
     	<version>8.0.32</version>
     	<scope>provided</scope>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.tomcat</groupId>
+    	<artifactId>tomcat-dbcp</artifactId>
+    	<version>8.0.32</version>
+    	<scope>provided</scope>
+    </dependency>
   </dependencies>
   <scm>
   	<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>
