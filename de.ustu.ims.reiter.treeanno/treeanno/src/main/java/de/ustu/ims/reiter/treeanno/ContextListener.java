@@ -24,9 +24,10 @@ public class ContextListener implements ServletContextListener {
 	DatabaseIO dr;
 
 	/**
-	 * Default constructor. 
-	 * @throws NamingException 
-	 * @throws ClassNotFoundException 
+	 * Default constructor.
+	 * 
+	 * @throws NamingException
+	 * @throws ClassNotFoundException
 	 */
 	public ContextListener() {}
 
@@ -76,6 +77,8 @@ public class ContextListener implements ServletContextListener {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		sc.getSessionCookieConfig().setPath("/");
 	}
 
 }
