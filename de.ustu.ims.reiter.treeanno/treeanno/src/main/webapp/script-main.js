@@ -187,6 +187,13 @@ function init_main() {
 		$("#form_search").focus(function() {enable_interaction=false});
 		$("#form_search").blur(function() {enable_interaction=true});
 		
+		$("#show_history").button({
+			icons:{primary:null,secondary:null},
+			label:i18n.t("show_history")
+		}).click(function() {
+			$("#rsidebar").toggle();
+		});
+		
 		disableSaveButton();
 		document.onkeydown = function(e) {
 			key_down(e);

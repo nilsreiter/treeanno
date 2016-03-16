@@ -40,6 +40,7 @@
 	"login_dialog_title":"Login",
 	"login_dialog_ok":"Enter",
 	"show_helper":"Spickzettel",
+	"show_history":"Aktionslog",
 	"documents_in_X":"Dokumente in Projekt &bdquo;__projectname__&ldquo;",
 	"howto_split":"An der zu splittenden Stelle zweimal Enter drücken",
 	"rename_dialog":{

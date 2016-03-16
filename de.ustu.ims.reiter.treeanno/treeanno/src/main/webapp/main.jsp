@@ -68,13 +68,14 @@
 		</span>
 		<span class="right">
 			<!-- <button class="button_change_document">open</button> -->
+			<input type="checkbox" id="show_history"><label for="show_history">show_history</label>
 			<button class="button_save_document">save</button>
 			<button class="button_edit_user">${sessionScope.User.name}</button>
 		</span>
 	</div>
 	<div id="error"></div>
 	<div id="rsidebar">
-		<h1>Sidebar</h1>
+		<h1>History</h1>
 		<ul id="history"></ul>
 	</div>
 </body>

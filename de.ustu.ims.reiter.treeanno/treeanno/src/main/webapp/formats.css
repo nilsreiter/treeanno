@@ -160,10 +160,21 @@ span.search_container {
 }
 
 #rsidebar {
-	font:sans-serif;
+	font-family:sans-serif;
 	width:400px;
+	height:100%;
 	position:fixed;
 	top:50px;
 	right:0px;
-	border:thin solid black;
+	border-left:thin solid #DDD;
+	display:none;
+}
+
+#rsidebar h1 {
+	text-align:center;
+}
+
+#rsidebar ul {
+	font-family:monospace;
+	font-size:small;
 }
