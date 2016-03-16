@@ -22,6 +22,7 @@
 	<script src="nestedSortable-1.3.4/jquery.ui.nestedSortable.js"></script>
 	<script src="config.js.jsp"></script>
 	<script src="script.js"></script>
+	<script src="script-main.js"></script>
 	<script>
 
 	var language = "${sessionScope.User.language}";
