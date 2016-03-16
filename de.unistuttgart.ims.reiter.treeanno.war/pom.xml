@@ -1,10 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.unistuttgart.ims.reiter</groupId>
   <packaging>war</packaging>
-  <version>0.6.4-SNAPSHOT</version>
-  <name>TreeAnno</name>
+  <name>treeanno.war</name>
   <url>http://maven.apache.org</url>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,7 +38,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -166,4 +163,9 @@
   	<connection>scm:git:ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</connection>
   </scm>
   <artifactId>treeanno.war</artifactId>
+  <parent>
+  	<groupId>de.unistuttgart.ims.reiter</groupId>
+  	<artifactId>treeanno</artifactId>
+  	<version>0.6.4-SNAPSHOT</version>
+  </parent>
 </project>

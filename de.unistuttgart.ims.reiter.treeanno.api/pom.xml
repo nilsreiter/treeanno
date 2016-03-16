@@ -2,7 +2,6 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>de.unistuttgart.ims.reiter</groupId>
   <artifactId>treeanno.api</artifactId>
   <version>0.2</version>
   <packaging>jar</packaging>
@@ -66,4 +65,9 @@
 			</plugin>
 		</plugins>
 	</build>
+  <parent>
+  	<groupId>de.unistuttgart.ims.reiter</groupId>
+  	<artifactId>treeanno</artifactId>
+  	<version>0.6.4-SNAPSHOT</version>
+  </parent>
 </project>
