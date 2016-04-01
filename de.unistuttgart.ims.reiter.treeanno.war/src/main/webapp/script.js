@@ -1,3 +1,6 @@
+$.noty.defaults.layout = 'topRight';
+$.noty.defaults.theme = 'relax';
+$.noty.defaults.timeout = 2000;
 
 
 function init_all() {

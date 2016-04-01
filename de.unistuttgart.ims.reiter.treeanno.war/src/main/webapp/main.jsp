@@ -18,6 +18,7 @@
 	<script src="jquery-2.1.3.min.js"></script>
 	<script src="jquery.smarttruncation.js"></script>
 	<script src="jquery-ui/jquery-ui.js"></script>
+	<script src="jquery.noty.packaged.min.js"></script>
 	<script src="i18next/i18next-1.8.0.min.js"></script>
 	<script src="nestedSortable-1.3.4/jquery.ui.nestedSortable.js"></script>
 	<script src="config.js.jsp"></script>
