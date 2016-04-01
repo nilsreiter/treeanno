@@ -5,7 +5,7 @@
   <packaging>pom</packaging>
   <version>0.6.4-SNAPSHOT</version>
   <name>TreeAnno</name>
-  <url>http://maven.apache.org</url>
+  <url>https://clarin06.ims.uni-stuttgart.de/reiterns/treeanno</url>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
