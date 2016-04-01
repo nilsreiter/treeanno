@@ -295,7 +295,8 @@ function save_document() {
 			$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });
 		}, 
 		error: function(jqXHR, textStatus, errorThrown) {
-			$("#error").append(textStatus);
+			$("#error").empty();
+			$("#error").append(textStatus + " "+ errorThrown);
 			$("#error").dialog({
 				  dialogClass: "alert",
 				  modal:true,
