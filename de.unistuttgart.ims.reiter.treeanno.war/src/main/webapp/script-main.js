@@ -57,6 +57,10 @@ var operations = {
 			'id':'merge',
 			fun:function() {
 				if ($(".selected").length == 2) mergeselected();
+				else noty({
+					text:"Please select <strong>two</strong> items.",
+					type:"information"
+				});
 			},
 			desc:'action_merge'
 		},
@@ -249,9 +253,13 @@ function init_main() {
 			init_help();
 			$("#status .loading").hide();
 			$("#outline").show();
-			
-			
 		}).error(function(xhr) {
+			noty({
+				text:xhr,
+				timeout:false,
+				type:'error',
+				modal:true
+			});
 			console.error(xhr);
         });
 }
@@ -295,12 +303,11 @@ function save_document() {
 			$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });
 		}, 
 		error: function(jqXHR, textStatus, errorThrown) {
-			$("#error").empty();
-			$("#error").append(textStatus + " "+ errorThrown);
-			$("#error").dialog({
-				  dialogClass: "alert",
-				  modal:true,
-				  title:"Error"
+			noty({
+				text:textStatus+": "+errorThrown,
+				timeout:false,
+				type:'error',
+				modal:true
 			});
 			console.log(textStatus, errorThrown);			
 		}
