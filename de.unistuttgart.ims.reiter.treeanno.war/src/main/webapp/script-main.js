@@ -18,23 +18,51 @@ var keyString = {
 		1083:'&#8679;s'
 }
 var operations = {
-		39:[{
-			// right
-			'id':'indent',
-			fun:indent,
-			'desc':'action_indent'
-		},{
-			id:'move-splitpoint-right',
-			fun:split_move_right
-		}],
 		37:[{
 			// left
 			'id':'outdent',
 			fun:outdent,
-			'desc':'action_outdent'
-		},{
-			id:'move-splitpoint-left',
-			fun:split_move_left
+			'desc':'action_outdent',
+			history:true
+		}],
+		38:[{
+			// up
+			id:'up',
+			fun:move_selection_up,
+			desc:'action_up',
+			history:false,
+			pre:{
+				fun:function() {
+					return !$(".selected").first().is($("#outline li").first());
+				},
+				fail: {
+					type: "information",
+					text: "action.up.prefail"
+				}
+			}
+		}],
+		39:[{
+			// right
+			'id':'indent',
+			fun:indent,
+			'desc':'action_indent',
+			history:true
+		}],
+		40:[{
+			// down
+			id:'down',
+			fun:move_selection_down,
+			desc:'action_down',
+			history:false,
+			pre: {
+				fun: function() {
+					return !$(".selected").last().is($("#outline li").last());
+				},
+				fail: {
+					type: "information",
+					text: "action.down.prefail"
+				}
+			}
 		}],
 		49:[{
 			// one
@@ -43,55 +71,75 @@ var operations = {
 				$(".selected").toggleClass("mark1");
 				enableSaveButton();
 			},
-			desc:'action_mark1'
+			desc:'action_mark1',
+			history:true
 		}],
 		67:[{
 			// c
 			id:'categorize',
 			fun:add_category,
-			desc:'action_assign_category'
+			desc:'action_assign_category',
+			history:true
 		}],
 		68:[{
 			// d
 			'id':'delete_category',
 			fun:delete_category,
-			desc:'action_delete_category'
+			desc:'action_delete_category',
+			history:true
 		}],
 		77:[{
 			// m
 			'id':'merge',
-			fun:function() {
-				if ($(".selected").length == 2) mergeselected();
-				else noty({
-					text:"Please select <strong>two</strong> items.",
+			pre:{
+				fun:function() {
+					return $(".selected").length == 2;
+				},
+				fail:{
+					text:"action.merge.prefail",
 					type:"information"
-				});
+				}
 			},
-			desc:'action_merge'
+			fun: mergeselected,
+			desc:'action_merge',
+			history:true
 		}],
 		83:[{
 			// s
 			'id':'split',
 			fun:splitdialog,
-			'desc':'action_split'
+			pre:{
+				fun:function() {
+					return $(".selected").length == 1;
+				},
+				fail:{
+					text:"action.split.prefail",
+					type:"information"
+				}
+			},
+			'desc':'action_split',
+			history:true
 		}],
 		1039:[{
 			// shift + right
 			'id':'force_indent',
 			fun:force_indent,
-			desc:'action.force_indent'
+			desc:'action.force_indent',
+			history:true
 		}],
 		1068:[{
 			// shift + d
 			'id':'delete_virtual_node',
 			fun:delete_virtual_node,
-			desc:'action.delete_vnode'
+			desc:'action.delete_vnode',
+			history:true
 		}],
 		1083:[{
 			// shift + s
 			d:'save_document',
 			fun:save_document,
-			desc:'action.save_document'
+			desc:'action.save_document',
+			history:true
 		}]
 		
 };
@@ -120,17 +168,21 @@ function dtext(s) {
 function init_operations(projectType) {
 	switch(projectType){
 	case ProjectType["ARNDT"]:
-		operations[49]['disabled'] = 1;
-		operations[67]['fun'] = function() {
+		operations[49][0]['disabled'] = 1;
+		operations[67][0]['fun'] = function() {
 			force_indent();
 			move_selection_up();
 			add_category();
 		}
-		operations[67]['desc'] = 'action.assign_category_t2';
-		operations[68]['desc'] = "action.delete_category_t2";
-		operations[1039]['desc'] = 'action.force_indent_t2';
+		operations[67][0]['desc'] = 'action.assign_category_t2';
+		operations[68][0]['desc'] = "action.delete_category_t2";
+		operations[1039][0]['desc'] = 'action.force_indent_t2';
 		break;
 	}
+	operations[38][0]['pre']['fail']['text'] = i18n.t(operations[38][0]['pre']['fail']['text']);
+	operations[40][0]['pre']['fail']['text'] = i18n.t(operations[40][0]['pre']['fail']['text']);
+	operations[83][0]['pre']['fail']['text'] = i18n.t(operations[83][0]['pre']['fail']['text']);
+	operations[77][0]['pre']['fail']['text'] = i18n.t(operations[77][0]['pre']['fail']['text']);
 
 }
 
@@ -344,6 +396,34 @@ function key_up(e) {
 	}
 }
 
+function move_selection_down() {
+	var allItems = $("#outline li");
+
+	// get index of last selected item
+	var index = $(".selected").last().index("#outline li");
+	
+	// if shift is not pressed, we remove the selection from everything that is selected
+	if (!shifted && index < $("#outline li").length-1)
+		$(".selected").toggleClass("selected");
+	
+	// if nothing is selected
+	if (index == -1) {
+		// we select the first thing on the page
+		$($(allItems).get(0)).toggleClass("selected");		
+	// if there is something after the last selected item, we select that
+	} else if (index < $(allItems).length-1) {
+		// if shift is not pressed, we select the next item of all items
+		if (!shifted)
+			$($(allItems).get(index+1)).toggleClass("selected");
+		// if it is pressed, we select the next sibling
+		if (shifted)
+			$(".selected").last().next().toggleClass("selected");
+	}
+	// if the last selected thing is not in viewport, we scroll
+	if (!isElementInViewport($(".selected").last()))
+		$(window).scrollTop($(".selected").last().offset().top - 200);
+}
+
 function move_selection_up() {
 	var allItems = $("#outline li");
 	// get index of first selected item
@@ -373,34 +453,6 @@ function key_down(e) {
 	case kbkey.shift:
 		shifted = true;
 		break;
-	case kbkey.down:
-		// get index of last selected item
-		var index = $(".selected").last().index("#outline li");
-		
-		// if shift is not pressed, we remove the selection from everything that is selected
-		if (!shifted && index < $("#outline li").length-1)
-			$(".selected").toggleClass("selected");
-		
-		// if nothing is selected
-		if (index == -1) {
-			// we select the first thing on the page
-			$($(allItems).get(0)).toggleClass("selected");		
-		// if there is something after the last selected item, we select that
-		} else if (index < $(allItems).length-1) {
-			// if shift is not pressed, we select the next item of all items
-			if (!shifted)
-				$($(allItems).get(index+1)).toggleClass("selected");
-			// if it is pressed, we select the next sibling
-			if (shifted)
-				$(".selected").last().next().toggleClass("selected");
-		}
-		// if the last selected thing is not in viewport, we scroll
-		if (!isElementInViewport($(".selected").last()))
-			$(window).scrollTop($(".selected").last().offset().top - 200);
-		break;
-	case kbkey.up:
-		move_selection_up();
-		break;
 	case kbkey.enter:
 		$(this).prev().attr('checked', !$(this).prev().attr('checked'));
 		break;
@@ -409,11 +461,22 @@ function key_down(e) {
 		if (shifted)
 			kc = keyCode + 1000;
 		if (kc in operations && !operations[kc][interaction_mode]['disabled']) {
-			add_operation(kc, $(".selected"));
-			operations[kc][interaction_mode].fun();
+			if (check_precondition(kc)) {
+				if (operations[kc][interaction_mode]['history'])
+					add_operation(kc, $(".selected"));
+				operations[kc][interaction_mode].fun();
+			} else {
+				noty(operations[kc][interaction_mode].pre.fail);
+			}
 		}
 	}
 	
+}
+
+function check_precondition(kc) {
+	if ('pre' in operations[kc][interaction_mode])
+		return operations[kc][interaction_mode]['pre'].fun();
+	return true;
 }
 
 function isElementInViewport (el) {
@@ -524,8 +587,7 @@ function merge(item1, item0) {
 function splitdialog() {
 	interaction_mode = 1;
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
-	$("#form_splittext").append("¶"+item['text']);
-	
+	$("#form_splittext").val(item['text']);
 	$("#split").dialog({
 		title: i18n.t("Split Segment"),
 		modal: true,
@@ -547,31 +609,11 @@ function splitdialog() {
 	});
 }
 
-function split_move_right() {
-	var text = $("#form_splittext").text();
-	var p = text.indexOf("¶");
-	$("#form_splittext").text(
-			text.substring(0,p)+
-			text.charAt(p+1)+
-			"¶"+
-			text.substring(p+2, text.length));
-}
-
-function split_move_left() {
-	var text = $("#form_splittext").text();
-	var p = text.indexOf("¶");
-	$("#form_splittext").text(
-			text.substring(0,p-1)+
-			"¶"+
-			text.charAt(p-1)+
-			text.substring(p+1, text.length));
-}
-
 function splitdialog_cleanup() {
 	interaction_mode = 0;
 
 	$("#split").dialog( "destroy" );
-	$("#form_splittext").empty();
+	$("#form_splittext").val("");
 	add_operation(83, $(".selected"),[null]);
 
 }
@@ -579,8 +621,8 @@ function splitdialog_cleanup() {
 function splitdialog_enter() {
 	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
-	var text = $("#form_splittext").text();
-	var lines = text.split("¶");
+	var text = $("#form_splittext").val();
+	var lines = text.split("\n\n");
 	if (lines.length == 2) {
 		add_operation(83, $(".selected"), {pos:lines[0].length});
 
