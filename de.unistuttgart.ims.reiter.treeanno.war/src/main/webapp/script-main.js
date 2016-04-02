@@ -1,5 +1,4 @@
-var enable_interaction = true;
-
+var interaction_mode = 0;
 var shifted = false;
 
 var idCounter = 0;
@@ -19,19 +18,19 @@ var keyString = {
 		1083:'&#8679;s'
 }
 var operations = {
-		39:{
+		39:[{
 			// right
 			'id':'indent',
 			fun:indent,
 			'desc':'action_indent'
-		},
-		37:{
+		}],
+		37:[{
 			// left
 			'id':'outdent',
 			fun:outdent,
 			'desc':'action_outdent'
-		},
-		49:{
+		}],
+		49:[{
 			// one
 			'id':'mark1',
 			fun:function() {
@@ -39,20 +38,20 @@ var operations = {
 				enableSaveButton();
 			},
 			desc:'action_mark1'
-		},
-		67:{
+		}],
+		67:[{
 			// c
 			id:'categorize',
 			fun:add_category,
 			desc:'action_assign_category'
-		},
-		68:{
+		}],
+		68:[{
 			// d
 			'id':'delete_category',
 			fun:delete_category,
 			desc:'action_delete_category'
-		},
-		77:{
+		}],
+		77:[{
 			// m
 			'id':'merge',
 			pre:{
@@ -66,31 +65,31 @@ var operations = {
 			},
 			fun: mergeselected,
 			desc:'action_merge'
-		},
-		83:{
+		}],
+		83:[{
 			// s
 			'id':'split',
 			fun:splitdialog,
 			'desc':'action_split'
-		},
-		1039:{
+		}],
+		1039:[{
 			// shift + right
 			'id':'force_indent',
 			fun:force_indent,
 			desc:'action.force_indent'
-		},
-		1068:{
+		}],
+		1068:[{
 			// shift + d
 			'id':'delete_virtual_node',
 			fun:delete_virtual_node,
 			desc:'action.delete_vnode'
-		},
-		1083:{
+		}],
+		1083:[{
 			// shift + s
 			d:'save_document',
 			fun:save_document,
 			desc:'action.save_document'
-		}
+		}]
 		
 };
 
@@ -191,8 +190,8 @@ function init_main() {
 			label: i18n.t("search")
 		}).click(search);
 		$("#form_search").keyup(search);
-		$("#form_search").focus(function() {enable_interaction=false});
-		$("#form_search").blur(function() {enable_interaction=true});
+		$("#form_search").focus(function() {interaction_mode = -1});
+		$("#form_search").blur(function() {interaction_mode = 0});
 		
 		$("#show_history").button({
 			icons:{primary:null,secondary:null},
@@ -332,7 +331,7 @@ function disableSaveButton() {
 }
 
 function key_up(e) {
-	if (!enable_interaction) return;
+	if (interaction_mode < 0) return;
 	e.preventDefault();
 	var keyCode = e.keyCode || e.which;
 	switch(keyCode) {
@@ -363,7 +362,7 @@ function move_selection_up() {
 }
 
 function key_down(e) {
-	if (!enable_interaction) return;
+	if (interaction_mode < 0) return;
 	e.preventDefault();
 	var keyCode = e.keyCode || e.which;
 	var allItems = $("#outline li");
@@ -406,12 +405,12 @@ function key_down(e) {
 		kc = keyCode;
 		if (shifted)
 			kc = keyCode + 1000;
-		if (kc in operations && !operations[kc]['disabled']) {
+		if (kc in operations && !operations[kc][interaction_mode]['disabled']) {
 			if (check_precondition(kc)) {
 				add_operation(kc, $(".selected"));
-				operations[kc].fun();
+				operations[kc][interaction_mode].fun();
 			} else {
-				noty(operations[kc].pre.fail);
+				noty(operations[kc][interaction_mode].pre.fail);
 			}
 		}
 	}
@@ -419,8 +418,8 @@ function key_down(e) {
 }
 
 function check_precondition(kc) {
-	if ('pre' in operations[kc])
-		return operations[kc]['pre'].fun();
+	if ('pre' in operations[kc][interaction_mode])
+		return operations[kc][interaction_mode]['pre'].fun();
 	return true;
 }
 
@@ -446,7 +445,7 @@ function delete_category() {
 	$(".selected").removeAttr("data-treeanno-categories");
 }
 function add_category() {
-	enable_interaction = false;
+	interaction_mode = -1;
 	$(".selected > p.annocat").remove();
 	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):$(".selected").attr("title"));
 	$(".selected").prepend("<input type=\"text\" size=\"100\" id=\"cat_input\" value=\""+val+"\"/>");
@@ -465,8 +464,7 @@ function add_category() {
 
 function cancel_category() {
 	$("#cat_input").remove();
-	enable_interaction = true;
-
+	interaction_mode = 0;
 }
 function enter_category() {
 	var value = $("#cat_input").val();
@@ -475,7 +473,8 @@ function enter_category() {
 	// var oa = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
 	$(".selected").attr("data-treeanno-categories", value);
 	enableSaveButton();
-	enable_interaction = true;
+	interaction_mode = 0;
+
 }
 
 function get_item(id) {
@@ -530,7 +529,7 @@ function merge(item1, item0) {
 
 
 function splitdialog() {
-	enable_interaction = false;
+	interaction_mode = 1;
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
 	$("#form_splittext").val(item['text']);
 	$("#split").dialog({
@@ -555,7 +554,8 @@ function splitdialog() {
 }
 
 function splitdialog_cleanup() {
-	enable_interaction = true;
+	interaction_mode = 0;
+
 	$("#split").dialog( "destroy" );
 	$("#form_splittext").val("");
 	add_operation(83, $(".selected"),[null]);
