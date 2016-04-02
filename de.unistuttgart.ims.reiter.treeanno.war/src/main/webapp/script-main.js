@@ -24,6 +24,9 @@ var operations = {
 			fun:outdent,
 			'desc':'action_outdent',
 			history:true
+		},{
+			id:'move-splitpoint-left',
+			fun:split_move_left
 		}],
 		38:[{
 			// up
@@ -47,6 +50,9 @@ var operations = {
 			fun:indent,
 			'desc':'action_indent',
 			history:true
+		},{
+			id:'move-splitpoint-right',
+			fun:split_move_right
 		}],
 		40:[{
 			// down
@@ -587,7 +593,8 @@ function merge(item1, item0) {
 function splitdialog() {
 	interaction_mode = 1;
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
-	$("#form_splittext").val(item['text']);
+	$("#form_splittext").append("¶"+item['text']);
+	
 	$("#split").dialog({
 		title: i18n.t("Split Segment"),
 		modal: true,
@@ -609,11 +616,31 @@ function splitdialog() {
 	});
 }
 
+function split_move_right() {
+	var text = $("#form_splittext").text();
+	var p = text.indexOf("¶");
+	$("#form_splittext").text(
+			text.substring(0,p)+
+			text.charAt(p+1)+
+			"¶"+
+			text.substring(p+2, text.length));
+}
+
+function split_move_left() {
+	var text = $("#form_splittext").text();
+	var p = text.indexOf("¶");
+	$("#form_splittext").text(
+			text.substring(0,p-1)+
+			"¶"+
+			text.charAt(p-1)+
+			text.substring(p+1, text.length));
+}
+
 function splitdialog_cleanup() {
 	interaction_mode = 0;
 
 	$("#split").dialog( "destroy" );
-	$("#form_splittext").val("");
+	$("#form_splittext").empty();
 	add_operation(83, $(".selected"),[null]);
 
 }
