@@ -59,7 +59,7 @@ var operations = {
 					return $(".selected").length == 2;
 				},
 				fail:{
-					desc:"action.merge.prefail",
+					text:"action.merge.prefail",
 					type:"information"
 				}
 			},
@@ -75,7 +75,7 @@ var operations = {
 					return $(".selected").length == 1;
 				},
 				fail:{
-					desc:"action.split.prefail",
+					text:"action.split.prefail",
 					type:"information"
 				}
 			},
@@ -137,8 +137,8 @@ function init_operations(projectType) {
 		operations[1039][0]['desc'] = 'action.force_indent_t2';
 		break;
 	}
-	operations[83][0]['pre']['fail']['desc'] = i18n.t(operations[83][0]['pre']['fail']['desc']);
-	operations[77][0]['pre']['fail']['desc'] = i18n.t(operations[77][0]['pre']['fail']['desc']);
+	operations[83][0]['pre']['fail']['text'] = i18n.t(operations[83][0]['pre']['fail']['text']);
+	operations[77][0]['pre']['fail']['text'] = i18n.t(operations[77][0]['pre']['fail']['text']);
 
 }
 
