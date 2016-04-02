@@ -59,7 +59,7 @@ var operations = {
 					return $(".selected").length == 2;
 				},
 				fail:{
-					text:"Please select <strong>two</strong> items.",
+					desc:"action.merge.prefail",
 					type:"information"
 				}
 			},
@@ -70,6 +70,15 @@ var operations = {
 			// s
 			'id':'split',
 			fun:splitdialog,
+			pre:{
+				fun:function() {
+					return $(".selected").length == 1;
+				},
+				fail:{
+					desc:"action.split.prefail",
+					type:"information"
+				}
+			},
 			'desc':'action_split'
 		}],
 		1039:[{
@@ -117,17 +126,19 @@ function dtext(s) {
 function init_operations(projectType) {
 	switch(projectType){
 	case ProjectType["ARNDT"]:
-		operations[49]['disabled'] = 1;
-		operations[67]['fun'] = function() {
+		operations[49][0]['disabled'] = 1;
+		operations[67][0]['fun'] = function() {
 			force_indent();
 			move_selection_up();
 			add_category();
 		}
-		operations[67]['desc'] = 'action.assign_category_t2';
-		operations[68]['desc'] = "action.delete_category_t2";
-		operations[1039]['desc'] = 'action.force_indent_t2';
+		operations[67][0]['desc'] = 'action.assign_category_t2';
+		operations[68][0]['desc'] = "action.delete_category_t2";
+		operations[1039][0]['desc'] = 'action.force_indent_t2';
 		break;
 	}
+	operations[83][0]['pre']['fail']['desc'] = i18n.t(operations[83][0]['pre']['fail']['desc']);
+	operations[77][0]['pre']['fail']['desc'] = i18n.t(operations[77][0]['pre']['fail']['desc']);
 
 }
 

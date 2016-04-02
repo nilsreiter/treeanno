@@ -18,7 +18,13 @@
 		"assign_category_t2":"Create Node and Assign Question",
 		"delete_category_t2":"Delete Question",
 		"force_indent_t2":"Create Node",
-		"save_document":"Save Document"
+		"save_document":"Save Document",
+		"merge":{
+			"prefail":"Please select <strong>two</strong> items."
+		},
+		"split":{
+			"prefail":"Please select a single item."
+		}
 	},
 	"action_category_virtual_nodes":"Virtual Nodes",
 	"help_title":"Cheat Sheet",

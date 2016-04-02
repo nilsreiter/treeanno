@@ -18,7 +18,13 @@
 		"assign_category_t2":"Knoten erzeugen und Frage eingeben",
 		"delete_category_t2":"Frage löschen",
 		"force_indent_t2":"Knoten erzeugen",
-		"save_document":"Speichern"
+		"save_document":"Speichern",
+		"merge":{
+			"prefail":"Bitte <strong>zwei</strong> Segmente markieren."
+		},
+		"split":{
+			"prefail":"Bitte nur ein Segment markieren."
+		}
 	},
 	"action_category_virtual_nodes":"Virtuelle Knoten",
 	"help_title":"Spickzettel",
