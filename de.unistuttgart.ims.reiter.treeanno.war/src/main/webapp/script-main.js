@@ -451,8 +451,8 @@ function init_parallel() {
 		label: i18n.t("search")
 	}).click(search);
 	$("#form_search").keyup(search);
-	$("#form_search").focus(function() {enable_interaction=false});
-	$("#form_search").blur(function() {enable_interaction=true});
+	$("#form_search").focus(function() { interaction_mode = -1; });
+	$("#form_search").blur(function() { interaction_mode = 0; });
 	
 	disableSaveButton();
 
