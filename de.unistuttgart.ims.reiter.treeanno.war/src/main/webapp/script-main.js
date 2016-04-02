@@ -579,8 +579,8 @@ function splitdialog_cleanup() {
 function splitdialog_enter() {
 	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
-	var text = $("#form_splittext").val();
-	var lines = text.split("\n\n");
+	var text = $("#form_splittext").text();
+	var lines = text.split("¶");
 	if (lines.length == 2) {
 		add_operation(83, $(".selected"), {pos:lines[0].length});
 
