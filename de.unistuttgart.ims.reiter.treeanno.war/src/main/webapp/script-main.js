@@ -621,7 +621,7 @@ function add_category() {
 	interaction_mode = -1;
 	$(".selected > p.annocat").remove();
 	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):$(".selected").attr("title"));
-	$(".selected").prepend("<input type=\"text\" size=\"100\" id=\"cat_input\" value=\""+val+"\"/>");
+	$(".selected").first().prepend("<input type=\"text\" size=\"100\" id=\"cat_input\" value=\""+val+"\"/>");
 	$("#cat_input").keyup(function(event){
 	    if(event.keyCode == 13){
 	       enter_category();
