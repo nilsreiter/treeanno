@@ -40,8 +40,11 @@ div#artifact {
 	  border-left:2px dotted #bbb; 
 	  border-right:2px dotted #bbb;
 }
-.parallel .outline_container {
+.parallel-2 .outline_container {
 	max-width:45%
+}
+.parallel-3 .outline_container {
+	max-width:30%
 }
 .outline_container {
 	float:left;
