@@ -71,7 +71,8 @@
 		"annotations_title_for_X":"Annotations for __document__",
 		"annotations_from_X":"Annotations from __user__",
 		"open_view":"Compare annotations",
-		"select":"Select"
+		"select":"Select",
+		"view":"View"
 	}
 	
 }
