@@ -352,6 +352,10 @@ function init_main() {
 			label:i18n.t("show_history")
 		}).click(function() {
 			$("#rsidebar").toggle();
+			if ($("#rsidebar").is(':visible'))
+				$("#content").css("width", "calc(100% - 400px)");
+			else 
+				$("#content").width("100%");
 		});
 		
 		disableSaveButton();
@@ -752,7 +756,6 @@ function splitdialog_cleanup() {
 
 	$("#split").dialog( "destroy" );
 	$("#form_splittext").empty();
-	add_operation(83, $(".selected"),[null]);
 
 }
 
@@ -762,6 +765,8 @@ function splitdialog_enter() {
 	var text = $("#form_splittext").text();
 	var lines = text.split(paragraphSplitCharacter);
 	if (lines.length == 2) {
+		interaction_mode = 0;
+
 		add_operation(83, $(".selected"), {pos:lines[0].length});
 		noty({
 			type:"information",
@@ -898,7 +903,7 @@ function add_operation(kc, tgts, opts) {
 	$(tgts).each(function(index, element) {
 		s.push($(element).attr("data-treeanno-id"));
 	});
-	var logObj = {op:operations[kc]['desc'], arg:s, opt:opts};
+	var logObj = {op:operations[kc][interaction_mode]['desc'], arg:s, opt:opts};
 	console.log(logObj);
 	$("#history").prepend("<li>"+JSON.stringify(logObj)+"</li>");
 }
