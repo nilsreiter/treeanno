@@ -74,9 +74,9 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
 							new JCasConverter()
-									.getJSONArrayFromAnnotations(
-											jcas,
-											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -125,9 +125,9 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("document", JSONUtil.getJSONObject(document));
 					obj.put("list",
 							new JCasConverter()
-									.getJSONArrayFromAnnotations(
-											jcas,
-											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -156,6 +156,7 @@ public class DocumentContentHandling extends HttpServlet {
 		InputStream is = request.getInputStream();
 		String s = IOUtils.toString(is);
 		JSONObject jObj = new JSONObject(s);
+		JSONObject returnObject = new JSONObject();
 		int docId = jObj.getInt("document");
 		boolean r = false;
 		try {
@@ -169,12 +170,15 @@ public class DocumentContentHandling extends HttpServlet {
 
 			r = dataLayer.updateUserDocument(document);
 		} catch (UIMAException | JSONException | SQLException | SAXException e) {
-			throw new ServletException(e);
+			returnObject.put("status", "exception");
+			returnObject.put("error", 1);
+			returnObject.put("classname", e.getClass().getName());
+			returnObject.put("message", e.getMessage());
 		}
 		if (r) {
-			Util.returnJSON(response, new JSONObject());
+			Util.returnJSON(response, new JSONObject("{error:0}"));
 		} else {
-			response.sendError(1);
+			Util.returnJSON(response, returnObject);
 		}
 	}
 }

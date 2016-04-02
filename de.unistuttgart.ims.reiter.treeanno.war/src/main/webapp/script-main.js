@@ -534,9 +534,21 @@ function save_document() {
 			items:sitems
 		}),
 		contentType:'application/json; charset=UTF-8',
-		success: function() {
-			$( "button.button_save_document" ).button( "option", "disabled", true );
-			$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });
+		success: function(data) {
+			if (data['error'] == 0) {
+				noty({
+					type:'information',
+					text:'Save successful'
+				});
+				$( "button.button_save_document" ).button( "option", "disabled", true );
+				$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });				
+			} else {
+				noty({
+					type:'error',
+					timeout:false,
+					text:data['classname']+": "+data['message']
+				});
+			}
 		}, 
 		error: function(jqXHR, textStatus, errorThrown) {
 			noty({
