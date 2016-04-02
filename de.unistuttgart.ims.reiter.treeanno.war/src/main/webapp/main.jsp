@@ -53,7 +53,7 @@
 	</div>
 	<div id="split">
 		<p data-i18n="howto_split" class="trans">howto_split</p>
-		<p id="form_splittext" tabindex="0"></p>
+		<textarea id="form_splittext" rows="5" cols="50" spellcheck="false" tabindex="0"></textarea>
 	</div>
 	<div id="topbar">
 		<span class="left">
