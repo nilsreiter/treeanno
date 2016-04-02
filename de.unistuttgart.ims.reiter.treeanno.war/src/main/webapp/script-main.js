@@ -18,17 +18,33 @@ var keyString = {
 		1083:'&#8679;s'
 }
 var operations = {
-		39:[{
-			// right
-			'id':'indent',
-			fun:indent,
-			'desc':'action_indent'
-		}],
 		37:[{
 			// left
 			'id':'outdent',
 			fun:outdent,
-			'desc':'action_outdent'
+			'desc':'action_outdent',
+			history:true
+		}],
+		38:[{
+			// up
+			id:'up',
+			fun:move_selection_up,
+			desc:'action_up',
+			history:false
+		}],
+		39:[{
+			// right
+			'id':'indent',
+			fun:indent,
+			'desc':'action_indent',
+			history:true
+		}],
+		40:[{
+			// down
+			id:'down',
+			fun:move_selection_down,
+			desc:'action_down',
+			history:false
 		}],
 		49:[{
 			// one
@@ -37,19 +53,22 @@ var operations = {
 				$(".selected").toggleClass("mark1");
 				enableSaveButton();
 			},
-			desc:'action_mark1'
+			desc:'action_mark1',
+			history:true
 		}],
 		67:[{
 			// c
 			id:'categorize',
 			fun:add_category,
-			desc:'action_assign_category'
+			desc:'action_assign_category',
+			history:true
 		}],
 		68:[{
 			// d
 			'id':'delete_category',
 			fun:delete_category,
-			desc:'action_delete_category'
+			desc:'action_delete_category',
+			history:true
 		}],
 		77:[{
 			// m
@@ -64,7 +83,8 @@ var operations = {
 				}
 			},
 			fun: mergeselected,
-			desc:'action_merge'
+			desc:'action_merge',
+			history:true
 		}],
 		83:[{
 			// s
@@ -79,25 +99,29 @@ var operations = {
 					type:"information"
 				}
 			},
-			'desc':'action_split'
+			'desc':'action_split',
+			history:true
 		}],
 		1039:[{
 			// shift + right
 			'id':'force_indent',
 			fun:force_indent,
-			desc:'action.force_indent'
+			desc:'action.force_indent',
+			history:true
 		}],
 		1068:[{
 			// shift + d
 			'id':'delete_virtual_node',
 			fun:delete_virtual_node,
-			desc:'action.delete_vnode'
+			desc:'action.delete_vnode',
+			history:true
 		}],
 		1083:[{
 			// shift + s
 			d:'save_document',
 			fun:save_document,
-			desc:'action.save_document'
+			desc:'action.save_document',
+			history:true
 		}]
 		
 };
@@ -352,6 +376,34 @@ function key_up(e) {
 	}
 }
 
+function move_selection_down() {
+	var allItems = $("#outline li");
+
+	// get index of last selected item
+	var index = $(".selected").last().index("#outline li");
+	
+	// if shift is not pressed, we remove the selection from everything that is selected
+	if (!shifted && index < $("#outline li").length-1)
+		$(".selected").toggleClass("selected");
+	
+	// if nothing is selected
+	if (index == -1) {
+		// we select the first thing on the page
+		$($(allItems).get(0)).toggleClass("selected");		
+	// if there is something after the last selected item, we select that
+	} else if (index < $(allItems).length-1) {
+		// if shift is not pressed, we select the next item of all items
+		if (!shifted)
+			$($(allItems).get(index+1)).toggleClass("selected");
+		// if it is pressed, we select the next sibling
+		if (shifted)
+			$(".selected").last().next().toggleClass("selected");
+	}
+	// if the last selected thing is not in viewport, we scroll
+	if (!isElementInViewport($(".selected").last()))
+		$(window).scrollTop($(".selected").last().offset().top - 200);
+}
+
 function move_selection_up() {
 	var allItems = $("#outline li");
 	// get index of first selected item
@@ -381,34 +433,6 @@ function key_down(e) {
 	case kbkey.shift:
 		shifted = true;
 		break;
-	case kbkey.down:
-		// get index of last selected item
-		var index = $(".selected").last().index("#outline li");
-		
-		// if shift is not pressed, we remove the selection from everything that is selected
-		if (!shifted && index < $("#outline li").length-1)
-			$(".selected").toggleClass("selected");
-		
-		// if nothing is selected
-		if (index == -1) {
-			// we select the first thing on the page
-			$($(allItems).get(0)).toggleClass("selected");		
-		// if there is something after the last selected item, we select that
-		} else if (index < $(allItems).length-1) {
-			// if shift is not pressed, we select the next item of all items
-			if (!shifted)
-				$($(allItems).get(index+1)).toggleClass("selected");
-			// if it is pressed, we select the next sibling
-			if (shifted)
-				$(".selected").last().next().toggleClass("selected");
-		}
-		// if the last selected thing is not in viewport, we scroll
-		if (!isElementInViewport($(".selected").last()))
-			$(window).scrollTop($(".selected").last().offset().top - 200);
-		break;
-	case kbkey.up:
-		move_selection_up();
-		break;
 	case kbkey.enter:
 		$(this).prev().attr('checked', !$(this).prev().attr('checked'));
 		break;
@@ -418,7 +442,8 @@ function key_down(e) {
 			kc = keyCode + 1000;
 		if (kc in operations && !operations[kc][interaction_mode]['disabled']) {
 			if (check_precondition(kc)) {
-				add_operation(kc, $(".selected"));
+				if (operations[kc][interaction_mode]['history'])
+					add_operation(kc, $(".selected"));
 				operations[kc][interaction_mode].fun();
 			} else {
 				noty(operations[kc][interaction_mode].pre.fail);
