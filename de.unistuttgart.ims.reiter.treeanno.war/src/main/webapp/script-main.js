@@ -55,13 +55,16 @@ var operations = {
 		77:{
 			// m
 			'id':'merge',
-			fun:function() {
-				if ($(".selected").length == 2) mergeselected();
-				else noty({
+			pre:{
+				fun:function() {
+					return $(".selected").length == 2;
+				},
+				fail:{
 					text:"Please select <strong>two</strong> items.",
 					type:"information"
-				});
+				}
 			},
+			fun: mergeselected,
 			desc:'action_merge'
 		},
 		83:{
@@ -404,11 +407,21 @@ function key_down(e) {
 		if (shifted)
 			kc = keyCode + 1000;
 		if (kc in operations && !operations[kc]['disabled']) {
-			add_operation(kc, $(".selected"));
-			operations[kc].fun();
+			if (check_precondition(kc)) {
+				add_operation(kc, $(".selected"));
+				operations[kc].fun();
+			} else {
+				noty(operations[kc].pre.fail);
+			}
 		}
 	}
 	
+}
+
+function check_precondition(kc) {
+	if ('pre' in operations[kc])
+		return operations[kc]['pre'].fun();
+	return true;
 }
 
 function isElementInViewport (el) {
