@@ -23,13 +23,16 @@
 			"prefail":"Please select <strong>two</strong> items."
 		},
 		"split":{
+			"done":"__left__ ¶ __right__",
 			"prefail":"Please select a single item."
 		},
 		"up":{
-			"prefail":"First item already selected."
+			"prefail":"First item already selected.",
+			"desc":"Extend selection upwards"
 		},
 		"down":{
-			"prefail":"Last item already selected."
+			"prefail":"Last item already selected.",
+			"desc":"Extend selection downwards"
 		}
 	},
 	"action_category_virtual_nodes":"Virtual Nodes",
@@ -54,7 +57,7 @@
 	"show_helper":"Show Cheat Sheet",
 	"show_history":"Show History",
 	"documents_in_X":"Documents in project \"__projectname__\"",
-	"howto_split":"Split by hitting Enter twice where you want to split",
+	"howto_split":"Move the paragraph character to where you want to split using arrow keys. Make bigger jumps with &#8679;+arrow keys.",
 	"rename_dialog":{
 		"title":"Rename Document",
 		"ok":"Rename",

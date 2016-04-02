@@ -1,29 +1,94 @@
-var interaction_mode = 0;
-var shifted = false;
 
+/**
+ * -1: web default
+ * 0: default TreeAnno
+ * 1: split dialog
+ */
+var interaction_mode = 0;
+
+/**
+ * set to true when shift is pressed (and held)
+ */
+var shifted = false;
 var idCounter = 0;
+
+/**
+ * This is the character we use in the split dialog to mark the split
+ */
+var paragraphSplitCharacter = "¶";
 
 var kbkey = { up: 38, down: 40, right: 39, left: 37, 
 		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
 var keyString = {
 		37:'&larr;',
+		38:'&uarr;',
 		39:'&rarr;',
+		40:'&darr;',
 		49:'1',
 		67:'c',
 		68:'d',
 		77:'m',
 		83:'s',
+		1038:'&#8679;&uarr;',
 		1039:'&#8679;&rarr;',
+		1040:'&#8679;&darr;',
 		1068:'&#8679;d',
 		1083:'&#8679;s'
 }
+
+/**
+ * the main object containing possible operations in TreeAnno.
+ * Each operation is a hash of the following form:
+ * 
+ * {
+ *    // an identifier for the operation
+ * 	  id:'an-id',
+ * 
+ *    // a function that implements the operation
+ *    fun:function,
+ *    
+ *    // whether this op makes an entry in the edit history
+ *    history: (true|false),
+ *    
+ *    // a locale key to be put into the help menu.
+ *    // if null, no help entry will be produced
+ *    desc: "bla bla",
+ *    
+ *    // precondition definitions
+ *    pre: {
+ *        
+ *        // a function that checks the precondition. Needs to return a boolean 
+ *        // value
+ *    	  fun: function,
+ *    
+ *        // a hash that is passed to the notification framework in case the
+ *        // precondition fails
+ *        // There is an issue with localisation here, that's why we need to 
+ *        // re-process some keys in init_operations(...).
+ *        fail: {
+ *           // ... 
+ *        }
+ *    }
+ * }
+ */
 var operations = {
+		13:[{},{
+			// enter pressed in the split dialog
+			id:'split-enter',
+			fun:splitdialog_enter,
+			history:false
+		}],
 		37:[{
 			// left
 			'id':'outdent',
 			fun:outdent,
 			'desc':'action_outdent',
 			history:true
+		},{
+			// move the split point to the left
+			id:'move-splitpoint-left',
+			fun:function() { split_move_left(1) },
+			history:false
 		}],
 		38:[{
 			// up
@@ -47,6 +112,11 @@ var operations = {
 			fun:indent,
 			'desc':'action_indent',
 			history:true
+		},{
+			// move the split point to the right
+			id:'move-splitpoint-right',
+			fun:function() { split_move_right(1) },
+			history:false
 		}],
 		40:[{
 			// down
@@ -120,12 +190,41 @@ var operations = {
 			'desc':'action_split',
 			history:true
 		}],
+		1037:[{},{
+			id:'move-splitpoint-left-big',
+			fun:function() { split_move_left(25) },
+			history:false
+		}],
+		1038:[{
+			// shift + up
+			id:'up',
+			fun:move_selection_up,
+			desc:'action.up.desc',
+			history:false,
+			pre: {
+				fun:function() { return shifted; }
+			}
+		}],
 		1039:[{
 			// shift + right
 			'id':'force_indent',
 			fun:force_indent,
 			desc:'action.force_indent',
 			history:true
+		},{
+			id:'move-splitpoint-right-big',
+			fun:function() { split_move_right(25) },
+			history:false
+		}],
+		1040:[{
+			// shift + down
+			id:'down',
+			fun:extend_selection_down,
+			desc:'action.down.desc',
+			history:false,
+			pre: {
+				fun:function() { return shifted; }
+			}
 		}],
 		1068:[{
 			// shift + d
@@ -193,7 +292,7 @@ function init_help() {
 	var helpTable = document.createElement("table");
 	for (key in operations) {
 		if (!operations[key]['disabled']) {
-			$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key]['desc'])+"</td></tr>");
+			$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key][0]['desc'])+"</td></tr>");
 		}
 	}
 	$(helpElement).append(helpTable);
@@ -396,15 +495,34 @@ function key_up(e) {
 	}
 }
 
+function extend_selection_down() {
+	var allItems = $("#outline li");
+
+	// get index of last selected item
+	var index = $(".selected").last().index("#outline li");
+		
+	// if nothing is selected
+	if (index == -1) 
+		// we select the first thing on the page
+		$($(allItems).get(0)).toggleClass("selected");
+	else 
+		// if there is something after the last selected item, we
+		// add that to the selection
+		$(".selected").last().next().toggleClass("selected");
+	
+	// if the last selected thing is not in viewport, we scroll
+	if (!isElementInViewport($(".selected").last()))
+		$(window).scrollTop($(".selected").last().offset().top - 200);
+}
+
 function move_selection_down() {
 	var allItems = $("#outline li");
 
 	// get index of last selected item
 	var index = $(".selected").last().index("#outline li");
 	
-	// if shift is not pressed, we remove the selection from everything that is selected
-	if (!shifted && index < $("#outline li").length-1)
-		$(".selected").toggleClass("selected");
+	// we remove the selection from everything that is selected
+	$(".selected").toggleClass("selected");
 	
 	// if nothing is selected
 	if (index == -1) {
@@ -415,9 +533,6 @@ function move_selection_down() {
 		// if shift is not pressed, we select the next item of all items
 		if (!shifted)
 			$($(allItems).get(index+1)).toggleClass("selected");
-		// if it is pressed, we select the next sibling
-		if (shifted)
-			$(".selected").last().next().toggleClass("selected");
 	}
 	// if the last selected thing is not in viewport, we scroll
 	if (!isElementInViewport($(".selected").last()))
@@ -453,9 +568,10 @@ function key_down(e) {
 	case kbkey.shift:
 		shifted = true;
 		break;
-	case kbkey.enter:
+		// What does this do?
+/*	case kbkey.enter:
 		$(this).prev().attr('checked', !$(this).prev().attr('checked'));
-		break;
+		break;*/
 	default:
 		kc = keyCode;
 		if (shifted)
@@ -466,7 +582,8 @@ function key_down(e) {
 					add_operation(kc, $(".selected"));
 				operations[kc][interaction_mode].fun();
 			} else {
-				noty(operations[kc][interaction_mode].pre.fail);
+				if ('fail' in operations[kc][interaction_mode]['pre'])
+					noty(operations[kc][interaction_mode].pre.fail);
 			}
 		}
 	}
@@ -587,7 +704,8 @@ function merge(item1, item0) {
 function splitdialog() {
 	interaction_mode = 1;
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
-	$("#form_splittext").val(item['text']);
+	$("#form_splittext").append(paragraphSplitCharacter+item['text']);
+	
 	$("#split").dialog({
 		title: i18n.t("Split Segment"),
 		modal: true,
@@ -609,11 +727,31 @@ function splitdialog() {
 	});
 }
 
+function split_move_right(dist) {
+	var text = $("#form_splittext").text();
+	var p = text.indexOf(paragraphSplitCharacter);
+	$("#form_splittext").text(
+			text.substring(0,p)+
+			text.substring(p+1,p+1+dist)+
+			paragraphSplitCharacter+
+			text.substring(p+1+dist, text.length));
+}
+
+function split_move_left(dist) {
+	var text = $("#form_splittext").text();
+	var p = text.indexOf(paragraphSplitCharacter);
+	$("#form_splittext").text(
+			text.substring(0,p - dist)+
+			paragraphSplitCharacter+
+			text.substring(p-dist,p)+
+			text.substring(p+1, text.length));
+}
+
 function splitdialog_cleanup() {
 	interaction_mode = 0;
 
 	$("#split").dialog( "destroy" );
-	$("#form_splittext").val("");
+	$("#form_splittext").empty();
 	add_operation(83, $(".selected"),[null]);
 
 }
@@ -621,11 +759,18 @@ function splitdialog_cleanup() {
 function splitdialog_enter() {
 	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
-	var text = $("#form_splittext").val();
-	var lines = text.split("\n\n");
+	var text = $("#form_splittext").text();
+	var lines = text.split(paragraphSplitCharacter);
 	if (lines.length == 2) {
 		add_operation(83, $(".selected"), {pos:lines[0].length});
-
+		noty({
+			type:"information",
+			text:i18n.t("action.split.done", {
+				left:lines[0].substring(lines[0].length-10,lines[0].length), 
+				right:lines[1].substring(0, 10)
+			})
+		});
+		
 		var litems = new Array();
 		litems[0] = new Object();
 		litems[0]['begin'] = item['begin'];

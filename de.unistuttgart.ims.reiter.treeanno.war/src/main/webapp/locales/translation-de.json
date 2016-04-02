@@ -23,12 +23,15 @@
 			"prefail":"Bitte <strong>zwei</strong> Segmente markieren."
 		},
 		"split":{
+			"done":"__left__ ¶ __right__",
 			"prefail":"Bitte nur ein Segment markieren."
 		},
 		"up":{
+			"desc":"Markierung nach oben erweitern",
 			"prefail":"Erstes Segment bereits markiert."
 		},
 		"down":{
+			"desc":"Markierung nach unten erweitern",
 			"prefail":"Letztes Segment bereits markiert."
 		}
 	},
@@ -54,7 +57,7 @@
 	"show_helper":"Spickzettel",
 	"show_history":"Aktionslog",
 	"documents_in_X":"Dokumente in Projekt &bdquo;__projectname__&ldquo;",
-	"howto_split":"An der zu splittenden Stelle zweimal Enter drücken",
+	"howto_split":"Mit den Pfeiltasten das Absatzzeichen an die richtige Stelle setzen. Weitere Sprünge mit &#8679;+Pfeiltasten.",
 	"rename_dialog":{
 		"title":"Document umbenennen",
 		"ok":"Umbenennen",
