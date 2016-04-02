@@ -56,7 +56,7 @@
 	"show_helper":"Spickzettel",
 	"show_history":"Aktionslog",
 	"documents_in_X":"Dokumente in Projekt &bdquo;__projectname__&ldquo;",
-	"howto_split":"An der zu splittenden Stelle zweimal Enter drücken",
+	"howto_split":"Mit den Pfeiltasten das Absatzzeichen an die richtige Stelle setzen. Weitere Sprünge mit &#8679;+Pfeiltasten.",
 	"rename_dialog":{
 		"title":"Document umbenennen",
 		"ok":"Umbenennen",
