@@ -7,13 +7,17 @@ var kbkey = { up: 38, down: 40, right: 39, left: 37,
 		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
 var keyString = {
 		37:'&larr;',
+		38:'&uarr;',
 		39:'&rarr;',
+		40:'&darr;',
 		49:'1',
 		67:'c',
 		68:'d',
 		77:'m',
 		83:'s',
+		1038:'&#8679;&uarr;',
 		1039:'&#8679;&rarr;',
+		1040:'&#8679;&darr;',
 		1068:'&#8679;d',
 		1083:'&#8679;s'
 }
@@ -26,7 +30,8 @@ var operations = {
 			history:true
 		},{
 			id:'move-splitpoint-left',
-			fun:split_move_left
+			fun:split_move_left,
+			history:false
 		}],
 		38:[{
 			// up
@@ -52,7 +57,8 @@ var operations = {
 			history:true
 		},{
 			id:'move-splitpoint-right',
-			fun:split_move_right
+			fun:split_move_right,
+			history:false
 		}],
 		40:[{
 			// down
@@ -126,12 +132,32 @@ var operations = {
 			'desc':'action_split',
 			history:true
 		}],
+		1038:[{
+			// shift + up
+			id:'up',
+			fun:move_selection_up,
+			desc:'action.up.desc',
+			history:false,
+			pre: {
+				fun:function() { return shifted; }
+			}
+		}],
 		1039:[{
 			// shift + right
 			'id':'force_indent',
 			fun:force_indent,
 			desc:'action.force_indent',
 			history:true
+		}],
+		1040:[{
+			// shift + down
+			id:'down',
+			fun:extend_selection_down,
+			desc:'action.down.desc',
+			history:false,
+			pre: {
+				fun:function() { return shifted; }
+			}
 		}],
 		1068:[{
 			// shift + d
@@ -199,7 +225,7 @@ function init_help() {
 	var helpTable = document.createElement("table");
 	for (key in operations) {
 		if (!operations[key]['disabled']) {
-			$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key]['desc'])+"</td></tr>");
+			$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key][0]['desc'])+"</td></tr>");
 		}
 	}
 	$(helpElement).append(helpTable);
@@ -402,15 +428,34 @@ function key_up(e) {
 	}
 }
 
+function extend_selection_down() {
+	var allItems = $("#outline li");
+
+	// get index of last selected item
+	var index = $(".selected").last().index("#outline li");
+		
+	// if nothing is selected
+	if (index == -1) 
+		// we select the first thing on the page
+		$($(allItems).get(0)).toggleClass("selected");
+	else 
+		// if there is something after the last selected item, we
+		// add that to the selection
+		$(".selected").last().next().toggleClass("selected");
+	
+	// if the last selected thing is not in viewport, we scroll
+	if (!isElementInViewport($(".selected").last()))
+		$(window).scrollTop($(".selected").last().offset().top - 200);
+}
+
 function move_selection_down() {
 	var allItems = $("#outline li");
 
 	// get index of last selected item
 	var index = $(".selected").last().index("#outline li");
 	
-	// if shift is not pressed, we remove the selection from everything that is selected
-	if (!shifted && index < $("#outline li").length-1)
-		$(".selected").toggleClass("selected");
+	// we remove the selection from everything that is selected
+	$(".selected").toggleClass("selected");
 	
 	// if nothing is selected
 	if (index == -1) {
@@ -421,9 +466,6 @@ function move_selection_down() {
 		// if shift is not pressed, we select the next item of all items
 		if (!shifted)
 			$($(allItems).get(index+1)).toggleClass("selected");
-		// if it is pressed, we select the next sibling
-		if (shifted)
-			$(".selected").last().next().toggleClass("selected");
 	}
 	// if the last selected thing is not in viewport, we scroll
 	if (!isElementInViewport($(".selected").last()))
@@ -472,7 +514,8 @@ function key_down(e) {
 					add_operation(kc, $(".selected"));
 				operations[kc][interaction_mode].fun();
 			} else {
-				noty(operations[kc][interaction_mode].pre.fail);
+				if ('fail' in operations[kc][interaction_mode]['pre'])
+					noty(operations[kc][interaction_mode].pre.fail);
 			}
 		}
 	}

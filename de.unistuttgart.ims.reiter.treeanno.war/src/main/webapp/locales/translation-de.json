@@ -26,9 +26,11 @@
 			"prefail":"Bitte nur ein Segment markieren."
 		},
 		"up":{
+			"desc":"Markierung nach oben erweitern",
 			"prefail":"Erstes Segment bereits markiert."
 		},
 		"down":{
+			"desc":"Markierung nach unten erweitern",
 			"prefail":"Letztes Segment bereits markiert."
 		}
 	},

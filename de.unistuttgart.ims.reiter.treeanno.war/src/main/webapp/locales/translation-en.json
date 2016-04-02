@@ -26,10 +26,12 @@
 			"prefail":"Please select a single item."
 		},
 		"up":{
-			"prefail":"First item already selected."
+			"prefail":"First item already selected.",
+			"desc":"Extend selection upwards"
 		},
 		"down":{
-			"prefail":"Last item already selected."
+			"prefail":"Last item already selected.",
+			"desc":"Extend selection downwards"
 		}
 	},
 	"action_category_virtual_nodes":"Virtual Nodes",
