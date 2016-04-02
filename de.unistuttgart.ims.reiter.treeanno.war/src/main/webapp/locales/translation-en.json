@@ -23,6 +23,7 @@
 			"prefail":"Please select <strong>two</strong> items."
 		},
 		"split":{
+			"done":"__left__ ¶ __right__",
 			"prefail":"Please select a single item."
 		},
 		"up":{

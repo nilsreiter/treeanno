@@ -23,6 +23,7 @@
 			"prefail":"Bitte <strong>zwei</strong> Segmente markieren."
 		},
 		"split":{
+			"done":"__left__ ¶ __right__",
 			"prefail":"Bitte nur ein Segment markieren."
 		},
 		"up":{

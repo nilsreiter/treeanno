@@ -763,7 +763,14 @@ function splitdialog_enter() {
 	var lines = text.split(paragraphSplitCharacter);
 	if (lines.length == 2) {
 		add_operation(83, $(".selected"), {pos:lines[0].length});
-
+		noty({
+			type:"information",
+			text:i18n.t("action.split.done", {
+				left:lines[0].substring(lines[0].length-10,lines[0].length), 
+				right:lines[1].substring(0, 10)
+			})
+		});
+		
 		var litems = new Array();
 		litems[0] = new Object();
 		litems[0]['begin'] = item['begin'];
