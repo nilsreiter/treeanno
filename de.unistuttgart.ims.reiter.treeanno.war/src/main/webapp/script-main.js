@@ -30,7 +30,16 @@ var operations = {
 			id:'up',
 			fun:move_selection_up,
 			desc:'action_up',
-			history:false
+			history:false,
+			pre:{
+				fun:function() {
+					return !$(".selected").first().is($("#outline li").first());
+				},
+				fail: {
+					type: "information",
+					text: "action.up.prefail"
+				}
+			}
 		}],
 		39:[{
 			// right
@@ -44,7 +53,16 @@ var operations = {
 			id:'down',
 			fun:move_selection_down,
 			desc:'action_down',
-			history:false
+			history:false,
+			pre: {
+				fun: function() {
+					return !$(".selected").last().is($("#outline li").last());
+				},
+				fail: {
+					type: "information",
+					text: "action.down.prefail"
+				}
+			}
 		}],
 		49:[{
 			// one
@@ -161,6 +179,8 @@ function init_operations(projectType) {
 		operations[1039][0]['desc'] = 'action.force_indent_t2';
 		break;
 	}
+	operations[38][0]['pre']['fail']['text'] = i18n.t(operations[38][0]['pre']['fail']['text']);
+	operations[40][0]['pre']['fail']['text'] = i18n.t(operations[40][0]['pre']['fail']['text']);
 	operations[83][0]['pre']['fail']['text'] = i18n.t(operations[83][0]['pre']['fail']['text']);
 	operations[77][0]['pre']['fail']['text'] = i18n.t(operations[77][0]['pre']['fail']['text']);
 

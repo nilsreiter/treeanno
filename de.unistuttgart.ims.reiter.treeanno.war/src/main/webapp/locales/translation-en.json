@@ -24,6 +24,12 @@
 		},
 		"split":{
 			"prefail":"Please select a single item."
+		},
+		"up":{
+			"prefail":"First item already selected."
+		},
+		"down":{
+			"prefail":"Last item already selected."
 		}
 	},
 	"action_category_virtual_nodes":"Virtual Nodes",

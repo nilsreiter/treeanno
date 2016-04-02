@@ -24,6 +24,12 @@
 		},
 		"split":{
 			"prefail":"Bitte nur ein Segment markieren."
+		},
+		"up":{
+			"prefail":"Erstes Segment bereits markiert."
+		},
+		"down":{
+			"prefail":"Letztes Segment bereits markiert."
 		}
 	},
 	"action_category_virtual_nodes":"Virtuelle Knoten",
