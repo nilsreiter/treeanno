@@ -85,15 +85,16 @@
 		"username":"Annotator/in",
 		"mod_date":"Letzte Änderung",
 		"actions":"Aktionen",
-		"no-documents":"Keine annotierten Dokumente vorhanden."
+		"no-documents":"Keine annotierten Dokumente vorhanden.",
+		"view":"Öffnen",
+		"delete":"Löschen"
 	},
 	"parallel":{
 		"annotations_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
 		"annotations_title_for_X":"Annotationen für __document__",
 		"annotations_from_X":"Annotationen von __user__",
 		"open_view":"Annotationen vergleichen",
-		"select":"Auswählen",
-		"view":"Öffnen"
+		"select":"Auswählen"
 	},
 	"bc":{
 		"master":"Master: "

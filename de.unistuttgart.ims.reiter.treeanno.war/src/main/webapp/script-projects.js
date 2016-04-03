@@ -78,7 +78,8 @@ function show_annodoclist(id) {
 				$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
 			
 				var actionCell = document.createElement("td");
-				$(actionCell).append("<button class=\"button_view\" id=\"view-udoc-"+data['documents'][i]['id']+"\" name=\"view\" value=\""+data['documents'][i]['id']+"\">"+i18n.t("parallel.view")+"</button><label for=\"view-udoc-"+data['documents'][i]['id']+"\"></label>");
+				$(actionCell).append("<button class=\"button_view\" id=\"view-udoc-"+data['documents'][i]['id']+"\" name=\"view\" value=\""+data['documents'][i]['id']+"\">"+i18n.t("annodoclistarea.view")+"</button>");
+				$(actionCell).append("<button class=\"button_delete\" id=\"delete-udoc-"+data['documents'][i]['id']+"\" name=\"delete\" value=\""+data['documents'][i]['id']+"\">"+i18n.t("annodoclistarea.delete")+"</button>");
 				// if (al >= Perm["PADMINACCESS"]) 
 					$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+data['documents'][i]['id']+"\" type=\"checkbox\" name=\"diff\" value=\""+data['documents'][i]['id']+"\"/><label for=\"diffselect-"+data['documents'][i]['id']+"\"></label>");
 
@@ -93,11 +94,22 @@ function show_annodoclist(id) {
 					text:showText
 				}); 
 				$(actionCell).find("button.button_view").button({
-					label:i18n.t("parallel.view"),
+					label:i18n.t("annodoclistarea.view"),
 					icons:{primary:"ui-icon-document", secondary:null},
 					text:showText
 				}).click({'userDocumentId':data['documents'][i]['id']}, function(event) {	
 	 				window.location.href="parallel.jsp?userDocumentId="+event.data.userDocumentId;
+				});
+				$(actionCell).find("button.button_delete").button({
+					label:i18n.t("annodoclistarea.delete"),
+					icons:{primary:"ui-icon-trash", secondary:null},
+					text:showText
+				}).click({'userDocumentId':data['documents'][i]['id']}, function(event) {
+					jQuery.ajax({
+						url:"DocumentHandling?action=delete&userDocumentId="+event.data.userDocumentId,
+						complete:function() {show_annodoclist(id); },
+						method:"DELETE"
+					});
 				});
 			}
 			$("#annodoclistarea").append("<h2>"+i18n.t("annodoclistarea.title_for_X", {"document":data['src']['name']})+"</h2>");
