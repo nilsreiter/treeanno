@@ -323,13 +323,6 @@ function init_main() {
 			text:showText
 		});
 		
-		$( "button.button_change_document" ).button({
-			icons: { primary: "ui-icon-folder-collapsed", secondary:null },
-			text:showText
-			//label: i18n.t("open"),
-		}).click(function() {
-			window.location.href="projects.jsp?projectId="+projectId;
-		});
 		$( "button.button_save_document" ).button({
 			icons: { primary: "ui-icon-disk", secondary:null },
 			label: i18n.t("save"),
