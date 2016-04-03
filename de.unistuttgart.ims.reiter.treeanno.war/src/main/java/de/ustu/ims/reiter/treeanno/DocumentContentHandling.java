@@ -120,7 +120,7 @@ public class DocumentContentHandling extends HttpServlet {
 				}
 
 				JCas jcas = null;
-				if (master) {
+				if (master && accessLevel == Perm.PADMIN_ACCESS) {
 					Document doc = dl.getDocument(docId);
 					jcas = JCasConverter.getJCas(doc.getXmi());
 				} else {
