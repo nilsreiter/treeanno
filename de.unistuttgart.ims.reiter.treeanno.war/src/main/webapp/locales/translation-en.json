@@ -45,7 +45,7 @@
 	"document_actions":"Actions",
 	"document_action_open":"Annotate",
 	"document_action_clone":"Clone",
-	"document_action_delete":"Hide",
+	"document_action_delete":"Delete",
 	"document_action_export_xmi":"Export",
 	"document_action_rename":"Rename",
 	"document_action_view_annodoc":"View annotations",
