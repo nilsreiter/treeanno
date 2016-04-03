@@ -74,12 +74,14 @@ var keyString = {
  * }
  */
 var operations = {
-		13:{ split: {
-			// enter pressed in the split dialog
-			id:'split-enter',
-			fun:splitdialog_enter,
-			history:false
-		}},
+		13:{ 
+			split: {
+				// enter pressed in the split dialog
+				id:'split-enter',
+				fun:splitdialog_enter,
+				history:false
+			}
+		},
 		37:{ 
 			treeanno: {
 				// left
@@ -94,157 +96,186 @@ var operations = {
 				history:false
 			}
 		},
-		38:{treeanno:{
-			// up
-			id:'up',
-			fun:move_selection_up,
-			desc:'action_up',
-			history:false,
-			pre:{
-				fun:function() {
-					return !$(".selected").first().is($("#outline li").first());
-				},
-				fail: {
-					type: "information",
-					text: "action.up.prefail"
+		38: {
+			treeanno: {
+				// up
+				id:'up',
+				fun:move_selection_up,
+				desc:'action_up',
+				history:false,
+				pre:{
+					fun:function() {
+						return !$(".selected").first().is($("#outline li").first());
+					},
+					fail: {
+						type: "information",
+						text: "action.up.prefail"
+					}
 				}
 			}
-		}},
-		39:{treeanno:{
-			// right
-			'id':'indent',
-			fun:indent,
-			'desc':'action_indent',
-			history:true
-		},split:{
-			// move the split point to the right
-			id:'move-splitpoint-right',
-			fun:function() { split_move_right(1) },
-			history:false
-		}},
-		40:{treeanno:{
-			// down
-			id:'down',
-			fun:move_selection_down,
-			desc:'action_down',
-			history:false,
-			pre: {
-				fun: function() {
-					return !$(".selected").last().is($("#outline li").last());
-				},
-				fail: {
-					type: "information",
-					text: "action.down.prefail"
-				}
-			}
-		}},
-		49:{treeanno:{
-			// one
-			'id':'mark1',
-			fun:function() {
-				$(".selected").toggleClass("mark1");
-				enableSaveButton();
+		},
+		39: {
+			treeanno: {
+				// right
+				'id':'indent',
+				fun:indent,
+				'desc':'action_indent',
+				history:true
 			},
-			desc:'action_mark1',
-			history:true
-		}},
-		67:{treeanno:{
-			// c
-			id:'categorize',
-			fun:add_category,
-			desc:'action_assign_category',
-			history:true
-		}},
-		68:{treeanno:{
-			// d
-			'id':'delete_category',
-			fun:delete_category,
-			desc:'action_delete_category',
-			history:true
-		}},
-		77:{treeanno:{
-			// m
-			'id':'merge',
-			pre:{
-				fun:function() {
-					return $(".selected").length == 2;
-				},
-				fail:{
-					text:"action.merge.prefail",
-					type:"information"
-				}
-			},
-			fun: mergeselected,
-			desc:'action_merge',
-			history:true
-		}},
-		83:{treeanno:{
-			// s
-			'id':'split',
-			fun:splitdialog,
-			pre:{
-				fun:function() {
-					return $(".selected").length == 1;
-				},
-				fail:{
-					text:"action.split.prefail",
-					type:"information"
-				}
-			},
-			'desc':'action_split',
-			history:true
-		}},
-		1037:{split:{
-			id:'move-splitpoint-left-big',
-			fun:function() { split_move_left(25) },
-			history:false
-		}},
-		1038:{treeanno:{
-			// shift + up
-			id:'up',
-			fun:move_selection_up,
-			desc:'action.up.desc',
-			history:false,
-			pre: {
-				fun:function() { return shifted; }
+			split: {
+				// move the split point to the right
+				id:'move-splitpoint-right',
+				fun:function() { split_move_right(1) },
+				history:false
 			}
-		}},
-		1039:{treeanno:{
-			// shift + right
-			'id':'force_indent',
-			fun:force_indent,
-			desc:'action.force_indent',
-			history:true
-		},split:{
-			id:'move-splitpoint-right-big',
-			fun:function() { split_move_right(25) },
-			history:false
-		}},
-		1040:{treeanno:{
-			// shift + down
-			id:'down',
-			fun:extend_selection_down,
-			desc:'action.down.desc',
-			history:false,
-			pre: {
-				fun:function() { return shifted; }
+		},
+		40: {
+			treeanno:{
+				// down
+				id:'down',
+				fun:move_selection_down,
+				desc:'action_down',
+				history:false,
+				pre: {
+					fun: function() {
+						return !$(".selected").last().is($("#outline li").last());
+					},
+					fail: {
+						type: "information",
+						text: "action.down.prefail"
+					}
+				}
 			}
-		}},
-		1068:{treeanno:{
-			// shift + d
-			'id':'delete_virtual_node',
-			fun:delete_virtual_node,
-			desc:'action.delete_vnode',
-			history:true
-		}},
-		1083:{treeanno:{
-			// shift + s
-			d:'save_document',
-			fun:save_document,
-			desc:'action.save_document',
-			history:true
-		}}
-		
+		},
+		49: {
+			treeanno:{
+				// one
+				'id':'mark1',
+				fun:function() {
+					$(".selected").toggleClass("mark1");
+					enableSaveButton();
+				},
+				desc:'action_mark1',
+				history:true
+			}
+		},
+		67:{
+			treeanno:{
+				// c
+				id:'categorize',
+				fun:add_category,
+				desc:'action_assign_category',
+				history:true
+			}
+		},
+		68:{
+			treeanno:{
+				// d
+				id:'delete_category',
+				fun:delete_category,
+				desc:'action_delete_category',
+				history:true
+			}
+		},
+		77:{
+			treeanno:{
+				// m
+				id:'merge',
+				pre:{
+					fun:function() {
+						return $(".selected").length == 2;
+					},
+					fail:{
+						text:"action.merge.prefail",
+						type:"information"
+					}
+				},
+				fun: mergeselected,
+				desc:'action_merge',
+				history:true
+			}
+		},
+		83:{
+			treeanno:{
+				// s
+				id:'split',
+				fun:splitdialog,
+				pre:{
+					fun:function() {
+						return $(".selected").length == 1;
+					},
+					fail:{
+						text:"action.split.prefail",
+						type:"information"
+					}
+				},
+				desc:'action_split',
+				history:true
+			}
+		},
+		1037:{
+			split:{
+				id:'move-splitpoint-left-big',
+				fun:function() { split_move_left(25) },
+				history:false
+			}
+		},
+		1038:{
+			treeanno:{
+				// shift + up
+				id:'up',
+				fun:move_selection_up,
+				desc:'action.up.desc',
+				history:false,
+				pre: {
+					fun:function() { return shifted; }
+				}
+			}
+		},
+		1039:{
+			treeanno:{
+				// shift + right
+				id:'force_indent',
+				fun:force_indent,
+				desc:'action.force_indent',
+				history:true
+			},
+			split:{
+				id:'move-splitpoint-right-big',
+				fun:function() { split_move_right(25) },
+				history:false
+			}
+		},
+		1040:{
+			treeanno:{
+				// shift + down
+				id:'down',
+				fun:extend_selection_down,
+				desc:'action.down.desc',
+				history:false,
+				pre: {
+					fun:function() { return shifted; }
+				}
+			}
+		},
+		1068:{
+			treeanno:{
+				// shift + d
+				id:'delete_virtual_node',
+				fun:delete_virtual_node,
+				desc:'action.delete_vnode',
+				history:true
+			}
+		},
+		1083:{
+			treeanno:{
+				// shift + s
+				d:'save_document',
+				fun:save_document,
+				desc:'action.save_document',
+				history:true
+			}
+		}
 };
 
 
