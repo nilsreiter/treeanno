@@ -1,11 +1,6 @@
 var INTERACTION_NONE = "none";
 var INTERACTION_TREEANNO = "treeanno";
 var INTERACTION_SPLIT = "split";
-/**
- * -1: web default
- * 0: default TreeAnno
- * 1: split dialog
- */
 var interaction_mode = INTERACTION_TREEANNO;
 
 /**
