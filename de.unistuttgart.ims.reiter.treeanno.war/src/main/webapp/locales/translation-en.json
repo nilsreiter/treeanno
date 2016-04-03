@@ -64,6 +64,11 @@
 		"cancel":"Cancel",
 		"desc":"New Name"
 	},
+	"split_dialog":{
+		"title":"Split segment",
+		"ok":"Split",
+		"cancel":"Cancel"
+	},
 	"new_document":{
 		"title":"Upload New Document",
 		"submit":"Upload",

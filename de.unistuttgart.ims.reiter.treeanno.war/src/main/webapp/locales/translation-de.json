@@ -64,6 +64,11 @@
 		"cancel":"Abbrechen",
 		"desc":"Neuer Name"
 	},
+	"split_dialog":{
+		"title":"Segment teilen",
+		"ok":"Teilen",
+		"cancel":"Abbrechen"
+	},
 	"new_document":{
 		"title":"Neues Dokument hochladen",
 		"submit":"Hochladen",

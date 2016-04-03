@@ -349,8 +349,9 @@ function init_help() {
 	var helpTable = document.createElement("table");
 	for (key in operations) {
 		if (!operations[key]['disabled']) {
-			if (INTERACTION_TREEANNO in operations[key])
-				$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key][INTERACTION_TREEANNO]['desc'])+"</td></tr>");
+			if (INTERACTION_TREEANNO in operations[key]) {
+				$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key][INTERACTION_TREEANNO]['desc'])+"</td></tr>");	
+			}
 		}
 	}
 	$(helpElement).append(helpTable);
@@ -853,21 +854,20 @@ function splitdialog() {
 	$("#form_splittext").append(paragraphSplitCharacter+item['text']);
 	
 	$("#split").dialog({
-		title: i18n.t("Split Segment"),
+		title: i18n.t("split_dialog.title"),
 		modal: true,
 		minWidth: 400,
 		close: splitdialog_cleanup,
 		buttons: 
 		[
-		 	{
-		 		text: i18n.t("ok"),
-		 		click: splitdialog_enter,
-		 		tabindex:1
-		    },
 		    {
-		    	text: i18n.t("cancel"),
+		    	text: i18n.t("split_dialog.cancel"),
 		    	click: splitdialog_cleanup,
 		    	tabindex:2
+		    },{
+		 		text: i18n.t("split_dialog.ok"),
+		 		click: splitdialog_enter,
+		 		tabindex:1
 		    }
 		]
 	});
