@@ -58,6 +58,7 @@ var keyString = {
  *    fun:function,
  *    
  *    // whether this op makes an entry in the edit history
+ *    // This also determines whether the save button will be activated
  *    history: (true|false),
  *    
  *    // a locale key to be put into the help menu.
@@ -722,9 +723,11 @@ function key_down(e) {
 			kc = keyCode + 1000;
 		if (kc in operations && !operations[kc][interaction_mode]['disabled']) {
 			if (check_precondition(kc)) {
-				if (operations[kc][interaction_mode]['history'])
-					add_operation(kc, $(".selected"));
 				operations[kc][interaction_mode].fun();
+				if (operations[kc][interaction_mode]['history']) {
+					add_operation(kc, $(".selected"));
+					enableSaveButton();
+				}
 			} else {
 				if ('fail' in operations[kc][interaction_mode]['pre'])
 					noty(operations[kc][interaction_mode].pre.fail);
@@ -785,7 +788,6 @@ function enter_category() {
 	$(".selected").prepend("<p class=\"annocat\">"+value+"</p>");
 	// var oa = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
 	$(".selected").attr("data-treeanno-categories", value);
-	enableSaveButton();
 	interaction_mode = INTERACTION_TREEANNO;
 
 }
@@ -841,8 +843,6 @@ function merge(item1, item0) {
 	$(".selected").append(sublist0);
 	$(".selected").append(sublist1);
 	
-	enableSaveButton();
-
 }
 
 
@@ -944,7 +944,6 @@ function splitdialog_enter() {
 		var nsel = $(".selected").next();
 		$(".selected").remove();
 		$(nsel).addClass("selected");
-		enableSaveButton();
 		
 	}
 	cleanup_list();
@@ -972,7 +971,6 @@ function outdent() {
 		outdentElement(element);
 	});
 	cleanup_list();
-	enableSaveButton();
 }
 
 function force_indent() {
@@ -992,7 +990,6 @@ function force_indent() {
 		cleanup_list();	
 		
 	});
-	enableSaveButton();
 }
 
 function delete_virtual_node() {
@@ -1028,7 +1025,6 @@ function indent() {
 		indentElement(element);
 		cleanup_list();		
 	});
-	enableSaveButton();
 }
 
 
