@@ -208,6 +208,7 @@ function show_documentlist(id) {
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
+				// TODO: check if annotated documents exist, show a warning if they do
 				window.location.href="main.jsp?master=master&documentId="+event.data.documentId;
 			});
 			$(actionCell).find("button.button_rename").button({
