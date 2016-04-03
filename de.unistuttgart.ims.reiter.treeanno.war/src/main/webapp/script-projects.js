@@ -201,22 +201,21 @@ function show_documentlist(id) {
 				$(diagDiv).dialog({
 					title:i18n.t("rename_dialog.title"),
 					dialogClass: "no-close",
-					buttons: [{ text: i18n.t("rename_dialog.ok"),
-					            click: function() {
-					            	// alert($(diagDiv).children("input").val());
-									jQuery.getJSON("DocumentHandling?action=rename&name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
-										show_documentlist(id);
-									});
-
-					              $( this ).dialog( "close" );
-					            }
-					          },{
-					        	  text:i18n.t("rename_dialog.cancel"),
-					        	  click: function() {
-					        		  $(this).dialog("destroy");
-					        		  document.getElementsByTagName("BODY")[0].removeChild(diagDiv);
-					        	  }
-					          }],
+					buttons: [{
+						text:i18n.t("rename_dialog.cancel"),
+			        	click: function() {
+			        		$(this).dialog("destroy");
+			        		document.getElementsByTagName("BODY")[0].removeChild(diagDiv);
+			        	}
+					},{ 
+						text: i18n.t("rename_dialog.ok"),
+						click: function() {
+							jQuery.getJSON("DocumentHandling?action=rename&name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
+								show_documentlist(id);
+							});
+					        $( this ).dialog( "close" );
+					    }
+					}],
 					closeOnEscape: true,
 					modal:true	
 				}).show();
