@@ -102,6 +102,8 @@ public class DocumentContentHandling extends HttpServlet {
 			response.setStatus(Response.SC_FORBIDDEN);
 			return;
 		}
+		// if the request parameter "master" has been set
+		boolean master = (request.getParameter("master") != null);
 		try {
 			if (documents.length > 0) {
 				int docId = Integer.valueOf(documents[0]);
@@ -117,17 +119,23 @@ public class DocumentContentHandling extends HttpServlet {
 					return;
 				}
 
-				UserDocument udoc =
-						dl.getUserDocument(CW.getUser(request), document);
-				JCas jcas = JCasConverter.getJCas(udoc.getXmi());
+				JCas jcas = null;
+				if (master) {
+					Document doc = dl.getDocument(docId);
+					jcas = JCasConverter.getJCas(doc.getXmi());
+				} else {
+					UserDocument udoc =
+							dl.getUserDocument(CW.getUser(request), document);
+					jcas = JCasConverter.getJCas(udoc.getXmi());
+				}
 				if (jcas != null) {
 					JSONObject obj = new JSONObject();
 					obj.put("document", JSONUtil.getJSONObject(document));
 					obj.put("list",
 							new JCasConverter()
-					.getJSONArrayFromAnnotations(
-							jcas,
-							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+									.getJSONArrayFromAnnotations(
+											jcas,
+											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
