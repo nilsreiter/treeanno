@@ -120,22 +120,23 @@ public class DocumentContentHandling extends HttpServlet {
 				}
 
 				JCas jcas = null;
-				if (master && accessLevel == Perm.PADMIN_ACCESS) {
+				JSONObject obj = new JSONObject();
+				if (master && accessLevel >= Perm.PADMIN_ACCESS) {
 					Document doc = dl.getDocument(docId);
 					jcas = JCasConverter.getJCas(doc.getXmi());
+					obj.put("master", true);
 				} else {
 					UserDocument udoc =
 							dl.getUserDocument(CW.getUser(request), document);
 					jcas = JCasConverter.getJCas(udoc.getXmi());
 				}
 				if (jcas != null) {
-					JSONObject obj = new JSONObject();
 					obj.put("document", JSONUtil.getJSONObject(document));
 					obj.put("list",
 							new JCasConverter()
-									.getJSONArrayFromAnnotations(
-											jcas,
-											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -166,17 +167,34 @@ public class DocumentContentHandling extends HttpServlet {
 		JSONObject jObj = new JSONObject(s);
 		JSONObject returnObject = new JSONObject();
 		int docId = jObj.getInt("document");
+		boolean master = jObj.getBoolean("master");
 		boolean r = false;
-		try {
-			UserDocument document =
-					dataLayer.getUserDocument(CW.getUser(request),
-							dataLayer.getDocument(docId));
-			JCas jcas =
-					Util.addAnnotationsToJCas(
-							JCasConverter.getJCas(document.getXmi()), jObj);
-			document.setXmi(JCasConverter.getXmi(jcas));
 
-			r = dataLayer.updateUserDocument(document);
+		try {
+			Document doc = dataLayer.getDocument(docId);
+			int accessLevel =
+					dataLayer.getAccessLevel(doc.getProject(),
+							CW.getUser(request));
+
+			if (master && accessLevel >= Perm.PADMIN_ACCESS) {
+				// saving the master document
+				// TODO: permission level check
+				JCas jcas =
+						Util.addAnnotationsToJCas(
+								JCasConverter.getJCas(doc.getXmi()), jObj);
+				doc.setXmi(JCasConverter.getXmi(jcas));
+				r = dataLayer.updateDocument(doc);
+			} else {
+				// saving the user document
+				UserDocument document =
+						dataLayer.getUserDocument(CW.getUser(request), doc);
+				JCas jcas =
+						Util.addAnnotationsToJCas(
+								JCasConverter.getJCas(document.getXmi()), jObj);
+				document.setXmi(JCasConverter.getXmi(jcas));
+
+				r = dataLayer.updateUserDocument(document);
+			}
 		} catch (UIMAException | JSONException | SQLException | SAXException e) {
 			returnObject.put("status", "exception");
 			returnObject.put("error", 1);

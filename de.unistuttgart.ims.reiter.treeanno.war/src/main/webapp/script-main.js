@@ -418,8 +418,10 @@ function init_main() {
 			key_up(e);
 		};
 		console.log("Querying for document content");
-		jQuery.getJSON("DocumentContentHandling?documentId="+documentId, function(data) {
+		jQuery.getJSON("DocumentContentHandling?"+(master?"master=master&":"")+"documentId="+documentId, function(data) {
 			console.log("Received document content");
+			// fixing master setting
+			master=("master" in data?true:false);
 			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
@@ -583,6 +585,7 @@ function save_document() {
 		// processData: false,
 		data: JSON.stringify({
 			document:documentId,
+			master:(master?true:false),
 			items:sitems
 		}),
 		contentType:'application/json; charset=UTF-8',

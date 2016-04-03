@@ -27,6 +27,7 @@
 
 	var language = "${sessionScope.User.language}";
 	var documentId = ${param.documentId};
+	var master = "${param.master}";
 	var treeanno = new Object();
 	treeanno["version"] = "${applicationScope['treeanno.version']}";
 	treeanno["name"] = "${applicationScope['treeanno.name']}";
