@@ -675,6 +675,11 @@ function key_down(e) {
 	
 }
 
+/**
+ * This method checks whether the preconditions for a certain keycode are met, 
+ * if they are set at all. If no preconditions have been set, the method 
+ * returns true.
+ */
 function check_precondition(kc) {
 	if ('pre' in operations[kc][interaction_mode])
 		return operations[kc][interaction_mode]['pre'].fun();
@@ -735,6 +740,12 @@ function enter_category() {
 
 }
 
+/**
+ * Functions returns a javascript object representing an item. Field values are 
+ * retrieved from the DOM tree.
+ * @param id The id of the item
+ * @returns {___anonymous20257_20259}
+ */
 function get_item(id) {
 	var obj = new Object();
 	obj['id'] = id;
