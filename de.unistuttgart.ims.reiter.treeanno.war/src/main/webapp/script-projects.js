@@ -169,6 +169,8 @@ function show_documentlist(id) {
 			if (al >= Perm["READACCESS"])
 				$(actionCell).append("<button class=\"button_open\"></button>");
 			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_open_master\"></button>");
+			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_rename\">rename</button>")
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_delete\">delete</button>");
@@ -186,6 +188,15 @@ function show_documentlist(id) {
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				window.location.href="main.jsp?documentId="+event.data.documentId;
+			});
+			$(actionCell).find("button.button_open_master").button({
+				label:i18n.t("document_action_open_master"),
+				icons:{primary:"ui-icon-document",secondary:null},
+				text:showText
+			}).click({
+				'documentId':data['documents'][i]['id']
+			}, function(event) {
+				window.location.href="main.jsp?master=master&documentId="+event.data.documentId;
 			});
 			$(actionCell).find("button.button_rename").button({
 				label:i18n.t("document_action_rename"),
