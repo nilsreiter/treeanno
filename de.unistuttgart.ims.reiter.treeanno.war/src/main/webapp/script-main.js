@@ -1,10 +1,12 @@
-
+var INTERACTION_NONE = "none";
+var INTERACTION_TREEANNO = "treeanno";
+var INTERACTION_SPLIT = "split";
 /**
  * -1: web default
  * 0: default TreeAnno
  * 1: split dialog
  */
-var interaction_mode = 0;
+var interaction_mode = INTERACTION_TREEANNO;
 
 /**
  * set to true when shift is pressed (and held)
@@ -72,25 +74,27 @@ var keyString = {
  * }
  */
 var operations = {
-		13:[{},{
+		13:{ split: {
 			// enter pressed in the split dialog
 			id:'split-enter',
 			fun:splitdialog_enter,
 			history:false
-		}],
-		37:[{
-			// left
-			'id':'outdent',
-			fun:outdent,
-			'desc':'action_outdent',
-			history:true
-		},{
-			// move the split point to the left
-			id:'move-splitpoint-left',
-			fun:function() { split_move_left(1) },
-			history:false
-		}],
-		38:[{
+		}},
+		37:{ 
+			treeanno: {
+				// left
+				id:'outdent',
+				fun:outdent,
+				desc:'action_outdent',
+				history:true }, 
+			split: {
+				// move the split point to the left
+				id:'move-splitpoint-left',
+				fun:function() { split_move_left(1) },
+				history:false
+			}
+		},
+		38:{treeanno:{
 			// up
 			id:'up',
 			fun:move_selection_up,
@@ -105,20 +109,20 @@ var operations = {
 					text: "action.up.prefail"
 				}
 			}
-		}],
-		39:[{
+		}},
+		39:{treeanno:{
 			// right
 			'id':'indent',
 			fun:indent,
 			'desc':'action_indent',
 			history:true
-		},{
+		},split:{
 			// move the split point to the right
 			id:'move-splitpoint-right',
 			fun:function() { split_move_right(1) },
 			history:false
-		}],
-		40:[{
+		}},
+		40:{treeanno:{
 			// down
 			id:'down',
 			fun:move_selection_down,
@@ -133,8 +137,8 @@ var operations = {
 					text: "action.down.prefail"
 				}
 			}
-		}],
-		49:[{
+		}},
+		49:{treeanno:{
 			// one
 			'id':'mark1',
 			fun:function() {
@@ -143,22 +147,22 @@ var operations = {
 			},
 			desc:'action_mark1',
 			history:true
-		}],
-		67:[{
+		}},
+		67:{treeanno:{
 			// c
 			id:'categorize',
 			fun:add_category,
 			desc:'action_assign_category',
 			history:true
-		}],
-		68:[{
+		}},
+		68:{treeanno:{
 			// d
 			'id':'delete_category',
 			fun:delete_category,
 			desc:'action_delete_category',
 			history:true
-		}],
-		77:[{
+		}},
+		77:{treeanno:{
 			// m
 			'id':'merge',
 			pre:{
@@ -173,8 +177,8 @@ var operations = {
 			fun: mergeselected,
 			desc:'action_merge',
 			history:true
-		}],
-		83:[{
+		}},
+		83:{treeanno:{
 			// s
 			'id':'split',
 			fun:splitdialog,
@@ -189,13 +193,13 @@ var operations = {
 			},
 			'desc':'action_split',
 			history:true
-		}],
-		1037:[{},{
+		}},
+		1037:{split:{
 			id:'move-splitpoint-left-big',
 			fun:function() { split_move_left(25) },
 			history:false
-		}],
-		1038:[{
+		}},
+		1038:{treeanno:{
 			// shift + up
 			id:'up',
 			fun:move_selection_up,
@@ -204,19 +208,19 @@ var operations = {
 			pre: {
 				fun:function() { return shifted; }
 			}
-		}],
-		1039:[{
+		}},
+		1039:{treeanno:{
 			// shift + right
 			'id':'force_indent',
 			fun:force_indent,
 			desc:'action.force_indent',
 			history:true
-		},{
+		},split:{
 			id:'move-splitpoint-right-big',
 			fun:function() { split_move_right(25) },
 			history:false
-		}],
-		1040:[{
+		}},
+		1040:{treeanno:{
 			// shift + down
 			id:'down',
 			fun:extend_selection_down,
@@ -225,21 +229,21 @@ var operations = {
 			pre: {
 				fun:function() { return shifted; }
 			}
-		}],
-		1068:[{
+		}},
+		1068:{treeanno:{
 			// shift + d
 			'id':'delete_virtual_node',
 			fun:delete_virtual_node,
 			desc:'action.delete_vnode',
 			history:true
-		}],
-		1083:[{
+		}},
+		1083:{treeanno:{
 			// shift + s
 			d:'save_document',
 			fun:save_document,
 			desc:'action.save_document',
 			history:true
-		}]
+		}}
 		
 };
 
@@ -278,10 +282,10 @@ function init_operations(projectType) {
 		operations[1039][0]['desc'] = 'action.force_indent_t2';
 		break;
 	}
-	operations[38][0]['pre']['fail']['text'] = i18n.t(operations[38][0]['pre']['fail']['text']);
-	operations[40][0]['pre']['fail']['text'] = i18n.t(operations[40][0]['pre']['fail']['text']);
-	operations[83][0]['pre']['fail']['text'] = i18n.t(operations[83][0]['pre']['fail']['text']);
-	operations[77][0]['pre']['fail']['text'] = i18n.t(operations[77][0]['pre']['fail']['text']);
+	operations[38][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[38][INTERACTION_TREEANNO]['pre']['fail']['text']);
+	operations[40][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[40][INTERACTION_TREEANNO]['pre']['fail']['text']);
+	operations[83][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[83][INTERACTION_TREEANNO]['pre']['fail']['text']);
+	operations[77][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[77][INTERACTION_TREEANNO]['pre']['fail']['text']);
 
 }
 
@@ -292,7 +296,8 @@ function init_help() {
 	var helpTable = document.createElement("table");
 	for (key in operations) {
 		if (!operations[key]['disabled']) {
-			$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key][0]['desc'])+"</td></tr>");
+			if (INTERACTION_TREEANNO in operations[key])
+				$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key][INTERACTION_TREEANNO]['desc'])+"</td></tr>");
 		}
 	}
 	$(helpElement).append(helpTable);
@@ -337,8 +342,8 @@ function init_main() {
 			label: i18n.t("search")
 		}).click(search);
 		$("#form_search").keyup(search);
-		$("#form_search").focus(function() {interaction_mode = -1});
-		$("#form_search").blur(function() {interaction_mode = 0});
+		$("#form_search").focus(function() {interaction_mode = INTERACTION_NONE});
+		$("#form_search").blur(function() {interaction_mode = INTERACTION_TREEANNO});
 		
 		$("#show_history").button({
 			icons:{primary:null,secondary:null},
@@ -444,8 +449,8 @@ function init_parallel() {
 		label: i18n.t("search")
 	}).click(search);
 	$("#form_search").keyup(search);
-	$("#form_search").focus(function() { interaction_mode = -1; });
-	$("#form_search").blur(function() { interaction_mode = 0; });
+	$("#form_search").focus(function() { interaction_mode = INTERACTION_NONE; });
+	$("#form_search").blur(function() { interaction_mode = INTERACTION_TREEANNO; });
 	
 	disableSaveButton();
 
@@ -570,7 +575,7 @@ function disableSaveButton() {
 }
 
 function key_up(e) {
-	if (interaction_mode < 0) return;
+	if (interaction_mode === INTERACTION_NONE) return;
 	e.preventDefault();
 	var keyCode = e.keyCode || e.which;
 	switch(keyCode) {
@@ -645,7 +650,7 @@ function move_selection_up() {
 }
 
 function key_down(e) {
-	if (interaction_mode < 0) return;
+	if (interaction_mode === INTERACTION_NONE) return;
 	e.preventDefault();
 	var keyCode = e.keyCode || e.which;
 	var allItems = $("#outline li");
@@ -708,7 +713,7 @@ function delete_category() {
 	$(".selected").removeAttr("data-treeanno-categories");
 }
 function add_category() {
-	interaction_mode = -1;
+	interaction_mode = INTERACTION_NONE;
 	$(".selected > p.annocat").remove();
 	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):$(".selected").attr("title"));
 	$(".selected").first().prepend("<input type=\"text\" size=\"100\" id=\"cat_input\" value=\""+val+"\"/>");
@@ -727,7 +732,7 @@ function add_category() {
 
 function cancel_category() {
 	$("#cat_input").remove();
-	interaction_mode = 0;
+	interaction_mode = INTERACTION_TREEANNO;
 }
 function enter_category() {
 	var value = $("#cat_input").val();
@@ -736,7 +741,7 @@ function enter_category() {
 	// var oa = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
 	$(".selected").attr("data-treeanno-categories", value);
 	enableSaveButton();
-	interaction_mode = 0;
+	interaction_mode = INTERACTION_TREEANNO;
 
 }
 
@@ -798,7 +803,7 @@ function merge(item1, item0) {
 
 
 function splitdialog() {
-	interaction_mode = 1;
+	interaction_mode = INTERACTION_SPLIT;
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
 	$("#form_splittext").append(paragraphSplitCharacter+item['text']);
 	
@@ -844,7 +849,7 @@ function split_move_left(dist) {
 }
 
 function splitdialog_cleanup() {
-	interaction_mode = 0;
+	interaction_mode = INTERACTION_TREEANNO;
 
 	$("#split").dialog( "destroy" );
 	$("#form_splittext").empty();
@@ -857,7 +862,7 @@ function splitdialog_enter() {
 	var text = $("#form_splittext").text();
 	var lines = text.split(paragraphSplitCharacter);
 	if (lines.length == 2) {
-		interaction_mode = 0;
+		interaction_mode = INTERACTION_TREEANNO;
 
 		add_operation(83, $(".selected"), {pos:lines[0].length});
 		noty({
