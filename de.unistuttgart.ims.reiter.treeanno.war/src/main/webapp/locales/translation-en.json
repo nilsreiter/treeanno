@@ -94,6 +94,8 @@
 		"open_view":"Compare annotations",
 		"select":"Select",
 		"view":"View"
+	},
+	"bc":{
+		"master":"Master: "
 	}
-	
 }

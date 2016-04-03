@@ -422,7 +422,7 @@ function init_main() {
 			console.log("Received document content");
 			// fixing master setting
 			master=("master" in data?true:false);
-			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+data["document"]["name"])
+			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+(master?i18n.t("bc.master"):"")+data["document"]["name"])
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
 			

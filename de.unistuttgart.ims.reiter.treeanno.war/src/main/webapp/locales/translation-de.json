@@ -94,6 +94,8 @@
 		"open_view":"Annotationen vergleichen",
 		"select":"Auswählen",
 		"view":"Öffnen"
+	},
+	"bc":{
+		"master":"Master: "
 	}
-
 }
