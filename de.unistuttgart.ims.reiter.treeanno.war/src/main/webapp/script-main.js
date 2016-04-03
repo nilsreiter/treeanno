@@ -1,7 +1,20 @@
 var INTERACTION_NONE = "none";
 var INTERACTION_TREEANNO = "treeanno";
 var INTERACTION_SPLIT = "split";
+var INTERACTION_CATEGORY = "category";
 var interaction_mode = INTERACTION_TREEANNO;
+
+var mode = {
+	treeanno:{ 
+		preventDefault:true
+	},
+	split:{
+		preventDefault:true
+	},
+	category:{
+		preventDefault:false
+	}
+}
 
 /**
  * set to true when shift is pressed (and held)
@@ -74,6 +87,19 @@ var operations = {
 				// enter pressed in the split dialog
 				id:'split-enter',
 				fun:splitdialog_enter,
+				history:false
+			},
+			category: {
+				// enter pressed when editing category string
+				id:'category-enter',
+				fun:enter_category,
+				history:true
+			}
+		},
+		27:{
+			category: {
+				id:'category-cancel',
+				fun:cancel_category,
 				history:false
 			}
 		},
@@ -602,7 +628,8 @@ function disableSaveButton() {
 
 function key_up(e) {
 	if (interaction_mode === INTERACTION_NONE) return;
-	e.preventDefault();
+	if (mode[interaction_mode]['preventDefault'])
+		e.preventDefault();
 	var keyCode = e.keyCode || e.which;
 	switch(keyCode) {
 	case kbkey.shift:
@@ -677,7 +704,8 @@ function move_selection_up() {
 
 function key_down(e) {
 	if (interaction_mode === INTERACTION_NONE) return;
-	e.preventDefault();
+	if (mode[interaction_mode]['preventDefault'])
+		e.preventDefault();
 	var keyCode = e.keyCode || e.which;
 	var allItems = $("#outline li");
 	switch (keyCode) {
@@ -685,7 +713,7 @@ function key_down(e) {
 		shifted = true;
 		break;
 		// What does this do?
-/*	case kbkey.enter:
+		/*	case kbkey.enter:
 		$(this).prev().attr('checked', !$(this).prev().attr('checked'));
 		break;*/
 	default:
@@ -739,27 +767,18 @@ function delete_category() {
 	$(".selected").removeAttr("data-treeanno-categories");
 }
 function add_category() {
-	interaction_mode = INTERACTION_NONE;
+	interaction_mode = INTERACTION_CATEGORY;
 	$(".selected > p.annocat").remove();
 	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):$(".selected").attr("title"));
 	$(".selected").first().prepend("<input type=\"text\" size=\"100\" id=\"cat_input\" value=\""+val+"\"/>");
-	$("#cat_input").keyup(function(event){
-	    if(event.keyCode == 13){
-	       enter_category();
-	    }
-	    if(event.keyCode == 27){
-	    	event.preventDefault();
-	    	cancel_category();
-	    }
-	});
 	document.getElementById("cat_input").focus();
 }
-
 
 function cancel_category() {
 	$("#cat_input").remove();
 	interaction_mode = INTERACTION_TREEANNO;
 }
+
 function enter_category() {
 	var value = $("#cat_input").val();
 	$("#cat_input").remove();
