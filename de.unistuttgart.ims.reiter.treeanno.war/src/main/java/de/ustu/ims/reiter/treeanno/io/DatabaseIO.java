@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -293,5 +294,9 @@ public class DatabaseIO implements DataLayer {
 	public UserDocument getUserDocument(int id) throws SQLException {
 		// TODO: prevent immediate retrieval of xmi column
 		return userDocumentDao.queryForId(id);
+	}
+
+	public boolean deleteUserDocument(int id) throws SQLException {
+		return (userDocumentDao.deleteIds(Arrays.asList(id)) == 1);
 	}
 }

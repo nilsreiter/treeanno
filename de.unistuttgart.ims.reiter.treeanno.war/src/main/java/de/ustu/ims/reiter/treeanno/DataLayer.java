@@ -14,6 +14,7 @@ import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 /**
  * This interface describes the methods to retrieve data from cache or database.
  * All data access should go through one of these methods.
+ * 
  * @author reiterns
  *
  */
@@ -38,11 +39,13 @@ public interface DataLayer {
 	boolean deleteDocument(Document document) throws SQLException;
 
 	boolean setJCas(Document document, JCas jcas) throws SQLException,
-			SAXException;
+	SAXException;
 
 	boolean updateDocument(Document document) throws SQLException;
 
 	Document createNewDocument(Document d) throws SQLException;
 
 	boolean updateUserDocument(UserDocument document) throws SQLException;
+
+	boolean deleteUserDocument(int id) throws SQLException;
 }
