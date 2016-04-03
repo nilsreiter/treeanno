@@ -240,9 +240,14 @@ function show_documentlist(id) {
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
-				jQuery.getJSON("DocumentHandling?action=delete&documentId="+event.data.documentId, function() {
-					show_documentlist(id);
+				jQuery.ajax({
+					url:"DocumentHandling?action=delete&documentId="+event.data.documentId,
+					complete:function() {show_documentlist(id); },
+					method:"DELETE"
 				});
+/*				jQuery.getJSON("DocumentHandling?action=delete&documentId="+event.data.documentId, function() {
+					show_documentlist(id);
+				});*/
 			});
 			
 			$(actionCell).find("button.button_view_annodoc").button({

@@ -37,8 +37,40 @@ public class DocumentHandling extends HttpServlet {
 		super();
 	}
 
+	@Override
+	protected void doDelete(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String[] docIds = null;
+		DataLayer dataLayer = CW.getDataLayer(getServletContext());
+
+		if (request.getParameter("documentId") != null) {
+			docIds = request.getParameterValues("documentId");
+			for (int i = 0; i < docIds.length; i++) {
+				try {
+					Document document =
+							dataLayer.getDocument(Integer.valueOf(docIds[i]));
+					dataLayer.deleteDocument(document);
+				} catch (NumberFormatException | SQLException e) {
+					throw new ServletException(e);
+				}
+			}
+			Util.returnJSON(response, new JSONObject());
+		} else if (request.getParameter("userDocumentId") != null) {
+			docIds = request.getParameterValues("userDocumentId");
+			for (int i = 0; i < docIds.length; i++) {
+				try {
+					dataLayer.deleteUserDocument(Integer.valueOf(docIds[i]));
+				} catch (NumberFormatException | SQLException e) {
+					throw new ServletException(e);
+				}
+			}
+			Util.returnJSON(response, new JSONObject());
+		}
+	}
+
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -52,16 +84,7 @@ public class DocumentHandling extends HttpServlet {
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 		String[] docIds = request.getParameterValues("documentId");
 		if (action.equalsIgnoreCase("delete")) {
-			for (int i = 0; i < docIds.length; i++) {
-				try {
-					Document document =
-							dataLayer.getDocument(Integer.valueOf(docIds[i]));
-					dataLayer.deleteDocument(document);
-				} catch (NumberFormatException | SQLException e) {
-					throw new ServletException(e);
-				}
-			}
-			Util.returnJSON(response, new JSONObject());
+			// empty, use HTTP DELETE instead
 		} else if (action.equalsIgnoreCase("clone")) {
 			throw new UnsupportedOperationException();
 		} else if (action.equalsIgnoreCase("export")) {
@@ -81,11 +104,11 @@ public class DocumentHandling extends HttpServlet {
 					String name = document.getName();
 					if (name == null || name.isEmpty())
 						JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-						.getDocumentTitle();
+								.getDocumentTitle();
 					if (name == null || name.isEmpty())
 						name =
-								JCasUtil.selectSingle(jcas,
-										DocumentMetaData.class).getDocumentId();
+						JCasUtil.selectSingle(jcas,
+								DocumentMetaData.class).getDocumentId();
 
 					// root folder
 					zos.putNextEntry(new ZipEntry(name + "/"));
