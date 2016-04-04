@@ -324,15 +324,15 @@ function dtext(s) {
 function init_operations(projectType) {
 	switch(projectType){
 	case ProjectType["ARNDT"]:
-		operations[49][0]['disabled'] = 1;
-		operations[67][0]['fun'] = function() {
+		operations[49][INTERACTION_TREEANNO]['disabled'] = 1;
+		operations[67][INTERACTION_TREEANNO]['fun'] = function() {
 			force_indent();
 			move_selection_up();
 			add_category();
 		}
-		operations[67][0]['desc'] = 'action.assign_category_t2';
-		operations[68][0]['desc'] = "action.delete_category_t2";
-		operations[1039][0]['desc'] = 'action.force_indent_t2';
+		operations[67][INTERACTION_TREEANNO]['desc'] = 'action.assign_category_t2';
+		operations[68][INTERACTION_TREEANNO]['desc'] = "action.delete_category_t2";
+		operations[1039][INTERACTION_TREEANNO]['desc'] = 'action.force_indent_t2';
 		break;
 	}
 	operations[38][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[38][INTERACTION_TREEANNO]['pre']['fail']['text']);
