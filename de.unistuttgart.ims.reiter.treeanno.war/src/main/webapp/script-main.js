@@ -323,6 +323,7 @@ function get_html_item(item, i) {
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
+	$(htmlItem).attr("data-treeanno-categories", item['category']);
 	$(htmlItem).addClass("unselectable");
 	if (item['Mark1']) $(htmlItem).addClass("mark1");
 	idCounter = Math.max(idCounter, item['id']);
