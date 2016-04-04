@@ -1,1 +1,4 @@
 org.eclipse.wst.common.component
+.project
+.settings/
+.classpath

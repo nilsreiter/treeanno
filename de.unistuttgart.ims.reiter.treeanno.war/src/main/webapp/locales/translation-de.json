@@ -1,0 +1,110 @@
+{
+	"username":"Benutzername",
+	"password":"Passwort",
+	"ok":"Ok",
+	"login_open_dialog":"Login",
+	"action_up":"Cursor bewegen",
+	"action_down":"Cursor bewegen",
+	"action_indent":"Einrücken",
+	"action_outdent":"Ausrücken",
+	"action_split":"Aufspalten",
+	"action_merge":"Zusammenfügen",
+	"action_assign_category":"Annotieren",
+	"action_mark1":"Dauerhaft markieren",
+	"action_delete_category":"Annotation entfernen",
+	"action":{
+		"delete_vnode":"Knoten entfernen",
+		"force_indent":"Forc. Einrücken",
+		"assign_category_t2":"Knoten erzeugen und Frage eingeben",
+		"delete_category_t2":"Frage löschen",
+		"force_indent_t2":"Knoten erzeugen",
+		"save_document":"Speichern",
+		"right":{
+			"prefail":"Kann nicht einrücken"
+		},
+		"left":{
+			"prefail":"Kann nicht ausrücken, Knoten ist bereits auf oberster Ebene"
+		},
+		"merge":{
+			"prefail":"Bitte <strong>zwei</strong> Segmente markieren."
+		},
+		"split":{
+			"done":"__left__ ¶ __right__",
+			"prefail":"Bitte nur ein Segment markieren."
+		},
+		"up":{
+			"desc":"Markierung nach oben erweitern",
+			"prefail":"Erstes Segment bereits markiert."
+		},
+		"down":{
+			"desc":"Markierung nach unten erweitern",
+			"prefail":"Letztes Segment bereits markiert."
+		}
+	},
+	"action_category_virtual_nodes":"Virtuelle Knoten",
+	"help_title":"Spickzettel",
+	"open":"Öffnen",
+	"list_of_projects":"Projektliste",
+	"document_id":"Id",
+	"document_name":"Name",
+	"document_mod_date":"Letzte Änderung",
+	"document_actions":"Aktionen",
+	"document_action_open":"Annotieren",
+	"document_action_open_master":"Master bearbeiten",
+	"document_action_open_master_confirm":"Existierende Annotationen für dieses Dokument werden invalidiert.",
+	"document_action_clone":"Duplizieren",
+	"document_action_delete":"Löschen",
+	"document_action_delete_confirm":"Das Dokument wird unwiderbringlich gelöscht. Wirklich löschen?",
+	"document_action_export_xmi":"Export",
+	"document_action_rename":"Umbenennen",
+	"document_action_view_annodoc":"Annotationen ansehen",
+	"project_id":"Id",
+	"project_name":"Name",
+	"project_action_open":"Öffnen",
+	"login_dialog_title":"Login",
+	"login_dialog_ok":"Enter",
+	"show_helper":"Spickzettel",
+	"show_history":"Aktionslog",
+	"documents_in_X":"Dokumente in Projekt &bdquo;__projectname__&ldquo;",
+	"howto_split":"Mit den Pfeiltasten das Absatzzeichen an die richtige Stelle setzen. Weitere Sprünge mit &#8679;+Pfeiltasten.",
+	"rename_dialog":{
+		"title":"Document umbenennen",
+		"ok":"Umbenennen",
+		"cancel":"Abbrechen",
+		"desc":"Neuer Name"
+	},
+	"split_dialog":{
+		"title":"Segment teilen",
+		"ok":"Teilen",
+		"cancel":"Abbrechen"
+	},
+	"new_document":{
+		"title":"Neues Dokument hochladen",
+		"submit":"Hochladen",
+		"type_description":"Segment-Typ",
+		"sentence":"Sätze",
+		"token":"Tokens",
+		"open_dialog":"Neues Dokument"
+	},
+	"annodoclistarea":{
+		"title_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
+		"breadcrumb_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
+		"id":"Id",
+		"username":"Annotator/in",
+		"mod_date":"Letzte Änderung",
+		"actions":"Aktionen",
+		"no-documents":"Keine annotierten Dokumente vorhanden.",
+		"view":"Öffnen",
+		"delete":"Löschen"
+	},
+	"parallel":{
+		"annotations_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
+		"annotations_title_for_X":"Annotationen für __document__",
+		"annotations_from_X":"Annotationen von __user__",
+		"open_view":"Annotationen vergleichen",
+		"select":"Auswählen"
+	},
+	"bc":{
+		"master":"Master: "
+	}
+}
