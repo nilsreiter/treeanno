@@ -27,6 +27,15 @@ var idCounter = 0;
  */
 var paragraphSplitCharacter = "¶";
 
+/**
+ * This setting controls the split behavior w.r.t. whitespace. 
+ * Possible values:
+ * NONE: no behavior setting
+ * BEFORE-SPACE: The split has to be before a space
+ * AFTER-SPACE: The split has to be after a space
+ */
+var paragraphSplitBehaviour = "BEFORE-SPACE";
+
 var kbkey = { up: 38, down: 40, right: 39, left: 37, 
 		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
 var keyString = {
@@ -265,7 +274,10 @@ var operations = {
 					}
 				},
 				desc:'action_split',
-				history:true
+				history:true,
+				post:{
+					mode:INTERACTION_SPLIT
+				}
 			}
 		},
 		1037:{
@@ -757,7 +769,7 @@ function act(keyCode) {
 		kc = keyCode;
 		if (shifted)
 			kc = keyCode + 1000;
-		if (kc in operations && !operations[kc][interaction_mode]['disabled']) {
+		if (kc in operations && interaction_mode in operations[kc] && !operations[kc][interaction_mode]['disabled']) {
 			if (check_precondition(kc)) {
 				var val = operations[kc][interaction_mode].fun();
 				if (operations[kc][interaction_mode]['history']) {
@@ -900,7 +912,6 @@ function merge(item1, item0) {
 
 
 function splitdialog() {
-	interaction_mode = INTERACTION_SPLIT;
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
 	$("#form_splittext").append(paragraphSplitCharacter+item['text']);
 	
@@ -924,24 +935,43 @@ function splitdialog() {
 	});
 }
 
+function split_move_right_text(text, dist) {
+	var p = text.indexOf(paragraphSplitCharacter);
+	
+	var newText = text.substring(0,p)+
+		text.substring(p+1,p+1+dist)+
+		paragraphSplitCharacter+
+		text.substring(p+1+dist, text.length);
+	return newText;
+}
+
 function split_move_right(dist) {
 	var text = $("#form_splittext").text();
+	var newText = split_move_right_text(text, dist);
+/*	if (paragraphSplitBehaviour == "AFTER-SPACE") {
+		while(newText.includes(paragraphSplitCharacter+" ")) {
+			newText = split_move_right_text(newText, 1);
+		}
+	} else if (paragraphSplitBehaviour == "BEFORE-SPACE") {
+		while(newText.includes(" " + paragraphSplitCharacter)) {
+			newText = split_move_left_text(newText, 1);
+		}
+	}*/
+ 	$("#form_splittext").text(newText);
+}
+
+function split_move_left_text(text, dist) {
 	var p = text.indexOf(paragraphSplitCharacter);
-	$("#form_splittext").text(
-			text.substring(0,p)+
-			text.substring(p+1,p+1+dist)+
-			paragraphSplitCharacter+
-			text.substring(p+1+dist, text.length));
+	return text.substring(0,p - dist)+
+		paragraphSplitCharacter+
+		text.substring(p-dist,p)+
+		text.substring(p+1, text.length)
 }
 
 function split_move_left(dist) {
 	var text = $("#form_splittext").text();
-	var p = text.indexOf(paragraphSplitCharacter);
-	$("#form_splittext").text(
-			text.substring(0,p - dist)+
-			paragraphSplitCharacter+
-			text.substring(p-dist,p)+
-			text.substring(p+1, text.length));
+	var newText = split_move_left_text(text, dist);
+	$("#form_splittext").text(newText);
 }
 
 function splitdialog_cleanup() {
