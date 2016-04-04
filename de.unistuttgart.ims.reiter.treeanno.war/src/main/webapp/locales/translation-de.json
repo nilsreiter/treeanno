@@ -19,6 +19,12 @@
 		"delete_category_t2":"Frage löschen",
 		"force_indent_t2":"Knoten erzeugen",
 		"save_document":"Speichern",
+		"right":{
+			"prefail":"Kann nicht einrücken"
+		},
+		"left":{
+			"prefail":"Kann nicht ausrücken, Knoten ist bereits auf oberster Ebene"
+		},
 		"merge":{
 			"prefail":"Bitte <strong>zwei</strong> Segmente markieren."
 		},

@@ -123,7 +123,17 @@ var operations = {
 				id:'outdent',
 				fun:outdent,
 				desc:'action_outdent',
-				history:true }, 
+				history:true,
+				pre:{
+					fun:function() { 
+						return ($("ul ul .selected").length > 0)
+					},
+					fail: {
+						type:"information",
+						text:"action.left.prefail"
+					}
+				}
+			}, 
 			split: {
 				// move the split point to the left
 				id:'move-splitpoint-left',
@@ -152,10 +162,17 @@ var operations = {
 		39: {
 			treeanno: {
 				// right
-				'id':'indent',
+				id:'indent',
 				fun:indent,
-				'desc':'action_indent',
-				history:true
+				desc:'action_indent',
+				history:true,
+				pre: {
+					fun: function() { return ($(".selected").first().prev("li").length > 0) },
+					fail: {
+						type: "information",
+						text: "action.right.prefail"
+					}
+				}
 			},
 			split: {
 				// move the split point to the right
@@ -353,7 +370,9 @@ function init_operations(projectType) {
 		operations[1039][INTERACTION_TREEANNO]['desc'] = 'action.force_indent_t2';
 		break;
 	}
+	operations[37][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[37][INTERACTION_TREEANNO]['pre']['fail']['text']);
 	operations[38][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[38][INTERACTION_TREEANNO]['pre']['fail']['text']);
+	operations[39][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[39][INTERACTION_TREEANNO]['pre']['fail']['text']);
 	operations[40][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[40][INTERACTION_TREEANNO]['pre']['fail']['text']);
 	operations[83][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[83][INTERACTION_TREEANNO]['pre']['fail']['text']);
 	operations[77][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[77][INTERACTION_TREEANNO]['pre']['fail']['text']);

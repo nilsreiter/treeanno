@@ -19,6 +19,12 @@
 		"delete_category_t2":"Delete Question",
 		"force_indent_t2":"Create Node",
 		"save_document":"Save Document",
+		"right":{
+			"prefail":"Cannot indent"
+		},
+		"left":{
+			"prefail":"Cannot outdent, the node is already at the top-most level"
+		},
 		"merge":{
 			"prefail":"Please select <strong>two</strong> items."
 		},
