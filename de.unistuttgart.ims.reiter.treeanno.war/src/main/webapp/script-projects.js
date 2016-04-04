@@ -105,11 +105,13 @@ function show_annodoclist(id) {
 					icons:{primary:"ui-icon-trash", secondary:null},
 					text:showText
 				}).click({'userDocumentId':data['documents'][i]['id']}, function(event) {
-					jQuery.ajax({
-						url:"DocumentHandling?action=delete&userDocumentId="+event.data.userDocumentId,
-						complete:function() {show_annodoclist(id); },
-						method:"DELETE"
-					});
+					if (confirm(i18n.t("document_action_delete_confirm"))) {
+						jQuery.ajax({
+							url:"DocumentHandling?action=delete&userDocumentId="+event.data.userDocumentId,
+							complete:function() {show_annodoclist(id); },
+							method:"DELETE"
+						});
+					}
 				});
 			}
 			$("#annodoclistarea").append("<h2>"+i18n.t("annodoclistarea.title_for_X", {"document":data['src']['name']})+"</h2>");
@@ -261,14 +263,13 @@ function show_documentlist(id) {
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
-				jQuery.ajax({
-					url:"DocumentHandling?action=delete&documentId="+event.data.documentId,
-					complete:function() {show_documentlist(id); },
-					method:"DELETE"
-				});
-/*				jQuery.getJSON("DocumentHandling?action=delete&documentId="+event.data.documentId, function() {
-					show_documentlist(id);
-				});*/
+				if (confirm(i18n.t("document_action_delete_confirm"))) {
+					jQuery.ajax({
+						url:"DocumentHandling?action=delete&documentId="+event.data.documentId,
+						complete:function() {show_documentlist(id); },
+						method:"DELETE"
+					});
+				}
 			});
 			
 			$(actionCell).find("button.button_view_annodoc").button({

@@ -48,6 +48,7 @@
 	"document_action_open_master_confirm":"Existierende Annotationen für dieses Dokument werden invalidiert.",
 	"document_action_clone":"Duplizieren",
 	"document_action_delete":"Löschen",
+	"document_action_delete_confirm":"Das Dokument wird unwiderbringlich gelöscht. Wirklich löschen?",
 	"document_action_export_xmi":"Export",
 	"document_action_rename":"Umbenennen",
 	"document_action_view_annodoc":"Annotationen ansehen",
