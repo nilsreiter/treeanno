@@ -208,8 +208,16 @@ function show_documentlist(id) {
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
-				// TODO: check if annotated documents exist, show a warning if they do
-				window.location.href="main.jsp?master=master&documentId="+event.data.documentId;
+				jQuery.getJSON("rpc/userdocumentlist?documentId="+event.data.documentId, function(data) {
+					if ('documents' in data && data['documents'].length>0) {
+						if (confirm(i18n.t("document_action_open_master_confirm"))) {
+							window.location.href="main.jsp?master=master&documentId="+event.data.documentId;							
+						}
+					} else {
+						window.location.href="main.jsp?master=master&documentId="+event.data.documentId;													
+					}
+				});
+				
 			});
 			$(actionCell).find("button.button_rename").button({
 				label:i18n.t("document_action_rename"),
