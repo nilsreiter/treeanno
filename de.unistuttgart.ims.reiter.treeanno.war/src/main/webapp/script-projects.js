@@ -253,14 +253,13 @@ function show_documentlist(id) {
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
-				jQuery.ajax({
-					url:"DocumentHandling?action=delete&documentId="+event.data.documentId,
-					complete:function() {show_documentlist(id); },
-					method:"DELETE"
-				});
-/*				jQuery.getJSON("DocumentHandling?action=delete&documentId="+event.data.documentId, function() {
-					show_documentlist(id);
-				});*/
+				if (confirm(i18n.t("document_action_delete_confirm"))) {
+					jQuery.ajax({
+						url:"DocumentHandling?action=delete&documentId="+event.data.documentId,
+						complete:function() {show_documentlist(id); },
+						method:"DELETE"
+					});
+				}
 			});
 			
 			$(actionCell).find("button.button_view_annodoc").button({
