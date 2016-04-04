@@ -45,6 +45,7 @@
 	"document_actions":"Aktionen",
 	"document_action_open":"Annotieren",
 	"document_action_open_master":"Master bearbeiten",
+	"document_action_open_master_confirm":"Existierende Annotationen für dieses Dokument werden invalidiert.",
 	"document_action_clone":"Duplizieren",
 	"document_action_delete":"Löschen",
 	"document_action_export_xmi":"Export",

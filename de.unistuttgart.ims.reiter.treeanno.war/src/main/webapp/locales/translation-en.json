@@ -45,6 +45,7 @@
 	"document_actions":"Actions",
 	"document_action_open":"Annotate",
 	"document_action_open_master":"Edit master",
+	"document_action_open_master_confirm":"Annotations for this document have been made, they will be invalidated.",
 	"document_action_clone":"Clone",
 	"document_action_delete":"Delete",
 	"document_action_export_xmi":"Export",
