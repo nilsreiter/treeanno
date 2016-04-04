@@ -79,6 +79,12 @@ var keyString = {
  *        fail: {
  *           // ... 
  *        }
+ *    },
+ *    
+ *    // post-op definitions
+ *    post: {
+ *    	  // if the op changes the interaction mode
+ *    	  mode:INTERACTION_TREEANNO
  *    }
  * }
  */
@@ -94,14 +100,21 @@ var operations = {
 				// enter pressed when editing category string
 				id:'category-enter',
 				fun:enter_category,
-				history:true
+				history:true,
+				desc:'assign-category',
+				post:{
+					mode:INTERACTION_TREEANNO
+				}
 			}
 		},
 		27:{
 			category: {
 				id:'category-cancel',
 				fun:cancel_category,
-				history:false
+				history:false,
+				post:{
+					mode:INTERACTION_TREEANNO
+				}
 			}
 		},
 		37:{ 
@@ -187,7 +200,10 @@ var operations = {
 				id:'categorize',
 				fun:add_category,
 				desc:'action_assign_category',
-				history:true
+				history:false,
+				post:{
+					mode:INTERACTION_CATEGORY
+				}
 			}
 		},
 		68:{
@@ -292,7 +308,7 @@ var operations = {
 		1083:{
 			treeanno:{
 				// shift + s
-				d:'save_document',
+				id:'save_document',
 				fun:save_document,
 				desc:'action.save_document',
 				history:true
@@ -727,10 +743,14 @@ function key_down(e) {
 			kc = keyCode + 1000;
 		if (kc in operations && !operations[kc][interaction_mode]['disabled']) {
 			if (check_precondition(kc)) {
-				operations[kc][interaction_mode].fun();
+				var val = operations[kc][interaction_mode].fun();
 				if (operations[kc][interaction_mode]['history']) {
-					add_operation(kc, $(".selected"));
+					add_operation(kc, $(".selected"), val);
 					enableSaveButton();
+				}
+				if ("post" in operations[kc][interaction_mode] && 
+						"mode" in operations[kc][interaction_mode]["post"]) {
+					interaction_mode = operations[kc][interaction_mode]["post"]["mode"];
 				}
 			} else {
 				if ('fail' in operations[kc][interaction_mode]['pre'])
@@ -774,7 +794,6 @@ function delete_category() {
 	$(".selected").removeAttr("data-treeanno-categories");
 }
 function add_category() {
-	interaction_mode = INTERACTION_CATEGORY;
 	$(".selected > p.annocat").remove();
 	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):$(".selected").attr("title"));
 	$(".selected").first().prepend("<input type=\"text\" size=\"100\" id=\"cat_input\" value=\""+val+"\"/>");
@@ -783,16 +802,20 @@ function add_category() {
 
 function cancel_category() {
 	$("#cat_input").remove();
-	interaction_mode = INTERACTION_TREEANNO;
 }
 
 function enter_category() {
+	var oldVal = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):null);
+
 	var value = $("#cat_input").val();
 	$("#cat_input").remove();
 	$(".selected").prepend("<p class=\"annocat\">"+value+"</p>");
 	// var oa = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
 	$(".selected").attr("data-treeanno-categories", value);
-	interaction_mode = INTERACTION_TREEANNO;
+	return {
+		newcategory:value,
+		oldcategory:oldVal
+	};
 
 }
 
@@ -1044,7 +1067,7 @@ function add_operation(kc, tgts, opts) {
 	$(tgts).each(function(index, element) {
 		s.push($(element).attr("data-treeanno-id"));
 	});
-	var logObj = {op:operations[kc][interaction_mode]['desc'], arg:s, opt:opts};
+	var logObj = {op:operations[kc][interaction_mode]['id'], arg:s, opt:opts};
 	console.log(logObj);
 	$("#history").prepend("<li>"+JSON.stringify(logObj)+"</li>");
 }
