@@ -343,9 +343,10 @@ function init_operations(projectType) {
 	case ProjectType["ARNDT"]:
 		operations[49][INTERACTION_TREEANNO]['disabled'] = 1;
 		operations[67][INTERACTION_TREEANNO]['fun'] = function() {
-			force_indent();
+			act(1039);
 			move_selection_up();
 			add_category();
+			interaction_mode = INTERACTION_CATEGORY;
 		}
 		operations[67][INTERACTION_TREEANNO]['desc'] = 'action.assign_category_t2';
 		operations[68][INTERACTION_TREEANNO]['desc'] = "action.delete_category_t2";
@@ -724,12 +725,7 @@ function move_selection_up() {
 		$(window).scrollTop($(".selected").first().offset().top - 200);
 }
 
-function key_down(e) {
-	if (interaction_mode === INTERACTION_NONE) return;
-	if (mode[interaction_mode]['preventDefault'])
-		e.preventDefault();
-	var keyCode = e.keyCode || e.which;
-	var allItems = $("#outline li");
+function act(keyCode) {
 	switch (keyCode) {
 	case kbkey.shift:
 		shifted = true;
@@ -759,7 +755,16 @@ function key_down(e) {
 			}
 		}
 	}
+}
+
+function key_down(e) {
+	if (interaction_mode === INTERACTION_NONE) return;
+	if (mode[interaction_mode]['preventDefault'])
+		e.preventDefault();
+	var keyCode = e.keyCode || e.which;
+	var allItems = $("#outline li");
 	
+	act(keyCode);
 }
 
 /**
