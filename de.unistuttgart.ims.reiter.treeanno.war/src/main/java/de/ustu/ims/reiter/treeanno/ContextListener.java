@@ -2,6 +2,7 @@ package de.ustu.ims.reiter.treeanno;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -12,6 +13,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
+
+import org.apache.commons.io.IOUtils;
 
 import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
 
@@ -57,12 +60,15 @@ public class ContextListener implements ServletContextListener {
 		}
 
 		Properties properties = new Properties();
+		InputStream is = null;
 		try {
-			InputStream is =
-					getClass().getResourceAsStream("/project.properties");
-			if (is != null) properties.load(is);
+			is = getClass().getResourceAsStream("/project.properties");
+			if (is != null)
+				properties.load(new InputStreamReader(is, "UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			IOUtils.closeQuietly(is);
 		}
 		for (String s : properties.stringPropertyNames()) {
 			sc.setAttribute(s, properties.get(s));
