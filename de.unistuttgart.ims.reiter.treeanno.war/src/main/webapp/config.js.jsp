@@ -6,13 +6,14 @@
 	<jsp:useBean id="ProjectType" class="de.ustu.ims.reiter.treeanno.ProjectType" scope="page" />
 <![CDATA[
 var includeSeparationWhenMerging = ${applicationScope['treeanno.includeSeparationWhenMerging']};
+var showText = ${applicationScope['treeanno.showTextOnButtons']};
+
 var Perm = new Object();
 Perm["NOACCESS"] = ${Perm.NOACCESS};
 Perm["READACCESS"] = ${Perm.READACCESS};
 Perm["WRITEACCESS"] = ${Perm.WRITEACCESS};
 Perm["PADMINACCESS"] = ${Perm.PADMINACCESS};
 Perm["ADMINACCESS"] = ${Perm.ADMINACCESS};
-var showText = ${applicationScope['treeanno.showTextOnButtons']};
 
 var ProjectType = new Object();
 ProjectType["DEFAULT"] = ${ProjectType.DEFAULT};
