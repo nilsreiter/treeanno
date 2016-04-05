@@ -201,9 +201,21 @@ var ops={
 		delete_category:{
 			// d
 			id:'delete_category',
-			fun:delete_category,
+			fun:function() {
+				return set_category($(".selected"), null);
+			},
+			pre: {
+				fun: function() {
+					return $(".selected > p.annocat").length > 0;
+				}
+			},
 			desc:'action_delete_category',
-			history:true
+			history:true,
+			revert: {
+				fun: function(action) {
+					set_category(id2element(action['arg'][0]), action['opt']['oldcategory']);
+				}
+			}
 		},
 		outdent:{
 			// left
@@ -300,7 +312,14 @@ var ops={
 				enableSaveButton();
 			},
 			desc:'action_mark1',
-			history:true
+			history:true,
+			revert: {
+				fun: function(action) {
+					for (var i = 0; i < action['arg'].length; i++) {
+						id2element(action['arg'][i]).toggleClass("mark1");
+					}
+				}
+			}
 		},
 		merge: {
 			// m
@@ -351,7 +370,12 @@ var ops={
 			id:'delete_virtual_node',
 			fun:delete_virtual_node,
 			desc:'action.delete_vnode',
-			history:true
+			history:true,
+			revert: {
+				fun: function(action) {
+					
+				}
+			}
 		},
 		save_document:{
 			// shift + s
@@ -893,10 +917,6 @@ function isElementInViewport (el) {
     );
 }
 
-function delete_category() {
-	$(".selected > p.annocat").remove();
-	$(".selected").removeAttr("data-treeanno-categories");
-}
 function add_category() {
 	$(".selected > p.annocat").remove();
 	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):$(".selected").attr("title"));
@@ -910,10 +930,14 @@ function cancel_category() {
 
 function set_category(element, value) {
 	$(element).children("p.annocat").remove();
+	var val = $(".selected").attr("data-treeanno-categories");
+	$(".selected").removeAttr("data-treeanno-categories");
+
 	if (value) {
 		$(element).prepend("<p class=\"annocat\">"+value+"</p>");
 		$(element).attr("data-treeanno-categories", value);
 	}
+	return { oldcategory:val };
 }
 
 function enter_category() {
@@ -922,11 +946,9 @@ function enter_category() {
 	var value = $("#cat_input").val();
 	$("#cat_input").remove();
 	
-	set_category($(".selected"), value);
-	return {
-		newcategory:value,
-		oldcategory:oldVal
-	};
+	var r = set_category($(".selected"), value);
+	r['newcategory'] = value;
+	return r;
 
 }
 
