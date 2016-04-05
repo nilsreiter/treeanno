@@ -90,7 +90,7 @@ var operations = {
 				// enter pressed in the split dialog
 				id:'split-enter',
 				fun:splitdialog_enter,
-				history:false,
+				history:true,
 				pre: {
 					fun:splitdialog_validate,
 					fail: {
@@ -272,7 +272,7 @@ var operations = {
 					}
 				},
 				desc:'action_split',
-				history:true,
+				history:false,
 				post:{
 					mode:INTERACTION_SPLIT
 				}
