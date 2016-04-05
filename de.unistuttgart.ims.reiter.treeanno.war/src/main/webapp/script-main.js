@@ -351,7 +351,7 @@ var operations = {
 				id:'save_document',
 				fun:save_document,
 				desc:'action.save_document',
-				history:true
+				history:false
 			}
 		}
 };
@@ -469,6 +469,13 @@ function init_main() {
 			else 
 				$("#content").width("100%");
 		});
+		
+		$( "button.button_undo" ).button({
+			icons: { primary: "ui-icon-arrowreturnthick-1-w", secondary:null },
+			label: i18n.t("undo"),
+			text:showText,
+			disabled:true
+		}).click(undo);
 		
 		disableSaveButton();
 		document.onkeydown = function(e) {
@@ -1099,20 +1106,24 @@ function force_indent() {
 
 function delete_virtual_node() {
 	$(".selected").each(function(index, element) {
-		
-		// check if it's really a virtual node
-		if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
-			console.log("TreeAnno: Found a virtual node to delete")
-			
-			$(element).children("ul").children("li").each(function(i2, e2) {
-				console.log("TreeAnno: Outdenting children of virtual node");
-				outdentElement(e2);
-			});
-			
-			$(element).prev().addClass("selected");
-			$(element).remove();
-		}
+		deleteVirtualNodeElement(element, true);
 	});
+}
+
+function deleteVirtualNodeElement(element, moveSelection) {
+	// check if it's really a virtual node
+	if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
+		console.log("TreeAnno: Found a virtual node to delete")
+		
+		$(element).children("ul").children("li").each(function(i2, e2) {
+			console.log("TreeAnno: Outdenting children of virtual node");
+			outdentElement(e2);
+		});
+		
+		if (moveSelection)
+			$(element).prev().addClass("selected");
+		$(element).remove();
+	}
 }
 
 function indentElement(element) {
@@ -1148,7 +1159,37 @@ function add_operation(kc, tgts, opts) {
 	});
 	var logObj = {op:operations[kc][interaction_mode]['id'], arg:s, opt:opts};
 	history.push(logObj);
+	$( "button.button_undo" ).button({disabled:false});
 	console.log(logObj);
 	$("#history").prepend("<li>"+JSON.stringify(logObj)+"</li>");
+}
+
+function undo() {
+	var action = history.pop();
+	$("#history > li:first()").remove();
+
+	var arg=[];
+	for (var i = 0; i < action['arg'].length; i++) {
+		arg.push($("li[data-treeanno-id=\""+action['arg'][i]+"\"]"));
+	}
+	switch(action['op']) {
+	case "force_indent":
+		for (var i = 0; i < arg.length; i++) {
+			deleteVirtualNodeElement($(arg[i]).parent().parent(), false);
+		}
+		break;
+	case "indent":
+		for (var i = 0; i < arg.length; i++) {
+			outdentElement(arg[i]);
+		}
+		break;
+	case "outdent":
+		for (var i = 0; i < arg.length; i++) {
+			indentElement(arg[i]);
+		}
+		break;
+	}
+	$( "button.button_undo" ).button({disabled:(history.length==0)});
+	
 }
 
