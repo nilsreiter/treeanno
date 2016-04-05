@@ -322,7 +322,7 @@ var ops={
 					var item = get_item(action['opt']['newId']);
 					var text = item['text'];
 					var lines = [text.substring(0,action['opt']['split']), text.substring(action['opt']['split'], text.length)]
-					split(item, lines);
+					split(item, lines, false, action['arg']);
 				}
 			}
 		},
@@ -359,9 +359,16 @@ var ops={
 			fun:save_document,
 			desc:'action.save_document',
 			history:false
+		},
+		undo:{
+			id:'undo',
+			fun:undo,
+			desc:'action.undo',
+			history:false
 		}
 	};
 var operations = {
+		 8: { treeanno: ops.undo },
 		13: { split: ops.split_enter,
 			  category: ops.category_enter },
 		27: { category: ops.category_cancel,
@@ -1065,33 +1072,35 @@ function splitdialog_validate() {
 	return true;
 }
 
-function split(item, lines) {
+function split(item, lines, moveSelection, ids) {
+	var element = id2element(item['id']);
 	var litems = new Array();
 	litems[0] = new Object();
 	litems[0]['begin'] = item['begin'];
 	litems[0]['text'] = lines[0];
 	litems[0]['end'] = parseInt(item['begin'])+parseInt(lines[0].length);
-	litems[0]['id'] = ++idCounter;
+	litems[0]['id'] = (ids?ids[0]:++idCounter);
 	litems[1] = new Object();
 	litems[1]['end'] = item['end'];
 	litems[1]['text'] = lines[1];
 	litems[1]['begin'] = litems[0]['end'];
-	litems[1]['id'] = ++idCounter;
+	litems[1]['id'] = (ids?ids[1]:++idCounter);
 	// items[itemid] = undefined;
 	
-	var sublist = $(".selected > ul").detach();
+	var sublist = $(element).children("ul").detach();
 	// items[litems[1]['id']] = litems[1];
 	
 	var nitem1 = get_html_item(litems[1], idCounter);
-	$(".selected").after(nitem1);
-	$(".selected").next().append(sublist);
+	element.after(nitem1);
+	element.next().append(sublist);
 	// items[litems[0]['id']] = litems[0];
 	
 	var nitem0 = get_html_item(litems[0], idCounter);
-	$(".selected").after(nitem0);
-	var nsel = $(".selected").next();
-	$(".selected").remove();
-	$(nsel).addClass("selected");
+	element.after(nitem0);
+	var nsel = element.next();
+	element.remove();
+	if (moveSelection)
+		$(nsel).addClass("selected");
 	logObj = {
 			newItems:[litems[0]['id'], litems[1]['id']]
 	};
@@ -1113,7 +1122,7 @@ function splitdialog_enter() {
 			})
 		});
 
-		logObj = split(item, lines);
+		logObj = split(item, lines, true, null);
 
 	}
 	cleanup_list();
