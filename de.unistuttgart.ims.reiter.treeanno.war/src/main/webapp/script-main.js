@@ -169,6 +169,23 @@ var ops={
 				mode:INTERACTION_TREEANNO
 			}
 		},
+		categorize:{
+			// c
+			id:'categorize',
+			fun:add_category,
+			desc:'action_assign_category',
+			history:false,
+			post:{
+				mode:INTERACTION_CATEGORY
+			}
+		},
+		delete_category:{
+			// d
+			id:'delete_category',
+			fun:delete_category,
+			desc:'action_delete_category',
+			history:true
+		},
 		outdent:{
 			// left
 			id:'outdent',
@@ -248,23 +265,6 @@ var ops={
 			desc:'action_mark1',
 			history:true
 		},
-		categorize:{
-			// c
-			id:'categorize',
-			fun:add_category,
-			desc:'action_assign_category',
-			history:false,
-			post:{
-				mode:INTERACTION_CATEGORY
-			}
-		},
-		delete_category:{
-			// d
-			id:'delete_category',
-			fun:delete_category,
-			desc:'action_delete_category',
-			history:true
-		},
 		merge: {
 			// m
 			id:'merge',
@@ -317,62 +317,28 @@ var ops={
 		}
 	};
 var operations = {
-		13:{ 
-			split: ops.split_enter,
-			category: ops.category_enter
-		},
-		27:{
-			category: ops.category_cancel,
-			split: ops.split_cancel
-		},
-		37:{ 
-			treeanno: ops.outdent, 
-			split: ops.split_move_left
-		},
-		38: {
-			treeanno: ops.up
-		},
-		39: {
-			treeanno: ops.indent,
-			split: ops.split_move_right
-		},
-		40: {
-			treeanno: ops.down
-		},
-		49: {
-			treeanno: ops.mark
-		},
-		67:{
-			treeanno: ops.categorize
-		},
-		68:{
-			treeanno: ops.delete_category
-		},
-		77:{
-			treeanno: ops.merge
-		},
-		83:{
-			treeanno: ops.split
-		}, 
-		1037:{
-			split:ops.split_move_left_big
-		},
-		1038:{
-			treeanno: ops.select_up
-		},
-		1039:{
-			treeanno: ops.force_indent,
-			split:ops.split_move_right_big
-		},
-		1040:{
-			treeanno: ops.select_down
-		},
-		1068:{
-			treeanno:ops.delete_virtual_node
-		},
-		1083:{
-			treeanno:ops.save_document
-		}
+		13: { split: ops.split_enter,
+			  category: ops.category_enter },
+		27: { category: ops.category_cancel,
+			  split: ops.split_cancel },
+		37: { treeanno: ops.outdent, 
+			  split: ops.split_move_left },
+		38: { treeanno: ops.up },
+		39: { treeanno: ops.indent,
+			  split: ops.split_move_right },
+		40: { treeanno: ops.down },
+		49: { treeanno: ops.mark },
+		67: { treeanno: ops.categorize },
+		68: { treeanno: ops.delete_category },
+		77: { treeanno: ops.merge },
+		83: { treeanno: ops.split }, 
+		1037: { split:ops.split_move_left_big },
+		1038: { treeanno: ops.select_up },
+		1039: { treeanno: ops.force_indent,
+			    split:ops.split_move_right_big },
+		1040: { treeanno: ops.select_down },
+		1068: { treeanno:ops.delete_virtual_node },
+		1083: { treeanno:ops.save_document }
 };
 
 
