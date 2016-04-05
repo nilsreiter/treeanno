@@ -122,6 +122,14 @@ var operations = {
 				post:{
 					mode:INTERACTION_TREEANNO
 				}
+			},
+			split: {
+				id:'split-cancel',
+				fun:splitdialog_cleanup,
+				history:false,
+				post: {
+					mode:INTERACTION_TREEANNO
+				}
 			}
 		},
 		37:{ 
@@ -973,11 +981,8 @@ function split_move_left(dist) {
 }
 
 function splitdialog_cleanup() {
-	interaction_mode = INTERACTION_TREEANNO;
-
 	$("#split").dialog( "destroy" );
 	$("#form_splittext").empty();
-
 }
 
 function splitdialog_validate() {
