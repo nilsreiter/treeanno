@@ -1199,24 +1199,32 @@ function force_indent() {
 }
 
 function delete_virtual_node() {
+	var arr = [];
 	$(".selected").each(function(index, element) {
-		deleteVirtualNodeElement(element, true);
+		arr.push(deleteVirtualNodeElement(element, true));
 	});
+	return arr;
 }
 
 function deleteVirtualNodeElement(element, moveSelection) {
 	// check if it's really a virtual node
+	var children=[];
+	
 	if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
 		console.log("TreeAnno: Found a virtual node to delete")
+		var vNodeId = $(element).attr("data-treeanno-id");
 		
 		$(element).children("ul").children("li").each(function(i2, e2) {
 			console.log("TreeAnno: Outdenting children of virtual node");
 			outdentElement(e2);
+			children.push($(e2).attr("data-treeanno-id"));
 		});
 		
 		if (moveSelection)
 			$(element).prev().addClass("selected");
 		$(element).remove();
+		return {vnode:vNodeId, children:children};
+
 	}
 }
 
