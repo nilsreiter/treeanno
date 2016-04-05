@@ -22,19 +22,6 @@ var mode = {
 var shifted = false;
 var idCounter = 0;
 
-/**
- * This is the character we use in the split dialog to mark the split
- */
-var paragraphSplitCharacter = "¶";
-
-/**
- * This setting controls the split behavior w.r.t. whitespace. 
- * Possible values:
- * NONE: no behavior setting
- * BEFORE-SPACE: The split has to be before a space
- * AFTER-SPACE: The split has to be after a space
- */
-var paragraphSplitBehaviour = "BEFORE-SPACE";
 
 var kbkey = { up: 38, down: 40, right: 39, left: 37, 
 		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
