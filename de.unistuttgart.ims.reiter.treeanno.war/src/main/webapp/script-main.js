@@ -373,7 +373,13 @@ var ops={
 			history:true,
 			revert: {
 				fun: function(action) {
-					
+					for (var i = 0; i < action['opt'].length; i++) {
+						var arr = [];
+						for (var j = 0; j < action['opt'][i]['children'].length; j++) {
+							arr.push(id2element(action['opt'][i]['children'][j]));
+						}
+						force_indent_elements($(arr), action['opt'][i]['vnode']);
+					}
 				}
 			}
 		},
@@ -1179,13 +1185,13 @@ function outdent() {
 	cleanup_list();
 }
 
-function force_indent() {
-	$(".selected").each(function(index, element) {
+function force_indent_elements(elements, newId) {
+	$(elements).each(function(index, element) {
 		if (index == 0) {
 			var vitem = new Object();
 			vitem["begin"] = $(element).attr("data-treeanno-begin");
 			vitem["end"] = vitem["begin"];
-			vitem["id"] = ++idCounter;
+			vitem["id"] = (newId?newId:++idCounter);
 			vitem["text"] = "";
 			
 			var htmlItem = get_html_item(vitem, 0);
@@ -1193,9 +1199,12 @@ function force_indent() {
 			cleanup_list();
 		}
 		indentElement(element);
-		cleanup_list();	
-		
+		cleanup_list();			
 	});
+}
+
+function force_indent() {
+	force_indent_elements($(".selected"), null);
 }
 
 function delete_virtual_node() {
@@ -1272,9 +1281,8 @@ function add_operation(kc, tgts, opts) {
 
 function undo() {
 	var action = history.pop();
-	$("#history > li:first()").remove();
-
 	ops[action['op']]['revert'].fun(action);
+	$("#history > li:first()").remove();
 	$( "button.button_undo" ).button({disabled:(history.length==0)});
 	
 }
