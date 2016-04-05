@@ -399,7 +399,7 @@ function get_html_item(item, i) {
 	idCounter = Math.max(idCounter, item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
-	$(htmlItem).append("<div>"+item['id']+dtext(item['text'])+"</div>");
+	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
 	return htmlItem;
 }
 
