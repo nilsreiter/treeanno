@@ -777,9 +777,10 @@ function act(keyCode) {
 			kc = keyCode + 1000;
 		if (kc in operations && interaction_mode in operations[kc] && !operations[kc][interaction_mode]['disabled']) {
 			if (check_precondition(kc)) {
+				var selection = $(".selected");
 				var val = operations[kc][interaction_mode].fun();
 				if (operations[kc][interaction_mode]['history']) {
-					add_operation(kc, $(".selected"), val);
+					add_operation(kc, selection, val);
 					enableSaveButton();
 				}
 				if ("post" in operations[kc][interaction_mode] && 
@@ -1004,6 +1005,7 @@ function splitdialog_enter() {
 	var item = get_item(itemid);
 	var text = $("#form_splittext").text();
 	var lines = text.split(paragraphSplitCharacter);
+	var logObj;
 	if (lines.length == 2) {
 		noty({
 			type:"information",
@@ -1012,7 +1014,6 @@ function splitdialog_enter() {
 				right:lines[1].substring(0, 10)
 			})
 		});
-		
 		var litems = new Array();
 		litems[0] = new Object();
 		litems[0]['begin'] = item['begin'];
@@ -1039,10 +1040,14 @@ function splitdialog_enter() {
 		var nsel = $(".selected").next();
 		$(".selected").remove();
 		$(nsel).addClass("selected");
-		
+		logObj = {
+				newItems:[litems[0]['id'], litems[1]['id']]
+		};
+
 	}
 	cleanup_list();
 	splitdialog_cleanup();
+	return logObj;
 }
 
 function outdentElement(element) {
