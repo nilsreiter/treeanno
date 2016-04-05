@@ -22,6 +22,11 @@ var mode = {
 var shifted = false;
 var idCounter = 0;
 
+/**
+ * This array stores the edit history (locally)
+ */
+var history = [];
+
 
 var kbkey = { up: 38, down: 40, right: 39, left: 37, 
 		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
@@ -1142,6 +1147,7 @@ function add_operation(kc, tgts, opts) {
 		s.push($(element).attr("data-treeanno-id"));
 	});
 	var logObj = {op:operations[kc][interaction_mode]['id'], arg:s, opt:opts};
+	history.push(logObj);
 	console.log(logObj);
 	$("#history").prepend("<li>"+JSON.stringify(logObj)+"</li>");
 }
