@@ -105,6 +105,11 @@ var ops={
 			},
 			post: {
 				mode:INTERACTION_TREEANNO
+			},
+			revert: {
+				fun: function(action) {
+					merge(get_item(action['opt']['newItems'][0]),get_item(action['opt']['newItems'][1]), action['arg'][0])
+				}
 			}
 		},
 		split_cancel:{
@@ -164,6 +169,15 @@ var ops={
 			desc:'assign-category',
 			post:{
 				mode:INTERACTION_TREEANNO
+			},
+			revert:{
+				fun: function(action) {
+					if (action['opt']['oldcategory']) {
+						set_category(id2element(action['arg'][0]), action['opt']['oldcategory']);
+					} else {
+						set_category(id2element(action['arg'][0]), null);
+					}
+				}
 			}
 		},
 		category_cancel:{
@@ -197,6 +211,12 @@ var ops={
 			fun:outdent,
 			desc:'action_outdent',
 			history:true,
+			revert:{
+				fun: function(action) {
+					for (var i = 0; i < action['arg'].length; i++) {
+						indentById(action['arg'][i]);
+					}
+				}			},
 			pre:{
 				fun:function() { 
 					return ($("ul ul .selected").length > 0)
@@ -213,6 +233,13 @@ var ops={
 			fun:indent,
 			desc:'action_indent',
 			history:true,
+			revert: {
+				fun: function(action) {
+					for (var i = 0; i < action['arg'].length; i++) {
+						outdentById(action['arg'][i]);
+					}
+				}
+			},
 			pre: {
 				fun: function() { return ($(".selected").first().prev("li").length > 0) },
 				fail: {
@@ -226,7 +253,12 @@ var ops={
 			id:'force_indent',
 			fun:force_indent,
 			desc:'action.force_indent',
-			history:true
+			history:true,
+			revert:{
+				fun: function(action) {
+					deleteVirtualNodeElement(id2element(action['arg'][0]).parent().parent(), false);
+				}
+			}
 		},
 		up:{
 			// up
@@ -359,7 +391,7 @@ function get_html_item(item, i) {
 	idCounter = Math.max(idCounter, item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
-	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
+	$(htmlItem).append("<div>"+item['id']+dtext(item['text'])+"</div>");
 	return htmlItem;
 }
 
@@ -861,14 +893,21 @@ function cancel_category() {
 	$("#cat_input").remove();
 }
 
+function set_category(element, value) {
+	$(element).children("p.annocat").remove();
+	if (value) {
+		$(element).prepend("<p class=\"annocat\">"+value+"</p>");
+		$(element).attr("data-treeanno-categories", value);
+	}
+}
+
 function enter_category() {
 	var oldVal = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):null);
 
 	var value = $("#cat_input").val();
 	$("#cat_input").remove();
-	$(".selected").prepend("<p class=\"annocat\">"+value+"</p>");
-	// var oa = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
-	$(".selected").attr("data-treeanno-categories", value);
+	
+	set_category($(".selected"), value);
 	return {
 		newcategory:value,
 		oldcategory:oldVal
@@ -899,7 +938,7 @@ function mergeselected() {
 	merge(item1, item0);
 }
 
-function merge(item1, item0) {
+function merge(item1, item0, newId) {
 	var correctOrder = (item1['begin'] > item0['begin']);
 	
 	var nitem = new Object();
@@ -909,7 +948,7 @@ function merge(item1, item0) {
 	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
-	nitem['id'] = ++idCounter;
+	nitem['id'] = (newId?newId:++idCounter);
 	//items[item1['id']] = undefined;
 	//items[item0['id']] = undefined;
 	
@@ -1063,6 +1102,10 @@ function splitdialog_enter() {
 	return logObj;
 }
 
+function outdentById(id) {
+	outdentElement($("li[data-treeanno-id=\""+id+"\"]"))
+}
+
 function outdentElement(element) {
 	var id = $(element).attr("data-treeanno-id");
 	
@@ -1127,6 +1170,10 @@ function deleteVirtualNodeElement(element, moveSelection) {
 	}
 }
 
+function indentById(id) {
+	indentElement($("li[data-treeanno-id=\""+id+"\"]"))
+}
+
 function indentElement(element) {
 	if ($(element).prev("li").length > 0) {
 		var prev = $(element).prev("li");
@@ -1169,28 +1216,12 @@ function undo() {
 	var action = history.pop();
 	$("#history > li:first()").remove();
 
-	var arg=[];
-	for (var i = 0; i < action['arg'].length; i++) {
-		arg.push($("li[data-treeanno-id=\""+action['arg'][i]+"\"]"));
-	}
-	switch(action['op']) {
-	case "force_indent":
-		for (var i = 0; i < arg.length; i++) {
-			deleteVirtualNodeElement($(arg[i]).parent().parent(), false);
-		}
-		break;
-	case "indent":
-		for (var i = 0; i < arg.length; i++) {
-			outdentElement(arg[i]);
-		}
-		break;
-	case "outdent":
-		for (var i = 0; i < arg.length; i++) {
-			indentElement(arg[i]);
-		}
-		break;
-	}
+	ops[action['op']]['revert'].fun(action);
 	$( "button.button_undo" ).button({disabled:(history.length==0)});
 	
+}
+
+function id2element(id) {
+	return $("li[data-treeanno-id=\""+id+"\"]");
 }
 
