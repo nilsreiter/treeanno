@@ -316,7 +316,15 @@ var ops={
 			},
 			fun: mergeselected,
 			desc:'action_merge',
-			history:true
+			history:true,
+			revert:{
+				fun: function(action) {
+					var item = get_item(action['opt']['newId']);
+					var text = item['text'];
+					var lines = [text.substring(0,action['opt']['split']), text.substring(action['opt']['split'], text.length)]
+					split(item, lines);
+				}
+			}
 		},
 		select_down:{
 			// shift + down
@@ -932,14 +940,19 @@ function get_item(id) {
 }
 
 function mergeselected() {
+	var l = $(".selected").last().next();
 	var item1 = get_item($(".selected").first().attr("data-treeanno-id"));
 	var item0 = get_item($(".selected").last().attr("data-treeanno-id"));
 	// add_operation(77, [$(".selected").last(), $(".selected").first()]);
-	merge(item1, item0);
+	var r = merge(item1, item0, null);
+	l.addClass("selected");
+	return r;
 }
 
 function merge(item1, item0, newId) {
 	var correctOrder = (item1['begin'] > item0['begin']);
+	var element0 = id2element(item0['id']);
+	var element1 = id2element(item1['id']);
 	
 	var nitem = new Object();
 	var distance = (correctOrder?item1['begin']-item0['end']:item0['begin']-item1['end']);
@@ -949,22 +962,22 @@ function merge(item1, item0, newId) {
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
 	nitem['id'] = (newId?newId:++idCounter);
-	//items[item1['id']] = undefined;
-	//items[item0['id']] = undefined;
 	
-	var sublist0 = $("#outline li[data-treeanno-id='"+item0['id']+"'] > ul").detach();
-	$("#outline li[data-treeanno-id='"+item0['id']+"']").remove();
-	//items[++idCounter] = nitem;
+	var sublist0 = $(element0).children("ul").detach();
+	element0.remove();
 	
-	var nitem = get_html_item(nitem, idCounter);
-	$(".selected").after(nitem);
+	var nhitem = get_html_item(nitem, idCounter);
+	var nj = $(element1).after(nhitem);
 	
-	var newsel = $(".selected").next();
-	var sublist1 = $(".selected > ul").detach();
-	$(".selected").remove();
-	$(newsel).addClass("selected");
-	$(".selected").append(sublist0);
-	$(".selected").append(sublist1);
+	var sublist1 = element1.children("ul").detach();
+	element1.remove();
+	nj.append(sublist0);
+	nj.append(sublist1);
+	
+	return {
+		split:(correctOrder?item0['end']-item0['begin']:item1['end']-item1['begin']),
+		'newId':nitem['id']
+	};
 	
 }
 
@@ -1052,6 +1065,39 @@ function splitdialog_validate() {
 	return true;
 }
 
+function split(item, lines) {
+	var litems = new Array();
+	litems[0] = new Object();
+	litems[0]['begin'] = item['begin'];
+	litems[0]['text'] = lines[0];
+	litems[0]['end'] = parseInt(item['begin'])+parseInt(lines[0].length);
+	litems[0]['id'] = ++idCounter;
+	litems[1] = new Object();
+	litems[1]['end'] = item['end'];
+	litems[1]['text'] = lines[1];
+	litems[1]['begin'] = litems[0]['end'];
+	litems[1]['id'] = ++idCounter;
+	// items[itemid] = undefined;
+	
+	var sublist = $(".selected > ul").detach();
+	// items[litems[1]['id']] = litems[1];
+	
+	var nitem1 = get_html_item(litems[1], idCounter);
+	$(".selected").after(nitem1);
+	$(".selected").next().append(sublist);
+	// items[litems[0]['id']] = litems[0];
+	
+	var nitem0 = get_html_item(litems[0], idCounter);
+	$(".selected").after(nitem0);
+	var nsel = $(".selected").next();
+	$(".selected").remove();
+	$(nsel).addClass("selected");
+	logObj = {
+			newItems:[litems[0]['id'], litems[1]['id']]
+	};
+	return logObj;
+}
+
 function splitdialog_enter() {
 	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
@@ -1066,35 +1112,8 @@ function splitdialog_enter() {
 				right:lines[1].substring(0, 10)
 			})
 		});
-		var litems = new Array();
-		litems[0] = new Object();
-		litems[0]['begin'] = item['begin'];
-		litems[0]['text'] = lines[0];
-		litems[0]['end'] = parseInt(item['begin'])+parseInt(lines[0].length);
-		litems[0]['id'] = ++idCounter;
-		litems[1] = new Object();
-		litems[1]['end'] = item['end'];
-		litems[1]['text'] = lines[1];
-		litems[1]['begin'] = litems[0]['end'];
-		litems[1]['id'] = ++idCounter;
-		// items[itemid] = undefined;
-		
-		var sublist = $(".selected > ul").detach();
-		// items[litems[1]['id']] = litems[1];
-		
-		var nitem1 = get_html_item(litems[1], idCounter);
-		$(".selected").after(nitem1)
-		$(".selected").next().append(sublist);
-		// items[litems[0]['id']] = litems[0];
-		
-		var nitem0 = get_html_item(litems[0], idCounter);
-		$(".selected").after(nitem0);
-		var nsel = $(".selected").next();
-		$(".selected").remove();
-		$(nsel).addClass("selected");
-		logObj = {
-				newItems:[litems[0]['id'], litems[1]['id']]
-		};
+
+		logObj = split(item, lines);
 
 	}
 	cleanup_list();
