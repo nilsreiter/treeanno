@@ -103,7 +103,18 @@ var operations = {
 				// enter pressed in the split dialog
 				id:'split-enter',
 				fun:splitdialog_enter,
-				history:false
+				history:false,
+				pre: {
+					fun:splitdialog_validate,
+					fail: {
+						type:"error",
+						text:"Split character at invalid position",
+						timeout:null
+					}
+				},
+				post: {
+					mode:INTERACTION_TREEANNO
+				}
 			},
 			category: {
 				// enter pressed when editing category string
@@ -982,15 +993,26 @@ function splitdialog_cleanup() {
 
 }
 
+function splitdialog_validate() {
+	var text = $("#form_splittext").text();
+
+	if (paragraphSplitBehaviour == "BEFORE-SPACE") {
+		if (text.includes(" " + paragraphSplitCharacter)) {
+			return false;
+		}
+	} else if (paragraphSplitBehaviour == "AFTER-SPACE") {
+		if (text.includes(paragraphSplitCharacter+" "))
+			return false;
+	}
+	return true;
+}
+
 function splitdialog_enter() {
 	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
 	var text = $("#form_splittext").text();
 	var lines = text.split(paragraphSplitCharacter);
 	if (lines.length == 2) {
-		interaction_mode = INTERACTION_TREEANNO;
-
-		add_operation(83, $(".selected"), {pos:lines[0].length});
 		noty({
 			type:"information",
 			text:i18n.t("action.split.done", {
