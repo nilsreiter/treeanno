@@ -1,5 +1,6 @@
 package de.ustu.ims.reiter.treeanno.util;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -43,6 +44,14 @@ public class TestComparison {
 
 		assertNotNull(jcas1);
 		assertNotNull(jcas2);
+		assertTrue(Comparison.equalSegmentation(jcas1, jcas2));
+
+		AnnotationFactory.createAnnotation(jcas2, 10, 13, TreeSegment.class);
+
+		assertFalse(Comparison.equalSegmentation(jcas1, jcas2));
+
+		AnnotationFactory.createAnnotation(jcas1, 10, 13, TreeSegment.class);
+
 		assertTrue(Comparison.equalSegmentation(jcas1, jcas2));
 	}
 }
