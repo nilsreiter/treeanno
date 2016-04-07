@@ -185,3 +185,8 @@ span.search_container {
 	font-family:monospace;
 	font-size:small;
 }
+
+#segcompare {
+	margin-left:10px;
+	display: inline-block;
+}

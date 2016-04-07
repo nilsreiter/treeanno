@@ -106,5 +106,11 @@
 	},
 	"bc":{
 		"master":"Master: "
+	},
+	"compare":{
+		"segmentation":{
+			"true":"Identical segmentation",
+			"false":"Segmentation differs"
+		}
 	}
 }

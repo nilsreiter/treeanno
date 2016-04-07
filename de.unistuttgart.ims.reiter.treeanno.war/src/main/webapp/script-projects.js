@@ -120,6 +120,7 @@ function show_annodoclist(id) {
 			$("#annodoclistarea").append(table);
 			$("#topbar .left").append("<span class=\"adocname\">&nbsp;&gt; "+i18n.t("annodoclistarea.breadcrumb_for_X", {"document":data['src']['name']})+"</span>");
 			$("#annodoclistarea").append("<button id=\"button_open_diff\"></button>");
+			$("#annodoclistarea").append("<span id=\"segcompare\"></span>");
 			
 			$("button#button_open_diff").button({
 				label:i18n.t("parallel.open_view"),
@@ -259,7 +260,7 @@ function show_documentlist(id) {
 			});
 			
 			$(actionCell).find("button.button_delete").button({
-				label:i18n.t("document_action_delete"),
+				label:i18n.t("document_action_delete"),	
 				icons:{primary:"ui-icon-trash", secondary:null},
 				text:showText
 			}).click({
@@ -339,6 +340,17 @@ function select_document_for_diff(did) {
 	else  {
 		var index = documents_selected_for_diff.indexOf(did);
 		documents_selected_for_diff.splice(index, 1);
+	}
+	
+	if (documents_selected_for_diff.length == 2) {
+		jQuery.getJSON("rpc/compare?userDocumentId="+documents_selected_for_diff[0]+"&userDocumentId="+documents_selected_for_diff[1], function(data) {
+			var text = i18n.t(data['equalSegmentation']?"compare.segmentation.true":"compare.segmentation.false");
+			var icon = (data['equalSegmentation']?"ui-icon-check":"ui-icon-alert")
+			$("#segcompare").html(text+"<span class=\"ui-icon "+icon+"\" style=\"display: inline-block;vertical-align:middle;margin-left:5px;\"></span>");
+			// $("#segcompare").addClass("ui-state-alert");
+		});
+	} else {
+		$("#segcompare").empty();
 	}
 	
 }
