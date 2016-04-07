@@ -119,13 +119,17 @@ function show_annodoclist(id) {
 			$("#annodoclistarea").append("<h2>"+i18n.t("annodoclistarea.title_for_X", {"document":data['src']['name']})+"</h2>");
 			$("#annodoclistarea").append(table);
 			$("#topbar .left").append("<span class=\"adocname\">&nbsp;&gt; "+i18n.t("annodoclistarea.breadcrumb_for_X", {"document":data['src']['name']})+"</span>");
-			$("#annodoclistarea").append("<button id=\"button_open_diff\"></button>");
-			$("#annodoclistarea").append("<span id=\"segcompare\"></span>");
+			$("#annodoclistarea").append("<div></div>");
+			$("#annodoclistarea > div").append("<button id=\"button_open_diff\"></button>");
+			$("#annodoclistarea > div").append("<button id=\"seg_merge\"></button>");
+			$("#annodoclistarea > div").buttonset();
+			
 			
 			$("button#button_open_diff").button({
 				label:i18n.t("parallel.open_view"),
 				icons:{primary:"ui-icon-zoomin",secondary:null},
-				text:showText
+				text:showText,
+				disabled:true
 			}).click(function() {
 				if($("input.button_diff:checked").length == 2) {
 					var doc = new Array();
@@ -134,6 +138,13 @@ function show_annodoclist(id) {
 					});
 	 				window.location.href="parallel.jsp?userDocumentId="+doc[0]+"&userDocumentId="+doc[1];
 				}
+			});
+			
+			$("button#seg_merge").button({
+				label:i18n.t("compare.segmentation.undef"),
+				icons:{primary:null,secondary:null},
+				text:showText,
+				disabled:true
 			});
 		} else {
 			$("#annodoclistarea").append("<p>"+i18n.t("annodoclistarea.no-documents")+"</p>");
@@ -346,11 +357,21 @@ function select_document_for_diff(did) {
 		jQuery.getJSON("rpc/compare?userDocumentId="+documents_selected_for_diff[0]+"&userDocumentId="+documents_selected_for_diff[1], function(data) {
 			var text = i18n.t(data['equalSegmentation']?"compare.segmentation.true":"compare.segmentation.false");
 			var icon = (data['equalSegmentation']?"ui-icon-check":"ui-icon-alert")
-			$("#segcompare").html(text+"<span class=\"ui-icon "+icon+"\" style=\"display: inline-block;vertical-align:middle;margin-left:5px;\"></span>");
-			// $("#segcompare").addClass("ui-state-alert");
+			$("#button_open_diff").button({'disabled':false});
+			$("button#seg_merge").button({
+				'disabled':data['equalSegmentation'],
+				'label':text,
+				'icons':{primary:icon, secondary:null}
+			});
 		});
+
 	} else {
-		$("#segcompare").empty();
+		$("#button_open_diff").button({'disabled':true});
+		$("button#seg_merge").button({
+			'disabled':true,
+			'label':i18n.t("compare.segmentation.undef"),
+			'icons':{primary:null,secondary:null}
+		});		
 	}
 	
 }

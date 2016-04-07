@@ -110,7 +110,8 @@
 	"compare":{
 		"segmentation":{
 			"true":"Identische Segmentierung",
-			"false":"Segmentierung verschieden"
+			"false":"Verschiedene Segmentierung vergleichen",
+			"undef":"Segmentierung"
 		}
 	}
 }
