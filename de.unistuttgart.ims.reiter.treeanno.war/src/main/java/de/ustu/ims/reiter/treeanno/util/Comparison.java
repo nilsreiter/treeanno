@@ -1,18 +1,16 @@
 package de.ustu.ims.reiter.treeanno.util;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
-import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 
 public class Comparison {
-	public boolean equalSegmentation(JCas jcas1, JCas jcas2)
-			throws UIMAException, SAXException, IOException {
+	public static boolean equalSegmentation(JCas jcas1, JCas jcas2)
+			throws UIMAException {
 		Iterator<TreeSegment> iter1 =
 				JCasUtil.iterator(jcas1, TreeSegment.class);
 		Iterator<TreeSegment> iter2 =
