@@ -109,4 +109,14 @@
     <servlet-name>UserDocumentList</servlet-name>
     <url-pattern>/rpc/userdocumentlist</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UserDocumentComparison</display-name>
+    <servlet-name>UserDocumentComparison</servlet-name>
+    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.UserDocumentComparison</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserDocumentComparison</servlet-name>
+    <url-pattern>/rpc/compare</url-pattern>
+  </servlet-mapping>
 </web-app>
