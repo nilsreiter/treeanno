@@ -25,6 +25,9 @@ public class Comparison {
 			s2++;
 		}
 
+		// if one of the CAS still has segments
+		if (iter1.hasNext() || iter2.hasNext()) return false;
+
 		return s1 == s2;
 	}
 }
