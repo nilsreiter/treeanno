@@ -92,7 +92,9 @@ function show_annodoclist(id) {
 					label:i18n.t("parallel.select"),
 					icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
 					text:showText
-				}); 
+				}).click({'userDocumentId':data['documents'][i]['id']}, function(event) {	
+					select_document_for_diff(event.data.userDocumentId);
+				});
 				$(actionCell).find("button.button_view").button({
 					label:i18n.t("annodoclistarea.view"),
 					icons:{primary:"ui-icon-document", secondary:null},
@@ -327,14 +329,16 @@ function show_documentlist(id) {
 }
 
 function select_document_for_diff(did) {
-	if ($("#diffselect-"+did).val() == did) {
-		if (documents_selected_for_diff.push(did) > max_documents_for_diff) {
-			var d = documents_selected_for_diff.shift();
-			$("#diffselect-"+d).removeAttr('checked');
-			$("#diffselect-"+d).button( "refresh" );
+	if ($("#diffselect-"+did).is(":checked"))  {
+		documents_selected_for_diff.push(did);
+		if (documents_selected_for_diff.length > max_documents_for_diff) {
+			var oldId = documents_selected_for_diff.shift();
+			$("#diffselect-"+oldId).prop("checked", false).button("refresh");
 		}
-	} else {
-		documents_selected_for_diff.splice(documents_selected_for_diff.indexOf(did),1);
-		$("#diffselect-"+did).button( "refresh" );
 	}
+	else  {
+		var index = documents_selected_for_diff.indexOf(did);
+		documents_selected_for_diff.splice(index, 1);
+	}
+	
 }
