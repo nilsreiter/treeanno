@@ -190,3 +190,7 @@ span.search_container {
 	margin-left:10px;
 	display: inline-block;
 }
+
+.parallel_equal_segmentation {
+	display:none;
+}

@@ -556,10 +556,15 @@ function init_parallel() {
 	disableSaveButton();
 
 	$(".outline").hide();
+	var loaded = 0;
 	$("#content > div > .outline").each(function(index, element) {
 		var documentId = userDocumentIds[index];
 		jQuery.getJSON("DocumentContentHandling?userDocumentId="+documentId, function(data) {
-			$(element).parent().prepend("<h2>"+i18n.t("parallel.annotations_from_X",{"user":data["document"]["user"]["name"]})+"</h2>");
+			var titleString = "parallel.annotations_from_X";
+			if (parallel_mode == "segmentation") {
+				titleString = "parallel.segmentations_from_X";
+			}
+			$(element).parent().prepend("<h2>"+i18n.t(titleString,{"user":data["document"]["user"]["name"]})+"</h2>");
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
 				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["document"]["project"]["id"]+"\">"+data["document"]["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["document"]["name"]}));
 				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["document"]["name"]});
@@ -573,7 +578,7 @@ function init_parallel() {
 			while (list.length > 0) {
 				var item = list.shift();
 				
-				if ('parentId' in item) {
+				if (parallel_mode != 'segmentation' && 'parentId' in item) {
 					var parentId = item['parentId'];
 					var parentItem = $("li[data-treeanno-id='"+parentId+"']", element);
 					if (parentItem.length == 0)
@@ -590,9 +595,22 @@ function init_parallel() {
 		
 			$("#status .loading").hide();
 			$(element).show();
+			loaded++;
+			if (loaded == 2) {
+				$(".outline > li").each(function(index, element) {
+					var begin = parseInt($(element).attr("data-treeanno-begin"));
+					var end = parseInt($(element).attr("data-treeanno-end"));
+					
+					var objects = $("li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']");
+					if (objects.length == 2) {
+						$(objects).addClass("parallel_equal_segmentation");
+					}
+				});
+			}
 		});
 	});
 	
+
 }
 
 
