@@ -145,6 +145,9 @@ function show_annodoclist(id) {
 				icons:{primary:null,secondary:null},
 				text:showText,
 				disabled:true
+			}).click(function () {
+				if (documents_selected_for_diff.length==2)
+					window.location.href="parallel.jsp?mode=segmentation&userDocumentId="+documents_selected_for_diff[0]+"&userDocumentId="+documents_selected_for_diff[1];
 			});
 		} else {
 			$("#annodoclistarea").append("<p>"+i18n.t("annodoclistarea.no-documents")+"</p>");
