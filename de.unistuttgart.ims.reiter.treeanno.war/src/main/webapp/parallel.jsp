@@ -27,9 +27,13 @@
 
 	var language = "${sessionScope.User.language}";
 	var userDocumentIds = new Array();
+	var documentIds = new Array();
 	var parallel_mode = "${ paramValues.mode[0] }";
 	<c:forEach items="${paramValues.userDocumentId }" var="id">
 	userDocumentIds[userDocumentIds.length] = ${id};
+	</c:forEach>
+	<c:forEach items="${paramValues.documentId }" var="id">
+	documentIds[documentIds.length] = ${id};
 	</c:forEach>
 	[ "${paramValues.userDocumentId[0]}", "${paramValues.userDocumentId[1]}" ];
 	var treeanno = new Object();
@@ -49,13 +53,19 @@
 		<p>Need to give a document parameter</p>
 	</c:if>
 	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>
-	<div id="content" class="parallel-${ fn:length(paramValues.userDocumentId) }">
-		<c:forEach items="${paramValues.userDocumentId }">
+	<div id="content" class="parallel-${ fn:length(paramValues.userDocumentId)+1 }">
+		<c:forEach var="uDocId" items="${paramValues.userDocumentId }">
 			<div class="outline_container">
-			<ul class="outline text">
+			<ul class="outline text userDocument id-${uDocId}">
     		</ul>
     		</div>
 		</c:forEach>
+		<c:if test="${ paramValues.mode[0] eq 'segmentation' }">
+			<div class="outline_container active">
+				<ul class="outline text document id-${paramValues.documentId[0]}">
+				</ul>
+			</div>
+		</c:if>
 	</div>
 	<div id="split">
 		<p data-i18n="howto_split" class="trans">howto_split</p>

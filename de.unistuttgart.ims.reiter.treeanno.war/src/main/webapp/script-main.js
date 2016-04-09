@@ -2,6 +2,7 @@ var INTERACTION_NONE = "none";
 var INTERACTION_TREEANNO = "treeanno";
 var INTERACTION_SPLIT = "split";
 var INTERACTION_CATEGORY = "category";
+var INTERACTION_MERGE_SEGMENTATION = "segmentation";
 var interaction_mode = INTERACTION_TREEANNO;
 
 var mode = {
@@ -13,6 +14,9 @@ var mode = {
 	},
 	category:{
 		preventDefault:false
+	},
+	segmentation:{
+		preventDefault:true
 	}
 }
 
@@ -21,6 +25,7 @@ var mode = {
  */
 var shifted = false;
 var idCounter = 0;
+var loaded = 0;
 
 
 var kbkey = { up: 38, down: 40, right: 39, left: 37, 
@@ -231,7 +236,7 @@ var ops={
 			history:false,
 			pre:{
 				fun:function() {
-					return !$(".selected").first().is($("#outline li").first());
+					return !$(".selected").first().is($(".active .outline li:visible").first());
 				},
 				fail: {
 					type: "information",
@@ -247,7 +252,7 @@ var ops={
 			history:false,
 			pre: {
 				fun: function() {
-					return !$(".selected").last().is($("#outline li").last());
+					return !$(".selected").last().is($(".active .outline li:visible").last());
 				},
 				fail: {
 					type: "information",
@@ -317,20 +322,33 @@ var ops={
 		}
 	};
 var operations = {
+		// enter
 		13: { split: ops.split_enter,
 			  category: ops.category_enter },
+		// escape
 		27: { category: ops.category_cancel,
 			  split: ops.split_cancel },
+		// left
 		37: { treeanno: ops.outdent, 
 			  split: ops.split_move_left },
-		38: { treeanno: ops.up },
+		// up
+		38: { treeanno: ops.up,
+			  segmentation: ops.up },
+		// right
 		39: { treeanno: ops.indent,
 			  split: ops.split_move_right },
-		40: { treeanno: ops.down },
+		// down
+		40: { treeanno: ops.down,
+			  segmentation: ops.down },
+		// 1
 		49: { treeanno: ops.mark },
+		// c
 		67: { treeanno: ops.categorize },
+		// d
 		68: { treeanno: ops.delete_category },
+		// m
 		77: { treeanno: ops.merge },
+		// s
 		83: { treeanno: ops.split }, 
 		1037: { split:ops.split_move_left_big },
 		1038: { treeanno: ops.select_up },
@@ -533,7 +551,6 @@ function init_parallel() {
 	
 	$( "button.button_change_document" ).button({
 		icons: { primary: "ui-icon-folder-collapsed", secondary:null },
-		//label: i18n.t("open"),
 	}).click(function() {
 		window.location.href="projects.jsp?projectId="+projectId;
 	});
@@ -554,16 +571,34 @@ function init_parallel() {
 	$("#form_search").blur(function() { interaction_mode = INTERACTION_TREEANNO; });
 	
 	disableSaveButton();
+	if (parallel_mode == "segmentation") {
+		interaction_mode = INTERACTION_MERGE_SEGMENTATION;
+		document.onkeydown = function(e) {
+			key_down(e);
+		};
+		document.onkeyup = function(e) {
+			key_up(e);
+		};
+
+	}
 
 	$(".outline").hide();
-	var loaded = 0;
-	$("#content > div > .outline").each(function(index, element) {
-		var documentId = userDocumentIds[index];
-		jQuery.getJSON("DocumentContentHandling?userDocumentId="+documentId, function(data) {
-			var titleString = "parallel.annotations_from_X";
-			if (parallel_mode == "segmentation") {
-				titleString = "parallel.segmentations_from_X";
-			}
+	for (var i = 0; i < userDocumentIds.length; i++) {
+		var uDocId = userDocumentIds[i];
+		load_parallel($(".userDocument.id-"+uDocId), "DocumentContentHandling?userDocumentId=", uDocId, false);
+	}
+	var goalElement = $(".id-"+documentIds[0]).first();
+	load_parallel(goalElement, "DocumentContentHandling?documentId=", documentIds[0], true);
+	
+}
+
+function load_parallel(element, urlhead, dId, goal) {
+	jQuery.getJSON(urlhead+dId, function(data) {
+		var titleString = "parallel.annotations_from_X";
+		if (parallel_mode == "segmentation") {
+			titleString = "parallel.segmentations_from_X";
+		}
+		if (!goal) {
 			$(element).parent().prepend("<h2>"+i18n.t(titleString,{"user":data["document"]["user"]["name"]})+"</h2>");
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
 				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["document"]["project"]["id"]+"\">"+data["document"]["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["document"]["name"]}));
@@ -571,48 +606,52 @@ function init_parallel() {
 			} else {
 				//$(".breadcrumb").append(", "+data["document"]["name"]);
 				// document.title = document.title + ", " + data["document"]["name"];
-			} 
-			
-			var list = data["list"];
-			
-			while (list.length > 0) {
-				var item = list.shift();
-				
-				if (parallel_mode != 'segmentation' && 'parentId' in item) {
-					var parentId = item['parentId'];
-					var parentItem = $("li[data-treeanno-id='"+parentId+"']", element);
-					if (parentItem.length == 0)
-						list.push(item);
-					else {
-						if (parentItem.children("ul").length == 0)
-							parentItem.append("<ul></ul>");
-						$("li[data-treeanno-id='"+parentId+"'] > ul", element).append(get_html_item(item, 0));
-					}
-				} else {
-					$(element).append(get_html_item(item, 0));
-				}
 			}
+		} else {
+			$(element).parent().prepend("<h2>"+i18n.t("parallel.merged")+"</h2>");
+
+		}
 		
-			$("#status .loading").hide();
-			$(element).show();
-			loaded++;
-			if (loaded == 2) {
-				$(".outline > li").each(function(index, element) {
-					var begin = parseInt($(element).attr("data-treeanno-begin"));
-					var end = parseInt($(element).attr("data-treeanno-end"));
-					
-					var objects = $("li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']");
-					if (objects.length == 2) {
-						$(objects).addClass("parallel_equal_segmentation");
-					}
-				});
+		var list = data["list"];
+		
+		while (list.length > 0) {
+			var item = list.shift();
+			
+			if (parallel_mode != 'segmentation' && 'parentId' in item) {
+				var parentId = item['parentId'];
+				var parentItem = $(element).children("li[data-treeanno-id='"+parentId+"']");
+				if (parentItem.length == 0)
+					list.push(item);
+				else {
+					if (parentItem.children("ul").length == 0)
+						parentItem.append("<ul></ul>");
+					$("li[data-treeanno-id='"+parentId+"'] > ul", element).append(get_html_item(item, 0));
+				}
+			} else {
+				$(element).append(get_html_item(item, 0));
 			}
-		});
-	});
+		}
 	
+		$("#status .loading").hide();
+		$(element).show();
+		loaded++;
+		if (loaded == 3) {
+			$(".userDocument > li").each(function(index, element) {
+				var begin = parseInt($(element).attr("data-treeanno-begin"));
+				var end = parseInt($(element).attr("data-treeanno-end"));
+				
+				var objects = $(".userDocument li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']");
+				if (objects.length == 2) {
+					$(objects).hide();
+					$(".document li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']").hide();
+				}
+				
+			});
+			$(".document li:visible()").first().addClass("selected");
+		}
+	});
 
 }
-
 
 function search() {
 	$("li.searchFound").removeClass("searchFound");
@@ -704,10 +743,10 @@ function key_up(e) {
 }
 
 function extend_selection_down() {
-	var allItems = $("#outline li");
+	var allItems = $(".active ul.outline li:visible");
 
 	// get index of last selected item
-	var index = $(".selected").last().index("#outline li");
+	var index = allItems.index($("li.selected").last());
 		
 	// if nothing is selected
 	if (index == -1) 
@@ -724,14 +763,14 @@ function extend_selection_down() {
 }
 
 function move_selection_down() {
-	var allItems = $("#outline li");
-
+	var allItems = $(".active ul.outline li:visible");
+ 
 	// get index of last selected item
-	var index = $(".selected").last().index("#outline li");
+	var index = allItems.index($("li.selected").last());
 	
 	// we remove the selection from everything that is selected
+		
 	$(".selected").toggleClass("selected");
-	
 	// if nothing is selected
 	if (index == -1) {
 		// we select the first thing on the page
@@ -739,8 +778,7 @@ function move_selection_down() {
 	// if there is something after the last selected item, we select that
 	} else if (index < $(allItems).length-1) {
 		// if shift is not pressed, we select the next item of all items
-		if (!shifted)
-			$($(allItems).get(index+1)).toggleClass("selected");
+		$($(allItems).get(index+1)).toggleClass("selected");
 	}
 	// if the last selected thing is not in viewport, we scroll
 	if (!isElementInViewport($(".selected").last()))
@@ -762,9 +800,11 @@ function extend_selection_up() {
 }
 
 function move_selection_up() {
-	var allItems = $("#outline li");
+	var allItems = $(".active ul.outline li:visible");
+
 	// get index of first selected item
-	var index = $(".selected").first().index("#outline li");
+	var index = allItems.index($("li.selected").first());
+	
 	// if shift is not pressed, remove the selection
 	if (index > 0)
 		$(".selected").toggleClass("selected");
@@ -816,8 +856,6 @@ function key_down(e) {
 	if (mode[interaction_mode]['preventDefault'])
 		e.preventDefault();
 	var keyCode = e.keyCode || e.which;
-	var allItems = $("#outline li");
-	
 	act(keyCode);
 }
 
