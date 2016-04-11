@@ -541,6 +541,88 @@ function init_main() {
         });
 }
 
+function init_segmentation_merge() {
+	init_all();
+	$("#split").hide();
+	$( "button.button_edit_user" ).button({
+		icons: { primary: "ui-icon-person", secondary:null },
+		disabled: true
+	});
+	
+	$( "button.button_save_document" ).button({
+		icons: { primary: "ui-icon-disk", secondary:null },
+		label: i18n.t("save"),
+	}).click(
+		function() {
+			save_document();
+		}
+	);
+	$("#button_search").button({
+		icons:{primary: "ui-icon-search", secondary: null },
+		label: i18n.t("search")
+	}).click(search);
+	$("#form_search").keyup(search);
+	$("#form_search").focus(function() { interaction_mode = INTERACTION_NONE; });
+	$("#form_search").blur(function() { interaction_mode = INTERACTION_TREEANNO; });
+	
+	disableSaveButton();
+	interaction_mode = INTERACTION_MERGE_SEGMENTATION;
+	document.onkeydown = function(e) {
+		key_down(e);
+	};
+	document.onkeyup = function(e) {
+		key_up(e);
+	};
+
+	$(".outline").hide();
+	var allData = {
+			'uDoc':{},
+			'doc':{}
+		};
+	for (var i = 0; i < userDocumentIds.length; i++) {
+		var uDocId = userDocumentIds[i];
+		jQuery.getJSON("DocumentContentHandling?userDocumentId="+uDocId, function(data) {
+			allData['uDoc'][data['documentId']] = data;
+			loaded++;
+			if (loaded == 3) 
+				init_segmentation_merge2(allData);
+		});
+	}
+	jQuery.getJSON("DocumentContentHandling?documentId="+documentIds[0], function(data) {
+		allData['doc'][documentIds[0]] = data;
+		loaded++;
+		if (loaded == 3) 
+			init_segmentation_merge2(allData);
+	});
+	
+}
+
+function init_segmentation_merge2(data) {
+	console.log((data));
+	var data0 = data['uDoc'][userDocumentIds[0]];
+	var data1 = data['uDoc'][userDocumentIds[1]];
+	for (var i = 0; i < data0['list'].length; i++) {
+		var b0 = data0['list'][i]['begin'];
+		var e0 = data0['list'][i]['end'];
+		for (var j = 0; j < data1['list'].length; j++) {
+			var b1 = data1['list'][j]['begin'];
+			var e1 = data1['list'][j]['end'];
+			
+			if (b0 == b1 && e0 == e1) {
+				data0['list'].splice(i--, 1);
+				data1['list'].splice(j--, 1);
+			}
+			
+		}
+	}
+	for (var i = 0; i < data0['list'].length; i++) {
+		
+	}
+	
+	
+	console.log(data);
+}
+
 function init_parallel() {
 	init_all();
 	$("#split").hide();
