@@ -147,7 +147,7 @@ function show_annodoclist(id) {
 				disabled:true
 			}).click(function () {
 				if (documents_selected_for_diff.length==2)
-					window.location.href="parallel.jsp?mode=segmentation&userDocumentId="+documents_selected_for_diff[0]+"&userDocumentId="+documents_selected_for_diff[1];
+					window.location.href="parallel.jsp?mode=segmentation&userDocumentId="+documents_selected_for_diff[0]+"&userDocumentId="+documents_selected_for_diff[1]+"&documentId="+id;
 			});
 		} else {
 			$("#annodoclistarea").append("<p>"+i18n.t("annodoclistarea.no-documents")+"</p>");
