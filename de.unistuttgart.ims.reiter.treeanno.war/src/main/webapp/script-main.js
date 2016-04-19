@@ -456,14 +456,18 @@ var operations = {
 		// d
 		68: { treeanno: ops.delete_category },
 		// m
-		77: { treeanno: ops.merge },
+		77: { treeanno: ops.merge,
+		      segmentation: ops.merge },
 		// s
-		83: { treeanno: ops.split }, 
+		83: { treeanno: ops.split,
+			  segmentation: ops.split }, 
 		1037: { split:ops.split_move_left_big },
-		1038: { treeanno: ops.select_up },
+		1038: { treeanno: ops.select_up,
+			    segmentation: ops.select_up },
 		1039: { treeanno: ops.force_indent,
 			    split:ops.split_move_right_big },
-		1040: { treeanno: ops.select_down },
+		1040: { treeanno: ops.select_down,
+				segmentation: ops.select_down},
 		1068: { treeanno:ops.delete_virtual_node },
 		1083: { treeanno:ops.save_document }
 };
@@ -1008,9 +1012,10 @@ function move_selection_down() {
 }
 
 function extend_selection_up() {
-	var allItems = $("#outline li");
+	var allItems = $(".active ul.outline li");
+	
 	// get index of first selected item
-	var index = $(".selected").first().index("#outline li");
+	var index = allItems.index($("li.selected").first());
 	
 	// if select the new item
 	if (index > 0) {
@@ -1473,6 +1478,6 @@ function undo() {
 }
 
 function id2element(id) {
-	return $("li[data-treeanno-id=\""+id+"\"]");
+	return $(".active li[data-treeanno-id=\""+id+"\"]");
 }
 
