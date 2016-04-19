@@ -35,6 +35,7 @@ var history = [];
 var kbkey = { up: 38, down: 40, right: 39, left: 37, 
 		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
 var keyString = {
+		8: '&#9003;',
 		37:'&larr;',
 		38:'&uarr;',
 		39:'&rarr;',
@@ -210,7 +211,7 @@ var ops={
 				move_selection_up();
 				add_category();
 			},
-			desc:'action_assign_category_t2',
+			desc:'action.assign_category_t2',
 			history:true,
 			post:{
 				mode:INTERACTION_CATEGORY_T2
