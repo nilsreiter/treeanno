@@ -55,7 +55,7 @@ public class DatabaseIO implements DataLayer {
 	Dao<UserPermission, Integer> userPermissionDao;
 
 	public DatabaseIO() throws ClassNotFoundException, NamingException,
-			SQLException {
+	SQLException {
 		Context initContext;
 		Class.forName("com.mysql.jdbc.Driver");
 
@@ -97,8 +97,8 @@ public class DatabaseIO implements DataLayer {
 	public int getAccessLevel(Project project, User user) throws SQLException {
 		List<UserPermission> list =
 				userPermissionDao.queryBuilder().where()
-						.eq(UserPermission.FIELD_USER, user).and()
-						.eq(UserPermission.FIELD_PROJECT, project).query();
+				.eq(UserPermission.FIELD_USER, user).and()
+				.eq(UserPermission.FIELD_PROJECT, project).query();
 
 		if (!list.isEmpty()) return list.get(0).getLevel();
 		return Perm.NO_ACCESS;
@@ -106,7 +106,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-	SAXException {
+			SAXException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -123,7 +123,7 @@ public class DatabaseIO implements DataLayer {
 
 		PreparedStatement stmt =
 				connection
-				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+						.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -147,8 +147,8 @@ public class DatabaseIO implements DataLayer {
 				userDocumentDao.queryBuilder();
 		PreparedQuery<UserDocument> pq =
 				queryBuilder.where()
-				.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
-				.eq(UserDocument.FIELD_USER, user).prepare();
+						.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
+						.eq(UserDocument.FIELD_USER, user).prepare();
 		List<UserDocument> ret = userDocumentDao.query(pq);
 		if (ret.isEmpty()) {
 			UserDocument ud = new UserDocument();
@@ -172,7 +172,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,
-	SAXException, IOException {
+			SAXException, IOException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
@@ -181,7 +181,7 @@ public class DatabaseIO implements DataLayer {
 		try {
 			stmt =
 					connection
-							.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
+					.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
 			stmt.setInt(1, documentId);
 			rs = stmt.executeQuery();
 
@@ -190,7 +190,7 @@ public class DatabaseIO implements DataLayer {
 				String textXML = rs.getString(1);
 				TypeSystemDescription tsd =
 						TypeSystemDescriptionFactory
-								.createTypeSystemDescription();
+						.createTypeSystemDescription();
 				jcas = JCasFactory.createJCas(tsd);
 				InputStream is = null;
 				try {
@@ -262,7 +262,7 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public boolean setJCas(Document document, JCas jcas) throws SQLException,
-	SAXException {
+			SAXException {
 		return this.updateJCas(document.getDatabaseId(), jcas);
 	}
 
@@ -296,6 +296,7 @@ public class DatabaseIO implements DataLayer {
 		return userDocumentDao.queryForId(id);
 	}
 
+	@Override
 	public boolean deleteUserDocument(int id) throws SQLException {
 		return (userDocumentDao.deleteIds(Arrays.asList(id)) == 1);
 	}
