@@ -68,6 +68,7 @@
 			</span>
 		</span>
 		<span class="right">
+			<button class="button_undo">undo</button>
 			<input type="checkbox" id="show_history"><label for="show_history">show_history</label>
 			<button class="button_save_document">save</button>
 			<button class="button_edit_user">${sessionScope.User.name}</button>
