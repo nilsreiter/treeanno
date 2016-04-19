@@ -44,7 +44,7 @@ div#artifact {
 	max-width:45%
 }
 .parallel-3 .outline_container {
-	max-width:30%
+	width:30%
 }
 .outline_container {
 	float:left;

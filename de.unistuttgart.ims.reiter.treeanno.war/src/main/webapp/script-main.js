@@ -780,11 +780,13 @@ function init_parallel() {
 	}
 
 	$(".outline").hide();
+	// first we load the two document by the annotators
 	for (var i = 0; i < userDocumentIds.length; i++) {
 		var uDocId = userDocumentIds[i];
 		load_parallel($(".userDocument.id-"+uDocId), "DocumentContentHandling?userDocumentId=", uDocId, false);
 	}
 	var goalElement = $(".id-"+documentIds[0]).first();
+	// ... then we load the merge document, which is a (new?) master document
 	load_parallel(goalElement, "DocumentContentHandling?documentId=", documentIds[0], true);
 	
 }
@@ -839,11 +841,34 @@ function load_parallel(element, urlhead, dId, goal) {
 				
 				var objects = $(".userDocument li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']");
 				if (objects.length == 2) {
-					$(objects).hide();
-					$(".document li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']").hide();
+					$(objects).replaceWith("<hr/>");
+					$(".document li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']").replaceWith("<hr/>");
 				}
 				
 			});
+			$(".text > hr + hr").remove();
+			
+			$(".text > hr").each(function(index, element) {
+				$(element).nextUntil("hr").wrapAll("<div></div>");
+			});
+			// $(".text > hr").remove();
+			
+			
+			/*$("#content").prepend("<table></table>");
+			$(".text:eq(0) > div").each(function(index, element) {
+				var row = document.createElement("tr");
+				var td1 = document.createElement("td");
+				var td2 = document.createElement("td");
+				var td3 = document.createElement("td");
+				$(td1).append(element);
+				$(td2).append($(".text:eq(1) > div:first()"));
+				$(td3).append($(".text:eq(2) > div:first()"));
+				$(row).append(td1);
+				$(row).append(td2);
+				$(row).append(td3);
+				$("#content table").append(row);
+			});*/
+			
 			$(".document li:visible()").first().addClass("selected");
 		}
 	});
