@@ -2,6 +2,7 @@ var INTERACTION_NONE = "none";
 var INTERACTION_TREEANNO = "treeanno";
 var INTERACTION_SPLIT = "split";
 var INTERACTION_CATEGORY = "category";
+var INTERACTION_CATEGORY_T2 = "category_t2";
 var interaction_mode = INTERACTION_TREEANNO;
 
 var mode = {
@@ -12,6 +13,9 @@ var mode = {
 		preventDefault:true
 	},
 	category:{
+		preventDefault:false
+	},
+	category_t2:{
 		preventDefault:false
 	}
 }
@@ -196,6 +200,25 @@ var ops={
 			history:false,
 			post:{
 				mode:INTERACTION_CATEGORY
+			}
+		},
+		force_indent_and_categorize:{
+			// c (in arndt projects)
+			id:'force_indent_and_categorize',
+			fun:function() {
+				force_indent();
+				move_selection_up();
+				add_category();
+			},
+			desc:'action_assign_category_t2',
+			history:true,
+			post:{
+				mode:INTERACTION_CATEGORY_T2
+			},
+			revert: {
+				fun: function(action) {
+					ops.force_indent.revert.fun(action);
+				}
 			}
 		},
 		delete_category:{
@@ -400,9 +423,11 @@ var ops={
 var operations = {
 		 8: { treeanno: ops.undo },
 		13: { split: ops.split_enter,
-			  category: ops.category_enter },
+			  category: ops.category_enter,
+			  category_t2: ops.category_enter },
 		27: { category: ops.category_cancel,
-			  split: ops.split_cancel },
+			  split: ops.split_cancel,
+			  category_t2: ops.category_cancel},
 		37: { treeanno: ops.outdent, 
 			  split: ops.split_move_left },
 		38: { treeanno: ops.up },
@@ -449,13 +474,12 @@ function init_operations(projectType) {
 	switch(projectType){
 	case ProjectType["ARNDT"]:
 		operations[49][INTERACTION_TREEANNO]['disabled'] = 1;
-		operations[67][INTERACTION_TREEANNO]['fun'] = function() {
-			act(1039);
-			move_selection_up();
-			add_category();
-			interaction_mode = INTERACTION_CATEGORY;
-		}
-		operations[67][INTERACTION_TREEANNO]['desc'] = 'action.assign_category_t2';
+		operations[67][INTERACTION_TREEANNO] = ops.force_indent_and_categorize;
+		var oldRevertFunction = ops.category_enter.revert.fun;
+		ops.category_enter.revert.fun = function(action) {
+			oldRevertFunction(action);
+			undo();
+		};
 		operations[68][INTERACTION_TREEANNO]['desc'] = "action.delete_category_t2";
 		operations[1039][INTERACTION_TREEANNO]['desc'] = 'action.force_indent_t2';
 		break;
@@ -1284,7 +1308,6 @@ function undo() {
 	ops[action['op']]['revert'].fun(action);
 	$("#history > li:first()").remove();
 	$( "button.button_undo" ).button({disabled:(history.length==0)});
-	
 }
 
 function id2element(id) {
