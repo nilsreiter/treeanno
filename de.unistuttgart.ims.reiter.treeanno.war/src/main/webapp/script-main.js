@@ -516,7 +516,7 @@ function init_help() {
 	$("#show_helper").button({
 		icons: { primary: "ui-icon-help", secondary:null },
 		label: i18n.t("show_helper"),
-		text:showText
+		text:configuration["treeanno.ui.showTextOnButtons"]
 	}).click(function() {
 		$(helpElement).toggle();
 	});
@@ -531,13 +531,13 @@ function init_main() {
 		$( "button.button_edit_user" ).button({
 			icons: { primary: "ui-icon-person", secondary:null },
 			disabled: true,
-			text:showText
+			text:configuration["treeanno.ui.showTextOnButtons"]
 		});
 		
 		$( "button.button_save_document" ).button({
 			icons: { primary: "ui-icon-disk", secondary:null },
 			label: i18n.t("save"),
-			text:showText
+			text:configuration["treeanno.ui.showTextOnButtons"]
 		}).click(
 			function() {
 				save_document();
@@ -565,7 +565,7 @@ function init_main() {
 		$( "button.button_undo" ).button({
 			icons: { primary: "ui-icon-arrowreturnthick-1-w", secondary:null },
 			label: i18n.t("undo"),
-			text:showText,
+			text:configuration["treeanno.ui.showTextOnButtons"],
 			disabled:true
 		}).click(undo);
 		
@@ -1016,7 +1016,7 @@ function merge(item1, item0, newId) {
 	
 	var nitem = new Object();
 	var distance = (correctOrder?item1['begin']-item0['end']:item0['begin']-item1['end']);
-	var str = (includeSeparationWhenMerging?new Array(distance+1).join(" "):"");
+	var str = (configuration["treeanno.includeSeparationWhenMerging"]?new Array(distance+1).join(" "):"");
 
 	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
@@ -1045,7 +1045,7 @@ function merge(item1, item0, newId) {
 
 function splitdialog() {
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
-	$("#form_splittext").append(paragraphSplitCharacter+item['text']);
+	$("#form_splittext").append(configuration["treeanno.ui.paragraphSplitCharacter"]+item['text']);
 	
 	$("#split").dialog({
 		title: i18n.t("split_dialog.title"),
@@ -1068,11 +1068,11 @@ function splitdialog() {
 }
 
 function split_move_right_text(text, dist) {
-	var p = text.indexOf(paragraphSplitCharacter);
+	var p = text.indexOf(configuration["treeanno.ui.paragraphSplitCharacter"]);
 	
 	var newText = text.substring(0,p)+
 		text.substring(p+1,p+1+dist)+
-		paragraphSplitCharacter+
+		configuration["treeanno.ui.paragraphSplitCharacter"]+
 		text.substring(p+1+dist, text.length);
 	return newText;
 }
@@ -1093,9 +1093,9 @@ function split_move_right(dist) {
 }
 
 function split_move_left_text(text, dist) {
-	var p = text.indexOf(paragraphSplitCharacter);
+	var p = text.indexOf(configuration["treeanno.ui.paragraphSplitCharacter"]);
 	return text.substring(0,p - dist)+
-		paragraphSplitCharacter+
+		configuration["treeanno.ui.paragraphSplitCharacter"]+
 		text.substring(p-dist,p)+
 		text.substring(p+1, text.length)
 }
@@ -1114,12 +1114,12 @@ function splitdialog_cleanup() {
 function splitdialog_validate() {
 	var text = $("#form_splittext").text();
 
-	if (paragraphSplitBehaviour == "BEFORE-SPACE") {
-		if (text.includes(" " + paragraphSplitCharacter)) {
+	if (configuration["treeanno.ui.paragraphSplitBehaviour"] == "BEFORE-SPACE") {
+		if (text.includes(" " + configuration["treeanno.ui.paragraphSplitCharacter"])) {
 			return false;
 		}
-	} else if (paragraphSplitBehaviour == "AFTER-SPACE") {
-		if (text.includes(paragraphSplitCharacter+" "))
+	} else if (configuration["treeanno.ui.paragraphSplitBehaviour"] == "AFTER-SPACE") {
+		if (text.includes(configuration["treeanno.ui.paragraphSplitCharacter"]+" "))
 			return false;
 	}
 	return true;
@@ -1164,7 +1164,7 @@ function splitdialog_enter() {
 	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
 	var text = $("#form_splittext").text();
-	var lines = text.split(paragraphSplitCharacter);
+	var lines = text.split(configuration["treeanno.ui.paragraphSplitCharacter"]);
 	var logObj;
 	if (lines.length == 2) {
 		noty({

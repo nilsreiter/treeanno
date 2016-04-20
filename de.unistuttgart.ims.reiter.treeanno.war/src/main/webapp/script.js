@@ -1,7 +1,6 @@
-$.noty.defaults.layout = 'topRight';
-$.noty.defaults.theme = 'relax';
-$.noty.defaults.timeout = 2000;
-
+$.noty.defaults.layout = configuration["treeanno.ui.noty.layout"];
+$.noty.defaults.theme = configuration["treeanno.ui.noty.theme"];
+$.noty.defaults.timeout = configuration["treeanno.ui.noty.timeout"];
 
 function init_all() {
 	$("#topbar .right").buttonset();

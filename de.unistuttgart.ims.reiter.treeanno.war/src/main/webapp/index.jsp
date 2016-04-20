@@ -26,6 +26,14 @@
 	//<![CDATA[
 	//]]>
 	</script>
+	<script src="jquery.noty.packaged.min.js">
+	//<![CDATA[
+	//]]>
+	</script>
+	<script src="rpc/config">
+	// <![CDATA[
+	// ]]>
+	</script>
 	<script src="script.js">
 	//<![CDATA[
 	//]]>
