@@ -1,5 +1,7 @@
 0.6.5
 
+- We now display info about the segmentation whenever two annotated documents 
+  are selected
 - *Experimental*: Undo function. Backspace can now be pressed to undo the 
   last action(s).
 - Fixed a bug with missing information in history
