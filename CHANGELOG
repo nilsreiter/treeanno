@@ -1,0 +1,107 @@
+0.6.4
+
+- We now ask for confirmation before a user deletes a document
+- Added function for the project admin to edit the master document
+- It is now possible to delete (=reset) annotations made by annotators
+- Under-the-hood improvements towards undo function
+- Delete-button now has the proper label ("delete", before: "hide")
+- Exceptions happening on the server are now displayed as notifications
+- Removed smart truncation so that parallel view works again
+- New splitting interface.
+	- Move the split cursor (&para;) around with the arrow keys
+	- Shift+arrow keys moves the cursor by 25 characters
+	- Press enter (or click on ok) to submit the splitting
+	- The resulting split is shown as a notification.
+- We now show notifications in the top right corner instead of modal dialogs. 
+  Also warnings and helping messages
+- We now log all text interactions. Log can be toggled on and off. No 
+  interaction yet.
+
+0.6.3
+
+- Fixed another issue that sometimes led to disappearing empty nodes.
+- Integrated util package into core
+
+0.6.2
+
+- Fixed an issue where splitting led to misplaced boundaries
+- Fixed an issue where sometimes the first sentence under a virtual node 
+  disappeared. This only happened in the UI, sentences are stored correctly 
+  and have not been lost.
+- Merging two nodes now enables the save button
+
+0.6.1
+
+- Fixed an issue with the sentence ordering: Sentences are now sorted correctly 
+  before sent to the browser
+- Fixed an issue with truncation: Items are now displayed fully, because the 
+  smarttruncation plugin was very slow. This caused documents not to load at 
+  all.
+- Fixed selecting an item with the mouse. Clicking now longer selects only on 
+  the top level
+- Fixed the generation of a new id for merged items
+
+0.6
+
+- Annotations can be combared by viewing them side by side
+- There is now a keyboard shortcut for saving a document: &#8679;s
+
+0.5.3
+- Virtual nodes can now be created on the top level
+- The currently selected noted is better visible (when it has children)
+- Deleting virtual nodes no longer deletes sub nodes
+- If multiple nodes are selected  and &#8679;&rarr; is pressed, we only get a 
+  single virtual node now
+- A project now has a type. Projects of type 2: 
+	- don't allow marking a sentence
+	- Provide the combined operation of making a virtual node and assigning a 
+	  question
+	- Translation strings are different
+
+0.5.2
+
+- New document model. Each annotator gets his/her own copy of the document. 
+  The copy is created when the document is opened for the first time.
+- It is now possible to upload new (plain-text, UTF-8) documents. They are 
+  segmented using LanguageTool. TreeSegments (visible in TreeAnno) can be 
+  based on sentences or tokens.
+- Indicating loading operations
+- Text will now be dynamically truncated
+- Optimized database access through ormlite
+
+0.5.1
+
+- Fixed wrong server url for saving documents
+- Fixed miscalculation of character positions when splitting items
+
+0.5
+
+- Useful page titles
+- Database access is now cached
+- Shift-clicking can now be used to select multiple items
+- Virtual nodes:
+  - Shift+Right arrow forces indentation by creating virtual nodes
+  - Shift+d allows removal of virtual nodes if they have no children
+- Items can be marked by pressing 1 (the number). This highlighting will be 
+  stored as a boolean annotation. Intended use: Marking of difficult cases or 
+  things to discuss later
+- UI improvements
+
+0.4
+
+- Multiple items can be selected by holding shift. Items on different levels 
+  can't be selected at the same time
+- Clicking an item with the mouse selects it
+- Documents can be cloned and deleted from the project menu
+- We can now export documents from the project menu. Browser will download a 
+  zip file containing XMI and typesystem
+- Splitting and merging can be done from the keyboard. We no longer show a 
+  merging window. Pressing m now merges the selected items.
+- If annotating an item by pressing c, the sentence text is now added by 
+  default
+
+0.3
+
+- Added search function
+- Added cheat sheet with keyboard commands
+- Fixed: Splitting and merging bugs
