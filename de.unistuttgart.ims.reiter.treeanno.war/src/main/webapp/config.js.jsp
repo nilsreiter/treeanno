@@ -7,7 +7,7 @@
 <![CDATA[
 var includeSeparationWhenMerging = ${applicationScope['treeanno.includeSeparationWhenMerging']};
 var showText = ${applicationScope['treeanno.ui.showTextOnButtons']};
-var paragraphSplitBehaviour = ${applicationScope['treeanno.ui.paragraphSplitBehaviour']};
+var paragraphSplitBehaviour = "${applicationScope['treeanno.ui.paragraphSplitBehaviour']}";
 var paragraphSplitCharacter = "${applicationScope['treeanno.ui.paragraphSplitCharacter']}";
 
 var Perm = new Object();
