@@ -1,3 +1,9 @@
+0.6.5
+
+- *Experimental*: Undo function. Backspace can now be pressed to undo the 
+  last action(s).
+- Fixed a bug with missing information in history
+
 0.6.4
 
 - We now ask for confirmation before a user deletes a document
