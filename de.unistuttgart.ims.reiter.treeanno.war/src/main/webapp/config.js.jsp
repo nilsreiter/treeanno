@@ -5,10 +5,10 @@
 	<jsp:useBean id="Perm" class="de.ustu.ims.reiter.treeanno.Perm" scope="page"/>
 	<jsp:useBean id="ProjectType" class="de.ustu.ims.reiter.treeanno.ProjectType" scope="page" />
 <![CDATA[
-var includeSeparationWhenMerging = ${applicationScope['treeanno.includeSeparationWhenMerging']};
-var showText = ${applicationScope['treeanno.ui.showTextOnButtons']};
-var paragraphSplitBehaviour = "${applicationScope['treeanno.ui.paragraphSplitBehaviour']}";
-var paragraphSplitCharacter = "${applicationScope['treeanno.ui.paragraphSplitCharacter']}";
+var includeSeparationWhenMerging = ${applicationScope['conf']['treeanno.includeSeparationWhenMerging']};
+var showText = ${applicationScope['conf']['treeanno.ui.showTextOnButtons']};
+var paragraphSplitBehaviour = "${applicationScope['conf']['treeanno.ui.paragraphSplitBehaviour']}";
+var paragraphSplitCharacter = "${applicationScope['conf']['treeanno.ui.paragraphSplitCharacter']}";
 
 var Perm = {
 	NOACCESS:${Perm.NOACCESS},

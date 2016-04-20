@@ -16,6 +16,11 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
 
+import org.apache.commons.configuration2.CombinedConfiguration;
+import org.apache.commons.configuration2.ConfigurationMap;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.tree.OverrideCombiner;
 import org.apache.commons.io.IOUtils;
 
 import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
@@ -61,16 +66,19 @@ public class ContextListener implements ServletContextListener {
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}
-
+		PropertiesConfiguration defaultConfig = new PropertiesConfiguration();
+		PropertiesConfiguration serverConfig = new PropertiesConfiguration();
 		Properties properties = null;
-		Properties defaults = new Properties();
 
 		InputStream is = null;
 		try {
 			// reading of default properties from inside the war
 			is = getClass().getResourceAsStream("/project.properties");
-			if (is != null) defaults.load(new InputStreamReader(is, "UTF-8"));
-		} catch (IOException e) {
+			if (is != null) {
+				defaultConfig.read(new InputStreamReader(is, "UTF-8"));
+				// defaults.load();
+			}
+		} catch (IOException | ConfigurationException e) {
 			e.printStackTrace();
 		} finally {
 			IOUtils.closeQuietly(is);
@@ -84,23 +92,26 @@ public class ContextListener implements ServletContextListener {
 						(String) envContext
 								.lookup("treeanno/configurationPath");
 				is = new FileInputStream(new File(path));
-				properties = new Properties(defaults);
-				properties.load(new InputStreamReader(is, "UTF-8"));
-			} else {
-				// if no context is found, we take the defaults
-				properties = defaults;
+				serverConfig.read(new InputStreamReader(is, "UTF-8"));
 			}
-		} catch (IOException | NamingException e) {
+		} catch (IOException | NamingException | ConfigurationException e) {
 			e.printStackTrace();
-			// if something goes wrong, we take the defaults
-			properties = defaults;
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
 
-		for (String s : properties.stringPropertyNames()) {
-			sc.setAttribute(s, properties.getProperty(s));
-		}
+		CombinedConfiguration config =
+				new CombinedConfiguration(new OverrideCombiner());
+		config.addConfiguration(serverConfig);
+		config.addConfiguration(defaultConfig);
+
+		sc.setAttribute("conf", new ConfigurationMap(config));
+
+		/*
+		 * for (String s : properties.stringPropertyNames()) {
+		 * sc.setAttribute(s, properties.getProperty(s));
+		 * }
+		 */
 
 		try {
 			CW.setDataLayer(sc, new DatabaseIO());
