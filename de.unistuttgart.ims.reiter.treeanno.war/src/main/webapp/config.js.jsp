@@ -6,9 +6,9 @@
 	<jsp:useBean id="ProjectType" class="de.ustu.ims.reiter.treeanno.ProjectType" scope="page" />
 <![CDATA[
 var includeSeparationWhenMerging = ${applicationScope['treeanno.includeSeparationWhenMerging']};
-var showText = ${applicationScope['treeanno.showTextOnButtons']};
+var showText = ${applicationScope['treeanno.ui.showTextOnButtons']};
 var paragraphSplitBehaviour = ${applicationScope['treeanno.ui.paragraphSplitBehaviour']};
-var paragraphSplitCharacter = ${applicationScope['treeanno.ui.paragraphSplitCharacter']};
+var paragraphSplitCharacter = "${applicationScope['treeanno.ui.paragraphSplitCharacter']}";
 
 var Perm = new Object();
 Perm["NOACCESS"] = ${Perm.NOACCESS};
