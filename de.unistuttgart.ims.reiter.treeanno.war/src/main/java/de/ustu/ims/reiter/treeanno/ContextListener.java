@@ -90,7 +90,7 @@ public class ContextListener implements ServletContextListener {
 			if (envContext != null) {
 				String path =
 						(String) envContext
-								.lookup("treeanno/configurationPath");
+						.lookup("treeanno/configurationPath");
 				is = new FileInputStream(new File(path));
 				serverConfig.read(new InputStreamReader(is, "UTF-8"));
 			}
@@ -107,11 +107,9 @@ public class ContextListener implements ServletContextListener {
 
 		sc.setAttribute("conf", new ConfigurationMap(config));
 
-		/*
-		 * for (String s : properties.stringPropertyNames()) {
-		 * sc.setAttribute(s, properties.getProperty(s));
-		 * }
-		 */
+		sc.setAttribute("treeanno.name", config.getString("treeanno.name"));
+		sc.setAttribute("treeanno.version",
+				config.getString("treeanno.version"));
 
 		try {
 			CW.setDataLayer(sc, new DatabaseIO());
