@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -56,19 +55,25 @@ public class ContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext sc = sce.getServletContext();
 		Context envContext = null;
+		DataSource dataSource = null;
+		String dataSourceName = "jdbc/treeanno";
 		try {
 			envContext =
 					(Context) new InitialContext().lookup("java:/comp/env");
 
-			DataSource dataSource =
-					(DataSource) envContext.lookup("jdbc/treeanno");
+			dataSource = (DataSource) envContext.lookup(dataSourceName);
+			try {
+				dataSource.getConnection();
+			} catch (SQLException e) {
+				dataSourceName = "jdbc/treeanno-mem";
+				dataSource = (DataSource) envContext.lookup(dataSourceName);
+			}
 			sc.setAttribute("dataSource", dataSource);
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}
 		PropertiesConfiguration defaultConfig = new PropertiesConfiguration();
 		PropertiesConfiguration serverConfig = new PropertiesConfiguration();
-		Properties properties = null;
 
 		InputStream is = null;
 		try {
@@ -110,9 +115,10 @@ public class ContextListener implements ServletContextListener {
 		sc.setAttribute("treeanno.name", config.getString("treeanno.name"));
 		sc.setAttribute("treeanno.version",
 				config.getString("treeanno.version"));
+		sc.setAttribute("dsName", dataSourceName);
 
 		try {
-			CW.setDataLayer(sc, new DatabaseIO());
+			CW.setDataLayer(sc, new DatabaseIO(dataSource));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
