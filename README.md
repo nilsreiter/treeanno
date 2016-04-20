@@ -62,3 +62,5 @@ Web app properties are read from a UTF-8 encoded properties file that can be loc
 		type="java.lang.String"/>
 </Context>
 ```
+
+An example properties file can be found in `/de.unistuttgart.ims.reiter.treeanno.war/src/main/resources/project.properties` in this repository.
