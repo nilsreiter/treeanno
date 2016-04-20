@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -65,6 +66,11 @@ public class ContextListener implements ServletContextListener {
 			is = getClass().getResourceAsStream("/project.properties");
 			if (is != null)
 				properties.load(new InputStreamReader(is, "UTF-8"));
+			Enumeration<String> pNames = sc.getInitParameterNames();
+			while (pNames.hasMoreElements()) {
+				String pName = pNames.nextElement();
+				properties.put(pName, sc.getInitParameter(pName));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
