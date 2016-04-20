@@ -80,7 +80,9 @@ public class ContextListener implements ServletContextListener {
 			// reading additional properties in seperate file, as specified
 			// in the context
 			if (envContext != null) {
-				String path = (String) envContext.lookup("configurationPath");
+				String path =
+						(String) envContext
+								.lookup("treeanno/configurationPath");
 				is = new FileInputStream(new File(path));
 				properties = new Properties(defaults);
 				properties.load(new InputStreamReader(is, "UTF-8"));
@@ -97,7 +99,7 @@ public class ContextListener implements ServletContextListener {
 		}
 
 		for (String s : properties.stringPropertyNames()) {
-			sc.setAttribute(s, properties.get(s));
+			sc.setAttribute(s, properties.getProperty(s));
 		}
 
 		try {
