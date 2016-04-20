@@ -10,16 +10,17 @@ var showText = ${applicationScope['treeanno.ui.showTextOnButtons']};
 var paragraphSplitBehaviour = "${applicationScope['treeanno.ui.paragraphSplitBehaviour']}";
 var paragraphSplitCharacter = "${applicationScope['treeanno.ui.paragraphSplitCharacter']}";
 
-var Perm = new Object();
-Perm["NOACCESS"] = ${Perm.NOACCESS};
-Perm["READACCESS"] = ${Perm.READACCESS};
-Perm["WRITEACCESS"] = ${Perm.WRITEACCESS};
-Perm["PADMINACCESS"] = ${Perm.PADMINACCESS};
-Perm["ADMINACCESS"] = ${Perm.ADMINACCESS};
+var Perm = {
+	NOACCESS:${Perm.NOACCESS},
+	READACCESS:${Perm.READACCESS},
+	WRITEACCESS:${Perm.WRITEACCESS},
+	PADMINACCESS:${Perm.PADMINACCESS},
+	ADMINACCESS:${Perm.ADMINACCESS}
+};
 
-var ProjectType = new Object();
-ProjectType["DEFAULT"] = ${ProjectType.DEFAULT};
-ProjectType["ARNDT"] = ${ProjectType.ARNDT};
-
+var ProjectType = {
+	DEFAULT:${ProjectType.DEFAULT},
+	ARNDT:${ProjectType.ARNDT}
+};
 ]]>
 </jsp:root>
