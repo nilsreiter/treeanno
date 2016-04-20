@@ -109,4 +109,14 @@
     <servlet-name>UserDocumentList</servlet-name>
     <url-pattern>/rpc/userdocumentlist</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Configuration</display-name>
+    <servlet-name>Configuration</servlet-name>
+    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.Configuration</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Configuration</servlet-name>
+    <url-pattern>/rpc/config</url-pattern>
+  </servlet-mapping>
 </web-app>
