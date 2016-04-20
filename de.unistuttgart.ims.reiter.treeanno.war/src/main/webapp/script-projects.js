@@ -29,7 +29,7 @@ function init_projects() {
 			$(tr).find("button.button_open").button({
 				label: i18n.t("project_action_open"),
 				icons:{primary:"ui-icon-folder-collapsed",secondary:null},
-				text:showText
+				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({'projectId':data[i]['id']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
@@ -46,7 +46,7 @@ function init_projects() {
 	
 	$( "button.button_edit_user" ).button({
 		icons: { primary: "ui-icon-person", secondary:null },
-		text:showText
+		text:configuration["treeanno.ui.showTextOnButtons"]
 	});
 }
 
@@ -91,19 +91,19 @@ function show_annodoclist(id) {
 				$(actionCell).find("input.button_diff").button({
 					label:i18n.t("parallel.select"),
 					icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
-					text:showText
+					text:configuration["treeanno.ui.showTextOnButtons"]
 				}); 
 				$(actionCell).find("button.button_view").button({
 					label:i18n.t("annodoclistarea.view"),
 					icons:{primary:"ui-icon-document", secondary:null},
-					text:showText
+					text:configuration["treeanno.ui.showTextOnButtons"]
 				}).click({'userDocumentId':data['documents'][i]['id']}, function(event) {	
 	 				window.location.href="parallel.jsp?userDocumentId="+event.data.userDocumentId;
 				});
 				$(actionCell).find("button.button_delete").button({
 					label:i18n.t("annodoclistarea.delete"),
 					icons:{primary:"ui-icon-trash", secondary:null},
-					text:showText
+					text:configuration["treeanno.ui.showTextOnButtons"]
 				}).click({'userDocumentId':data['documents'][i]['id']}, function(event) {
 					if (confirm(i18n.t("document_action_delete_confirm"))) {
 						jQuery.ajax({
@@ -122,7 +122,7 @@ function show_annodoclist(id) {
 			$("button#button_open_diff").button({
 				label:i18n.t("parallel.open_view"),
 				icons:{primary:"ui-icon-zoomin",secondary:null},
-				text:showText
+				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click(function() {
 				if($("input.button_diff:checked").length == 2) {
 					var doc = new Array();
@@ -197,7 +197,7 @@ function show_documentlist(id) {
 			$(actionCell).find("button.button_open").button({
 				label:i18n.t("document_action_open"),
 				icons:{primary:"ui-icon-document",secondary:null},
-				text:showText
+				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -206,7 +206,7 @@ function show_documentlist(id) {
 			$(actionCell).find("button.button_open_master").button({
 				label:i18n.t("document_action_open_master"),
 				icons:{primary:"ui-icon-document",secondary:null},
-				text:showText
+				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -224,7 +224,7 @@ function show_documentlist(id) {
 			$(actionCell).find("button.button_rename").button({
 				label:i18n.t("document_action_rename"),
 				icons:{primary:"ui-icon-pencil",secondary:null},
-				text:showText
+				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
 				'document':data['documents'][i]
 			}, function(event) {
@@ -259,7 +259,7 @@ function show_documentlist(id) {
 			$(actionCell).find("button.button_delete").button({
 				label:i18n.t("document_action_delete"),
 				icons:{primary:"ui-icon-trash", secondary:null},
-				text:showText
+				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -275,7 +275,7 @@ function show_documentlist(id) {
 			$(actionCell).find("button.button_view_annodoc").button({
 				label:i18n.t("document_action_view_annodoc"),
 				icons:{primary:"ui-icon-cart", secondary:null},
-				text:showText
+				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -287,7 +287,7 @@ function show_documentlist(id) {
 			$(actionCell).find("button.button_export").button({
 				label:i18n.t("document_action_export_xmi"),
 				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null},
-				text:showText
+				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
@@ -316,7 +316,7 @@ function show_documentlist(id) {
 			$("button#new_document_open_dialog").button({
 				label:i18n.t("new_document.open_dialog"),
 				icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null },
-				text:showText
+				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click(function() {
 				$("#documentuploaddialog").dialog("open");
 			});
