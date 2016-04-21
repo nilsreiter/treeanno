@@ -57,18 +57,29 @@ public class ContextListener implements ServletContextListener {
 		Context envContext = null;
 		DataSource dataSource = null;
 		String dataSourceName = "jdbc/treeanno";
+		int dataSourceType = 0;
 		try {
 			envContext =
 					(Context) new InitialContext().lookup("java:/comp/env");
 
 			dataSource = (DataSource) envContext.lookup(dataSourceName);
+
 			try {
 				dataSource.getConnection();
 			} catch (SQLException e) {
-				dataSourceName = "jdbc/treeanno-mem";
-				dataSource = (DataSource) envContext.lookup(dataSourceName);
+				try {
+					Class.forName("org.h2.Driver");
+					dataSourceName = "jdbc/treeanno_fallback";
+					dataSourceType = 1;
+					System.err.println("Falling back to data source "
+							+ dataSourceName);
+					dataSource = (DataSource) envContext.lookup(dataSourceName);
+					dataSource.getConnection();
+					sc.setAttribute("dataSource", dataSource);
+				} catch (ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
 			}
-			sc.setAttribute("dataSource", dataSource);
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}
@@ -118,7 +129,7 @@ public class ContextListener implements ServletContextListener {
 		sc.setAttribute("dsName", dataSourceName);
 
 		try {
-			CW.setDataLayer(sc, new DatabaseIO(dataSource));
+			CW.setDataLayer(sc, new DatabaseIO(dataSource, dataSourceType));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
