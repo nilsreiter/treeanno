@@ -107,5 +107,8 @@
 	},
 	"bc":{
 		"master":"Master: "
+	},
+	"alert":{
+		"in-memory":"Datenbank nicht erreichbar. Änderungen und Annotationen können nicht gespeichert werden."
 	}
 }
