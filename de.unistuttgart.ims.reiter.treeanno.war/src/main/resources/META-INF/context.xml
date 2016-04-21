@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <Context docBase="${catalina.home}/webapps/treeanno">
     <Resource 
-        name="jdbc/treeanno_fallback" 
+        name="jdbc/treeanno-mem" 
         auth="Container" 
         type="javax.sql.DataSource" 
         username="sa" 

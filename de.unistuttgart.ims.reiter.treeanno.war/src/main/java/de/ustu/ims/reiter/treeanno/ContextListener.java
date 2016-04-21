@@ -69,7 +69,7 @@ public class ContextListener implements ServletContextListener {
 			} catch (SQLException e) {
 				try {
 					Class.forName("org.h2.Driver");
-					dataSourceName = "jdbc/treeanno_fallback";
+					dataSourceName = "jdbc/treeanno-mem";
 					dataSourceType = 1;
 					System.err.println("Falling back to data source "
 							+ dataSourceName);
@@ -106,7 +106,7 @@ public class ContextListener implements ServletContextListener {
 			if (envContext != null) {
 				String path =
 						(String) envContext
-						.lookup("treeanno/configurationPath");
+								.lookup("treeanno/configurationPath");
 				is = new FileInputStream(new File(path));
 				serverConfig.read(new InputStreamReader(is, "UTF-8"));
 			}
