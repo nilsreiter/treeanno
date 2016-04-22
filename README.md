@@ -30,13 +30,21 @@ TreeAnno was built with the following workflow in mind:
 3. Annotation
    Each annotator annotates individually, doing segmentation changes and 
    tree changes simultaneously.
+4. Annotation comparison and merging
+   A project administrator compares the annotation. TreeAnno offers different
+   views, focusing on either the segmentation or the tree structure. 
+   Ideally, the project admin first merges the segmentation and in a second 
+   step the tree structure. 
+   There is currently no way of moving tree structure annotations onto 
+   files that have been segmented differently, so it might be necessary
+   to let annotators go over the merged segmented texts again.
    
    
 ## Configuration
 There are two central pieces that can be configured: Database credentials and app properties.
 
 ### Database credentials
-TreeAnno expects a data source to be specified in the context descriptor. The data source has to be name `jdbc/treeanno`. The following snippet shows a data source declaration for Tomcat 8 and a MySQL database. 
+TreeAnno makes use of the Tomcat database connection pooling mechanism. The database credentials have to be specified in the context descriptor with the name `jdbc/treeanno`. The following snippet shows a data source declaration for Tomcat 8 and a MySQL database. 
 
 ```
 <Context>
@@ -52,14 +60,16 @@ TreeAnno expects a data source to be specified in the context descriptor. The da
 </Context>
 ```
 
-### App properties
-Web app properties are read from a UTF-8 encoded properties file that can be located anywhere on the file system. The path to the configuration file has to be specified as a JNDI resource with the name `treeanno/configurationPath`.
+### App settings
+Web app settings are read from a UTF-8 encoded properties file that can be located anywhere on the file system. The path to the configuration file has to be specified as a JNDI resource with the name `treeanno/configurationPath`.
 
 ```
 <Context>
+	...
 	<Environment name="treeanno/configurationPath" 
 		value="path/to/file.properties" 
 		type="java.lang.String"/>
+	...
 </Context>
 ```
 
