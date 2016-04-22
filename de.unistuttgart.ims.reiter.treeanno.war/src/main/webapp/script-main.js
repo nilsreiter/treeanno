@@ -2,6 +2,7 @@ var INTERACTION_NONE = "none";
 var INTERACTION_TREEANNO = "treeanno";
 var INTERACTION_SPLIT = "split";
 var INTERACTION_CATEGORY = "category";
+var INTERACTION_CATEGORY_T2 = "category_t2";
 var interaction_mode = INTERACTION_TREEANNO;
 
 var mode = {
@@ -13,6 +14,9 @@ var mode = {
 	},
 	category:{
 		preventDefault:false
+	},
+	category_t2:{
+		preventDefault:false
 	}
 }
 
@@ -23,13 +27,15 @@ var shifted = false;
 var idCounter = 0;
 
 /**
- * This is the character we use in the split dialog to mark the split
+ * This array stores the edit history (locally)
  */
-var paragraphSplitCharacter = "¶";
+var history = [];
+
 
 var kbkey = { up: 38, down: 40, right: 39, left: 37, 
 		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
 var keyString = {
+		8: '&#9003;',
 		37:'&larr;',
 		38:'&uarr;',
 		39:'&rarr;',
@@ -88,249 +94,359 @@ var keyString = {
  *    }
  * }
  */
-var operations = {
-		13:{ 
-			split: {
-				// enter pressed in the split dialog
-				id:'split-enter',
-				fun:splitdialog_enter,
-				history:false
-			},
-			category: {
-				// enter pressed when editing category string
-				id:'category-enter',
-				fun:enter_category,
-				history:true,
-				desc:'assign-category',
-				post:{
-					mode:INTERACTION_TREEANNO
-				}
-			}
-		},
-		27:{
-			category: {
-				id:'category-cancel',
-				fun:cancel_category,
-				history:false,
-				post:{
-					mode:INTERACTION_TREEANNO
-				}
-			}
-		},
-		37:{ 
-			treeanno: {
-				// left
-				id:'outdent',
-				fun:outdent,
-				desc:'action_outdent',
-				history:true,
-				pre:{
-					fun:function() { 
-						return ($("ul ul .selected").length > 0)
-					},
-					fail: {
-						type:"information",
-						text:"action.left.prefail"
-					}
-				}
-			}, 
-			split: {
-				// move the split point to the left
-				id:'move-splitpoint-left',
-				fun:function() { split_move_left(1) },
-				history:false
-			}
-		},
-		38: {
-			treeanno: {
-				// up
-				id:'up',
-				fun:move_selection_up,
-				desc:'action_up',
-				history:false,
-				pre:{
-					fun:function() {
-						return !$(".selected").first().is($("#outline li").first());
-					},
-					fail: {
-						type: "information",
-						text: "action.up.prefail"
-					}
-				}
-			}
-		},
-		39: {
-			treeanno: {
-				// right
-				id:'indent',
-				fun:indent,
-				desc:'action_indent',
-				history:true,
-				pre: {
-					fun: function() { return ($(".selected").first().prev("li").length > 0) },
-					fail: {
-						type: "information",
-						text: "action.right.prefail"
-					}
+var ops={
+		split_enter:{
+			// enter pressed in the split dialog
+			id:'split_enter',
+			fun:splitdialog_enter,
+			history:true,
+			pre: {
+				fun:splitdialog_validate,
+				fail: {
+					type:"error",
+					text:"Split character at invalid position",
+					timeout:null
 				}
 			},
-			split: {
-				// move the split point to the right
-				id:'move-splitpoint-right',
-				fun:function() { split_move_right(1) },
-				history:false
-			}
-		},
-		40: {
-			treeanno:{
-				// down
-				id:'down',
-				fun:move_selection_down,
-				desc:'action_down',
-				history:false,
-				pre: {
-					fun: function() {
-						return !$(".selected").last().is($("#outline li").last());
-					},
-					fail: {
-						type: "information",
-						text: "action.down.prefail"
-					}
+			post: {
+				mode:INTERACTION_TREEANNO
+			},
+			revert: {
+				fun: function(action) {
+					merge(get_item(action['opt']['newItems'][0]),get_item(action['opt']['newItems'][1]), action['arg'][0])
 				}
 			}
 		},
-		49: {
-			treeanno:{
-				// one
-				'id':'mark1',
+		split_cancel:{
+			id:'split_cancel',
+			fun:splitdialog_cleanup,
+			history:false,
+			post: {
+				mode:INTERACTION_TREEANNO
+			}
+		},
+		split_move_left:{
+			// move the split point to the left
+			id:'split_move_left',
+			fun:function() { split_move_left(1) },
+			history:false
+		},
+		split_move_left_big:{
+			id:'split_move_left_big',
+			fun:function() { split_move_left(25) },
+			history:false
+		},
+		split_move_right:{
+			// move the split point to the right
+			id:'split_move_right',
+			fun:function() { split_move_right(1) },
+			history:false
+		},
+		split_move_right_big:{
+			id:'split_move_right_big',
+			fun:function() { split_move_right(25) },
+			history:false
+		},
+		split:{
+			// s
+			id:'split',
+			fun:splitdialog,
+			pre:{
 				fun:function() {
-					$(".selected").toggleClass("mark1");
-					enableSaveButton();
+					return $(".selected").length == 1;
 				},
-				desc:'action_mark1',
-				history:true
-			}
-		},
-		67:{
-			treeanno:{
-				// c
-				id:'categorize',
-				fun:add_category,
-				desc:'action_assign_category',
-				history:false,
-				post:{
-					mode:INTERACTION_CATEGORY
+				fail:{
+					text:"action.split.prefail",
+					type:"information"
 				}
-			}
-		},
-		68:{
-			treeanno:{
-				// d
-				id:'delete_category',
-				fun:delete_category,
-				desc:'action_delete_category',
-				history:true
-			}
-		},
-		77:{
-			treeanno:{
-				// m
-				id:'merge',
-				pre:{
-					fun:function() {
-						return $(".selected").length == 2;
-					},
-					fail:{
-						text:"action.merge.prefail",
-						type:"information"
-					}
-				},
-				fun: mergeselected,
-				desc:'action_merge',
-				history:true
-			}
-		},
-		83:{
-			treeanno:{
-				// s
-				id:'split',
-				fun:splitdialog,
-				pre:{
-					fun:function() {
-						return $(".selected").length == 1;
-					},
-					fail:{
-						text:"action.split.prefail",
-						type:"information"
-					}
-				},
-				desc:'action_split',
-				history:true
-			}
-		},
-		1037:{
-			split:{
-				id:'move-splitpoint-left-big',
-				fun:function() { split_move_left(25) },
-				history:false
-			}
-		},
-		1038:{
-			treeanno:{
-				// shift + up
-				id:'up',
-				fun:move_selection_up,
-				desc:'action.up.desc',
-				history:false,
-				pre: {
-					fun:function() { return shifted; }
-				}
-			}
-		},
-		1039:{
-			treeanno:{
-				// shift + right
-				id:'force_indent',
-				fun:force_indent,
-				desc:'action.force_indent',
-				history:true
 			},
-			split:{
-				id:'move-splitpoint-right-big',
-				fun:function() { split_move_right(25) },
-				history:false
+			desc:'action_split',
+			history:false,
+			post:{
+				mode:INTERACTION_SPLIT
 			}
 		},
-		1040:{
-			treeanno:{
-				// shift + down
-				id:'down',
-				fun:extend_selection_down,
-				desc:'action.down.desc',
-				history:false,
-				pre: {
-					fun:function() { return shifted; }
+		category_enter:{
+			// enter pressed when editing category string
+			id:'category_enter',
+			fun:enter_category,
+			history:true,
+			desc:'assign-category',
+			post:{
+				mode:INTERACTION_TREEANNO
+			},
+			revert:{
+				fun: function(action) {
+					if (action['opt']['oldcategory']) {
+						set_category(id2element(action['arg'][0]), action['opt']['oldcategory']);
+					} else {
+						set_category(id2element(action['arg'][0]), null);
+					}
 				}
 			}
 		},
-		1068:{
-			treeanno:{
-				// shift + d
-				id:'delete_virtual_node',
-				fun:delete_virtual_node,
-				desc:'action.delete_vnode',
-				history:true
+		category_cancel:{
+			id:'category_cancel',
+			fun:cancel_category,
+			history:false,
+			post:{
+				mode:INTERACTION_TREEANNO
 			}
 		},
-		1083:{
-			treeanno:{
-				// shift + s
-				id:'save_document',
-				fun:save_document,
-				desc:'action.save_document',
-				history:true
+		categorize:{
+			// c
+			id:'categorize',
+			fun:add_category,
+			desc:'action_assign_category',
+			history:false,
+			post:{
+				mode:INTERACTION_CATEGORY
 			}
+		},
+		force_indent_and_categorize:{
+			// c (in arndt projects)
+			id:'force_indent_and_categorize',
+			fun:function() {
+				force_indent();
+				move_selection_up();
+				add_category();
+			},
+			desc:'action.assign_category_t2',
+			history:true,
+			post:{
+				mode:INTERACTION_CATEGORY_T2
+			},
+			revert: {
+				fun: function(action) {
+					ops.force_indent.revert.fun(action);
+				}
+			}
+		},
+		delete_category:{
+			// d
+			id:'delete_category',
+			fun:function() {
+				return set_category($(".selected"), null);
+			},
+			pre: {
+				fun: function() {
+					return $(".selected > p.annocat").length > 0;
+				}
+			},
+			desc:'action_delete_category',
+			history:true,
+			revert: {
+				fun: function(action) {
+					set_category(id2element(action['arg'][0]), action['opt']['oldcategory']);
+				}
+			}
+		},
+		outdent:{
+			// left
+			id:'outdent',
+			fun:outdent,
+			desc:'action_outdent',
+			history:true,
+			revert:{
+				fun: function(action) {
+					for (var i = 0; i < action['arg'].length; i++) {
+						indentById(action['arg'][i]);
+					}
+				}			},
+			pre:{
+				fun:function() { 
+					return ($("ul ul .selected").length > 0)
+				},
+				fail: {
+					type:"information",
+					text:"action.left.prefail"
+				}
+			}
+		},
+		indent:{
+			// right
+			id:'indent',
+			fun:indent,
+			desc:'action_indent',
+			history:true,
+			revert: {
+				fun: function(action) {
+					for (var i = 0; i < action['arg'].length; i++) {
+						outdentById(action['arg'][i]);
+					}
+				}
+			},
+			pre: {
+				fun: function() { return ($(".selected").first().prev("li").length > 0) },
+				fail: {
+					type: "information",
+					text: "action.right.prefail"
+				}
+			}
+		},
+		force_indent:{
+			// shift + right
+			id:'force_indent',
+			fun:force_indent,
+			desc:'action.force_indent',
+			history:true,
+			revert:{
+				fun: function(action) {
+					deleteVirtualNodeElement(id2element(action['arg'][0]).parent().parent(), false);
+				}
+			}
+		},
+		up:{
+			// up
+			id:'up',
+			fun:move_selection_up,
+			desc:'action_up',
+			history:false,
+			pre:{
+				fun:function() {
+					return !$(".selected").first().is($("#outline li").first());
+				},
+				fail: {
+					type: "information",
+					text: "action.up.prefail"
+				}
+			}
+		},
+		down:{
+			// down
+			id:'down',
+			fun:move_selection_down,
+			desc:'action_down',
+			history:false,
+			pre: {
+				fun: function() {
+					return !$(".selected").last().is($("#outline li").last());
+				},
+				fail: {
+					type: "information",
+					text: "action.down.prefail"
+				}
+			}
+		},
+		mark:{
+			// one
+			id:'mark',
+			fun:function() {
+				$(".selected").toggleClass("mark1");
+				enableSaveButton();
+			},
+			desc:'action_mark1',
+			history:true,
+			revert: {
+				fun: function(action) {
+					for (var i = 0; i < action['arg'].length; i++) {
+						id2element(action['arg'][i]).toggleClass("mark1");
+					}
+				}
+			}
+		},
+		merge: {
+			// m
+			id:'merge',
+			pre:{
+				fun:function() {
+					return $(".selected").length == 2;
+				},
+				fail:{
+					text:"action.merge.prefail",
+					type:"information"
+				}
+			},
+			fun: mergeselected,
+			desc:'action_merge',
+			history:true,
+			revert:{
+				fun: function(action) {
+					var item = get_item(action['opt']['newId']);
+					var text = item['text'];
+					var lines = [text.substring(0,action['opt']['split']), text.substring(action['opt']['split'], text.length)]
+					split(item, lines, false, action['arg']);
+				}
+			}
+		},
+		select_down:{
+			// shift + down
+			id:'select_down',
+			fun:extend_selection_down,
+			desc:'action.down.desc',
+			history:false,
+			pre: {
+				fun:function() { return shifted; }
+			}
+		},
+		select_up:{
+			// shift + up
+			id:'select_up',
+			fun:extend_selection_up,
+			desc:'action.up.desc',
+			history:false,
+			pre: {
+				fun:function() { return shifted; }
+			}
+		},
+		delete_virtual_node:{
+			// shift + d
+			id:'delete_virtual_node',
+			fun:delete_virtual_node,
+			desc:'action.delete_vnode',
+			history:true,
+			revert: {
+				fun: function(action) {
+					for (var i = 0; i < action['opt'].length; i++) {
+						var arr = [];
+						for (var j = 0; j < action['opt'][i]['children'].length; j++) {
+							arr.push(id2element(action['opt'][i]['children'][j]));
+						}
+						force_indent_elements($(arr), action['opt'][i]['vnode']);
+					}
+				}
+			}
+		},
+		save_document:{
+			// shift + s
+			id:'save_document',
+			fun:save_document,
+			desc:'action.save_document',
+			history:false
+		},
+		undo:{
+			id:'undo',
+			fun:undo,
+			desc:'action.undo',
+			history:false
 		}
+	};
+var operations = {
+		 8: { treeanno: ops.undo },
+		13: { split: ops.split_enter,
+			  category: ops.category_enter,
+			  category_t2: ops.category_enter },
+		27: { category: ops.category_cancel,
+			  split: ops.split_cancel,
+			  category_t2: ops.category_cancel},
+		37: { treeanno: ops.outdent, 
+			  split: ops.split_move_left },
+		38: { treeanno: ops.up },
+		39: { treeanno: ops.indent,
+			  split: ops.split_move_right },
+		40: { treeanno: ops.down },
+		49: { treeanno: ops.mark },
+		67: { treeanno: ops.categorize },
+		68: { treeanno: ops.delete_category },
+		77: { treeanno: ops.merge },
+		83: { treeanno: ops.split }, 
+		1037: { split:ops.split_move_left_big },
+		1038: { treeanno: ops.select_up },
+		1039: { treeanno: ops.force_indent,
+			    split:ops.split_move_right_big },
+		1040: { treeanno: ops.select_down },
+		1068: { treeanno:ops.delete_virtual_node },
+		1083: { treeanno:ops.save_document }
 };
 
 
@@ -359,13 +475,12 @@ function init_operations(projectType) {
 	switch(projectType){
 	case ProjectType["ARNDT"]:
 		operations[49][INTERACTION_TREEANNO]['disabled'] = 1;
-		operations[67][INTERACTION_TREEANNO]['fun'] = function() {
-			act(1039);
-			move_selection_up();
-			add_category();
-			interaction_mode = INTERACTION_CATEGORY;
-		}
-		operations[67][INTERACTION_TREEANNO]['desc'] = 'action.assign_category_t2';
+		operations[67][INTERACTION_TREEANNO] = ops.force_indent_and_categorize;
+		var oldRevertFunction = ops.category_enter.revert.fun;
+		ops.category_enter.revert.fun = function(action) {
+			oldRevertFunction(action);
+			undo();
+		};
 		operations[68][INTERACTION_TREEANNO]['desc'] = "action.delete_category_t2";
 		operations[1039][INTERACTION_TREEANNO]['desc'] = 'action.force_indent_t2';
 		break;
@@ -401,7 +516,7 @@ function init_help() {
 	$("#show_helper").button({
 		icons: { primary: "ui-icon-help", secondary:null },
 		label: i18n.t("show_helper"),
-		text:showText
+		text:configuration["treeanno.ui.showTextOnButtons"]
 	}).click(function() {
 		$(helpElement).toggle();
 	});
@@ -416,13 +531,13 @@ function init_main() {
 		$( "button.button_edit_user" ).button({
 			icons: { primary: "ui-icon-person", secondary:null },
 			disabled: true,
-			text:showText
+			text:configuration["treeanno.ui.showTextOnButtons"]
 		});
 		
 		$( "button.button_save_document" ).button({
 			icons: { primary: "ui-icon-disk", secondary:null },
 			label: i18n.t("save"),
-			text:showText
+			text:configuration["treeanno.ui.showTextOnButtons"]
 		}).click(
 			function() {
 				save_document();
@@ -446,6 +561,13 @@ function init_main() {
 			else 
 				$("#content").width("100%");
 		});
+		
+		$( "button.button_undo" ).button({
+			icons: { primary: "ui-icon-arrowreturnthick-1-w", secondary:null },
+			label: i18n.t("undo"),
+			text:configuration["treeanno.ui.showTextOnButtons"],
+			disabled:true
+		}).click(undo);
 		
 		disableSaveButton();
 		document.onkeydown = function(e) {
@@ -724,20 +846,31 @@ function move_selection_down() {
 		$(window).scrollTop($(".selected").last().offset().top - 200);
 }
 
+function extend_selection_up() {
+	var allItems = $("#outline li");
+	// get index of first selected item
+	var index = $(".selected").first().index("#outline li");
+	
+	// if select the new item
+	if (index > 0) {
+			$(".selected").first().prev().toggleClass("selected");
+	}
+	// if not in viewport, scroll
+	if (!isElementInViewport($(".selected").first()))
+		$(window).scrollTop($(".selected").first().offset().top - 200);
+}
+
 function move_selection_up() {
 	var allItems = $("#outline li");
 	// get index of first selected item
 	var index = $(".selected").first().index("#outline li");
 	// if shift is not pressed, remove the selection
-	if (!shifted && index > 0)
+	if (index > 0)
 		$(".selected").toggleClass("selected");
 	
 	// if select the new item
 	if (index > 0) {
-		if (!shifted)
-			$($(allItems).get(index-1)).toggleClass("selected");
-		if (shifted)
-			$(".selected").first().prev().toggleClass("selected");
+		$($(allItems).get(index-1)).toggleClass("selected");
 	}
 	// if not in viewport, scroll
 	if (!isElementInViewport($(".selected").first()))
@@ -757,11 +890,12 @@ function act(keyCode) {
 		kc = keyCode;
 		if (shifted)
 			kc = keyCode + 1000;
-		if (kc in operations && !operations[kc][interaction_mode]['disabled']) {
+		if (kc in operations && interaction_mode in operations[kc] && !operations[kc][interaction_mode]['disabled']) {
 			if (check_precondition(kc)) {
+				var selection = $(".selected");
 				var val = operations[kc][interaction_mode].fun();
 				if (operations[kc][interaction_mode]['history']) {
-					add_operation(kc, $(".selected"), val);
+					add_operation(kc, selection, val);
 					enableSaveButton();
 				}
 				if ("post" in operations[kc][interaction_mode] && 
@@ -814,10 +948,6 @@ function isElementInViewport (el) {
     );
 }
 
-function delete_category() {
-	$(".selected > p.annocat").remove();
-	$(".selected").removeAttr("data-treeanno-categories");
-}
 function add_category() {
 	$(".selected > p.annocat").remove();
 	var val = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):$(".selected").attr("title"));
@@ -829,18 +959,27 @@ function cancel_category() {
 	$("#cat_input").remove();
 }
 
+function set_category(element, value) {
+	$(element).children("p.annocat").remove();
+	var val = $(".selected").attr("data-treeanno-categories");
+	$(".selected").removeAttr("data-treeanno-categories");
+
+	if (value) {
+		$(element).prepend("<p class=\"annocat\">"+value+"</p>");
+		$(element).attr("data-treeanno-categories", value);
+	}
+	return { oldcategory:val };
+}
+
 function enter_category() {
 	var oldVal = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):null);
 
 	var value = $("#cat_input").val();
 	$("#cat_input").remove();
-	$(".selected").prepend("<p class=\"annocat\">"+value+"</p>");
-	// var oa = ($(".selected").attr("data-treeanno-categories")?$(".selected").attr("data-treeanno-categories"):"");
-	$(".selected").attr("data-treeanno-categories", value);
-	return {
-		newcategory:value,
-		oldcategory:oldVal
-	};
+	
+	var r = set_category($(".selected"), value);
+	r['newcategory'] = value;
+	return r;
 
 }
 
@@ -861,48 +1000,52 @@ function get_item(id) {
 }
 
 function mergeselected() {
+	var l = $(".selected").last().next();
 	var item1 = get_item($(".selected").first().attr("data-treeanno-id"));
 	var item0 = get_item($(".selected").last().attr("data-treeanno-id"));
 	// add_operation(77, [$(".selected").last(), $(".selected").first()]);
-	merge(item1, item0);
+	var r = merge(item1, item0, null);
+	l.addClass("selected");
+	return r;
 }
 
-function merge(item1, item0) {
+function merge(item1, item0, newId) {
 	var correctOrder = (item1['begin'] > item0['begin']);
+	var element0 = id2element(item0['id']);
+	var element1 = id2element(item1['id']);
 	
 	var nitem = new Object();
 	var distance = (correctOrder?item1['begin']-item0['end']:item0['begin']-item1['end']);
-	var str = (includeSeparationWhenMerging?new Array(distance+1).join(" "):"");
+	var str = (configuration["treeanno.includeSeparationWhenMerging"]?new Array(distance+1).join(" "):"");
 
 	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
-	nitem['id'] = ++idCounter;
-	//items[item1['id']] = undefined;
-	//items[item0['id']] = undefined;
+	nitem['id'] = (newId?newId:++idCounter);
 	
-	var sublist0 = $("#outline li[data-treeanno-id='"+item0['id']+"'] > ul").detach();
-	$("#outline li[data-treeanno-id='"+item0['id']+"']").remove();
-	//items[++idCounter] = nitem;
+	var sublist0 = $(element0).children("ul").detach();
+	element0.remove();
 	
-	var nitem = get_html_item(nitem, idCounter);
-	$(".selected").after(nitem);
+	var nhitem = get_html_item(nitem, idCounter);
+	var nj = $(element1).after(nhitem);
 	
-	var newsel = $(".selected").next();
-	var sublist1 = $(".selected > ul").detach();
-	$(".selected").remove();
-	$(newsel).addClass("selected");
-	$(".selected").append(sublist0);
-	$(".selected").append(sublist1);
+	var sublist1 = element1.children("ul").detach();
+	element1.remove();
+	nj.append(sublist0);
+	nj.append(sublist1);
+	
+	return {
+		split:(correctOrder?item0['end']-item0['begin']:item1['end']-item1['begin']),
+		'newId':nitem['id']
+	};
 	
 }
 
 
 
 function splitdialog() {
-	interaction_mode = INTERACTION_SPLIT;
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
-	$("#form_splittext").append(paragraphSplitCharacter+item['text']);
+	$("#form_splittext").append(configuration["treeanno.ui.paragraphSplitCharacter"]+item['text']);
 	
 	$("#split").dialog({
 		title: i18n.t("split_dialog.title"),
@@ -924,43 +1067,106 @@ function splitdialog() {
 	});
 }
 
+function split_move_right_text(text, dist) {
+	var p = text.indexOf(configuration["treeanno.ui.paragraphSplitCharacter"]);
+	
+	var newText = text.substring(0,p)+
+		text.substring(p+1,p+1+dist)+
+		configuration["treeanno.ui.paragraphSplitCharacter"]+
+		text.substring(p+1+dist, text.length);
+	return newText;
+}
+
 function split_move_right(dist) {
 	var text = $("#form_splittext").text();
-	var p = text.indexOf(paragraphSplitCharacter);
-	$("#form_splittext").text(
-			text.substring(0,p)+
-			text.substring(p+1,p+1+dist)+
-			paragraphSplitCharacter+
-			text.substring(p+1+dist, text.length));
+	var newText = split_move_right_text(text, dist);
+/*	if (paragraphSplitBehaviour == "AFTER-SPACE") {
+		while(newText.includes(paragraphSplitCharacter+" ")) {
+			newText = split_move_right_text(newText, 1);
+		}
+	} else if (paragraphSplitBehaviour == "BEFORE-SPACE") {
+		while(newText.includes(" " + paragraphSplitCharacter)) {
+			newText = split_move_left_text(newText, 1);
+		}
+	}*/
+ 	$("#form_splittext").text(newText);
+}
+
+function split_move_left_text(text, dist) {
+	var p = text.indexOf(configuration["treeanno.ui.paragraphSplitCharacter"]);
+	return text.substring(0,p - dist)+
+		configuration["treeanno.ui.paragraphSplitCharacter"]+
+		text.substring(p-dist,p)+
+		text.substring(p+1, text.length)
 }
 
 function split_move_left(dist) {
 	var text = $("#form_splittext").text();
-	var p = text.indexOf(paragraphSplitCharacter);
-	$("#form_splittext").text(
-			text.substring(0,p - dist)+
-			paragraphSplitCharacter+
-			text.substring(p-dist,p)+
-			text.substring(p+1, text.length));
+	var newText = split_move_left_text(text, dist);
+	$("#form_splittext").text(newText);
 }
 
 function splitdialog_cleanup() {
-	interaction_mode = INTERACTION_TREEANNO;
-
 	$("#split").dialog( "destroy" );
 	$("#form_splittext").empty();
+}
 
+function splitdialog_validate() {
+	var text = $("#form_splittext").text();
+
+	if (configuration["treeanno.ui.paragraphSplitBehaviour"] == "BEFORE-SPACE") {
+		if (text.includes(" " + configuration["treeanno.ui.paragraphSplitCharacter"])) {
+			return false;
+		}
+	} else if (configuration["treeanno.ui.paragraphSplitBehaviour"] == "AFTER-SPACE") {
+		if (text.includes(configuration["treeanno.ui.paragraphSplitCharacter"]+" "))
+			return false;
+	}
+	return true;
+}
+
+function split(item, lines, moveSelection, ids) {
+	var element = id2element(item['id']);
+	var litems = new Array();
+	litems[0] = new Object();
+	litems[0]['begin'] = item['begin'];
+	litems[0]['text'] = lines[0];
+	litems[0]['end'] = parseInt(item['begin'])+parseInt(lines[0].length);
+	litems[0]['id'] = (ids?ids[0]:++idCounter);
+	litems[1] = new Object();
+	litems[1]['end'] = item['end'];
+	litems[1]['text'] = lines[1];
+	litems[1]['begin'] = litems[0]['end'];
+	litems[1]['id'] = (ids?ids[1]:++idCounter);
+	// items[itemid] = undefined;
+	
+	var sublist = $(element).children("ul").detach();
+	// items[litems[1]['id']] = litems[1];
+	
+	var nitem1 = get_html_item(litems[1], idCounter);
+	element.after(nitem1);
+	element.next().append(sublist);
+	// items[litems[0]['id']] = litems[0];
+	
+	var nitem0 = get_html_item(litems[0], idCounter);
+	element.after(nitem0);
+	var nsel = element.next();
+	element.remove();
+	if (moveSelection)
+		$(nsel).addClass("selected");
+	logObj = {
+			newItems:[litems[0]['id'], litems[1]['id']]
+	};
+	return logObj;
 }
 
 function splitdialog_enter() {
 	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
 	var text = $("#form_splittext").text();
-	var lines = text.split(paragraphSplitCharacter);
+	var lines = text.split(configuration["treeanno.ui.paragraphSplitCharacter"]);
+	var logObj;
 	if (lines.length == 2) {
-		interaction_mode = INTERACTION_TREEANNO;
-
-		add_operation(83, $(".selected"), {pos:lines[0].length});
 		noty({
 			type:"information",
 			text:i18n.t("action.split.done", {
@@ -968,37 +1174,17 @@ function splitdialog_enter() {
 				right:lines[1].substring(0, 10)
 			})
 		});
-		
-		var litems = new Array();
-		litems[0] = new Object();
-		litems[0]['begin'] = item['begin'];
-		litems[0]['text'] = lines[0];
-		litems[0]['end'] = parseInt(item['begin'])+parseInt(lines[0].length);
-		litems[0]['id'] = ++idCounter;
-		litems[1] = new Object();
-		litems[1]['end'] = item['end'];
-		litems[1]['text'] = lines[1];
-		litems[1]['begin'] = litems[0]['end'];
-		litems[1]['id'] = ++idCounter;
-		// items[itemid] = undefined;
-		
-		var sublist = $(".selected > ul").detach();
-		// items[litems[1]['id']] = litems[1];
-		
-		var nitem1 = get_html_item(litems[1], idCounter);
-		$(".selected").after(nitem1)
-		$(".selected").next().append(sublist);
-		// items[litems[0]['id']] = litems[0];
-		
-		var nitem0 = get_html_item(litems[0], idCounter);
-		$(".selected").after(nitem0);
-		var nsel = $(".selected").next();
-		$(".selected").remove();
-		$(nsel).addClass("selected");
-		
+
+		logObj = split(item, lines, true, null);
+
 	}
 	cleanup_list();
 	splitdialog_cleanup();
+	return logObj;
+}
+
+function outdentById(id) {
+	outdentElement($("li[data-treeanno-id=\""+id+"\"]"))
 }
 
 function outdentElement(element) {
@@ -1024,13 +1210,13 @@ function outdent() {
 	cleanup_list();
 }
 
-function force_indent() {
-	$(".selected").each(function(index, element) {
+function force_indent_elements(elements, newId) {
+	$(elements).each(function(index, element) {
 		if (index == 0) {
 			var vitem = new Object();
 			vitem["begin"] = $(element).attr("data-treeanno-begin");
 			vitem["end"] = vitem["begin"];
-			vitem["id"] = ++idCounter;
+			vitem["id"] = (newId?newId:++idCounter);
 			vitem["text"] = "";
 			
 			var htmlItem = get_html_item(vitem, 0);
@@ -1038,27 +1224,46 @@ function force_indent() {
 			cleanup_list();
 		}
 		indentElement(element);
-		cleanup_list();	
-		
+		cleanup_list();			
 	});
 }
 
+function force_indent() {
+	force_indent_elements($(".selected"), null);
+}
+
 function delete_virtual_node() {
+	var arr = [];
 	$(".selected").each(function(index, element) {
-		
-		// check if it's really a virtual node
-		if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
-			console.log("TreeAnno: Found a virtual node to delete")
-			
-			$(element).children("ul").children("li").each(function(i2, e2) {
-				console.log("TreeAnno: Outdenting children of virtual node");
-				outdentElement(e2);
-			});
-			
-			$(element).prev().addClass("selected");
-			$(element).remove();
-		}
+		arr.push(deleteVirtualNodeElement(element, true));
 	});
+	return arr;
+}
+
+function deleteVirtualNodeElement(element, moveSelection) {
+	// check if it's really a virtual node
+	var children=[];
+	
+	if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
+		console.log("TreeAnno: Found a virtual node to delete")
+		var vNodeId = $(element).attr("data-treeanno-id");
+		
+		$(element).children("ul").children("li").each(function(i2, e2) {
+			console.log("TreeAnno: Outdenting children of virtual node");
+			outdentElement(e2);
+			children.push($(e2).attr("data-treeanno-id"));
+		});
+		
+		if (moveSelection)
+			$(element).prev().addClass("selected");
+		$(element).remove();
+		return {vnode:vNodeId, children:children};
+
+	}
+}
+
+function indentById(id) {
+	indentElement($("li[data-treeanno-id=\""+id+"\"]"))
 }
 
 function indentElement(element) {
@@ -1093,7 +1298,20 @@ function add_operation(kc, tgts, opts) {
 		s.push($(element).attr("data-treeanno-id"));
 	});
 	var logObj = {op:operations[kc][interaction_mode]['id'], arg:s, opt:opts};
+	history.push(logObj);
+	$( "button.button_undo" ).button({disabled:false});
 	console.log(logObj);
 	$("#history").prepend("<li>"+JSON.stringify(logObj)+"</li>");
+}
+
+function undo() {
+	var action = history.pop();
+	ops[action['op']]['revert'].fun(action);
+	$("#history > li:first()").remove();
+	$( "button.button_undo" ).button({disabled:(history.length==0)});
+}
+
+function id2element(id) {
+	return $("li[data-treeanno-id=\""+id+"\"]");
 }
 

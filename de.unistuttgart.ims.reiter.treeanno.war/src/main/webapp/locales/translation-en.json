@@ -39,7 +39,8 @@
 		"down":{
 			"prefail":"Last item already selected.",
 			"desc":"Extend selection downwards"
-		}
+		},
+		"undo":"Undo"
 	},
 	"action_category_virtual_nodes":"Virtual Nodes",
 	"help_title":"Cheat Sheet",
@@ -106,5 +107,8 @@
 	},
 	"bc":{
 		"master":"Master: "
+	},
+	"alert":{
+		"in-memory":"Database can't be reached. Annotations will not be stored permanently."
 	}
 }

@@ -5,18 +5,22 @@
 	<jsp:useBean id="Perm" class="de.ustu.ims.reiter.treeanno.Perm" scope="page"/>
 	<jsp:useBean id="ProjectType" class="de.ustu.ims.reiter.treeanno.ProjectType" scope="page" />
 <![CDATA[
-var includeSeparationWhenMerging = ${applicationScope['treeanno.includeSeparationWhenMerging']};
-var Perm = new Object();
-Perm["NOACCESS"] = ${Perm.NOACCESS};
-Perm["READACCESS"] = ${Perm.READACCESS};
-Perm["WRITEACCESS"] = ${Perm.WRITEACCESS};
-Perm["PADMINACCESS"] = ${Perm.PADMINACCESS};
-Perm["ADMINACCESS"] = ${Perm.ADMINACCESS};
-var showText = ${applicationScope['treeanno.showTextOnButtons']};
+var includeSeparationWhenMerging = ${applicationScope['conf']['treeanno.includeSeparationWhenMerging']};
+var showText = ${applicationScope['conf']['treeanno.ui.showTextOnButtons']};
+var paragraphSplitBehaviour = "${applicationScope['conf']['treeanno.ui.paragraphSplitBehaviour']}";
+var paragraphSplitCharacter = "${applicationScope['conf']['treeanno.ui.paragraphSplitCharacter']}";
 
-var ProjectType = new Object();
-ProjectType["DEFAULT"] = ${ProjectType.DEFAULT};
-ProjectType["ARNDT"] = ${ProjectType.ARNDT};
+var Perm = {
+	NOACCESS:${Perm.NOACCESS},
+	READACCESS:${Perm.READACCESS},
+	WRITEACCESS:${Perm.WRITEACCESS},
+	PADMINACCESS:${Perm.PADMINACCESS},
+	ADMINACCESS:${Perm.ADMINACCESS}
+};
 
+var ProjectType = {
+	DEFAULT:${ProjectType.DEFAULT},
+	ARNDT:${ProjectType.ARNDT}
+};
 ]]>
 </jsp:root>

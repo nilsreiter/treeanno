@@ -185,3 +185,7 @@ span.search_container {
 	font-family:monospace;
 	font-size:small;
 }
+
+.noty_message {
+	font-family:sans-serif;
+}

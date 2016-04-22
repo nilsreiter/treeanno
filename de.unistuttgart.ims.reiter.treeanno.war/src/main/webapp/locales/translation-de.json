@@ -39,7 +39,8 @@
 		"down":{
 			"desc":"Markierung nach unten erweitern",
 			"prefail":"Letztes Segment bereits markiert."
-		}
+		},
+		"undo":"Rückgängig"
 	},
 	"action_category_virtual_nodes":"Virtuelle Knoten",
 	"help_title":"Spickzettel",
@@ -106,5 +107,8 @@
 	},
 	"bc":{
 		"master":"Master: "
+	},
+	"alert":{
+		"in-memory":"Datenbank nicht erreichbar. Änderungen und Annotationen können nicht gespeichert werden."
 	}
 }

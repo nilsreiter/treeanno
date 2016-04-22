@@ -32,7 +32,11 @@
 	// <![CDATA[
  	// ]]>
 	</script>
-	<script src="config.js.jsp">
+	<script src="jquery.noty.packaged.min.js">
+	//<![CDATA[
+	//]]>
+	</script>
+	<script src="rpc/config">
 	// <![CDATA[
 	// ]]>
 	</script>

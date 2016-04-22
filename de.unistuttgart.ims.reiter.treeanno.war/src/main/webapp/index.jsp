@@ -9,7 +9,7 @@
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="false" />
-<sql:query var="rs" dataSource="jdbc/treeanno" sql="select id, username from treeanno_users">
+<sql:query var="rs" dataSource="${applicationScope['dsName'] }" sql="select id, username from treeanno_users">
 </sql:query>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -26,14 +26,27 @@
 	//<![CDATA[
 	//]]>
 	</script>
+	<script src="jquery.noty.packaged.min.js">
+	//<![CDATA[
+	//]]>
+	</script>
+	<script src="rpc/config">
+	// <![CDATA[
+	// ]]>
+	</script>
 	<script src="script.js">
 	//<![CDATA[
 	//]]>
 	</script>
+	<c:if test="${applicationScope['dsName'] eq 'jdbc/treeanno-mem' }">
 	<script>
 	// <![CDATA[
-	var language = "en-US";
-
+		var showAlertMessage = "alert.in-memory";
+	// ]]>
+	</script>
+	</c:if>
+	<script>
+	// <![CDATA[
 	$(document).ready(init_trans(function() {
 		init_all();
 		$("button.button_login").button({
@@ -66,6 +79,7 @@
 	}));
 	// ]]>
 	</script>
+
 	<link rel="stylesheet" href="formats.css" type="text/css" />
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.css" type="text/css" /> 
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.structure.css" type="text/css" /> 
@@ -87,6 +101,8 @@
 			</form>
 		</div>
 	</div>
+	
+	
 	<div id="topbar">
 		<span class="left">
 			<span class="ui-widget">
