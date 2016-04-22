@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -56,19 +55,36 @@ public class ContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext sc = sce.getServletContext();
 		Context envContext = null;
+		DataSource dataSource = null;
+		String dataSourceName = "jdbc/treeanno";
+		int dataSourceType = 0;
 		try {
 			envContext =
 					(Context) new InitialContext().lookup("java:/comp/env");
 
-			DataSource dataSource =
-					(DataSource) envContext.lookup("jdbc/treeanno");
-			sc.setAttribute("dataSource", dataSource);
+			dataSource = (DataSource) envContext.lookup(dataSourceName);
+
+			try {
+				dataSource.getConnection();
+			} catch (SQLException e) {
+				try {
+					Class.forName("org.h2.Driver");
+					dataSourceName = "jdbc/treeanno-mem";
+					dataSourceType = 1;
+					System.err.println("Falling back to data source "
+							+ dataSourceName);
+					dataSource = (DataSource) envContext.lookup(dataSourceName);
+					dataSource.getConnection();
+					sc.setAttribute("dataSource", dataSource);
+				} catch (ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}
 		PropertiesConfiguration defaultConfig = new PropertiesConfiguration();
 		PropertiesConfiguration serverConfig = new PropertiesConfiguration();
-		Properties properties = null;
 
 		InputStream is = null;
 		try {
@@ -90,7 +106,7 @@ public class ContextListener implements ServletContextListener {
 			if (envContext != null) {
 				String path =
 						(String) envContext
-						.lookup("treeanno/configurationPath");
+								.lookup("treeanno/configurationPath");
 				is = new FileInputStream(new File(path));
 				serverConfig.read(new InputStreamReader(is, "UTF-8"));
 			}
@@ -110,9 +126,10 @@ public class ContextListener implements ServletContextListener {
 		sc.setAttribute("treeanno.name", config.getString("treeanno.name"));
 		sc.setAttribute("treeanno.version",
 				config.getString("treeanno.version"));
+		sc.setAttribute("dsName", dataSourceName);
 
 		try {
-			CW.setDataLayer(sc, new DatabaseIO());
+			CW.setDataLayer(sc, new DatabaseIO(dataSource, dataSourceType));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {

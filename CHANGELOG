@@ -1,5 +1,7 @@
 0.6.5
 
+- If a data source has not been set in the container context, we fall back to
+  an in-memory h2 database. See README.md for configuration options.
 - Settings can now be set in a properties file outside of the war
 - *Experimental*: Undo function. Backspace can now be pressed to undo the 
   last action(s).

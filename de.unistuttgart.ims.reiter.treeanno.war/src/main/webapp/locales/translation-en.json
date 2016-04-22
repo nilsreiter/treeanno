@@ -107,5 +107,8 @@
 	},
 	"bc":{
 		"master":"Master: "
+	},
+	"alert":{
+		"in-memory":"Database can't be reached. Annotations will not be stored permanently."
 	}
 }
