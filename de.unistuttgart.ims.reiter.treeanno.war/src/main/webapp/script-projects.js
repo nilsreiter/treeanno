@@ -50,7 +50,7 @@ function init_projects() {
 	});
 }
 
-function show_exportoptions(document) {
+function show_exportoptions(projectId,document) {
 	
 	$("#annodoclistarea").remove();
 	$("#topbar .left .adocname").remove();
@@ -74,7 +74,7 @@ function show_exportoptions(document) {
 	}).click({
 		'documentId':document['id']
 	}, function(event) {
-		window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
+		window.location.href="rpc/xmi/"+projectId+"/"+event.data.documentId;
 	});
 	
 	abar.children(".export_par").button({
@@ -83,7 +83,7 @@ function show_exportoptions(document) {
 	}).click({
 		'documentId':document['id']
 	}, function(event) {
-		window.location.href="DocumentHandling?action=export&format=PAR&documentId="+event.data.documentId;
+		window.location.href="rpc/par/"+projectId+"/"+event.data.documentId;
 	});
 	
 	abar.buttonset();
@@ -92,14 +92,14 @@ function show_exportoptions(document) {
 	
 }
 
-function show_annodoclist(id) {
+function show_annodoclist(projectId, id) {
 	$("#annodoclistarea").remove();
 	$("#topbar .left .adocname").remove();
 
 	$("#content .splitright").append("<div id=\"annodoclistarea\"></div>");
 	$("#annodoclistarea").hide();
 
-	jQuery.getJSON("rpc/userdocumentlist?documentId="+id, function(data) {
+	jQuery.getJSON("rpc/"+projectId+"/"+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
 
@@ -149,7 +149,7 @@ function show_annodoclist(id) {
 				}).click({'userDocumentId':data['documents'][i]['id']}, function(event) {
 					if (confirm(i18n.t("document_action_delete_confirm"))) {
 						jQuery.ajax({
-							url:"DocumentHandling?action=delete&userDocumentId="+event.data.userDocumentId,
+							url:"rpc/c/"+projectId+"/"+id+"/"+event.data.userDocumentId,
 							complete:function() {show_annodoclist(id); },
 							method:"DELETE"
 						});
@@ -201,7 +201,7 @@ function show_documentlist(id) {
 	$("#documentlistarea").hide();		
 
 	
-	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
+	jQuery.getJSON("rpc/"+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
 		var al = data['accesslevel'];
@@ -252,7 +252,7 @@ function show_documentlist(id) {
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
-				jQuery.getJSON("rpc/userdocumentlist?documentId="+event.data.documentId, function(data) {
+				jQuery.getJSON("rpc/"+id+"/"+event.data.documentId, function(data) {
 					if ('documents' in data && data['documents'].length>0) {
 						if (confirm(i18n.t("document_action_open_master_confirm"))) {
 							window.location.href="main.jsp?master=master&documentId="+event.data.documentId;							
@@ -307,7 +307,7 @@ function show_documentlist(id) {
 			}, function(event) {
 				if (confirm(i18n.t("document_action_delete_confirm"))) {
 					jQuery.ajax({
-						url:"DocumentHandling?action=delete&documentId="+event.data.documentId,
+						url:"rpc/c/"+id+"/"+event.data.documentId,
 						complete:function() {show_documentlist(id); },
 						method:"DELETE"
 					});
@@ -321,7 +321,7 @@ function show_documentlist(id) {
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
-				show_annodoclist(event.data.documentId);
+				show_annodoclist(id, event.data.documentId);
 			});
 			
 			
@@ -333,7 +333,7 @@ function show_documentlist(id) {
 			}).click({
 				'document':data['documents'][i]
 			}, function(event) {
-				show_exportoptions(event.data.document);
+				show_exportoptions(id, event.data.document);
 				// window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
 			});
 			
