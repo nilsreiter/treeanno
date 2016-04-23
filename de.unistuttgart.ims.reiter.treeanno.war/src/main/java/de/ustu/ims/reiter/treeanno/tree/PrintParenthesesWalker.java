@@ -2,7 +2,7 @@ package de.ustu.ims.reiter.treeanno.tree;
 
 public class PrintParenthesesWalker<T> implements Walker<T> {
 
-	StringBuilder b = new StringBuilder();
+	StringBuilder b;
 
 	@Override
 	public void beginNode(Node<T> node) {
@@ -18,5 +18,10 @@ public class PrintParenthesesWalker<T> implements Walker<T> {
 	@Override
 	public String toString() {
 		return b.toString();
+	}
+
+	@Override
+	public void init() {
+		b = new StringBuilder();
 	}
 }

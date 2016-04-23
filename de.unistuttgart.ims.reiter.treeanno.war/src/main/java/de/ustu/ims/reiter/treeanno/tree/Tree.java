@@ -28,6 +28,7 @@ public class Tree<T> {
 	}
 
 	public void depthFirstWalk(Walker<T> walker) {
+		walker.init();
 		depthFirstWalk(walker, getRoot());
 	}
 
