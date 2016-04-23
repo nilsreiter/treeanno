@@ -15,7 +15,7 @@ function init_trans(fnc) {
 	i18n.init({ 
 		resGetPath:'locales/__ns__-__lng__.json',
 		nsseparator:'::',
-		lng: configuration["treeanno.user.defaultlanguage"].substring(0,2) }, function(t) {
+		lng: (language).substring(0,2) }, function(t) {
 			$("body").i18n();
 			$(".trans").each(function(index, element) {
 				var text = $(element).text().trim();
