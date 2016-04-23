@@ -46,16 +46,6 @@
   </resource-ref>
   <servlet>
     <description></description>
-    <display-name>ProjectHandling</display-name>
-    <servlet-name>ProjectHandling</servlet-name>
-    <servlet-class>de.ustu.ims.reiter.treeanno.ProjectHandling</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ProjectHandling</servlet-name>
-    <url-pattern>/ProjectHandling</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
     <display-name>DocumentHandling</display-name>
     <servlet-name>DocumentHandling</servlet-name>
     <servlet-class>de.ustu.ims.reiter.treeanno.DocumentHandling</servlet-class>
