@@ -98,6 +98,12 @@
 		"view":"Öffnen",
 		"delete":"Löschen"
 	},
+	"exportoptions":{
+		"title_for_X":"Exportoptionen für Dokument &bdquo;__document__&ldquo;",
+		"breadcrumb_for_X":"Export Dokument &bdquo;__document__&ldquo;",
+		"xmi":"UIMA XMI",
+		"par":"Klammerausdruck"
+	},
 	"parallel":{
 		"annotations_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
 		"annotations_title_for_X":"Annotationen für __document__",

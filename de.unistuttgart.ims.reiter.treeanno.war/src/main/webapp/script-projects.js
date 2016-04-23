@@ -50,6 +50,48 @@ function init_projects() {
 	});
 }
 
+function show_exportoptions(document) {
+	
+	$("#annodoclistarea").remove();
+	$("#topbar .left .adocname").remove();
+
+	$("#content .splitright").append("<div id=\"annodoclistarea\"></div>");
+	var area = $("#annodoclistarea");
+	
+	area.hide();
+	
+	area.append("<h2>"+i18n.t("exportoptions.title_for_X", {"document":document['name']})+"</h2>");
+	$("#topbar .left").append("<span class=\"adocname\">&nbsp;&gt; "+i18n.t("exportoptions.breadcrumb_for_X", {"document":document['name']})+"</span>");
+	
+	area.append("<div class=\"actionbar\"></div>");
+	var abar = area.children(".actionbar");
+	abar.append("<button class=\"export_xmi\" name=\"export_xmi\" value=\""+document['id']+"\">"+i18n.t("exportoptions.xmi")+"</button>");
+	abar.append("<button class=\"export_par\" name=\"export_par\" value=\""+document['id']+"\">"+i18n.t("exportoptions.par")+"</button>");
+	
+	abar.children(".export_xmi").button({
+		label:i18n.t("exportoptions.xmi"),
+		text:configuration["treeanno.ui.showTextOnButtons"]
+	}).click({
+		'documentId':document['id']
+	}, function(event) {
+		window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
+	});
+	
+	abar.children(".export_par").button({
+		label:i18n.t("exportoptions.par"),
+		text:configuration["treeanno.ui.showTextOnButtons"]
+	}).click({
+		'documentId':document['id']
+	}, function(event) {
+		window.location.href="DocumentHandling?action=export&format=PAR&documentId="+event.data.documentId;
+	});
+	
+	abar.buttonset();
+	
+	area.show();
+	
+}
+
 function show_annodoclist(id) {
 	$("#annodoclistarea").remove();
 	$("#topbar .left .adocname").remove();
@@ -289,9 +331,10 @@ function show_documentlist(id) {
 				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null},
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'documentId':data['documents'][i]['id']
+				'document':data['documents'][i]
 			}, function(event) {
-				window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
+				show_exportoptions(event.data.document);
+				// window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
 			});
 			
 			
