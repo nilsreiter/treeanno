@@ -66,6 +66,7 @@ function show_exportoptions(document) {
 	area.append("<div class=\"actionbar\"></div>");
 	var abar = area.children(".actionbar");
 	abar.append("<button class=\"export_xmi\" name=\"export_xmi\" value=\""+document['id']+"\">"+i18n.t("exportoptions.xmi")+"</button>");
+	abar.append("<button class=\"export_par\" name=\"export_par\" value=\""+document['id']+"\">"+i18n.t("exportoptions.par")+"</button>");
 	
 	abar.children(".export_xmi").button({
 		label:i18n.t("exportoptions.xmi"),
@@ -74,6 +75,15 @@ function show_exportoptions(document) {
 		'documentId':document['id']
 	}, function(event) {
 		window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
+	});
+	
+	abar.children(".export_par").button({
+		label:i18n.t("exportoptions.par"),
+		text:configuration["treeanno.ui.showTextOnButtons"]
+	}).click({
+		'documentId':document['id']
+	}, function(event) {
+		window.location.href="DocumentHandling?action=export&format=PAR&documentId="+event.data.documentId;
 	});
 	
 	abar.buttonset();
