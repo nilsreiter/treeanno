@@ -43,6 +43,25 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 
+		String treeString = getTreeString(jcas);
+
+		String did = DocumentMetaData.get(jcas).getDocumentId();
+		File outFile = new File(outputLocation, did + ".par");
+		Writer os = null;
+		try {
+			os = new FileWriter(outFile);
+			os.write(treeString);
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			IOUtils.closeQuietly(os);
+		}
+
+	}
+
+	public static String getTreeString(JCas jcas) {
 		Tree<TreeSegment> tree = new Tree<TreeSegment>();
 		tree.setRoot(new Node<TreeSegment>(null));
 
@@ -57,22 +76,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 		}
 		Walker<TreeSegment> walker = new PrintParenthesesWalker<TreeSegment>();
 		tree.depthFirstWalk(walker);
-		// System.err.println(walker.toString());
-
-		String did = DocumentMetaData.get(jcas).getDocumentId();
-		File outFile = new File(outputLocation, did + ".par");
-		Writer os = null;
-		try {
-			os = new FileWriter(outFile);
-			os.write(walker.toString());
-			os.flush();
-			os.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			IOUtils.closeQuietly(os);
-		}
-
+		return walker.toString();
 	}
 
 }
