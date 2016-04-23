@@ -101,7 +101,8 @@
 	"exportoptions":{
 		"title_for_X":"Export options for Document &bdquo;__document__&ldquo;",
 		"breadcrumb_for_X":"Export Document &bdquo;__document__&ldquo;",
-		"xmi":"UIMA XMI"
+		"xmi":"UIMA XMI",
+		"par":"Parentheses"
 	},
 	"parallel":{
 		"annotations_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
