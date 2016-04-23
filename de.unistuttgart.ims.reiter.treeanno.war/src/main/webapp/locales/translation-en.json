@@ -98,6 +98,11 @@
 		"delete":"Delete",
 		"view":"View"
 	},
+	"exportoptions":{
+		"title_for_X":"Export options for Document &bdquo;__document__&ldquo;",
+		"breadcrumb_for_X":"Export Document &bdquo;__document__&ldquo;",
+		"xmi":"UIMA XMI"
+	},
 	"parallel":{
 		"annotations_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
 		"annotations_title_for_X":"Annotations for __document__",
