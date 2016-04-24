@@ -56,7 +56,7 @@ public class ContextListener implements ServletContextListener {
 		ServletContext sc = sce.getServletContext();
 		Context envContext = null;
 		DataSource dataSource = null;
-		String dataSourceName = "jdbc/treeanno";
+		String dataSourceName = "jdbc/treeanno8";
 		int dataSourceType = 0;
 		try {
 			envContext =
@@ -106,7 +106,7 @@ public class ContextListener implements ServletContextListener {
 			if (envContext != null) {
 				String path =
 						(String) envContext
-								.lookup("treeanno/configurationPath");
+						.lookup("treeanno/configurationPath");
 				is = new FileInputStream(new File(path));
 				serverConfig.read(new InputStreamReader(is, "UTF-8"));
 			}

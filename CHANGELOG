@@ -1,3 +1,16 @@
+0.8
+
+- Updated versions
+  - Servlet 3.1
+  - JSP 2.3
+- All servlets are now declared using Java annotations
+- Updated database schema to support
+  - document type
+  - document status
+
+0.7
+(this version is skipped for complicated reasons)
+
 0.6.6
 
 - Fixed: User language setting was not exported to the ui
