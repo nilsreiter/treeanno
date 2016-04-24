@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.ustu.ims.reiter.treeanno.CW;
@@ -42,7 +41,6 @@ public class UserDocumentList extends HttpServlet {
 			Document document;
 			try {
 				JSONObject json = new JSONObject();
-				json.put("documents", new JSONArray());
 				document = dataLayer.getDocument(Integer.valueOf(docIds[0]));
 				if (dataLayer.getAccessLevel(document.getProject(), user) >= Perm.PADMIN_ACCESS) {
 					json.put("src", JSONUtil.getJSONObject(document));
