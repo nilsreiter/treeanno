@@ -135,4 +135,14 @@
     <servlet-name>DocumentExport</servlet-name>
     <url-pattern>/rpc/document/export</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DocumentRename</display-name>
+    <servlet-name>DocumentRename</servlet-name>
+    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.DocumentRename</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DocumentRename</servlet-name>
+    <url-pattern>/rpc/document/rename</url-pattern>
+  </servlet-mapping>
 </web-app>

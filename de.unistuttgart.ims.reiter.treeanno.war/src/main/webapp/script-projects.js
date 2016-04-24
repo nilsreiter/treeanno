@@ -286,7 +286,7 @@ function show_documentlist(id) {
 					},{ 
 						text: i18n.t("rename_dialog.ok"),
 						click: function() {
-							jQuery.getJSON("DocumentHandling?action=rename&name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
+							jQuery.getJSON("rpc/document/rename?name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
 								show_documentlist(id);
 							});
 					        $( this ).dialog( "close" );
