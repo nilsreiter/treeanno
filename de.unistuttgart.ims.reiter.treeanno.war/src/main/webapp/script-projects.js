@@ -74,7 +74,7 @@ function show_exportoptions(document) {
 	}).click({
 		'documentId':document['id']
 	}, function(event) {
-		window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
+		window.location.href="/rpc/document/export?documentId="+event.data.documentId;
 	});
 	
 	abar.children(".export_par").button({
@@ -83,7 +83,7 @@ function show_exportoptions(document) {
 	}).click({
 		'documentId':document['id']
 	}, function(event) {
-		window.location.href="DocumentHandling?action=export&format=PAR&documentId="+event.data.documentId;
+		window.location.href="/rpc/document/export?format=PAR&documentId="+event.data.documentId;
 	});
 	
 	abar.buttonset();
