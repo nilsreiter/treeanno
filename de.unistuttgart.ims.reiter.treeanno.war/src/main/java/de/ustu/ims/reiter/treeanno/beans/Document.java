@@ -33,6 +33,9 @@ public class Document {
 	@ForeignCollectionField(eager = false)
 	ForeignCollection<UserDocument> userDocuments;
 
+	@DatabaseField
+	DocumentType type;
+
 	public int getId() {
 		return id;
 	}
@@ -90,6 +93,14 @@ public class Document {
 
 	public Collection<UserDocument> getUserDocuments() {
 		return userDocuments;
+	}
+
+	public DocumentType getType() {
+		return type;
+	}
+
+	public void setType(DocumentType type) {
+		this.type = type;
 	}
 
 }
