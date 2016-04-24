@@ -63,7 +63,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ProjectList</servlet-name>
-    <url-pattern>/rpc/projectlist</url-pattern>
+    <url-pattern>/rpc/projects</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>

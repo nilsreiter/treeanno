@@ -19,7 +19,7 @@ function init_projects() {
 	
 	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
 	$(".splitleft #projectlistarea").hide();
-	jQuery.getJSON("rpc/projectlist", function(data) {
+	jQuery.getJSON("rpc/projects", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
 			var id=data[i]['id'];
