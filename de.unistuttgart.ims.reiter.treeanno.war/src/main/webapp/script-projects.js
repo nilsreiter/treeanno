@@ -151,7 +151,8 @@ function show_annodoclist(projectId, id) {
 						jQuery.ajax({
 							url:"rpc/c/"+projectId+"/"+id+"/"+event.data.userDocumentId,
 							complete:function() {show_annodoclist(id); },
-							method:"DELETE"
+							method:"DELETE",
+							dataType:"json"
 						});
 					}
 				});
@@ -309,7 +310,8 @@ function show_documentlist(id) {
 					jQuery.ajax({
 						url:"rpc/c/"+id+"/"+event.data.documentId,
 						complete:function() {show_documentlist(id); },
-						method:"DELETE"
+						method:"DELETE",
+						dataType:"json"
 					});
 				}
 			});
