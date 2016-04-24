@@ -1,5 +1,7 @@
 0.6.6
 
+- Fixed: User language setting was not exported to the ui
+- All json rpc endpoints now have nicer (rewritten) urls
 - Redesigned export interface: Clicking on export in document view opens
   a new sheet to select the export format (now supports XMI and PAR)
 - Added export of parenthesis string
