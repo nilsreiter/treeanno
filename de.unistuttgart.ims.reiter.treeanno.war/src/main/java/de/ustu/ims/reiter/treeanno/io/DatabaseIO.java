@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -318,5 +319,10 @@ public class DatabaseIO implements DataLayer {
 	@Override
 	public boolean deleteUserDocument(int id) throws SQLException {
 		return (userDocumentDao.deleteIds(Arrays.asList(id)) == 1);
+	}
+
+	@Override
+	public Collection<User> getUsers() throws SQLException {
+		return userDao.queryForAll();
 	}
 }

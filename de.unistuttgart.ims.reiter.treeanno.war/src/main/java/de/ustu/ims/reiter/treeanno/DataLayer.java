@@ -39,7 +39,7 @@ public interface DataLayer {
 	boolean deleteDocument(Document document) throws SQLException;
 
 	boolean setJCas(Document document, JCas jcas) throws SQLException,
-	SAXException;
+			SAXException;
 
 	boolean updateDocument(Document document) throws SQLException;
 
@@ -48,4 +48,6 @@ public interface DataLayer {
 	boolean updateUserDocument(UserDocument document) throws SQLException;
 
 	boolean deleteUserDocument(int id) throws SQLException;
+
+	Collection<User> getUsers() throws SQLException;
 }

@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
+import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 
 public class JSONUtil {
@@ -31,5 +32,14 @@ public class JSONUtil {
 		json.put("name", project.getName());
 		json.put("type", project.getType());
 		return json;
+	}
+
+	public static JSONObject getJSONObject(User user) {
+		JSONObject obj = new JSONObject();
+		obj.put("name", user.getName());
+		obj.put("id", user.getId());
+		obj.put("language", user.getLanguage());
+		obj.put("email", user.getEmail());
+		return obj;
 	}
 }
