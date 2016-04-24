@@ -39,15 +39,14 @@ public class DocumentHandling extends HttpServlet {
 	@Override
 	protected void doDelete(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String[] docIds = null;
+		int[] docIds;
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 
 		if (request.getParameter("documentId") != null) {
-			docIds = request.getParameterValues("documentId");
+			docIds = Util.getAllDocumentIds(request, response);
 			for (int i = 0; i < docIds.length; i++) {
 				try {
-					Document document =
-							dataLayer.getDocument(Integer.valueOf(docIds[i]));
+					Document document = dataLayer.getDocument(docIds[i]);
 					dataLayer.deleteDocument(document);
 				} catch (NumberFormatException | SQLException e) {
 					throw new ServletException(e);
@@ -55,7 +54,7 @@ public class DocumentHandling extends HttpServlet {
 			}
 			Util.returnJSON(response, new JSONObject());
 		} else if (request.getParameter("userDocumentId") != null) {
-			docIds = request.getParameterValues("userDocumentId");
+			docIds = Util.getAllUserDocumentIds(request, response);
 			for (int i = 0; i < docIds.length; i++) {
 				try {
 					dataLayer.deleteUserDocument(Integer.valueOf(docIds[i]));
@@ -81,7 +80,7 @@ public class DocumentHandling extends HttpServlet {
 		}
 		String action = request.getParameterValues("action")[0];
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
-		String[] docIds = request.getParameterValues("documentId");
+		int[] docIds = Util.getAllDocumentIds(request, response);
 		if (action.equalsIgnoreCase("delete")) {
 			// empty, use HTTP DELETE instead
 		} else if (action.equalsIgnoreCase("clone")) {
@@ -92,9 +91,8 @@ public class DocumentHandling extends HttpServlet {
 				zos = new ZipOutputStream(response.getOutputStream());
 				zos.setLevel(9);
 				for (int i = 0; i < docIds.length;) {
-					int docId = Integer.valueOf(docIds[i]);
-					Document document =
-							dataLayer.getDocument(Integer.valueOf(docIds[i]));
+					int docId = docIds[i];
+					Document document = dataLayer.getDocument(docIds[i]);
 					if (request.getParameter("format") == null
 							|| request.getParameterValues("format")[0]
 									.equalsIgnoreCase("XMI")) {
@@ -113,9 +111,9 @@ public class DocumentHandling extends HttpServlet {
 										.getDocumentTitle();
 							if (name == null || name.isEmpty())
 								name =
-										JCasUtil.selectSingle(jcas,
-												DocumentMetaData.class)
-												.getDocumentId();
+								JCasUtil.selectSingle(jcas,
+										DocumentMetaData.class)
+										.getDocumentId();
 
 							// root folder
 							zos.putNextEntry(new ZipEntry(name + "/"));
@@ -151,12 +149,12 @@ public class DocumentHandling extends HttpServlet {
 						String name = document.getName();
 						if (name == null || name.isEmpty())
 							JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-							.getDocumentTitle();
+									.getDocumentTitle();
 						if (name == null || name.isEmpty())
 							name =
-									JCasUtil.selectSingle(jcas,
-											DocumentMetaData.class)
-											.getDocumentId();
+							JCasUtil.selectSingle(jcas,
+									DocumentMetaData.class)
+									.getDocumentId();
 
 						// root folder
 						zos.putNextEntry(new ZipEntry(name + "/"));
@@ -182,8 +180,7 @@ public class DocumentHandling extends HttpServlet {
 					}
 				}
 				zos.flush();
-			} catch (NumberFormatException | SQLException | UIMAException
-					| SAXException e1) {
+			} catch (SQLException | UIMAException | SAXException e1) {
 				throw new ServletException(e1);
 			} finally {
 				IOUtils.closeQuietly(zos);
