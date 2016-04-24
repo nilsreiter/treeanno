@@ -22,16 +22,6 @@ public class Project {
 	@Column
 	int type = 1;
 
-	@Deprecated
-	public int getDatabaseId() {
-		return id;
-	}
-
-	@Deprecated
-	public void setDatabaseId(int databaseId) {
-		this.id = databaseId;
-	}
-
 	public String getName() {
 		return name;
 	}

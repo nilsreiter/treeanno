@@ -17,8 +17,7 @@ public class Document {
 	@DatabaseField(generatedId = true)
 	int id;
 
-	@Deprecated
-	@Column
+	@DatabaseField(version = true)
 	Date modificationDate;
 
 	@DatabaseField(canBeNull = false, foreign = true, columnName = "project",
@@ -27,14 +26,6 @@ public class Document {
 
 	@Column
 	String name;
-
-	@Deprecated
-	@Column
-	boolean hidden;
-
-	@Deprecated
-	@DatabaseField(canBeNull = true, foreign = true, columnName = "cloneOf")
-	Document cloneOf;
 
 	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
@@ -46,17 +37,10 @@ public class Document {
 		return id;
 	}
 
-	@Deprecated
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	@Deprecated
 	public Date getModificationDate() {
 		return modificationDate;
 	}
 
-	@Deprecated
 	public void setModificationDate(Date modificationDate) {
 		this.modificationDate = modificationDate;
 	}
@@ -85,16 +69,6 @@ public class Document {
 		this.id = databaseId;
 	}
 
-	@Deprecated
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	@Deprecated
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
-	}
-
 	@Override
 	public int hashCode() {
 		return id;
@@ -104,12 +78,6 @@ public class Document {
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Document)) return false;
 		return this.hashCode() == obj.hashCode();
-	}
-
-	
-	@Deprecated
-	public Document getCloneOf() {
-		return cloneOf;
 	}
 
 	public String getXmi() {
