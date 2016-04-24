@@ -2,11 +2,10 @@ package de.ustu.ims.reiter.treeanno.beans;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
-@Entity(name = "treeanno_userdocument")
+@DatabaseTable(tableName = "treeanno_userdocument")
 public class UserDocument {
 	public static final String FIELD_ID = "id";
 	public static final String FIELD_MODIFICATION_DATE = "modificationDate";

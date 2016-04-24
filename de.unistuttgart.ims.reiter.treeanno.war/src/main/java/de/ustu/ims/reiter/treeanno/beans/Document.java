@@ -3,14 +3,12 @@ package de.ustu.ims.reiter.treeanno.beans;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
 
-@Entity(name = "treeanno_documents")
+@DatabaseTable(tableName = "treeanno_documents")
 public class Document {
 	private static final String FIELD_XMI = "xmi";
 
@@ -24,7 +22,7 @@ public class Document {
 			foreignAutoRefresh = true)
 	Project project;
 
-	@Column
+	@DatabaseField
 	String name;
 
 	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")

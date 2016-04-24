@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.bval.jsr303.util.IOUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.impl.TypeSystem2Xml;
 import org.apache.uima.cas.impl.XmiCasSerializer;

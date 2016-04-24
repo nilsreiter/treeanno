@@ -1,13 +1,11 @@
 package de.ustu.ims.reiter.treeanno.beans;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
-@Entity(name = "treeanno_users")
+@DatabaseTable(tableName = "treeanno_users")
 public class User {
-	@Column(unique = true)
+	@DatabaseField(unique = true)
 	String username;
 
 	@DatabaseField
