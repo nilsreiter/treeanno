@@ -49,7 +49,7 @@ public class DocumentExport extends HttpServlet {
 			zos.setLevel(9);
 			response.setContentType("application/zip");
 			response.setHeader("Content-Disposition",
-					"attachment; filename=\"file.zip\"");
+					"attachment; filename=\"export.zip\"");
 
 			for (int i = 0; i < docIds.length;) {
 				Document document = dataLayer.getDocument(docIds[i]);
@@ -82,14 +82,14 @@ public class DocumentExport extends HttpServlet {
 		String name = document.getName();
 		if (name == null || name.isEmpty())
 			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-			.getDocumentTitle();
+					.getDocumentTitle();
 		if (name == null || name.isEmpty())
 			name =
-			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-							.getDocumentId();
+					JCasUtil.selectSingle(jcas, DocumentMetaData.class)
+			.getDocumentId();
 
 		// root folder
-		zos.putNextEntry(new ZipEntry(name + "/"));
+		// zos.putNextEntry(new ZipEntry(name + "/"));
 
 		// original document
 		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + ".par"));
@@ -117,14 +117,14 @@ public class DocumentExport extends HttpServlet {
 		String name = document.getName();
 		if (name == null || name.isEmpty())
 			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-			.getDocumentTitle();
+					.getDocumentTitle();
 		if (name == null || name.isEmpty())
 			name =
-			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-			.getDocumentId();
+					JCasUtil.selectSingle(jcas, DocumentMetaData.class)
+							.getDocumentId();
 
 		// root folder
-		zos.putNextEntry(new ZipEntry(name + "/"));
+		// zos.putNextEntry(new ZipEntry(name + "/"));
 
 		// original document
 		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + ".xmi"));
