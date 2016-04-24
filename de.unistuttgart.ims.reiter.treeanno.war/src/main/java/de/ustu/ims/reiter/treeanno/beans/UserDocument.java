@@ -14,8 +14,6 @@ public class UserDocument {
 	public static final String FIELD_XMI = "xmi";
 	public static final String FIELD_USER = "user";
 
-	public static final String INDEX_USER_DOCUMENT = "idx_user_document";
-
 	@DatabaseField(generatedId = true, columnName = FIELD_ID)
 	int id;
 
