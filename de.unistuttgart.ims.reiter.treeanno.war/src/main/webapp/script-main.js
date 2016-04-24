@@ -577,7 +577,10 @@ function init_main() {
 			key_up(e);
 		};
 		console.log("Querying for document content");
-		jQuery.getJSON("DocumentContentHandling?"+(master?"master=master&":"")+"documentId="+documentId, function(data) {
+		
+		var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
+		console.log(url);
+		jQuery.getJSON(url, function(data) {
 			console.log("Received document content");
 			// fixing master setting
 			master=("master" in data?true:false);
@@ -738,15 +741,16 @@ function save_document() {
 		item['category'] = $(element).children("p").text();
 		sitems.push(item);
 	});
+	var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
+	console.log(url);
 	$.ajax({
 		type: "POST",
-		url: "DocumentContentHandling",
+		url: url,
 		// processData: false,
 		data: JSON.stringify({
-			document:documentId,
-			master:(master?true:false),
 			items:sitems
 		}),
+		dataType:"json",
 		contentType:'application/json; charset=UTF-8',
 		success: function(data) {
 			if (data['error'] == 0) {
