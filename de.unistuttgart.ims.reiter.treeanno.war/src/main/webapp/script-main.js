@@ -577,7 +577,10 @@ function init_main() {
 			key_up(e);
 		};
 		console.log("Querying for document content");
-		jQuery.getJSON("DocumentContentHandling?"+(master?"master=master&":"")+"documentId="+documentId, function(data) {
+		
+		var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
+		console.log(url);
+		jQuery.getJSON(url, function(data) {
 			console.log("Received document content");
 			// fixing master setting
 			master=("master" in data?true:false);

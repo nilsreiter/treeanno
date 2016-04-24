@@ -35,8 +35,8 @@ public class Util {
 	}
 
 	public static void
-	returnJSON(HttpServletResponse response, JSONArray object)
-			throws IOException {
+			returnJSON(HttpServletResponse response, JSONArray object)
+					throws IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(object.toString());
@@ -116,9 +116,14 @@ public class Util {
 				"userDocumentId");
 	}
 
+	public static int getFirstUserId(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		return Util.getFirstIntegerParameter(request, response, "userId");
+	}
+
 	private static int[] getAllIntegerParameters(HttpServletRequest request,
 			HttpServletResponse response, String parameterName)
-			throws IOException {
+					throws IOException {
 		if (request.getParameter(parameterName) == null)
 			Util.returnJSON(response, new JSONObject());
 		String[] docIdStrings = request.getParameterValues(parameterName);
@@ -130,10 +135,11 @@ public class Util {
 
 	private static int getFirstIntegerParameter(HttpServletRequest request,
 			HttpServletResponse response, String parameterName)
-			throws IOException {
+					throws IOException {
 		if (request.getParameter(parameterName) == null)
 			Util.returnJSON(response, new JSONObject());
 		String docIdString = request.getParameterValues(parameterName)[0];
 		return Integer.valueOf(docIdString);
 	}
+
 }

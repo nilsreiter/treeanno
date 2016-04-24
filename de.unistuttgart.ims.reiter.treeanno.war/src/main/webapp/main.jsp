@@ -25,6 +25,7 @@
 	<script src="script-main.js"></script>
 	<script>
 
+	var userId = "${sessionScope.User.id}";
 	var language = "${sessionScope.User.language}";
 	var documentId = ${param.documentId};
 	var master = "${param.master}";
