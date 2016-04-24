@@ -164,12 +164,26 @@ public class DocumentContentHandling extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 
+		User user = CW.getUser(request);
+
+		int userId;
+		if (request.getParameter("userId") == null) {
+			userId = user.getId();
+		} else {
+			userId = Util.getFirstUserId(request, response);
+		}
+
+		if (user == null || userId != user.getId()) {
+			response.setStatus(Response.SC_FORBIDDEN);
+			return;
+		}
+
 		InputStream is = request.getInputStream();
 		String s = IOUtils.toString(is);
 		JSONObject jObj = new JSONObject(s);
 		JSONObject returnObject = new JSONObject();
-		int docId = jObj.getInt("document");
-		boolean master = jObj.getBoolean("master");
+		int docId = Util.getFirstDocumentId(request, response);
+		boolean master = (request.getParameter("master") != null);
 		boolean r = false;
 
 		try {

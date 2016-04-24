@@ -741,15 +741,16 @@ function save_document() {
 		item['category'] = $(element).children("p").text();
 		sitems.push(item);
 	});
+	var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
+	console.log(url);
 	$.ajax({
 		type: "POST",
-		url: "DocumentContentHandling",
+		url: url,
 		// processData: false,
 		data: JSON.stringify({
-			document:documentId,
-			master:(master?true:false),
 			items:sitems
 		}),
+		dataType:"json",
 		contentType:'application/json; charset=UTF-8',
 		success: function(data) {
 			if (data['error'] == 0) {
