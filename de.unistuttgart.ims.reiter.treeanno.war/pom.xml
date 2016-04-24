@@ -87,12 +87,6 @@
 			<version>3.5</version>
 		</dependency>
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>2.0.17-beta</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
 			<version>2.11.0</version>
@@ -101,11 +95,6 @@
 			<groupId>com.j256.ormlite</groupId>
 			<artifactId>ormlite-core</artifactId>
 			<version>4.48</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.openjpa</groupId>
-			<artifactId>openjpa-all</artifactId>
-			<version>2.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.j256.ormlite</groupId>
@@ -142,24 +131,6 @@
 			<version>0.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-catalina</artifactId>
-			<version>8.0.32</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-servlet-api</artifactId>
-			<version>8.0.32</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-dbcp</artifactId>
-			<version>8.0.32</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>de.unistuttgart.ims.reiter</groupId>
 			<artifactId>treeanno.api</artifactId>
 			<version>0.2</version>
@@ -173,6 +144,11 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.4.191</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 	</dependencies>
 	<scm>

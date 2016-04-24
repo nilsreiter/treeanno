@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,11 +39,13 @@ import de.ustu.ims.reiter.treeanno.util.PlainTextPreprocess;
 /**
  * Servlet implementation class NewDocument
  */
+@WebServlet("/rpc/NewDocument")
 public class NewDocument extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request,
@@ -61,7 +64,7 @@ public class NewDocument extends HttpServlet {
 					this.getServletConfig().getServletContext();
 			File repository =
 					(File) servletContext
-					.getAttribute("javax.servlet.context.tempdir");
+							.getAttribute("javax.servlet.context.tempdir");
 			factory.setRepository(repository);
 
 			// Create a new file upload handler
@@ -86,8 +89,8 @@ public class NewDocument extends HttpServlet {
 												Token.class);
 							} else
 								pp =
-								new PlainTextPreprocess<Sentence>(
-										Sentence.class);
+										new PlainTextPreprocess<Sentence>(
+												Sentence.class);
 						}
 					} else {
 						BufferedWriter bw =
