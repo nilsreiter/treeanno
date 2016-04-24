@@ -16,8 +16,10 @@ import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.JSONUtil;
 import de.ustu.ims.reiter.treeanno.Perm;
+import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
@@ -40,8 +42,11 @@ public class UserList extends HttpServlet {
 		}
 
 		Project project;
+		Document document;
 		try {
 			project = dl.getProject(Util.getFirstProjectId(request, response));
+			document =
+					dl.getDocument(Util.getFirstDocumentId(request, response));
 			if (dl.getAccessLevel(project, user) >= Perm.PADMIN_ACCESS) {
 				JSONArray arr = new JSONArray();
 				for (User u : dl.getUsers()) {
@@ -50,6 +55,10 @@ public class UserList extends HttpServlet {
 					if (al >= Perm.WRITE_ACCESS) {
 						JSONObject o = JSONUtil.getJSONObject(u);
 						o.put("accesslevel", al);
+						UserDocument ud = dl.getUserDocument(u, document);
+						if (ud != null) {
+							o.put("userDocument", JSONUtil.getJSONObject(ud));
+						}
 						arr.put(o);
 					}
 				}

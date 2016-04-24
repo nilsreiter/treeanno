@@ -161,6 +161,23 @@ public class DatabaseIO implements DataLayer {
 	@Override
 	public UserDocument getUserDocument(User user, Document document)
 			throws SQLException {
+		QueryBuilder<UserDocument, Integer> queryBuilder =
+				userDocumentDao.queryBuilder();
+		PreparedQuery<UserDocument> pq =
+				queryBuilder.where()
+				.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
+				.eq(UserDocument.FIELD_USER, user).prepare();
+		List<UserDocument> ret = userDocumentDao.query(pq);
+		if (ret.isEmpty())
+			return null;
+		else
+			return ret.get(0);
+
+	}
+
+	@Override
+	public UserDocument createUserDocument(User user, Document document)
+			throws SQLException {
 		// TODO: prevent immediate retrieval of xmi column
 
 		QueryBuilder<UserDocument, Integer> queryBuilder =
@@ -188,7 +205,7 @@ public class DatabaseIO implements DataLayer {
 		// TODO: prevent immediate retrieval of xmi column
 		// TODO: also, make more efficient
 
-		return getUserDocument(getUser(user), getDocument(document));
+		return createUserDocument(getUser(user), getDocument(document));
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,

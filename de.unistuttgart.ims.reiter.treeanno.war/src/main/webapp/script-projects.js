@@ -92,6 +92,107 @@ function show_exportoptions(projectId,document) {
 	
 }
 
+function show_list_of_annotators(projectId, documentId) {
+	$("#annodoclistarea").remove();
+	$("#topbar .left .adocname").remove();
+
+	$("#content .splitright").append("<div id=\"annodoclistarea\"></div>");
+	$("#annodoclistarea").hide();
+
+	jQuery.getJSON("rpc/"+projectId+"/"+documentId+"/u", function(data) {
+		var header = false;
+		var table = document.createElement("table");
+
+		if (data.length > 0) {
+			
+			for (var i = 0; i < data.length; i++) {
+				var uDocId = null;
+				if ('userDocument' in data[i])
+					uDocId = data[i]['userDocument']['id'];
+				
+				if (!header) {
+					var trh = document.createElement("tr");
+					$(trh).append("<th>"+i18n.t("annoarea.id")+"</th>");
+					$(trh).append("<th>"+i18n.t("annoarea.username")+"</th>");
+					$(trh).append("<th>"+i18n.t("annoarea.mod_date")+"</th>");
+					$(trh).append("<th>"+i18n.t("annoarea.actions")+"</th>");
+					$(table).append(trh);
+					header = true;
+				}
+				var tr = document.createElement("tr");
+				$(tr).append("<td>"+data[i]['id']+"</td>");
+				$(tr).append("<td>"+data[i]['name']+"</td>");
+				if (uDocId != null)
+					$(tr).append("<td>"+data[i]['userDocument']['modificationDate']+"</td>");
+				else
+					$(tr).append("<td></td>");
+				var actionCell = document.createElement("td");
+				if (uDocId != null) {}
+					$(actionCell).append("<button class=\"button_view\" id=\"view-udoc-"+uDocId+"\" name=\"view\" value=\""+uDocId+"\">"+i18n.t("annodoclistarea.view")+"</button>");
+					$(actionCell).append("<button class=\"button_delete\" id=\"delete-udoc-"+uDocId+"\" name=\"delete\" value=\""+uDocId+"\">"+i18n.t("annodoclistarea.delete")+"</button>");
+					// if (al >= Perm["PADMINACCESS"]) 
+					$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+uDocId+"\" type=\"checkbox\" name=\"diff\" value=\""+uDocId+"\"/><label for=\"diffselect-"+uDocId+"\"></label>");
+				}
+				$(actionCell).buttonset();
+				$(tr).append(actionCell);
+				$(table).append(tr);
+				
+				// diff select button
+				$(actionCell).find("input.button_diff").button({
+					label:i18n.t("parallel.select"),
+					icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
+					text:configuration["treeanno.ui.showTextOnButtons"]
+				}); 
+				$(actionCell).find("button.button_view").button({
+					label:i18n.t("annoarea.view"),
+					icons:{primary:"ui-icon-document", secondary:null},
+					text:configuration["treeanno.ui.showTextOnButtons"]
+				}).click({'userDocumentId':uDocId}, function(event) {	
+	 				window.location.href="parallel.jsp?userDocumentId="+event.data.userDocumentId;
+				});
+				$(actionCell).find("button.button_delete").button({
+					label:i18n.t("annodoclistarea.delete"),
+					icons:{primary:"ui-icon-trash", secondary:null},
+					text:configuration["treeanno.ui.showTextOnButtons"]
+				}).click({'userDocumentId':uDocId}, function(event) {
+					if (confirm(i18n.t("document_action_delete_confirm"))) {
+						jQuery.ajax({
+							url:"rpc/c/"+projectId+"/"+id+"/"+event.data.userDocumentId,
+							complete:function() {show_annodoclist(id); },
+							method:"DELETE",
+							dataType:"json"
+						});
+					}
+				});
+			
+			$("#annodoclistarea").append("<h2>"+i18n.t("annoarea.title_for_X", {"document":documentId})+"</h2>");
+			$("#annodoclistarea").append(table);
+			$("#topbar .left").append("<span class=\"adocname\">&nbsp;&gt; "+i18n.t("annodoclistarea.breadcrumb_for_X", {"document":documentId})+"</span>");
+			$("#annodoclistarea").append("<button id=\"button_open_diff\"></button>");
+			
+			$("button#button_open_diff").button({
+				label:i18n.t("parallel.open_view"),
+				icons:{primary:"ui-icon-zoomin",secondary:null},
+				text:configuration["treeanno.ui.showTextOnButtons"]
+			}).click(function() {
+				if($("input.button_diff:checked").length == 2) {
+					var doc = new Array();
+					$("input.button_diff:checked").each(function(index, element) {
+						doc[index] = $(element).val();
+					});
+	 				window.location.href="parallel.jsp?userDocumentId="+doc[0]+"&userDocumentId="+doc[1];
+				}
+			});
+		} else {
+			$("#annodoclistarea").append("<p>"+i18n.t("annoarea.no-documents")+"</p>");
+		}
+		$("#annodoclistarea").show();
+
+	});
+
+}
+
+
 function show_annodoclist(projectId, id) {
 	$("#annodoclistarea").remove();
 	$("#topbar .left .adocname").remove();
@@ -235,6 +336,8 @@ function show_documentlist(id) {
 				$(actionCell).append("<button class=\"button_view_annodoc\">view annotation</button>");
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_export\">export</button>");
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"view_annotators\">view_annotators</button>");
 			
 			
 			$(actionCell).find("button.button_open").button({
@@ -324,6 +427,15 @@ function show_documentlist(id) {
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
 				show_annodoclist(id, event.data.documentId);
+			});
+			
+			$(actionCell).find("button.view_annotators").button({
+				label:i18n.t("document_action_view_annotators"),
+				text:configuration["treeanno.ui.showTextOnButtons"]
+			}).click({
+				'documentId':data['documents'][i]['id']
+			}, function(event) {
+				show_list_of_annotators(id, event.data.documentId);
 			});
 			
 			

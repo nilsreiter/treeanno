@@ -132,7 +132,7 @@ public class DocumentContentHandling extends HttpServlet {
 				jcas = JCasConverter.getJCas(doc.getXmi());
 				obj.put("master", true);
 			} else {
-				UserDocument udoc = dl.getUserDocument(user, document);
+				UserDocument udoc = dl.createUserDocument(user, document);
 				jcas = JCasConverter.getJCas(udoc.getXmi());
 			}
 			if (jcas != null) {
@@ -204,7 +204,7 @@ public class DocumentContentHandling extends HttpServlet {
 			} else {
 				// saving the user document
 				UserDocument document =
-						dataLayer.getUserDocument(CW.getUser(request), doc);
+						dataLayer.createUserDocument(CW.getUser(request), doc);
 				JCas jcas =
 						Util.addAnnotationsToJCas(
 								JCasConverter.getJCas(document.getXmi()), jObj);
