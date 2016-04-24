@@ -13,6 +13,7 @@ public class UserDocument {
 	public static final String FIELD_SRC_DOCUMENT = "document";
 	public static final String FIELD_XMI = "xmi";
 	public static final String FIELD_USER = "user";
+	public static final String FIELD_STATUS = "status";
 
 	@DatabaseField(generatedId = true, columnName = FIELD_ID)
 	int id;
@@ -29,6 +30,9 @@ public class UserDocument {
 	@DatabaseField(columnName = FIELD_USER, foreign = true,
 			foreignAutoRefresh = true)
 	User user;
+
+	@DatabaseField(columnName = FIELD_STATUS)
+	DocumentStatus status;
 
 	public String getXmi() {
 		return xmi;
@@ -60,6 +64,14 @@ public class UserDocument {
 
 	public void setDocument(Document document) {
 		this.document = document;
+	}
+
+	public DocumentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(DocumentStatus status) {
+		this.status = status;
 	}
 
 }
