@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.connector.Response;
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
@@ -50,7 +49,7 @@ public class DocumentContentHandling extends HttpServlet {
 		DataLayer dl = CW.getDataLayer(getServletContext());
 		int[] documents = Util.getAllUserDocumentIds(request, response);
 		if (request.getSession().getAttribute(CA.USER) == null) {
-			response.setStatus(Response.SC_FORBIDDEN);
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 		try {
@@ -63,7 +62,7 @@ public class DocumentContentHandling extends HttpServlet {
 						dl.getAccessLevel(userDocument.getDocument()
 								.getProject(), CW.getUser(request));
 				if (accessLevel == Perm.NO_ACCESS) {
-					response.setStatus(Response.SC_FORBIDDEN);
+					response.sendError(HttpServletResponse.SC_FORBIDDEN);
 					return;
 				}
 				JCas jcas = JCasConverter.getJCas(userDocument.getXmi());
@@ -105,7 +104,7 @@ public class DocumentContentHandling extends HttpServlet {
 		}
 		int docId = Util.getFirstDocumentId(request, response);
 		if (user == null || userId != user.getId()) {
-			response.setStatus(Response.SC_FORBIDDEN);
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 		// if the request parameter "master" has been set
@@ -120,7 +119,7 @@ public class DocumentContentHandling extends HttpServlet {
 					dl.getAccessLevel(document.getProject(),
 							CW.getUser(request));
 			if (accessLevel == Perm.NO_ACCESS) {
-				response.setStatus(Response.SC_FORBIDDEN);
+				response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return;
 			}
 
@@ -174,7 +173,7 @@ public class DocumentContentHandling extends HttpServlet {
 		}
 
 		if (user == null || userId != user.getId()) {
-			response.setStatus(Response.SC_FORBIDDEN);
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 
