@@ -74,7 +74,7 @@ function show_exportoptions(document) {
 	}).click({
 		'documentId':document['id']
 	}, function(event) {
-		window.location.href="/rpc/document/export?documentId="+event.data.documentId;
+		window.location.href="rpc/document/export?documentId="+event.data.documentId;
 	});
 	
 	abar.children(".export_par").button({
@@ -83,7 +83,7 @@ function show_exportoptions(document) {
 	}).click({
 		'documentId':document['id']
 	}, function(event) {
-		window.location.href="/rpc/document/export?format=PAR&documentId="+event.data.documentId;
+		window.location.href="rpc/document/export?format=PAR&documentId="+event.data.documentId;
 	});
 	
 	abar.buttonset();
@@ -307,7 +307,7 @@ function show_documentlist(id) {
 			}, function(event) {
 				if (confirm(i18n.t("document_action_delete_confirm"))) {
 					jQuery.ajax({
-						url:"/rpc/document/delete?documentId="+event.data.documentId,
+						url:"rpc/document/delete?documentId="+event.data.documentId,
 						complete:function() {show_documentlist(id); },
 						method:"DELETE"
 					});
