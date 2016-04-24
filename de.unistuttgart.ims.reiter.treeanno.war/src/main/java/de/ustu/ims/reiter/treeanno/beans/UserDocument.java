@@ -31,7 +31,7 @@ public class UserDocument {
 			foreignAutoRefresh = true)
 	User user;
 
-	@DatabaseField(columnName = FIELD_STATUS)
+	@DatabaseField(columnName = FIELD_STATUS, defaultValue = "ASSIGNED")
 	DocumentStatus status;
 
 	public String getXmi() {
