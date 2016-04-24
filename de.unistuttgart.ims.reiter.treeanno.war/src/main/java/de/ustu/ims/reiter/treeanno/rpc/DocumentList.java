@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class DocumentList
  */
+@WebServlet("/rpc/documentlist")
 public class DocumentList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -6,6 +6,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +31,7 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class DocumentExport
  */
+@WebServlet("/rpc/document/export")
 public class DocumentExport extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -82,11 +84,11 @@ public class DocumentExport extends HttpServlet {
 		String name = document.getName();
 		if (name == null || name.isEmpty())
 			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-					.getDocumentTitle();
+			.getDocumentTitle();
 		if (name == null || name.isEmpty())
 			name =
-					JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-			.getDocumentId();
+			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
+							.getDocumentId();
 
 		// root folder
 		// zos.putNextEntry(new ZipEntry(name + "/"));
@@ -117,11 +119,11 @@ public class DocumentExport extends HttpServlet {
 		String name = document.getName();
 		if (name == null || name.isEmpty())
 			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-					.getDocumentTitle();
+			.getDocumentTitle();
 		if (name == null || name.isEmpty())
 			name =
-					JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-							.getDocumentId();
+			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
+			.getDocumentId();
 
 		// root folder
 		// zos.putNextEntry(new ZipEntry(name + "/"));

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class ControllerServlet
  */
+@WebServlet("/DocumentContentHandling")
 public class DocumentContentHandling extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
