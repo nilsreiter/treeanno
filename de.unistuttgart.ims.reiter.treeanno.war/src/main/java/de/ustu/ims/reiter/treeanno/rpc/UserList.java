@@ -34,6 +34,11 @@ public class UserList extends HttpServlet {
 
 		User user = CW.getUser(request);
 
+		if (user == null) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
+
 		Project project;
 		try {
 			project = dl.getProject(Util.getFirstProjectId(request, response));
