@@ -307,7 +307,7 @@ function show_documentlist(id) {
 			}, function(event) {
 				if (confirm(i18n.t("document_action_delete_confirm"))) {
 					jQuery.ajax({
-						url:"DocumentHandling?action=delete&documentId="+event.data.documentId,
+						url:"/rpc/document/delete?documentId="+event.data.documentId,
 						complete:function() {show_documentlist(id); },
 						method:"DELETE"
 					});

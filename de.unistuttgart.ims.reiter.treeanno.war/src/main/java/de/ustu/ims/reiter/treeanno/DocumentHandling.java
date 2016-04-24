@@ -36,36 +36,6 @@ public class DocumentHandling extends HttpServlet {
 		XMI, PAR
 	};
 
-	@Override
-	protected void doDelete(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		int[] docIds;
-		DataLayer dataLayer = CW.getDataLayer(getServletContext());
-
-		if (request.getParameter("documentId") != null) {
-			docIds = Util.getAllDocumentIds(request, response);
-			for (int i = 0; i < docIds.length; i++) {
-				try {
-					Document document = dataLayer.getDocument(docIds[i]);
-					dataLayer.deleteDocument(document);
-				} catch (NumberFormatException | SQLException e) {
-					throw new ServletException(e);
-				}
-			}
-			Util.returnJSON(response, new JSONObject());
-		} else if (request.getParameter("userDocumentId") != null) {
-			docIds = Util.getAllUserDocumentIds(request, response);
-			for (int i = 0; i < docIds.length; i++) {
-				try {
-					dataLayer.deleteUserDocument(Integer.valueOf(docIds[i]));
-				} catch (NumberFormatException | SQLException e) {
-					throw new ServletException(e);
-				}
-			}
-			Util.returnJSON(response, new JSONObject());
-		}
-	}
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -111,9 +81,9 @@ public class DocumentHandling extends HttpServlet {
 										.getDocumentTitle();
 							if (name == null || name.isEmpty())
 								name =
-								JCasUtil.selectSingle(jcas,
-										DocumentMetaData.class)
-										.getDocumentId();
+										JCasUtil.selectSingle(jcas,
+												DocumentMetaData.class)
+												.getDocumentId();
 
 							// root folder
 							zos.putNextEntry(new ZipEntry(name + "/"));
@@ -149,12 +119,12 @@ public class DocumentHandling extends HttpServlet {
 						String name = document.getName();
 						if (name == null || name.isEmpty())
 							JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-									.getDocumentTitle();
+							.getDocumentTitle();
 						if (name == null || name.isEmpty())
 							name =
-							JCasUtil.selectSingle(jcas,
-									DocumentMetaData.class)
-									.getDocumentId();
+									JCasUtil.selectSingle(jcas,
+											DocumentMetaData.class)
+											.getDocumentId();
 
 						// root folder
 						zos.putNextEntry(new ZipEntry(name + "/"));
