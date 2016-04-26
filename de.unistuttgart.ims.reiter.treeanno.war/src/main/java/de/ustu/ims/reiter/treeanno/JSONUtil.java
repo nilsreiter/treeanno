@@ -12,9 +12,10 @@ public class JSONUtil {
 		JSONObject json = new JSONObject();
 		json.put(UserDocument.FIELD_ID, ud.getId());
 		json.put(UserDocument.FIELD_MODIFICATION_DATE, ud.getModificationDate());
-		json.put(UserDocument.FIELD_USER, new JSONObject(ud.getUser()));
+		json.put(UserDocument.FIELD_USER, getJSONObject(ud.getUser()));
 		json.put(UserDocument.FIELD_SRC_DOCUMENT,
 				getJSONObject(ud.getDocument()));
+		json.put(UserDocument.FIELD_STATUS, ud.getStatus().toString());
 		return json;
 	}
 
