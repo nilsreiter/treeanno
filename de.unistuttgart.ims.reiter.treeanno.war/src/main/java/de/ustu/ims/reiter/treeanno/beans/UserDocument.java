@@ -31,7 +31,7 @@ public class UserDocument {
 	User user;
 
 	@DatabaseField(columnName = FIELD_STATUS, defaultValue = "ASSIGNED")
-	DocumentStatus status;
+	DocumentStatus status = DocumentStatus.ASSIGNED;
 
 	public String getXmi() {
 		return xmi;
