@@ -74,9 +74,9 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
 							new JCasConverter()
-									.getJSONArrayFromAnnotations(
-											jcas,
-											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -98,11 +98,11 @@ public class DocumentContentHandling extends HttpServlet {
 		DataLayer dl = CW.getDataLayer(getServletContext());
 		User currentUser = CW.getUser(request);
 
-		int userId;
-		if (request.getParameter("userId") == null) {
-			userId = currentUser.getId();
-		} else {
-			userId = Util.getFirstUserId(request, response);
+		int userId = currentUser.getId();
+
+		int targetUserId = userId;
+		if (request.getParameter("userId") == null) {} else {
+			targetUserId = Util.getFirstUserId(request, response);
 		}
 		int docId = Util.getFirstDocumentId(request, response);
 
@@ -111,10 +111,11 @@ public class DocumentContentHandling extends HttpServlet {
 					dl.getAccessLevel(dl.getDocument(docId).getProject(),
 							CW.getUser(request));
 			if (currentUser == null
-					|| (userId != currentUser.getId() && accessLevel < Perm.PADMIN_ACCESS)) {
+					|| (userId != targetUserId && accessLevel < Perm.PADMIN_ACCESS)) {
 				response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return;
 			}
+			User targetUser = dl.getUser(targetUserId);
 			// if the request parameter "master" has been set
 			boolean master = (request.getParameter("master") != null);
 			Document document = dl.getDocument(docId);
@@ -134,16 +135,16 @@ public class DocumentContentHandling extends HttpServlet {
 				jcas = JCasConverter.getJCas(doc.getXmi());
 				obj.put("master", true);
 			} else {
-				UserDocument udoc = dl.createUserDocument(currentUser, document);
+				UserDocument udoc = dl.createUserDocument(targetUser, document);
 				jcas = JCasConverter.getJCas(udoc.getXmi());
 			}
 			if (jcas != null) {
 				obj.put("document", JSONUtil.getJSONObject(document));
 				obj.put("list",
 						new JCasConverter()
-				.getJSONArrayFromAnnotations(
-						jcas,
-						de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+								.getJSONArrayFromAnnotations(
+										jcas,
+										de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 				Util.returnJSON(response, obj);
 			} else {
 				throw new ServletException("JCas could not be loaded: " + docId);
