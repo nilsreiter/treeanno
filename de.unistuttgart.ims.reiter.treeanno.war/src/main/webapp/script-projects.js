@@ -326,7 +326,7 @@ function show_documentlist(id) {
 	});
 	$("#topbar .left .adocname").remove();
 	$("#topbar .left .pname").remove();
-	$("#documentlistarea").hide();		
+	$("#documentlistarea").hide();
 
 	
 	jQuery.getJSON("rpc/"+id, function(data) {
@@ -350,7 +350,7 @@ function show_documentlist(id) {
 			//$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
 			
 			var actionCell = document.createElement("td");
-			if (al >= Perm["READACCESS"])
+			if (al < Perm["PADMINACCESS"] && al >= Perm["WRITEACCESS"])
 				$(actionCell).append("<button class=\"button_open\"></button>");
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_open_master\"></button>");
