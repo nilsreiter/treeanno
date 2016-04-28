@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
+import de.ustu.ims.reiter.treeanno.beans.DocumentStatus;
 import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
@@ -74,9 +75,9 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
 							new JCasConverter()
-									.getJSONArrayFromAnnotations(
-											jcas,
-											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -143,9 +144,9 @@ public class DocumentContentHandling extends HttpServlet {
 				obj.put("document", JSONUtil.getJSONObject(document));
 				obj.put("list",
 						new JCasConverter()
-				.getJSONArrayFromAnnotations(
-						jcas,
-						de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+								.getJSONArrayFromAnnotations(
+										jcas,
+										de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 				Util.returnJSON(response, obj);
 			} else {
 				throw new ServletException("JCas could not be loaded: " + docId);
@@ -213,7 +214,7 @@ public class DocumentContentHandling extends HttpServlet {
 						Util.addAnnotationsToJCas(
 								JCasConverter.getJCas(document.getXmi()), jObj);
 				document.setXmi(JCasConverter.getXmi(jcas));
-
+				document.setStatus(DocumentStatus.INPROGRESS);
 				r = dataLayer.updateUserDocument(document);
 			}
 		} catch (UIMAException | JSONException | SQLException | SAXException e) {
