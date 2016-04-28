@@ -29,7 +29,8 @@ public interface DataLayer {
 
 	UserDocument getUserDocument(int id) throws SQLException;
 
-	UserDocument getUserDocument(int u, int d) throws SQLException;
+	UserDocument getUserDocument(int userId, int documentId)
+			throws SQLException;
 
 	UserDocument createUserDocument(User user, Document document)
 			throws SQLException;
@@ -39,7 +40,7 @@ public interface DataLayer {
 	boolean deleteDocument(Document document) throws SQLException;
 
 	boolean setJCas(Document document, JCas jcas) throws SQLException,
-	SAXException;
+			SAXException;
 
 	boolean updateDocument(Document document) throws SQLException;
 
