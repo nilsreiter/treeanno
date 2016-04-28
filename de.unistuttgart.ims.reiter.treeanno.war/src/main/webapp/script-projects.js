@@ -482,6 +482,12 @@ function show_documentlist(id) {
 			$(actionCell).buttonset();
 			$(tr).append(actionCell);
 			$(table).append(tr);
+			
+			if (selectedDocument > -1) {
+				if (selectedDocument == data['documents'][i]['id']) {
+					show_list_of_annotators(id, data['documents'][i]);
+				}
+			}
 		}
 		}
 		$("#documentlistarea").append("<h2>"+i18n.t("documents_in_X", {"projectname":data['project']['name']})+"</h2>");
