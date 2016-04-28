@@ -345,8 +345,9 @@ function show_documentlist(id) {
 				header = true;
 			}
 			var tr = document.createElement("tr");
-			$(tr).append("<td>"+data['documents'][i]['id']+"</td>");
-			$(tr).append("<td>"+data['documents'][i]['name']+"</td>");
+			$(tr).addClass(data['documents'][i]['status']);
+			$(tr).append("<td>"+data['documents'][i]['document']['id']+"</td>");
+			$(tr).append("<td>"+data['documents'][i]['document']['name']+"</td>");
 			//$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
 			
 			var actionCell = document.createElement("td");
@@ -371,7 +372,7 @@ function show_documentlist(id) {
 				icons:{primary:"ui-icon-document",secondary:null},
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'documentId':data['documents'][i]['id']
+				'documentId':data['documents'][i]['document']['id']
 			}, function(event) {
 				window.location.href="main.jsp?documentId="+event.data.documentId;
 			});
@@ -380,7 +381,7 @@ function show_documentlist(id) {
 				icons:{primary:"ui-icon-document",secondary:null},
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'documentId':data['documents'][i]['id']
+				'documentId':data['documents'][i]['document']['id']
 			}, function(event) {
 				jQuery.getJSON("rpc/"+id+"/"+event.data.documentId, function(data) {
 					if ('documents' in data && data['documents'].length>0) {
@@ -398,7 +399,7 @@ function show_documentlist(id) {
 				icons:{primary:"ui-icon-pencil",secondary:null},
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'document':data['documents'][i]
+				'document':data['documents'][i]['document']
 			}, function(event) {
 				var diagDiv = document.createElement("div");
 				$(diagDiv).append(i18n.t("rename_dialog.desc")+"<input type=\"text\" value=\""+event.data.document['name']+"\" />");
@@ -433,7 +434,7 @@ function show_documentlist(id) {
 				icons:{primary:"ui-icon-trash", secondary:null},
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'documentId':data['documents'][i]['id']
+				'documentId':data['documents'][i]['document']['id']
 			}, function(event) {
 				if (confirm(i18n.t("document_action_delete_confirm"))) {
 					jQuery.ajax({
@@ -450,7 +451,7 @@ function show_documentlist(id) {
 				icons:{primary:"ui-icon-cart", secondary:null},
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'documentId':data['documents'][i]['id']
+				'documentId':data['documents'][i]['document']['id']
 			}, function(event) {
 				show_annodoclist(id, event.data.documentId);
 			});
@@ -459,7 +460,7 @@ function show_documentlist(id) {
 				label:i18n.t("document_action_view_annotators"),
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'document':data['documents'][i]
+				'document':data['documents'][i]['document']
 			}, function(event) {
 				show_list_of_annotators(id, event.data.document);
 			});
@@ -471,7 +472,7 @@ function show_documentlist(id) {
 				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null},
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'document':data['documents'][i]
+				'document':data['documents'][i]['document']
 			}, function(event) {
 				show_exportoptions(id, event.data.document);
 				// window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
@@ -484,7 +485,7 @@ function show_documentlist(id) {
 			$(table).append(tr);
 			
 			if (selectedDocument > -1) {
-				if (selectedDocument == data['documents'][i]['id']) {
+				if (selectedDocument == data['documents'][i]['document']['id']) {
 					show_list_of_annotators(id, data['documents'][i]);
 				}
 			}
