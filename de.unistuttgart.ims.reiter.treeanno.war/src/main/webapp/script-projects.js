@@ -92,7 +92,8 @@ function show_exportoptions(projectId,document) {
 	
 }
 
-function show_list_of_annotators(projectId, documentId) {
+function show_list_of_annotators(projectId, documentObj) {
+	var documentId = documentObj["id"];
 	$("#annodoclistarea").remove();
 	$("#topbar .left .adocname").remove();
 
@@ -112,11 +113,11 @@ function show_list_of_annotators(projectId, documentId) {
 				
 				if (!header) {
 					var trh = document.createElement("tr");
-					$(trh).append("<th>"+i18n.t("annoarea.id")+"</th>");
-					$(trh).append("<th>"+i18n.t("annoarea.username")+"</th>");
-					$(trh).append("<th>"+i18n.t("annoarea.status")+"</th>");
-					$(trh).append("<th>"+i18n.t("annoarea.mod_date")+"</th>");
-					$(trh).append("<th>"+i18n.t("annoarea.actions")+"</th>");
+					$(trh).append("<th>"+i18n.t("annoarea.th.id")+"</th>");
+					$(trh).append("<th>"+i18n.t("annoarea.th.username")+"</th>");
+					$(trh).append("<th>"+i18n.t("annoarea.th.status")+"</th>");
+					$(trh).append("<th>"+i18n.t("annoarea.th.mod_date")+"</th>");
+					$(trh).append("<th>"+i18n.t("annoarea.th.actions")+"</th>");
 					$(table).append(trh);
 					header = true;
 				}
@@ -190,7 +191,7 @@ function show_list_of_annotators(projectId, documentId) {
 					});
 				});
 			}
-			$("#annodoclistarea").append("<h2>"+i18n.t("annoarea.title_for_X", {"document":documentId})+"</h2>");
+			$("#annodoclistarea").append("<h2>"+i18n.t("annoarea.title_for_X", {"document":documentObj["name"]})+"</h2>");
 			$("#annodoclistarea").append(table);
 			$("#topbar .left").append("<span class=\"adocname\">&nbsp;&gt; "+i18n.t("annodoclistarea.breadcrumb_for_X", {"document":documentId})+"</span>");
 			$("#annodoclistarea").append("<button id=\"button_open_diff\"></button>");
@@ -356,8 +357,8 @@ function show_documentlist(id) {
 				$(actionCell).append("<button class=\"button_rename\">rename</button>")
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_delete\">delete</button>");
-			if (al >= Perm["PADMINACCESS"])
-				$(actionCell).append("<button class=\"button_view_annodoc\">view annotation</button>");
+			//if (al >= Perm["PADMINACCESS"])
+			//	$(actionCell).append("<button class=\"button_view_annodoc\">view annotation</button>");
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_export\">export</button>");
 			if (al >= Perm["PADMINACCESS"])
@@ -457,9 +458,9 @@ function show_documentlist(id) {
 				label:i18n.t("document_action_view_annotators"),
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'documentId':data['documents'][i]['id']
+				'document':data['documents'][i]
 			}, function(event) {
-				show_list_of_annotators(id, event.data.documentId);
+				show_list_of_annotators(id, event.data.document);
 			});
 			
 			
