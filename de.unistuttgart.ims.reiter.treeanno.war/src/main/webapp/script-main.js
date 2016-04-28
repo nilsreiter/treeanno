@@ -576,15 +576,22 @@ function init_main() {
 		document.onkeyup = function(e) {
 			key_up(e);
 		};
-		console.log("Querying for document content");
 		
 		var url = "rpc/c/0/"+documentId+(master?"":"/"+targetUserId);
-		console.log(url);
+		console.log("Querying for document content: " + url);
 		jQuery.getJSON(url, function(data) {
 			console.log("Received document content");
 			// fixing master setting
 			master=("master" in data?true:false);
-			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+(master?i18n.t("bc.master"):"")+data["document"]["name"])
+			var breadcrumbHTML = "<a href=\"projects.jsp?projectId="+
+				data["document"]["project"]["id"]+
+				"\">"+data["document"]["project"]["name"]+
+				"</a> &gt; "+(master?i18n.t("bc.master"):"")+
+				data["document"]["name"];
+			if (targetUserId != userId) {
+				breadcrumbHTML += " &gt; "+data["user"]["name"];
+			}
+			$(".breadcrumb").append(breadcrumbHTML);
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
 			
@@ -781,7 +788,7 @@ function save_document() {
 }
 
 function enableSaveButton() {
-	if ($( "button.button_save_document" ).button("option", "disabled") == true) {
+	if ($( "button.button_save_document" ).button("option", "disabled") == true && targetUserId == userId) {
 		$( "button.button_save_document" ).button("option", "disabled", false);
 		$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-disk", secondary:null });
 	}
