@@ -165,8 +165,8 @@ function show_list_of_annotators(projectId, documentId) {
 				}).click({'userDocumentId':uDocId}, function(event) {
 					if (confirm(i18n.t("document_action_delete_confirm"))) {
 						jQuery.ajax({
-							url:"rpc/c/"+projectId+"/"+id+"/"+event.data.userDocumentId,
-							complete:function() {show_annodoclist(id); },
+							url:"rpc/c/"+projectId+"/"+documentId+"/"+event.data.userDocumentId,
+							complete:function() {show_list_of_annotators(projectId,documentId); },
 							method:"DELETE",
 							dataType:"json"
 						});
