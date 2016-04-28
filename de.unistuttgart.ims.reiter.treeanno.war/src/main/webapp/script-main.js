@@ -578,7 +578,7 @@ function init_main() {
 		};
 		console.log("Querying for document content");
 		
-		var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
+		var url = "rpc/c/0/"+documentId+(master?"":"/"+targetUserId);
 		console.log(url);
 		jQuery.getJSON(url, function(data) {
 			console.log("Received document content");

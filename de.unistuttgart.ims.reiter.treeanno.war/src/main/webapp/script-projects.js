@@ -156,8 +156,9 @@ function show_list_of_annotators(projectId, documentObj) {
 					label:i18n.t("annoarea.view"),
 					icons:{primary:"ui-icon-document", secondary:null},
 					text:configuration["treeanno.ui.showTextOnButtons"]
-				}).click({'userDocumentId':uDocId}, function(event) {	
-	 				window.location.href="parallel.jsp?userDocumentId="+event.data.userDocumentId;
+				}).click({'documentData':documentObj,
+					'userData':data[i]}, function(event) {	
+	 				window.location.href="main.jsp?documentId="+event.data.documentData["id"]+"&targetUserId="+event.data.userData['id'];
 				});
 				$(actionCell).find("button.button_delete").button({
 					label:i18n.t("annoarea.delete"),
