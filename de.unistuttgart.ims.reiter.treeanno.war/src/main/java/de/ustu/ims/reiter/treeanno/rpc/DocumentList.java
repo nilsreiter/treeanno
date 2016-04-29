@@ -53,8 +53,13 @@ public class DocumentList extends HttpServlet {
 				for (Document doc : list) {
 					UserDocument uDoc =
 							CW.getDataLayer(getServletContext())
-									.getUserDocument(user, doc);
-					obj.append("documents", JSONUtil.getJSONObject(uDoc));
+							.getUserDocument(user, doc);
+					if (uDoc == null) {
+						JSONObject udO = new JSONObject();
+						udO.put("document", JSONUtil.getJSONObject(doc));
+						obj.append("documents", udO);
+					} else
+						obj.append("documents", JSONUtil.getJSONObject(uDoc));
 				}
 				obj.put("project", JSONUtil.getJSONObject(proj));
 				obj.put("accesslevel",
