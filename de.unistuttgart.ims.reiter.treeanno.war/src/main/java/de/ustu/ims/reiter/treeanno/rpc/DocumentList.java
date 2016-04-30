@@ -19,6 +19,7 @@ import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
@@ -50,7 +51,15 @@ public class DocumentList extends HttpServlet {
 				Collection<Document> list = proj.getDocuments();
 				JSONObject obj = new JSONObject();
 				for (Document doc : list) {
-					obj.append("documents", JSONUtil.getJSONObject(doc));
+					UserDocument uDoc =
+							CW.getDataLayer(getServletContext())
+							.getUserDocument(user, doc);
+					if (uDoc == null) {
+						JSONObject udO = new JSONObject();
+						udO.put("document", JSONUtil.getJSONObject(doc));
+						obj.append("documents", udO);
+					} else
+						obj.append("documents", JSONUtil.getJSONObject(uDoc));
 				}
 				obj.put("project", JSONUtil.getJSONObject(proj));
 				obj.put("accesslevel",

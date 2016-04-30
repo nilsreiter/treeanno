@@ -576,15 +576,22 @@ function init_main() {
 		document.onkeyup = function(e) {
 			key_up(e);
 		};
-		console.log("Querying for document content");
 		
-		var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
-		console.log(url);
+		var url = "rpc/c/0/"+documentId+(master?"":"/"+targetUserId);
+		console.log("Querying for document content: " + url);
 		jQuery.getJSON(url, function(data) {
 			console.log("Received document content");
 			// fixing master setting
 			master=("master" in data?true:false);
-			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+(master?i18n.t("bc.master"):"")+data["document"]["name"])
+			var breadcrumbHTML = "<a href=\"projects.jsp?projectId="+
+				data["document"]["project"]["id"]+
+				"\">"+data["document"]["project"]["name"]+
+				"</a> &gt; "+(master?i18n.t("bc.master"):"")+
+				data["document"]["name"];
+			if (targetUserId != userId) {
+				breadcrumbHTML += " &gt; "+data["user"]["name"];
+			}
+			$(".breadcrumb").append(breadcrumbHTML);
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
 			
@@ -674,12 +681,15 @@ function init_parallel() {
 
 	$(".outline").hide();
 	$("#content > div > .outline").each(function(index, element) {
-		var documentId = userDocumentIds[index];
-		jQuery.getJSON("DocumentContentHandling?userDocumentId="+documentId, function(data) {
-			$(element).parent().prepend("<h2>"+i18n.t("parallel.annotations_from_X",{"user":data["document"]["user"]["name"]})+"</h2>");
+		var targetUserId = userIds[index];
+		var url = "rpc/c/0/"+documentId+"/"+targetUserId;
+
+		console.log(url);
+		jQuery.getJSON(url, function(data) {
+			$(element).parent().prepend("<h2>"+i18n.t("parallel.annotations_from_X",{"user":data["user"]["name"]})+"</h2>");
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
-				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["document"]["project"]["id"]+"\">"+data["document"]["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["document"]["name"]}));
-				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["document"]["name"]});
+				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["name"]}));
+				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["name"]});
 			} else {
 				//$(".breadcrumb").append(", "+data["document"]["name"]);
 				// document.title = document.title + ", " + data["document"]["name"];
@@ -781,7 +791,7 @@ function save_document() {
 }
 
 function enableSaveButton() {
-	if ($( "button.button_save_document" ).button("option", "disabled") == true) {
+	if ($( "button.button_save_document" ).button("option", "disabled") == true && targetUserId == userId) {
 		$( "button.button_save_document" ).button("option", "disabled", false);
 		$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-disk", secondary:null });
 	}

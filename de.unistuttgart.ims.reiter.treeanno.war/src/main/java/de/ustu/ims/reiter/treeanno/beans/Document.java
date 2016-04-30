@@ -31,7 +31,7 @@ public class Document {
 	@ForeignCollectionField(eager = false)
 	ForeignCollection<UserDocument> userDocuments;
 
-	@DatabaseField
+	@DatabaseField(defaultValue = "MASTER")
 	DocumentType type;
 
 	public int getId() {

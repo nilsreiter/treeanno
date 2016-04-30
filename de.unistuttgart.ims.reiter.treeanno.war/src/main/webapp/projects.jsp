@@ -49,24 +49,15 @@
 	// ]]>
 	</script>
 	
-	<c:if test="${not empty param.projectId}">
+	
 		<script>
 		//<![CDATA[
-			var selected = ${param.projectId};
+			var selected = ("${param.projectId}".length>0?parseInt("${param.projectId}"):-1);
 			var language = "${sessionScope.User.language}";
+			var selectedDocument = ("${param.documentId}".length>0?parseInt("${param.documentId}"):-1);
 			$(document).ready(init_trans(init_projects));
 		//]]>
 		</script>
-	</c:if>
-	<c:if test="${empty param.projectId}">
-		<script>
-		//<![CDATA[
-			var selected = -1;
-			var language = "${sessionScope.User.language}";
-			$(document).ready(init_trans(init_projects));
-		//]]>
-		</script>
-	</c:if>
 </head>
 <body>
 	<div id="topbar">

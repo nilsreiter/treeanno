@@ -29,6 +29,7 @@ public class DocumentDelete extends HttpServlet {
 	@Override
 	protected void doDelete(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		super.log(request.getQueryString());
 		int[] docIds;
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 

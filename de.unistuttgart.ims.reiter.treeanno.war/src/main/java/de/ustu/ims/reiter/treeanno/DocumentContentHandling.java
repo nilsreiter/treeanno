@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
+import de.ustu.ims.reiter.treeanno.beans.DocumentStatus;
 import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
@@ -74,9 +75,9 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
 							new JCasConverter()
-									.getJSONArrayFromAnnotations(
-											jcas,
-											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -96,30 +97,33 @@ public class DocumentContentHandling extends HttpServlet {
 	protected void processDocumentId(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		DataLayer dl = CW.getDataLayer(getServletContext());
-		User user = CW.getUser(request);
+		User currentUser = CW.getUser(request);
 
-		int userId;
-		if (request.getParameter("userId") == null) {
-			userId = user.getId();
-		} else {
-			userId = Util.getFirstUserId(request, response);
+		int userId = currentUser.getId();
+
+		int targetUserId = userId;
+		if (request.getParameter("userId") == null) {} else {
+			targetUserId = Util.getFirstUserId(request, response);
 		}
 		int docId = Util.getFirstDocumentId(request, response);
-		if (user == null || userId != user.getId()) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN);
-			return;
-		}
-		// if the request parameter "master" has been set
-		boolean master = (request.getParameter("master") != null);
+
 		try {
+			int accessLevel =
+					dl.getAccessLevel(dl.getDocument(docId).getProject(),
+							CW.getUser(request));
+			if (currentUser == null
+					|| (userId != targetUserId && accessLevel < Perm.PADMIN_ACCESS)) {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN);
+				return;
+			}
+			User targetUser = dl.getUser(targetUserId);
+			// if the request parameter "master" has been set
+			boolean master = (request.getParameter("master") != null);
 			Document document = dl.getDocument(docId);
 			if (document == null) {
 				throw new ServletException("Document could not be loaded.");
 			}
 
-			int accessLevel =
-					dl.getAccessLevel(document.getProject(),
-							CW.getUser(request));
 			if (accessLevel == Perm.NO_ACCESS) {
 				response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return;
@@ -132,10 +136,11 @@ public class DocumentContentHandling extends HttpServlet {
 				jcas = JCasConverter.getJCas(doc.getXmi());
 				obj.put("master", true);
 			} else {
-				UserDocument udoc = dl.getUserDocument(user, document);
+				UserDocument udoc = dl.createUserDocument(targetUser, document);
 				jcas = JCasConverter.getJCas(udoc.getXmi());
 			}
 			if (jcas != null) {
+				obj.put("user", JSONUtil.getJSONObject(targetUser));
 				obj.put("document", JSONUtil.getJSONObject(document));
 				obj.put("list",
 						new JCasConverter()
@@ -204,12 +209,12 @@ public class DocumentContentHandling extends HttpServlet {
 			} else {
 				// saving the user document
 				UserDocument document =
-						dataLayer.getUserDocument(CW.getUser(request), doc);
+						dataLayer.createUserDocument(CW.getUser(request), doc);
 				JCas jcas =
 						Util.addAnnotationsToJCas(
 								JCasConverter.getJCas(document.getXmi()), jObj);
 				document.setXmi(JCasConverter.getXmi(jcas));
-
+				document.setStatus(DocumentStatus.INPROGRESS);
 				r = dataLayer.updateUserDocument(document);
 			}
 		} catch (UIMAException | JSONException | SQLException | SAXException e) {
