@@ -7,7 +7,7 @@
 - Updated database schema to support
   - document type
   - document status
-- The project admin can now assign documents to anntotators and track their progress. 
+- The project admin can now assign documents to annotators and track their progress. 
 
 0.7
 (this version is skipped for complicated reasons)
