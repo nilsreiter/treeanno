@@ -35,16 +35,18 @@ public class UserDocumentComparison extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String[] docIds = request.getParameterValues("userDocumentId");
+		int projectId = Util.getFirstProjectId(request, response);
+		int documentId = Util.getFirstDocumentId(request, response);
+		int[] userIds = Util.getAllUserIds(request, response);
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
-		User user = CW.getUser(request);
-		if (docIds.length == 2) {
+		User currentUser = CW.getUser(request);
+		if (userIds.length == 2) {
 			try {
 				JSONObject object = new JSONObject();
 				UserDocument udoc1 =
-						dataLayer.getUserDocument(Integer.valueOf(docIds[0]));
+						dataLayer.getUserDocument(userIds[0], documentId);
 				UserDocument udoc2 =
-						dataLayer.getUserDocument(Integer.valueOf(docIds[1]));
+						dataLayer.getUserDocument(userIds[1], documentId);
 				boolean same =
 						Comparison.equalSegmentation(
 								JCasConverter.getJCas(udoc1.getXmi()),

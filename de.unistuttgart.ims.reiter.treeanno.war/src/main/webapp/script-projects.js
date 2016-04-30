@@ -135,12 +135,12 @@ function show_list_of_annotators(projectId, documentObj) {
 				}
 				var actionCell = document.createElement("td");
 				if (uDocId != null) {
-					$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+uDocId+"\" type=\"checkbox\" name=\"diff\" value=\""+data[i]['id']+"\"/><label for=\"diffselect-"+uDocId+"\"></label>");
+					$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+data[i]['id']+"\" type=\"checkbox\" value=\""+data[i]['id']+"\"/><label for=\"diffselect-"+data[i]['id']+"\"></label>");
 					$(actionCell).append("<button class=\"button_view\" id=\"view-udoc-"+uDocId+"\" name=\"view\" value=\""+uDocId+"\">"+i18n.t("annodoclistarea.view")+"</button>");
 					$(actionCell).append("<button class=\"button_delete\" id=\"delete-udoc-"+uDocId+"\" name=\"delete\" value=\""+uDocId+"\">"+i18n.t("annoarea.delete")+"</button>");
 					// if (al >= Perm["PADMINACCESS"]) 
 				} else {
-					$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+uDocId+"\" type=\"checkbox\" name=\"diff\" value=\""+uDocId+"\"/><label for=\"diffselect-"+uDocId+"\"></label>");
+					//$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+uDocId+"\" type=\"checkbox\" name=\"diff\" value=\""+uDocId+"\"/><label for=\"diffselect-"+uDocId+"\"></label>");
 					$(actionCell).append("<button class=\"assign\" value=\""+data[i]['id']+"\">"+i18n.t("annoarea.assign")+"</button>");
 				}
 				$(actionCell).buttonset();
@@ -148,11 +148,13 @@ function show_list_of_annotators(projectId, documentObj) {
 				$(table).append(tr);
 				
 				// diff select button
-				$(actionCell).find("input.button_diff").button({
+				$(actionCell).find("#diffselect-"+data[i]['id']).button({
 					label:i18n.t("parallel.select"),
 					icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
 					text:configuration["treeanno.ui.showTextOnButtons"],
-					disabled:(uDocId == null),
+					disabled:(uDocId === null),
+				}).click({'userId':data[i]['id'], 'document':documentObj}, function (event) {
+					select_document_for_diff(event.data.document, event.data.userId);
 				}); 
 				$(actionCell).find("button.button_view").button({
 					label:i18n.t("annoarea.view"),
@@ -197,7 +199,10 @@ function show_list_of_annotators(projectId, documentObj) {
 			$("#annodoclistarea").append("<h2>"+i18n.t("annoarea.title_for_X", {"document":documentObj["name"]})+"</h2>");
 			$("#annodoclistarea").append(table);
 			$("#topbar .left").append("<span class=\"adocname\">&nbsp;&gt; "+i18n.t("annodoclistarea.breadcrumb_for_X", {"document":documentId})+"</span>");
-			$("#annodoclistarea").append("<button id=\"button_open_diff\"></button>");
+			$("#annodoclistarea").append("<div></div>");
+			$("#annodoclistarea > div").append("<button id=\"button_open_diff\"></button>");
+			$("#annodoclistarea > div").append("<button id=\"seg_merge\"></button>");
+			$("#annodoclistarea > div").buttonset();
 			
 			$("button#button_open_diff").button({
 				label:i18n.t("parallel.open_view"),
@@ -212,6 +217,15 @@ function show_list_of_annotators(projectId, documentObj) {
 	 					window.location.href="parallel.jsp?documentId="+documentId+"&userId="+doc[0]+"&userId="+doc[1];
 					}
 				});
+			$("button#seg_merge").button({
+				label:i18n.t("compare.segmentation.undef"),
+				icons:{primary:null,secondary:null},
+				text:configuration["treeanno.ui.showTextOnButtons"],
+				disabled:true
+			}).click(function () {
+				if (documents_selected_for_diff.length==2)
+					window.location.href="parallel.jsp?mode=segmentation&userDocumentId="+documents_selected_for_diff[0]+"&userDocumentId="+documents_selected_for_diff[1]+"&documentId="+id;
+			});
 			} else {
 			$("#annodoclistarea").append("<p>"+i18n.t("annoarea.no-documents")+"</p>");
 		}
@@ -535,21 +549,21 @@ function show_documentlist(id) {
 	});
 }
 
-function select_document_for_diff(did) {
-	if ($("#diffselect-"+did).is(":checked"))  {
-		documents_selected_for_diff.push(did);
+function select_document_for_diff(document, uid) {
+	if ($("#diffselect-"+uid).is(":checked"))  {
+		documents_selected_for_diff.push(uid);
 		if (documents_selected_for_diff.length > max_documents_for_diff) {
 			var oldId = documents_selected_for_diff.shift();
 			$("#diffselect-"+oldId).prop("checked", false).button("refresh");
 		}
 	}
 	else  {
-		var index = documents_selected_for_diff.indexOf(did);
+		var index = documents_selected_for_diff.indexOf(uid);
 		documents_selected_for_diff.splice(index, 1);
 	}
 	
 	if (documents_selected_for_diff.length == 2) {
-		jQuery.getJSON("rpc/compare?userDocumentId="+documents_selected_for_diff[0]+"&userDocumentId="+documents_selected_for_diff[1], function(data) {
+		jQuery.getJSON("rpc/compare/0/"+document['id']+"/"+documents_selected_for_diff[0]+","+documents_selected_for_diff[1], function(data) {
 			var text = i18n.t(data['equalSegmentation']?"compare.segmentation.true":"compare.segmentation.false");
 			var icon = (data['equalSegmentation']?"ui-icon-check":"ui-icon-alert")
 			$("#button_open_diff").button({'disabled':false});
