@@ -224,7 +224,7 @@ function show_list_of_annotators(projectId, documentObj) {
 				disabled:true
 			}).click(function () {
 				if (documents_selected_for_diff.length==2)
-					window.location.href="parallel.jsp?mode=segmentation&userDocumentId="+documents_selected_for_diff[0]+"&userDocumentId="+documents_selected_for_diff[1]+"&documentId="+id;
+					window.location.href="segmentation-merge.jsp?mode=segmentation&userId="+documents_selected_for_diff[0]+"&userId="+documents_selected_for_diff[1]+"&documentId="+documentObj["id"];
 			});
 			} else {
 			$("#annodoclistarea").append("<p>"+i18n.t("annoarea.no-documents")+"</p>");

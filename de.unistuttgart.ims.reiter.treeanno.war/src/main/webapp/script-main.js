@@ -708,16 +708,16 @@ function init_segmentation_merge() {
 			'uDoc':{},
 			'doc':{}
 		};
-	for (var i = 0; i < userDocumentIds.length; i++) {
-		var uDocId = userDocumentIds[i];
-		jQuery.getJSON("DocumentContentHandling?userDocumentId="+uDocId, function(data) {
-			allData['uDoc'][data['documentId']] = data;
+	for (var i = 0; i < userIds.length; i++) {
+		var userId = userIds[i];
+		jQuery.getJSON("rpc/c/0/"+documentIds[0]+"/"+userId, function(data) {
+			allData['uDoc'][data['user']['id']] = data;
 			loaded++;
 			if (loaded == 3) 
 				init_segmentation_merge2(allData);
 		});
 	}
-	jQuery.getJSON("DocumentContentHandling?documentId="+documentIds[0], function(data) {
+	jQuery.getJSON("rpc/c/0/"+documentIds[0], function(data) {
 		allData['doc'][documentIds[0]] = data;
 		loaded++;
 		if (loaded == 3) 
@@ -728,8 +728,8 @@ function init_segmentation_merge() {
 
 function init_segmentation_merge2(data) {
 	console.log((data));
-	var data0 = data['uDoc'][userDocumentIds[0]];
-	var data1 = data['uDoc'][userDocumentIds[1]];
+	var data0 = data['uDoc'][userIds[0]];
+	var data1 = data['uDoc'][userIds[1]];
 	for (var i = 0; i < data0['list'].length; i++) {
 		var b0 = data0['list'][i]['begin'];
 		var e0 = data0['list'][i]['end'];
@@ -865,23 +865,7 @@ function load_parallel(element, urlhead, dId, goal) {
 			$(".text > hr").each(function(index, element) {
 				$(element).nextUntil("hr").wrapAll("<div></div>");
 	});
-			// $(".text > hr").remove();
-	
-			
-			/*$("#content").prepend("<table></table>");
-			$(".text:eq(0) > div").each(function(index, element) {
-				var row = document.createElement("tr");
-				var td1 = document.createElement("td");
-				var td2 = document.createElement("td");
-				var td3 = document.createElement("td");
-				$(td1).append(element);
-				$(td2).append($(".text:eq(1) > div:first()"));
-				$(td3).append($(".text:eq(2) > div:first()"));
-				$(row).append(td1);
-				$(row).append(td2);
-				$(row).append(td3);
-				$("#content table").append(row);
-			});*/
+
 			
 			$(".document li:visible()").first().addClass("selected");
 }

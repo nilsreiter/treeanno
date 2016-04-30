@@ -20,22 +20,21 @@
 	<script src="i18next/i18next-1.8.0.min.js"></script>
 	<script src="jquery.noty.packaged.min.js"></script>
 	<script src="nestedSortable-1.3.4/jquery.ui.nestedSortable.js"></script>
-	<script src="config.js.jsp"></script>
+	<script src="rpc/config"></script>
 	<script src="script.js"></script>
 	<script src="script-main.js"></script>
 	<script>
 
 	var language = "${sessionScope.User.language}";
-	var userDocumentIds = new Array();
+	var userIds = new Array();
 	var documentIds = new Array();
 	var parallel_mode = "${ paramValues.mode[0] }";
-	<c:forEach items="${paramValues.userDocumentId }" var="id">
-	userDocumentIds[userDocumentIds.length] = ${id};
+	<c:forEach items="${paramValues.userId }" var="id">
+	userIds[userIds.length] = ${id};
 	</c:forEach>
 	<c:forEach items="${paramValues.documentId }" var="id">
 	documentIds[documentIds.length] = ${id};
 	</c:forEach>
-	[ "${paramValues.userDocumentId[0]}", "${paramValues.userDocumentId[1]}" ];
 	var treeanno = new Object();
 	treeanno["version"] = "${applicationScope['treeanno.version']}";
 	treeanno["name"] = "${applicationScope['treeanno.name']}";
