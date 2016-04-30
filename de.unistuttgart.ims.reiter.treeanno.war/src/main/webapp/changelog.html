@@ -1,5 +1,23 @@
+<h2>0.8</h2>
+<p>This changelog is discontinued. See file CHANGELOG in parent project.</p>
+
+<h2>0.7</h2>
+<p>This version is skipped for complicated reasons.</p>
+
+<h2>0.6.6</h2>
+<ul>
+<li>Fixed: User language setting was not exported to the ui</li>
+<li>All json rpc endpoints now have nicer (rewritten) urls</li>
+<li>Redesigned export interface: Clicking on export in document view opens
+  a new sheet to select the export format (now supports XMI and PAR)</li>
+<li>Added export of parenthesis string</li>
+</ul>
+
 <h2>0.6.5</h2>
 <ul>
+<li>If a data source has not been set in the container context, we fall back to
+  an in-memory h2 database. See README.md for configuration options.</li>
+<li>Settings can now be set in a properties file outside of the war</li>
 <li><strong>Experimental</strong>: Undo function. Backspace can now be pressed to undo the last action(s).</li>
 <li>Fixed a bug with missing information in history</li>
 <li>We now display info about the segmentation whenever two annotated documents are selected</li>

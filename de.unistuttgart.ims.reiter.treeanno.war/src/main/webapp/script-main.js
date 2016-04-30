@@ -539,7 +539,7 @@ function init_help() {
 	$("#show_helper").button({
 		icons: { primary: "ui-icon-help", secondary:null },
 		label: i18n.t("show_helper"),
-		text:showText
+		text:configuration["treeanno.ui.showTextOnButtons"]
 	}).click(function() {
 		$(helpElement).toggle();
 	});
@@ -554,13 +554,13 @@ function init_main() {
 		$( "button.button_edit_user" ).button({
 			icons: { primary: "ui-icon-person", secondary:null },
 			disabled: true,
-			text:showText
+			text:configuration["treeanno.ui.showTextOnButtons"]
 		});
 		
 		$( "button.button_save_document" ).button({
 			icons: { primary: "ui-icon-disk", secondary:null },
 			label: i18n.t("save"),
-			text:showText
+			text:configuration["treeanno.ui.showTextOnButtons"]
 		}).click(
 			function() {
 				save_document();
@@ -588,7 +588,7 @@ function init_main() {
 		$( "button.button_undo" ).button({
 			icons: { primary: "ui-icon-arrowreturnthick-1-w", secondary:null },
 			label: i18n.t("undo"),
-			text:showText,
+			text:configuration["treeanno.ui.showTextOnButtons"],
 			disabled:true
 		}).click(undo);
 		
@@ -599,12 +599,22 @@ function init_main() {
 		document.onkeyup = function(e) {
 			key_up(e);
 		};
-		console.log("Querying for document content");
-		jQuery.getJSON("DocumentContentHandling?"+(master?"master=master&":"")+"documentId="+documentId, function(data) {
+		
+		var url = "rpc/c/0/"+documentId+(master?"":"/"+targetUserId);
+		console.log("Querying for document content: " + url);
+		jQuery.getJSON(url, function(data) {
 			console.log("Received document content");
 			// fixing master setting
 			master=("master" in data?true:false);
-			$(".breadcrumb").append("<a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+(master?i18n.t("bc.master"):"")+data["document"]["name"])
+			var breadcrumbHTML = "<a href=\"projects.jsp?projectId="+
+				data["document"]["project"]["id"]+
+				"\">"+data["document"]["project"]["name"]+
+				"</a> &gt; "+(master?i18n.t("bc.master"):"")+
+				data["document"]["name"];
+			if (targetUserId != userId) {
+				breadcrumbHTML += " &gt; "+data["user"]["name"];
+			}
+			$(".breadcrumb").append(breadcrumbHTML);
 			
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
 			
@@ -787,7 +797,7 @@ function init_parallel() {
 	// first we load the two document by the annotators
 	for (var i = 0; i < userDocumentIds.length; i++) {
 		var uDocId = userDocumentIds[i];
-		load_parallel($(".userDocument.id-"+uDocId), "DocumentContentHandling?userDocumentId=", uDocId, false);
+		load_parallel($(".userDocument.id-"+uDocId), "rpc/c/0/"+documentId, userId, false);
 	}
 	var goalElement = $(".id-"+documentIds[0]).first();
 	// ... then we load the merge document, which is a (new?) master document
@@ -804,39 +814,39 @@ function load_parallel(element, urlhead, dId, goal) {
 		if (!goal) {
 			$(element).parent().prepend("<h2>"+i18n.t(titleString,{"user":data["document"]["user"]["name"]})+"</h2>");
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
-				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["document"]["project"]["id"]+"\">"+data["document"]["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["document"]["name"]}));
-				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["document"]["name"]});
+				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["name"]}));
+				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["name"]});
 			} else {
 				//$(".breadcrumb").append(", "+data["document"]["name"]);
 				// document.title = document.title + ", " + data["document"]["name"];
-			}
+			} 
 		} else {
 			$(element).parent().prepend("<h2>"+i18n.t("parallel.merged")+"</h2>");
-
-		}
-		
-		var list = data["list"];
-		
-		while (list.length > 0) {
-			var item = list.shift();
 			
-			if (parallel_mode != 'segmentation' && 'parentId' in item) {
-				var parentId = item['parentId'];
-				var parentItem = $(element).children("li[data-treeanno-id='"+parentId+"']");
-				if (parentItem.length == 0)
-					list.push(item);
-				else {
-					if (parentItem.children("ul").length == 0)
-						parentItem.append("<ul></ul>");
-					$("li[data-treeanno-id='"+parentId+"'] > ul", element).append(get_html_item(item, 0));
-				}
-			} else {
-				$(element).append(get_html_item(item, 0));
-			}
 		}
-	
-		$("#status .loading").hide();
-		$(element).show();
+		
+			var list = data["list"];
+			
+			while (list.length > 0) {
+				var item = list.shift();
+				
+			if (parallel_mode != 'segmentation' && 'parentId' in item) {
+					var parentId = item['parentId'];
+				var parentItem = $(element).children("li[data-treeanno-id='"+parentId+"']");
+					if (parentItem.length == 0)
+						list.push(item);
+					else {
+						if (parentItem.children("ul").length == 0)
+							parentItem.append("<ul></ul>");
+						$("li[data-treeanno-id='"+parentId+"'] > ul", element).append(get_html_item(item, 0));
+					}
+				} else {
+					$(element).append(get_html_item(item, 0));
+				}
+			}
+		
+			$("#status .loading").hide();
+			$(element).show();
 		loaded++;
 		if (loaded == 3) {
 			$(".userDocument > li").each(function(index, element) {
@@ -849,14 +859,14 @@ function load_parallel(element, urlhead, dId, goal) {
 					$(".document li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']").replaceWith("<hr/>");
 				}
 				
-			});
+		});
 			$(".text > hr + hr").remove();
 			
 			$(".text > hr").each(function(index, element) {
 				$(element).nextUntil("hr").wrapAll("<div></div>");
-			});
+	});
 			// $(".text > hr").remove();
-			
+	
 			
 			/*$("#content").prepend("<table></table>");
 			$(".text:eq(0) > div").each(function(index, element) {
@@ -874,7 +884,7 @@ function load_parallel(element, urlhead, dId, goal) {
 			});*/
 			
 			$(".document li:visible()").first().addClass("selected");
-		}
+}
 	});
 
 }
@@ -904,15 +914,16 @@ function save_document() {
 		item['category'] = $(element).children("p").text();
 		sitems.push(item);
 	});
+	var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
+	console.log(url);
 	$.ajax({
 		type: "POST",
-		url: "DocumentContentHandling",
+		url: url,
 		// processData: false,
 		data: JSON.stringify({
-			document:documentId,
-			master:(master?true:false),
 			items:sitems
 		}),
+		dataType:"json",
 		contentType:'application/json; charset=UTF-8',
 		success: function(data) {
 			if (data['error'] == 0) {
@@ -943,7 +954,7 @@ function save_document() {
 }
 
 function enableSaveButton() {
-	if ($( "button.button_save_document" ).button("option", "disabled") == true) {
+	if ($( "button.button_save_document" ).button("option", "disabled") == true && targetUserId == userId) {
 		$( "button.button_save_document" ).button("option", "disabled", false);
 		$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-disk", secondary:null });
 	}
@@ -990,7 +1001,7 @@ function extend_selection_down() {
 
 function move_selection_down() {
 	var allItems = $(".active ul.outline li:visible");
- 
+
 	// get index of last selected item
 	var index = allItems.index($("li.selected").last());
 	
@@ -1004,7 +1015,7 @@ function move_selection_down() {
 	// if there is something after the last selected item, we select that
 	} else if (index < $(allItems).length-1) {
 		// if shift is not pressed, we select the next item of all items
-		$($(allItems).get(index+1)).toggleClass("selected");
+			$($(allItems).get(index+1)).toggleClass("selected");
 	}
 	// if the last selected thing is not in viewport, we scroll
 	if (!isElementInViewport($(".selected").last()))
@@ -1182,7 +1193,7 @@ function merge(item1, item0, newId) {
 	
 	var nitem = new Object();
 	var distance = (correctOrder?item1['begin']-item0['end']:item0['begin']-item1['end']);
-	var str = (includeSeparationWhenMerging?new Array(distance+1).join(" "):"");
+	var str = (configuration["treeanno.includeSeparationWhenMerging"]?new Array(distance+1).join(" "):"");
 
 	nitem['text'] = (correctOrder?item0['text']+str+item1['text']:item1['text']+str+item0['text']);
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
@@ -1211,7 +1222,7 @@ function merge(item1, item0, newId) {
 
 function splitdialog() {
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
-	$("#form_splittext").append(paragraphSplitCharacter+item['text']);
+	$("#form_splittext").append(configuration["treeanno.ui.paragraphSplitCharacter"]+item['text']);
 	
 	$("#split").dialog({
 		title: i18n.t("split_dialog.title"),
@@ -1234,11 +1245,11 @@ function splitdialog() {
 }
 
 function split_move_right_text(text, dist) {
-	var p = text.indexOf(paragraphSplitCharacter);
+	var p = text.indexOf(configuration["treeanno.ui.paragraphSplitCharacter"]);
 	
 	var newText = text.substring(0,p)+
 		text.substring(p+1,p+1+dist)+
-		paragraphSplitCharacter+
+		configuration["treeanno.ui.paragraphSplitCharacter"]+
 		text.substring(p+1+dist, text.length);
 	return newText;
 }
@@ -1259,9 +1270,9 @@ function split_move_right(dist) {
 }
 
 function split_move_left_text(text, dist) {
-	var p = text.indexOf(paragraphSplitCharacter);
+	var p = text.indexOf(configuration["treeanno.ui.paragraphSplitCharacter"]);
 	return text.substring(0,p - dist)+
-		paragraphSplitCharacter+
+		configuration["treeanno.ui.paragraphSplitCharacter"]+
 		text.substring(p-dist,p)+
 		text.substring(p+1, text.length)
 }
@@ -1280,12 +1291,12 @@ function splitdialog_cleanup() {
 function splitdialog_validate() {
 	var text = $("#form_splittext").text();
 
-	if (paragraphSplitBehaviour == "BEFORE-SPACE") {
-		if (text.includes(" " + paragraphSplitCharacter)) {
+	if (configuration["treeanno.ui.paragraphSplitBehaviour"] == "BEFORE-SPACE") {
+		if (text.includes(" " + configuration["treeanno.ui.paragraphSplitCharacter"])) {
 			return false;
 		}
-	} else if (paragraphSplitBehaviour == "AFTER-SPACE") {
-		if (text.includes(paragraphSplitCharacter+" "))
+	} else if (configuration["treeanno.ui.paragraphSplitBehaviour"] == "AFTER-SPACE") {
+		if (text.includes(configuration["treeanno.ui.paragraphSplitCharacter"]+" "))
 			return false;
 	}
 	return true;
@@ -1330,7 +1341,7 @@ function splitdialog_enter() {
 	var itemid = $(".selected").attr("data-treeanno-id");
 	var item = get_item(itemid);
 	var text = $("#form_splittext").text();
-	var lines = text.split(paragraphSplitCharacter);
+	var lines = text.split(configuration["treeanno.ui.paragraphSplitCharacter"]);
 	var logObj;
 	if (lines.length == 2) {
 		noty({

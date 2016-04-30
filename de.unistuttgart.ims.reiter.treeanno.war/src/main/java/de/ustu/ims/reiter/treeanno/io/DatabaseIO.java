@@ -11,12 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
@@ -32,6 +31,8 @@ import org.xml.sax.SAXException;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.db.H2DatabaseType;
+import com.j256.ormlite.db.MysqlDatabaseType;
 import com.j256.ormlite.jdbc.DataSourceConnectionSource;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -39,6 +40,7 @@ import com.j256.ormlite.table.TableUtils;
 
 import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.Perm;
+import de.ustu.ims.reiter.treeanno.ProjectType;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
@@ -54,18 +56,15 @@ public class DatabaseIO implements DataLayer {
 	Dao<UserDocument, Integer> userDocumentDao;
 	Dao<UserPermission, Integer> userPermissionDao;
 
-	public DatabaseIO() throws ClassNotFoundException, NamingException,
-	SQLException {
-		Context initContext;
+	public DatabaseIO(DataSource dataSource, int dsType)
+			throws ClassNotFoundException, NamingException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
-
-		initContext = new InitialContext();
-		Context envContext = (Context) initContext.lookup("java:/comp/env");
-		dataSource = (DataSource) envContext.lookup("jdbc/treeanno");
+		Class.forName("org.h2.Driver");
 
 		DataSourceConnectionSource connectionSource =
 				new DataSourceConnectionSource(dataSource,
-						"jdbc:mysql://localhost/de.ustu.ims.reiter.treeanno");
+						(dsType == 0 ? new MysqlDatabaseType()
+						: new H2DatabaseType()));
 
 		userDao = DaoManager.createDao(connectionSource, User.class);
 		projectDao = DaoManager.createDao(connectionSource, Project.class);
@@ -87,6 +86,27 @@ public class DatabaseIO implements DataLayer {
 		TableUtils.createTableIfNotExists(connectionSource, UserDocument.class);
 		TableUtils.createTableIfNotExists(connectionSource,
 				UserPermission.class);
+
+		Project p = null;
+		if (projectDao.countOf() == 0) {
+			p = new Project();
+			p.setName("Project 1");
+			p.setType(ProjectType.DEFAULT);
+			projectDao.create(p);
+		}
+
+		if (userDao.countOf() == 0) {
+			User user = new User();
+			user.setName("admin");
+			userDao.create(user);
+
+			UserPermission up = new UserPermission();
+			up.setUserId(user);
+			up.setLevel(Perm.ADMIN_ACCESS);
+			up.setProjectId(p);
+			userPermissionDao.create(up);
+		}
+
 	}
 
 	public int getAccessLevel(int documentId, User user) throws SQLException {
@@ -141,6 +161,23 @@ public class DatabaseIO implements DataLayer {
 	@Override
 	public UserDocument getUserDocument(User user, Document document)
 			throws SQLException {
+		QueryBuilder<UserDocument, Integer> queryBuilder =
+				userDocumentDao.queryBuilder();
+		PreparedQuery<UserDocument> pq =
+				queryBuilder.where()
+				.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
+				.eq(UserDocument.FIELD_USER, user).prepare();
+		List<UserDocument> ret = userDocumentDao.query(pq);
+		if (ret.isEmpty())
+			return null;
+		else
+			return ret.get(0);
+
+	}
+
+	@Override
+	public UserDocument createUserDocument(User user, Document document)
+			throws SQLException {
 		// TODO: prevent immediate retrieval of xmi column
 
 		QueryBuilder<UserDocument, Integer> queryBuilder =
@@ -168,7 +205,7 @@ public class DatabaseIO implements DataLayer {
 		// TODO: prevent immediate retrieval of xmi column
 		// TODO: also, make more efficient
 
-		return getUserDocument(getUser(user), getDocument(document));
+		return createUserDocument(getUser(user), getDocument(document));
 	}
 
 	public JCas getJCas(int documentId) throws SQLException, UIMAException,
@@ -299,5 +336,10 @@ public class DatabaseIO implements DataLayer {
 	@Override
 	public boolean deleteUserDocument(int id) throws SQLException {
 		return (userDocumentDao.deleteIds(Arrays.asList(id)) == 1);
+	}
+
+	@Override
+	public Collection<User> getUsers() throws SQLException {
+		return userDao.queryForAll();
 	}
 }

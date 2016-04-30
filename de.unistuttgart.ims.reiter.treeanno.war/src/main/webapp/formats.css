@@ -191,3 +191,7 @@ span.search_container {
 	display: inline-block;
 }
 
+
+.noty_message {
+	font-family:sans-serif;
+}

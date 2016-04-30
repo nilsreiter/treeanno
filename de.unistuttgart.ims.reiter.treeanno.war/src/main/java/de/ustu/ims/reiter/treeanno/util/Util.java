@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -34,8 +35,8 @@ public class Util {
 	}
 
 	public static void
-			returnJSON(HttpServletResponse response, JSONArray object)
-					throws IOException {
+	returnJSON(HttpServletResponse response, JSONArray object)
+			throws IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(object.toString());
@@ -92,4 +93,58 @@ public class Util {
 		}
 		return jcas;
 	}
+
+	public static int[] getAllDocumentIds(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		return Util.getAllIntegerParameters(request, response, "documentId");
+	}
+
+	public static int getFirstDocumentId(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		return Util.getFirstIntegerParameter(request, response, "documentId");
+	}
+
+	public static int[] getAllUserDocumentIds(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		return Util
+				.getAllIntegerParameters(request, response, "userDocumentId");
+	}
+
+	public static int getFirstUserDocumentId(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		return Util.getFirstIntegerParameter(request, response,
+				"userDocumentId");
+	}
+
+	public static int getFirstUserId(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		return Util.getFirstIntegerParameter(request, response, "userId");
+	}
+
+	public static int getFirstProjectId(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		return Util.getFirstIntegerParameter(request, response, "projectId");
+	}
+
+	private static int[] getAllIntegerParameters(HttpServletRequest request,
+			HttpServletResponse response, String parameterName)
+			throws IOException {
+		if (request.getParameter(parameterName) == null)
+			Util.returnJSON(response, new JSONObject());
+		String[] docIdStrings = request.getParameterValues(parameterName);
+		int[] r = new int[docIdStrings.length];
+		for (int i = 0; i < docIdStrings.length; i++)
+			r[i] = Integer.valueOf(docIdStrings[i]);
+		return r;
+	}
+
+	private static int getFirstIntegerParameter(HttpServletRequest request,
+			HttpServletResponse response, String parameterName)
+			throws IOException {
+		if (request.getParameter(parameterName) == null)
+			Util.returnJSON(response, new JSONObject());
+		String docIdString = request.getParameterValues(parameterName)[0];
+		return Integer.valueOf(docIdString);
+	}
+
 }

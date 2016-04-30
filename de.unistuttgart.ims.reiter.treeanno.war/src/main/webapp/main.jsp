@@ -19,14 +19,15 @@
 	<script src="jquery-ui/jquery-ui.js"></script>
 	<script src="jquery.noty.packaged.min.js"></script>
 	<script src="i18next/i18next-1.8.0.min.js"></script>
-	<script src="nestedSortable-1.3.4/jquery.ui.nestedSortable.js"></script>
-	<script src="config.js.jsp"></script>
+	<script src="rpc/config"></script>
 	<script src="script.js"></script>
 	<script src="script-main.js"></script>
 	<script>
 
+	var userId = "${sessionScope.User.id}";
 	var language = "${sessionScope.User.language}";
 	var documentId = ${param.documentId};
+	var targetUserId = ("${param.targetUserId}".length>0?parseInt("${param.targetUserId}"):userId);
 	var master = "${param.master}";
 	var treeanno = new Object();
 	treeanno["version"] = "${applicationScope['treeanno.version']}";

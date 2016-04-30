@@ -20,22 +20,18 @@
 	<script src="i18next/i18next-1.8.0.min.js"></script>
 	<script src="jquery.noty.packaged.min.js"></script>
 	<script src="nestedSortable-1.3.4/jquery.ui.nestedSortable.js"></script>
-	<script src="config.js.jsp"></script>
+	<script src="rpc/config"></script>
 	<script src="script.js"></script>
 	<script src="script-main.js"></script>
 	<script>
 
 	var language = "${sessionScope.User.language}";
-	var userDocumentIds = new Array();
-	var documentIds = new Array();
+	var userIds = new Array();
+	var documentId = ${param.documentId};
 	var parallel_mode = "${ paramValues.mode[0] }";
-	<c:forEach items="${paramValues.userDocumentId }" var="id">
-	userDocumentIds[userDocumentIds.length] = ${id};
+	<c:forEach items="${paramValues.userId }" var="id">
+	userIds[userIds.length] = ${id};
 	</c:forEach>
-	<c:forEach items="${paramValues.documentId }" var="id">
-	documentIds[documentIds.length] = ${id};
-	</c:forEach>
-	[ "${paramValues.userDocumentId[0]}", "${paramValues.userDocumentId[1]}" ];
 	var treeanno = new Object();
 	treeanno["version"] = "${applicationScope['treeanno.version']}";
 	treeanno["name"] = "${applicationScope['treeanno.name']}";
@@ -49,12 +45,12 @@
 	<link rel="stylesheet" href="jquery-ui/jquery-ui.theme.css" type="text/css"> 
 </head>
 <body>
-	<c:if test="${empty param.userDocumentId}">
+	<c:if test="${empty param.userId}">
 		<p>Need to give a document parameter</p>
 	</c:if>
 	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>
-	<div id="content" class="parallel-${ fn:length(paramValues.userDocumentId)+1 }">
-		<c:forEach var="uDocId" items="${paramValues.userDocumentId }">
+	<div id="content" class="parallel-${ fn:length(paramValues.userId) }">
+		<c:forEach items="${paramValues.userId }">
 			<div class="outline_container">
 			<ul class="outline text userDocument id-${uDocId}">
     		</ul>
@@ -64,7 +60,7 @@
 			<div class="outline_container active">
 				<ul class="outline text document id-${paramValues.documentId[0]}">
 				</ul>
-			</div>
+	</div>
 		</c:if>
 	</div>
 	<div id="split">

@@ -59,6 +59,7 @@
 	"document_action_export_xmi":"Export",
 	"document_action_rename":"Rename",
 	"document_action_view_annodoc":"View annotations",
+	"document_action_view_annotators":"View annotators",
 	"project_id":"Id",
 	"project_name":"Name",
 	"project_action_open":"Open",
@@ -98,6 +99,12 @@
 		"delete":"Delete",
 		"view":"View"
 	},
+	"exportoptions":{
+		"title_for_X":"Export options for Document &bdquo;__document__&ldquo;",
+		"breadcrumb_for_X":"Export Document &bdquo;__document__&ldquo;",
+		"xmi":"UIMA XMI",
+		"par":"Parentheses"
+	},
 	"parallel":{
 		"annotations_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
 		"annotations_title_for_X":"Annotations for __document__",
@@ -114,6 +121,27 @@
 			"true":"Identical segmentation",
 			"false":"Compare differing segmentation",
 			"undef":"Segmentation"
-		}
+	},
+	"alert":{
+		"in-memory":"Database can't be reached. Annotations will not be stored permanently."
+	},
+	"annoarea":{
+		"title_for_X":"Annotators for document &bdquo;__document__&ldquo;",
+		"status":{
+			"NEW":"New",
+			"ASSIGNED":"Assigned",
+			"FINISHED":"Finished",
+			"INPROGRESS":"In progress"
+		},
+		"view":"View",
+		"delete":"Delete",
+		"th":{
+			"id":"Id",
+			"username":"Annotator",
+			"mod_date":"Last change",
+			"actions":"Actions",
+			"status":"Status"
+		},
+		"assign":"Assign"
 	}
-}
+}}

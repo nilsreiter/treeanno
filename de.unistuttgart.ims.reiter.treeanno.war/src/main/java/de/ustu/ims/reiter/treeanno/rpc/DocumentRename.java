@@ -11,17 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import de.ustu.ims.reiter.treeanno.CA;
 import de.ustu.ims.reiter.treeanno.CW;
-import de.ustu.ims.reiter.treeanno.beans.Project;
-import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.DataLayer;
+import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
- * Servlet implementation class AccessLevel
+ * Servlet implementation class DocumentRename
  */
-@WebServlet("/rpc/AccessLevel")
-public class AccessLevel extends HttpServlet {
+@WebServlet("/rpc/document/rename")
+public class DocumentRename extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -31,24 +30,16 @@ public class AccessLevel extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		int projectId = Integer.valueOf(request.getParameter("projectId"));
-
-		User user = (User) request.getSession().getAttribute(CA.USER);
-
+		int docId = Util.getFirstDocumentId(request, response);
+		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 		try {
-			Project proj =
-					CW.getDataLayer(getServletContext()).getProject(projectId);
-
-			JSONObject json = new JSONObject();
-			json.put("ProjectId", projectId);
-			json.put("AccessLevel", CW.getDataLayer(getServletContext())
-					.getAccessLevel(proj, user));
-			Util.returnJSON(response, json);
+			Document document = dataLayer.getDocument(docId);
+			document.setName(request.getParameter("name"));
+			dataLayer.updateDocument(document);
 		} catch (SQLException e) {
 			throw new ServletException(e);
-		} finally {
-
 		}
+		Util.returnJSON(response, new JSONObject());
 	}
 
 }

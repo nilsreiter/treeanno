@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,11 +19,13 @@ import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
+import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
  * Servlet implementation class DocumentList
  */
+@WebServlet("/rpc/documentlist")
 public class DocumentList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -48,7 +51,15 @@ public class DocumentList extends HttpServlet {
 				Collection<Document> list = proj.getDocuments();
 				JSONObject obj = new JSONObject();
 				for (Document doc : list) {
-					obj.append("documents", JSONUtil.getJSONObject(doc));
+					UserDocument uDoc =
+							CW.getDataLayer(getServletContext())
+							.getUserDocument(user, doc);
+					if (uDoc == null) {
+						JSONObject udO = new JSONObject();
+						udO.put("document", JSONUtil.getJSONObject(doc));
+						obj.append("documents", udO);
+					} else
+						obj.append("documents", JSONUtil.getJSONObject(uDoc));
 				}
 				obj.put("project", JSONUtil.getJSONObject(proj));
 				obj.put("accesslevel",

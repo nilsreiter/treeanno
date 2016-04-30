@@ -5,11 +5,11 @@ import java.io.InputStream;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.connector.Response;
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
@@ -18,6 +18,8 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
+import de.ustu.ims.reiter.treeanno.beans.DocumentStatus;
+import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.Util;
@@ -25,6 +27,7 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class ControllerServlet
  */
+@WebServlet("/DocumentContentHandling")
 public class DocumentContentHandling extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -47,16 +50,14 @@ public class DocumentContentHandling extends HttpServlet {
 	protected void processUserDocumentId(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		DataLayer dl = CW.getDataLayer(getServletContext());
-
-		String[] documents = request.getParameterValues("userDocumentId");
+		int[] documents = Util.getAllUserDocumentIds(request, response);
 		if (request.getSession().getAttribute(CA.USER) == null) {
-			response.setStatus(Response.SC_FORBIDDEN);
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 		try {
 			if (documents.length > 0) {
-				int docId = Integer.valueOf(documents[0]);
-				UserDocument userDocument = dl.getUserDocument(docId);// dl.getDocument(docId);
+				UserDocument userDocument = dl.getUserDocument(documents[0]);// dl.getDocument(docId);
 				if (userDocument == null) {
 					throw new ServletException("Document could not be loaded.");
 				}
@@ -64,13 +65,13 @@ public class DocumentContentHandling extends HttpServlet {
 						dl.getAccessLevel(userDocument.getDocument()
 								.getProject(), CW.getUser(request));
 				if (accessLevel == Perm.NO_ACCESS) {
-					response.setStatus(Response.SC_FORBIDDEN);
+					response.sendError(HttpServletResponse.SC_FORBIDDEN);
 					return;
 				}
 				JCas jcas = JCasConverter.getJCas(userDocument.getXmi());
 				if (jcas != null) {
 					JSONObject obj = new JSONObject();
-					obj.put("documentId", docId);
+					obj.put("documentId", userDocument.getId());
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
 							new JCasConverter()
@@ -80,7 +81,7 @@ public class DocumentContentHandling extends HttpServlet {
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
-							+ docId);
+							+ userDocument.getId());
 				}
 
 			}
@@ -96,54 +97,61 @@ public class DocumentContentHandling extends HttpServlet {
 	protected void processDocumentId(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		DataLayer dl = CW.getDataLayer(getServletContext());
+		User currentUser = CW.getUser(request);
 
-		String[] documents = request.getParameterValues("documentId");
-		if (request.getSession().getAttribute(CA.USER) == null) {
-			response.setStatus(Response.SC_FORBIDDEN);
-			return;
+		int userId = currentUser.getId();
+
+		int targetUserId = userId;
+		if (request.getParameter("userId") == null) {} else {
+			targetUserId = Util.getFirstUserId(request, response);
 		}
-		// if the request parameter "master" has been set
-		boolean master = (request.getParameter("master") != null);
+		int docId = Util.getFirstDocumentId(request, response);
+
 		try {
-			if (documents.length > 0) {
-				int docId = Integer.valueOf(documents[0]);
-				Document document = dl.getDocument(docId);
-				if (document == null) {
-					throw new ServletException("Document could not be loaded.");
-				}
-				int accessLevel =
-						dl.getAccessLevel(document.getProject(),
-								CW.getUser(request));
-				if (accessLevel == Perm.NO_ACCESS) {
-					response.setStatus(Response.SC_FORBIDDEN);
-					return;
-				}
-
-				JCas jcas = null;
-				JSONObject obj = new JSONObject();
-				if (master && accessLevel >= Perm.PADMIN_ACCESS) {
-					Document doc = dl.getDocument(docId);
-					jcas = JCasConverter.getJCas(doc.getXmi());
-					obj.put("master", true);
-				} else {
-					UserDocument udoc =
-							dl.getUserDocument(CW.getUser(request), document);
-					jcas = JCasConverter.getJCas(udoc.getXmi());
-				}
-				if (jcas != null) {
-					obj.put("document", JSONUtil.getJSONObject(document));
-					obj.put("list",
-							new JCasConverter()
-					.getJSONArrayFromAnnotations(
-							jcas,
-							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
-					Util.returnJSON(response, obj);
-				} else {
-					throw new ServletException("JCas could not be loaded: "
-							+ docId);
-				}
-
+			int accessLevel =
+					dl.getAccessLevel(dl.getDocument(docId).getProject(),
+							CW.getUser(request));
+			if (currentUser == null
+					|| (userId != targetUserId && accessLevel < Perm.PADMIN_ACCESS)) {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN);
+				return;
 			}
+			User targetUser = dl.getUser(targetUserId);
+			// if the request parameter "master" has been set
+			boolean master = (request.getParameter("master") != null);
+			Document document = dl.getDocument(docId);
+			if (document == null) {
+				throw new ServletException("Document could not be loaded.");
+			}
+
+			if (accessLevel == Perm.NO_ACCESS) {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN);
+				return;
+			}
+
+			JCas jcas = null;
+			JSONObject obj = new JSONObject();
+			if (master && accessLevel >= Perm.PADMIN_ACCESS) {
+				Document doc = dl.getDocument(docId);
+				jcas = JCasConverter.getJCas(doc.getXmi());
+				obj.put("master", true);
+			} else {
+				UserDocument udoc = dl.createUserDocument(targetUser, document);
+				jcas = JCasConverter.getJCas(udoc.getXmi());
+			}
+			if (jcas != null) {
+				obj.put("user", JSONUtil.getJSONObject(targetUser));
+				obj.put("document", JSONUtil.getJSONObject(document));
+				obj.put("list",
+						new JCasConverter()
+								.getJSONArrayFromAnnotations(
+										jcas,
+										de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+				Util.returnJSON(response, obj);
+			} else {
+				throw new ServletException("JCas could not be loaded: " + docId);
+			}
+
 		} catch (NumberFormatException e) {
 			throw new ServletException(e);
 		} catch (JSONException e) {
@@ -162,12 +170,26 @@ public class DocumentContentHandling extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 
+		User user = CW.getUser(request);
+
+		int userId;
+		if (request.getParameter("userId") == null) {
+			userId = user.getId();
+		} else {
+			userId = Util.getFirstUserId(request, response);
+		}
+
+		if (user == null || userId != user.getId()) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
+
 		InputStream is = request.getInputStream();
 		String s = IOUtils.toString(is);
 		JSONObject jObj = new JSONObject(s);
 		JSONObject returnObject = new JSONObject();
-		int docId = jObj.getInt("document");
-		boolean master = jObj.getBoolean("master");
+		int docId = Util.getFirstDocumentId(request, response);
+		boolean master = (request.getParameter("master") != null);
 		boolean r = false;
 
 		try {
@@ -187,12 +209,12 @@ public class DocumentContentHandling extends HttpServlet {
 			} else {
 				// saving the user document
 				UserDocument document =
-						dataLayer.getUserDocument(CW.getUser(request), doc);
+						dataLayer.createUserDocument(CW.getUser(request), doc);
 				JCas jcas =
 						Util.addAnnotationsToJCas(
 								JCasConverter.getJCas(document.getXmi()), jObj);
 				document.setXmi(JCasConverter.getXmi(jcas));
-
+				document.setStatus(DocumentStatus.INPROGRESS);
 				r = dataLayer.updateUserDocument(document);
 			}
 		} catch (UIMAException | JSONException | SQLException | SAXException e) {

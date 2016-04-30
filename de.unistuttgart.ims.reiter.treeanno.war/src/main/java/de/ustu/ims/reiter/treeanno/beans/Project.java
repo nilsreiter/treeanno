@@ -1,36 +1,24 @@
 package de.ustu.ims.reiter.treeanno.beans;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
 
-@Entity(name = "treeanno_projects")
+@DatabaseTable(tableName = "treeanno_projects")
 public class Project {
 
 	@DatabaseField(generatedId = true)
 	int id;
 
-	@Column
+	@DatabaseField
 	String name;
 
 	@ForeignCollectionField(eager = false)
 	ForeignCollection<Document> documents;
 
-	@Column
+	@DatabaseField
 	int type = 1;
-
-	@Deprecated
-	public int getDatabaseId() {
-		return id;
-	}
-
-	@Deprecated
-	public void setDatabaseId(int databaseId) {
-		this.id = databaseId;
-	}
 
 	public String getName() {
 		return name;

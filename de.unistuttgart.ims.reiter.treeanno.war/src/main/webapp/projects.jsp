@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.3"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" 
@@ -36,7 +36,11 @@
 	// <![CDATA[
  	// ]]>
 	</script>
-	<script src="config.js.jsp">
+	<script src="jquery.noty.packaged.min.js">
+	//<![CDATA[
+	//]]>
+	</script>
+	<script src="rpc/config">
 	// <![CDATA[
 	// ]]>
 	</script>
@@ -49,24 +53,15 @@
 	// ]]>
 	</script>
 	
-	<c:if test="${not empty param.projectId}">
+	
 		<script>
 		//<![CDATA[
-			var selected = ${param.projectId};
+			var selected = ("${param.projectId}".length>0?parseInt("${param.projectId}"):-1);
 			var language = "${sessionScope.User.language}";
+			var selectedDocument = ("${param.documentId}".length>0?parseInt("${param.documentId}"):-1);
 			$(document).ready(init_trans(init_projects));
 		//]]>
 		</script>
-	</c:if>
-	<c:if test="${empty param.projectId}">
-		<script>
-		//<![CDATA[
-			var selected = -1;
-			var language = "${sessionScope.User.language}";
-			$(document).ready(init_trans(init_projects));
-		//]]>
-		</script>
-	</c:if>
 </head>
 <body>
 	<div id="topbar">
