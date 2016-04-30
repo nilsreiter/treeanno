@@ -121,6 +121,7 @@
 			"true":"Identische Segmentierung",
 			"false":"Verschiedene Segmentierung vergleichen",
 			"undef":"Segmentierung"
+		}
 	},
 	"alert":{
 		"in-memory":"Datenbank nicht erreichbar. Änderungen und Annotationen können nicht gespeichert werden."
@@ -144,4 +145,4 @@
 		},
 		"assign":"Zuweisen"
 	}
-}}
+}

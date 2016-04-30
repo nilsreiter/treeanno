@@ -121,6 +121,7 @@
 			"true":"Identical segmentation",
 			"false":"Compare differing segmentation",
 			"undef":"Segmentation"
+		}
 	},
 	"alert":{
 		"in-memory":"Database can't be reached. Annotations will not be stored permanently."
@@ -144,4 +145,4 @@
 		},
 		"assign":"Assign"
 	}
-}}
+}
