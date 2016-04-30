@@ -134,6 +134,7 @@
 			"mod_date":"Letzte Änderung",
 			"actions":"Aktionen",
 			"status":"Status"
-		}
+		},
+		"assign":"Zuweisen"
 	}
 }

@@ -134,6 +134,7 @@
 			"mod_date":"Last change",
 			"actions":"Actions",
 			"status":"Status"
-		}
+		},
+		"assign":"Assign"
 	}
 }
