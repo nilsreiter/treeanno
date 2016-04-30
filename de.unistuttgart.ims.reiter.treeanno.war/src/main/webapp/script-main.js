@@ -681,12 +681,15 @@ function init_parallel() {
 
 	$(".outline").hide();
 	$("#content > div > .outline").each(function(index, element) {
-		var documentId = userDocumentIds[index];
-		jQuery.getJSON("DocumentContentHandling?userDocumentId="+documentId, function(data) {
-			$(element).parent().prepend("<h2>"+i18n.t("parallel.annotations_from_X",{"user":data["document"]["user"]["name"]})+"</h2>");
+		var targetUserId = userIds[index];
+		var url = "rpc/c/0/"+documentId+"/"+targetUserId;
+
+		console.log(url);
+		jQuery.getJSON(url, function(data) {
+			$(element).parent().prepend("<h2>"+i18n.t("parallel.annotations_from_X",{"user":data["user"]["name"]})+"</h2>");
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
-				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["document"]["project"]["id"]+"\">"+data["document"]["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["document"]["name"]}));
-				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["document"]["name"]});
+				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["name"]}));
+				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["name"]});
 			} else {
 				//$(".breadcrumb").append(", "+data["document"]["name"]);
 				// document.title = document.title + ", " + data["document"]["name"];

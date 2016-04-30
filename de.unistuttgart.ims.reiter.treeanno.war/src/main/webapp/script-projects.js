@@ -107,6 +107,7 @@ function show_list_of_annotators(projectId, documentObj) {
 		if (data.length > 0) {
 			
 			for (var i = 0; i < data.length; i++) {
+				console.log(data[i]);
 				var uDocId = null;
 				if ('userDocument' in data[i])
 					uDocId = data[i]['userDocument']['id'];
@@ -134,7 +135,7 @@ function show_list_of_annotators(projectId, documentObj) {
 				}
 				var actionCell = document.createElement("td");
 				if (uDocId != null) {
-					$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+uDocId+"\" type=\"checkbox\" name=\"diff\" value=\""+uDocId+"\"/><label for=\"diffselect-"+uDocId+"\"></label>");
+					$(actionCell).append("<input class=\"button_diff\" id=\"diffselect-"+uDocId+"\" type=\"checkbox\" name=\"diff\" value=\""+data[i]['id']+"\"/><label for=\"diffselect-"+uDocId+"\"></label>");
 					$(actionCell).append("<button class=\"button_view\" id=\"view-udoc-"+uDocId+"\" name=\"view\" value=\""+uDocId+"\">"+i18n.t("annodoclistarea.view")+"</button>");
 					$(actionCell).append("<button class=\"button_delete\" id=\"delete-udoc-"+uDocId+"\" name=\"delete\" value=\""+uDocId+"\">"+i18n.t("annoarea.delete")+"</button>");
 					// if (al >= Perm["PADMINACCESS"]) 
@@ -150,7 +151,8 @@ function show_list_of_annotators(projectId, documentObj) {
 				$(actionCell).find("input.button_diff").button({
 					label:i18n.t("parallel.select"),
 					icons:{primary:"ui-icon-transferthick-e-w",secondary:null},
-					text:configuration["treeanno.ui.showTextOnButtons"]
+					text:configuration["treeanno.ui.showTextOnButtons"],
+					disabled:(uDocId == null),
 				}); 
 				$(actionCell).find("button.button_view").button({
 					label:i18n.t("annoarea.view"),
@@ -207,7 +209,7 @@ function show_list_of_annotators(projectId, documentObj) {
 						$("input.button_diff:checked").each(function(index, element) {
 							doc[index] = $(element).val();
 						});
-	 					window.location.href="parallel.jsp?userDocumentId="+doc[0]+"&userDocumentId="+doc[1];
+	 					window.location.href="parallel.jsp?documentId="+documentId+"&userId="+doc[0]+"&userId="+doc[1];
 					}
 				});
 			} else {
