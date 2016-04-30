@@ -906,6 +906,7 @@ function act(keyCode) {
 			kc = keyCode + 1000;
 		if (kc in operations && interaction_mode in operations[kc] && !operations[kc][interaction_mode]['disabled']) {
 			if (check_precondition(kc)) {
+				console.log(operations[kc][interaction_mode]);
 				var selection = $(".selected");
 				var val = operations[kc][interaction_mode].fun();
 				if (operations[kc][interaction_mode]['history']) {
@@ -1074,7 +1075,7 @@ function splitdialog() {
 		    	tabindex:2
 		    },{
 		 		text: i18n.t("split_dialog.ok"),
-		 		click: splitdialog_enter,
+		 		click: function() { act(13) },
 		 		tabindex:1
 		    }
 		]
@@ -1171,6 +1172,7 @@ function split(item, lines, moveSelection, ids) {
 	logObj = {
 			newItems:[litems[0]['id'], litems[1]['id']]
 	};
+	console.log(logObj);
 	return logObj;
 }
 
