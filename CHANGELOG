@@ -16,6 +16,7 @@
 
 0.6.6
 
+- Fixed: TreeAnno stuck in splitting mode after clicking on the split button
 - Fixed: User language setting was not exported to the ui
 - All json rpc endpoints now have nicer (rewritten) urls
 - Redesigned export interface: Clicking on export in document view opens
