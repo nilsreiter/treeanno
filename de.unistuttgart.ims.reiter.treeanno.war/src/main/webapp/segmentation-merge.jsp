@@ -37,6 +37,7 @@
 	<c:forEach items="${ paramValues.documentId }" var="id">
 	documentIds[documentIds.length] = ${id};
 	</c:forEach>
+	var documentId = documentIds[0];
 	var treeanno = new Object();
 	treeanno["version"] = "${applicationScope['treeanno.version']}";
 	treeanno["name"] = "${applicationScope['treeanno.name']}";

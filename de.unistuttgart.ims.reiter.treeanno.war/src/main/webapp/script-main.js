@@ -702,7 +702,7 @@ function init_segmentation_merge() {
 	document.onkeyup = function(e) {
 		key_up(e);
 	};
-
+	master = false;
 	var allData = {
 			'uDoc':{},
 			'doc':{}
@@ -787,6 +787,11 @@ function init_segmentation_merge2(data) {
 		}
 	}
 	var doclist = doc.list;
+	
+	$("#content thead th:nth-child(1)").text(data0.user.name);
+	$("#content thead th:nth-child(2)").text(data1.user.name);
+	$("#content thead th:nth-child(3)").text("Zieldokument");
+	
 	for (var area of areas) {
 		var row = document.createElement("tr");
 		var min = Number.MAX_SAFE_INTEGER;
@@ -811,12 +816,15 @@ function init_segmentation_merge2(data) {
 		
 		$("#content tbody").append(row);
 	}
+	
 	var cellar  = document.createElement("ul");
 	$(cellar).addClass("outline").hide();
 	for (var item of doclist) {
 		$(cellar).append(get_html_item(item));
 	}
-	$("#content").append(cellar);
+	$("#content").append("<div></div>");
+	$("#content div:last-child").addClass("active");
+	$("#content div:last-child").append(cellar);
 	
 	$(".userDocument.id-"+data0.user.id).show();
 	$(".userDocument.id-"+data1.user.id).show();
@@ -954,7 +962,7 @@ function search() {
 function save_document() {
 	var sitems = new Array(); //items;
 
-	$(".outline li").each(function(index, element) {
+	$(".active .outline li").each(function(index, element) {
 		var item = new Object();
 		item['id'] = $(element).attr("data-treeanno-id");
 		item['begin'] = $(element).attr("data-treeanno-begin");
