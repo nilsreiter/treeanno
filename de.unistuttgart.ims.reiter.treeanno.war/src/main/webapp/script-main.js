@@ -727,29 +727,97 @@ function init_segmentation_merge() {
 }
 
 function init_segmentation_merge2(data) {
-	console.log((data));
 	var data0 = data['uDoc'][userIds[0]];
 	var data1 = data['uDoc'][userIds[1]];
+	var doc = data['doc'][documentIds[0]];
+	console.log(doc);
 	for (var i = 0; i < data0['list'].length; i++) {
 		var b0 = data0['list'][i]['begin'];
 		var e0 = data0['list'][i]['end'];
 		for (var j = 0; j < data1['list'].length; j++) {
 			var b1 = data1['list'][j]['begin'];
 			var e1 = data1['list'][j]['end'];
-			
 			if (b0 == b1 && e0 == e1) {
 				data0['list'].splice(i--, 1);
 				data1['list'].splice(j--, 1);
 			}
-			
 		}
 	}
-	for (var i = 0; i < data0['list'].length; i++) {
+	var areas = [];
+	var item0 = data0.list.shift();
+	var item1 = data1.list.shift();
+	var thisArea = [];
+	while(typeof(item0) !== "undefined" || typeof(item1) !== "undefined") {
+		if (item0.begin === item1.begin) {
+			thisArea = [];
+			if (item0.end < item1.end) {
+				item0.src = 1;
+				thisArea.push(item0);
+				item0 = data0.list.shift();
+			} else if (item0.end > item1.end) {
+				item1.src = 2;
+				thisArea.push(item1);
+				item1 = data1.list.shift();
+			} else if (item0.end === item1.end) {
+				item0.src = 1;
+				item1.src = 2;
+				thisArea.push(item0);
+				thisArea.push(item1);
+				areas.push(thisArea);
+				thisArea = [];
+				item0 = data0.list.shift();
+				item1 = data1.list.shift();
+			}
+		} else if (item0.end === item1.end) {
+			item0.src = 1;
+			item1.src = 2;
+
+			thisArea.push(item0);
+			thisArea.push(item1);
+			areas.push(thisArea);
+			thisArea = [];
+			item0 = data0.list.shift();
+			item1 = data1.list.shift();
+		} else if (item0.end < item1.end) {
+			item0.src = 1;
+
+			thisArea.push(item0);
+			item0 = data0.list.shift();	
+		} else if (item0.end > item1.end) {
+			item1.src = 2;
+			thisArea.push(item1);
+			item1 = data1.list.shift();
+		}
+	}
+	// console.log(areas);
+	for (var area of areas) {
+		var row = document.createElement("tr");
+		var min = Number.MAX_SAFE_INTEGER;
+		var max = 0;
+		$(row).append("<td><ul class=\"outline\"></ul></td>");
+		$(row).append("<td><ul class=\"outline\"></ul></td>");
+		$(row).append("<td class=\"active\"><ul class=\"outline\"></ul></td>");
 		
+		for (var item of area) {
+			min = Math.min(min, item.begin);
+			max = Math.max(max, item.end);
+			$(row).children("td:nth-child("+item.src+")").children("ul").append(get_html_item(item));
+			// $(".userDocument.id-"+item.src).append(get_html_item(item));
+		}
+		for (var docItem of doc.list.filter(function (item) {
+			return item.begin >= min && item.end <= max;
+		})) {
+			$(row).children("td:nth-child(3)").children("ul").append(get_html_item(docItem));
+			
+		}
+		
+		$("#content tbody").append(row);
 	}
 	
-	
-	console.log(data);
+	$(".userDocument.id-"+data0.user.id).show();
+	$(".userDocument.id-"+data1.user.id).show();
+	$(".document.id-"+doc.document.id).show();
+	$("#status").hide();
 }
 
 function init_parallel() {

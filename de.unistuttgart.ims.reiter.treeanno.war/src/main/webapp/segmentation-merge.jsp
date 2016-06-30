@@ -29,10 +29,10 @@
 	var userIds = new Array();
 	var documentIds = new Array();
 	var parallel_mode = "${ paramValues.mode[0] }";
-	<c:forEach items="${paramValues.userId }" var="id">
+	<c:forEach items="${ paramValues.userId }" var="id">
 	userIds[userIds.length] = ${id};
 	</c:forEach>
-	<c:forEach items="${paramValues.documentId }" var="id">
+	<c:forEach items="${ paramValues.documentId }" var="id">
 	documentIds[documentIds.length] = ${id};
 	</c:forEach>
 	var treeanno = new Object();
@@ -52,19 +52,17 @@
 		<p>Need to give a document parameter</p>
 	</c:if>
 	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>
-	<div id="content" class="parallel-${ fn:length(paramValues.userDocumentId)+1 }">
-		<c:forEach var="uDocId" items="${paramValues.userDocumentId }">
-			<div class="outline_container">
-			<ul class="outline text userDocument id-${uDocId}">
-    		</ul>
-    		</div>
-		</c:forEach>
-		<c:if test="${ paramValues.mode[0] eq 'segmentation' }">
-			<div class="outline_container active">
-				<ul class="outline text document id-${paramValues.documentId[0]}">
-				</ul>
-			</div>
-		</c:if>
+	<div id="content" class="parallel-${ fn:length(paramValues.userId)+1 }">
+		<table class="segmentationmerge">
+			<thead>
+			<c:forEach var="userId" items="${paramValues.userId }">
+				<th>${userId}</th>
+			</c:forEach>
+				<th>Document</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
 	<div id="split">
 		<p data-i18n="howto_split" class="trans">howto_split</p>
@@ -84,7 +82,7 @@
 		</span>
 		<span class="right">
 			<!-- <button class="button_change_document">open</button> -->
-			<!-- <button class="button_save_document">save</button> -->
+			<button class="button_save_document">save</button>
 			<button class="button_edit_user">${sessionScope.User.name}</button>
 		</span>
 	</div>

@@ -75,6 +75,9 @@ div#artifact {
 .placeholder { background:#eee; }
 .nesttoodeep { background:#ffdedd; }
 
+#content table.segmentationmerge tr > td {
+	padding-bottom:40px;
+}
 
 #split,#merge { display:none; }
 #form_mergecandidates { width:350px; }
