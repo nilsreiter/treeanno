@@ -28,6 +28,8 @@
 	var language = "${sessionScope.User.language}";
 	var userIds = new Array();
 	var documentIds = new Array();
+	var userId = ${sessionScope.User.id};
+	var targetUserId = ${sessionScope.User.id};
 	var parallel_mode = "${ paramValues.mode[0] }";
 	<c:forEach items="${ paramValues.userId }" var="id">
 	userIds[userIds.length] = ${id};

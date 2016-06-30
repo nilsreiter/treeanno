@@ -695,7 +695,7 @@ function init_segmentation_merge() {
 	$("#form_search").blur(function() { interaction_mode = INTERACTION_TREEANNO; });
 	
 	disableSaveButton();
-	interaction_mode = INTERACTION_MERGE_SEGMENTATION;
+	interaction_mode = INTERACTION_TREEANNO;
 	document.onkeydown = function(e) {
 		key_down(e);
 	};
@@ -703,7 +703,6 @@ function init_segmentation_merge() {
 		key_up(e);
 	};
 
-	$(".outline").hide();
 	var allData = {
 			'uDoc':{},
 			'doc':{}
@@ -771,7 +770,6 @@ function init_segmentation_merge2(data) {
 		} else if (item0.end === item1.end) {
 			item0.src = 1;
 			item1.src = 2;
-
 			thisArea.push(item0);
 			thisArea.push(item1);
 			areas.push(thisArea);
@@ -780,7 +778,6 @@ function init_segmentation_merge2(data) {
 			item1 = data1.list.shift();
 		} else if (item0.end < item1.end) {
 			item0.src = 1;
-
 			thisArea.push(item0);
 			item0 = data0.list.shift();	
 		} else if (item0.end > item1.end) {
@@ -789,7 +786,7 @@ function init_segmentation_merge2(data) {
 			item1 = data1.list.shift();
 		}
 	}
-	// console.log(areas);
+	var doclist = doc.list;
 	for (var area of areas) {
 		var row = document.createElement("tr");
 		var min = Number.MAX_SAFE_INTEGER;
@@ -802,17 +799,24 @@ function init_segmentation_merge2(data) {
 			min = Math.min(min, item.begin);
 			max = Math.max(max, item.end);
 			$(row).children("td:nth-child("+item.src+")").children("ul").append(get_html_item(item));
-			// $(".userDocument.id-"+item.src).append(get_html_item(item));
-		}
-		for (var docItem of doc.list.filter(function (item) {
-			return item.begin >= min && item.end <= max;
-		})) {
-			$(row).children("td:nth-child(3)").children("ul").append(get_html_item(docItem));
-			
+		};
+		for (var i = 0; i < doclist.length; i++) {
+			docItem = doclist.shift();
+			if (docItem.begin >= min && docItem.end <= max) {
+				$(row).children("td:nth-child(3)").children("ul").append(get_html_item(docItem));
+			} else {
+				doclist.push(docItem);
+			}
 		}
 		
 		$("#content tbody").append(row);
 	}
+	var cellar  = document.createElement("ul");
+	$(cellar).addClass("outline").hide();
+	for (var item of doclist) {
+		$(cellar).append(get_html_item(item));
+	}
+	$("#content").append(cellar);
 	
 	$(".userDocument.id-"+data0.user.id).show();
 	$(".userDocument.id-"+data1.user.id).show();
