@@ -7,7 +7,7 @@ var INTERACTION_MERGE_SEGMENTATION = "segmentation";
 var interaction_mode = INTERACTION_TREEANNO;
 
 var mode = {
-	treeanno:{ 
+	treeanno:{
 		preventDefault:true
 	},
 	split:{
@@ -22,7 +22,7 @@ var mode = {
 	segmentation:{
 		preventDefault:true
 	}
-}
+};
 
 /**
  * set to true when shift is pressed (and held)
@@ -37,7 +37,7 @@ var loaded = 0;
 var history = [];
 
 
-var kbkey = { up: 38, down: 40, right: 39, left: 37, 
+var kbkey = { up: 38, down: 40, right: 39, left: 37,
 		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
 var keyString = {
 		8: '&#9003;',
@@ -55,43 +55,43 @@ var keyString = {
 		1040:'&#8679;&darr;',
 		1068:'&#8679;d',
 		1083:'&#8679;s'
-}
+};
 
 /**
  * the main object containing possible operations in TreeAnno.
  * Each operation is a hash of the following form:
- * 
+ *
  * {
  *    // an identifier for the operation
  * 	  id:'an-id',
- * 
+ *
  *    // a function that implements the operation
  *    fun:function,
- *    
+ *
  *    // whether this op makes an entry in the edit history
  *    // This also determines whether the save button will be activated
  *    history: (true|false),
- *    
+ *
  *    // a locale key to be put into the help menu.
  *    // if null, no help entry will be produced
  *    desc: "bla bla",
- *    
+ *
  *    // precondition definitions
  *    pre: {
- *        
- *        // a function that checks the precondition. Needs to return a boolean 
+ *
+ *        // a function that checks the precondition. Needs to return a boolean
  *        // value
  *    	  fun: function,
- *    
+ *
  *        // a hash that is passed to the notification framework in case the
  *        // precondition fails
- *        // There is an issue with localisation here, that's why we need to 
+ *        // There is an issue with localisation here, that's why we need to
  *        // re-process some keys in init_operations(...).
  *        fail: {
- *           // ... 
+ *           // ...
  *        }
  *    },
- *    
+ *
  *    // post-op definitions
  *    post: {
  *    	  // if the op changes the interaction mode
@@ -118,7 +118,7 @@ var ops={
 			},
 			revert: {
 				fun: function(action) {
-					merge(get_item(action['opt']['newItems'][0]),get_item(action['opt']['newItems'][1]), action['arg'][0])
+					merge(get_item(action['opt']['newItems'][0]),get_item(action['opt']['newItems'][1]), action['arg'][0]);
 				}
 			}
 		},
@@ -133,23 +133,23 @@ var ops={
 		split_move_left:{
 			// move the split point to the left
 			id:'split_move_left',
-			fun:function() { split_move_left(1) },
+			fun:function() { split_move_left(1); },
 			history:false
 		},
 		split_move_left_big:{
 			id:'split_move_left_big',
-			fun:function() { split_move_left(25) },
+			fun:function() { split_move_left(25); },
 			history:false
 		},
 		split_move_right:{
 			// move the split point to the right
 			id:'split_move_right',
-			fun:function() { split_move_right(1) },
+			fun:function() { split_move_right(1); },
 			history:false
 		},
 		split_move_right_big:{
 			id:'split_move_right_big',
-			fun:function() { split_move_right(25) },
+			fun:function() { split_move_right(25); },
 			history:false
 		},
 		split:{
@@ -259,8 +259,8 @@ var ops={
 					}
 				}			},
 			pre:{
-				fun:function() { 
-					return ($("ul ul .selected").length > 0)
+				fun:function() {
+					return ($("ul ul .selected").length > 0);
 				},
 				fail: {
 					type:"information",
@@ -282,7 +282,7 @@ var ops={
 				}
 			},
 			pre: {
-				fun: function() { return ($(".selected").first().prev("li").length > 0) },
+				fun: function() { return ($(".selected").first().prev("li").length > 0); },
 				fail: {
 					type: "information",
 					text: "action.right.prefail"
@@ -369,7 +369,7 @@ var ops={
 				fun: function(action) {
 					var item = get_item(action['opt']['newId']);
 					var text = item['text'];
-					var lines = [text.substring(0,action['opt']['split']), text.substring(action['opt']['split'], text.length)]
+					var lines = [text.substring(0,action['opt']['split']), text.substring(action['opt']['split'], text.length)];
 					split(item, lines, false, action['arg']);
 				}
 			}
@@ -438,7 +438,7 @@ var operations = {
 			  split: ops.split_cancel,
 			  category_t2: ops.category_cancel},
 		// left
-		37: { treeanno: ops.outdent, 
+		37: { treeanno: ops.outdent,
 			  split: ops.split_move_left },
 		// up
 		38: { treeanno: ops.up,
@@ -525,14 +525,14 @@ function init_help() {
 	for (key in operations) {
 		if (!operations[key]['disabled']) {
 			if (INTERACTION_TREEANNO in operations[key]) {
-				$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key][INTERACTION_TREEANNO]['desc'])+"</td></tr>");	
+				$(helpTable).append("<tr><td><span class=\"command\">"+keyString[key]+"</span></td><td class=\"trans\">"+i18n.t(operations[key][INTERACTION_TREEANNO]['desc'])+"</td></tr>");
 			}
 		}
 	}
 	$(helpElement).append(helpTable);
-	
+
 	$("body").append(helpElement);
-	
+
 	$(helpElement).draggable();
 	$(helpElement).i18n();
 	$("#topbar .right").prepend("<input type=\"checkbox\" id=\"show_helper\" /><label for=\"show_helper\"></label>");
@@ -556,7 +556,7 @@ function init_main() {
 			disabled: true,
 			text:configuration["treeanno.ui.showTextOnButtons"]
 		});
-		
+
 		$( "button.button_save_document" ).button({
 			icons: { primary: "ui-icon-disk", secondary:null },
 			label: i18n.t("save"),
@@ -573,7 +573,7 @@ function init_main() {
 		$("#form_search").keyup(search);
 		$("#form_search").focus(function() {interaction_mode = INTERACTION_NONE});
 		$("#form_search").blur(function() {interaction_mode = INTERACTION_TREEANNO});
-		
+
 		$("#show_history").button({
 			icons:{primary:null,secondary:null},
 			label:i18n.t("show_history")
@@ -581,17 +581,17 @@ function init_main() {
 			$("#rsidebar").toggle();
 			if ($("#rsidebar").is(':visible'))
 				$("#content").css("width", "calc(100% - 400px)");
-			else 
+			else
 				$("#content").width("100%");
 		});
-		
+
 		$( "button.button_undo" ).button({
 			icons: { primary: "ui-icon-arrowreturnthick-1-w", secondary:null },
 			label: i18n.t("undo"),
 			text:configuration["treeanno.ui.showTextOnButtons"],
 			disabled:true
 		}).click(undo);
-		
+
 		disableSaveButton();
 		document.onkeydown = function(e) {
 			key_down(e);
@@ -599,7 +599,7 @@ function init_main() {
 		document.onkeyup = function(e) {
 			key_up(e);
 		};
-		
+
 		var url = "rpc/c/0/"+documentId+(master?"":"/"+targetUserId);
 		console.log("Querying for document content: " + url);
 		jQuery.getJSON(url, function(data) {
@@ -615,13 +615,13 @@ function init_main() {
 				breadcrumbHTML += " &gt; "+data["user"]["name"];
 			}
 			$(".breadcrumb").append(breadcrumbHTML);
-			
+
 			document.title = treeanno["name"]+" "+treeanno["version"]+": "+data["document"]["name"];
-			
+
 			var list = data["list"];
-			
+
 			init_operations(data['document']['project']['type']);
-			
+
 			while (list.length > 0) {
 				var item = list.shift();
 				if ('parentId' in item) {
@@ -637,13 +637,13 @@ function init_main() {
 						$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, 0));
 					}
 				} else {
-					$('#outline').append(get_html_item(item, 0));
+					$('.outline').append(get_html_item(item, 0));
 				}
 			}
 
-			$('#outline > li:first-child').addClass("selected");
-			
-			$("#outline li > div").click(function(e) {
+			$('.outline > li:first-child').addClass("selected");
+
+			$(".outline li > div").click(function(e) {
 				var liElement = $(this).parent();
 				if (shifted) {
 					// if they have the same parent
@@ -652,13 +652,13 @@ function init_main() {
 						$(liElement).addClass("selected");
 					}
 				} else {
-					$("#outline li").removeClass("selected");
+					$(".outline li").removeClass("selected");
 					$(liElement).addClass("selected");
 				}
 			});
 			init_help();
 			$("#status .loading").hide();
-			$("#outline").show();
+			$(".outline").show();
 		}).error(function(xhr) {
 			noty({
 				text:xhr,
@@ -831,7 +831,7 @@ function init_parallel() {
 		icons: { primary: "ui-icon-person", secondary:null },
 		disabled: true
 	});
-	
+
 	$( "button.button_change_document" ).button({
 		icons: { primary: "ui-icon-folder-collapsed", secondary:null },
 	}).click(function() {
@@ -852,7 +852,7 @@ function init_parallel() {
 	$("#form_search").keyup(search);
 	$("#form_search").focus(function() { interaction_mode = INTERACTION_NONE; });
 	$("#form_search").blur(function() { interaction_mode = INTERACTION_TREEANNO; });
-	
+
 	disableSaveButton();
 	if (parallel_mode == "segmentation") {
 		interaction_mode = INTERACTION_MERGE_SEGMENTATION;
@@ -874,7 +874,7 @@ function init_parallel() {
 	var goalElement = $(".id-"+documentIds[0]).first();
 	// ... then we load the merge document, which is a (new?) master document
 	load_parallel(goalElement, "DocumentContentHandling?documentId=", documentIds[0], true);
-	
+
 }
 
 function load_parallel(element, urlhead, dId, goal) {
@@ -891,17 +891,17 @@ function load_parallel(element, urlhead, dId, goal) {
 			} else {
 				//$(".breadcrumb").append(", "+data["document"]["name"]);
 				// document.title = document.title + ", " + data["document"]["name"];
-			} 
+			}
 		} else {
 			$(element).parent().prepend("<h2>"+i18n.t("parallel.merged")+"</h2>");
-			
+
 		}
 		
 			var list = data["list"];
-			
+
 			while (list.length > 0) {
 				var item = list.shift();
-				
+
 			if (parallel_mode != 'segmentation' && 'parentId' in item) {
 					var parentId = item['parentId'];
 				var parentItem = $(element).children("li[data-treeanno-id='"+parentId+"']");
@@ -916,7 +916,7 @@ function load_parallel(element, urlhead, dId, goal) {
 					$(element).append(get_html_item(item, 0));
 				}
 			}
-		
+
 			$("#status .loading").hide();
 			$(element).show();
 		loaded++;
@@ -953,15 +953,15 @@ function search() {
 
 function save_document() {
 	var sitems = new Array(); //items;
-	
-	$("#outline li").each(function(index, element) {
+
+	$(".outline li").each(function(index, element) {
 		var item = new Object();
 		item['id'] = $(element).attr("data-treeanno-id");
 		item['begin'] = $(element).attr("data-treeanno-begin");
 		item['end'] = $(element).attr("data-treeanno-end");
 		item['Mark1'] = $(element).hasClass("mark1");
 		// alert(id);
-		var parents = $(element).parentsUntil("#outline", "li");
+		var parents = $(element).parentsUntil(".outline", "li");
 		if (parents.length > 0) {
 			var parent = parents.first();
 			var parentId = parseInt(parent.attr("data-treeanno-id"));
@@ -988,7 +988,7 @@ function save_document() {
 					text:'Save successful'
 				});
 				$( "button.button_save_document" ).button( "option", "disabled", true );
-				$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });				
+				$( "button.button_save_document" ).button( "option", "icons", { primary: "ui-icon-check", secondary:null });
 			} else {
 				noty({
 					type:'error',
@@ -996,7 +996,7 @@ function save_document() {
 					text:data['classname']+": "+data['message']
 				});
 			}
-		}, 
+		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			noty({
 				text:textStatus+": "+errorThrown,
@@ -1004,7 +1004,7 @@ function save_document() {
 				type:'error',
 				modal:true
 			});
-			console.log(textStatus, errorThrown);			
+			console.log(textStatus, errorThrown);
 		}
 	});
 }
@@ -1036,38 +1036,38 @@ function key_up(e) {
 }
 
 function extend_selection_down() {
-	var allItems = $(".active ul.outline li:visible");
+	var allItems = $(".outline li");
 
 	// get index of last selected item
-	var index = allItems.index($("li.selected").last());
-		
+	var index = $(".selected").last().index(".outline li");
+
 	// if nothing is selected
-	if (index == -1) 
+	if (index == -1)
 		// we select the first thing on the page
 		$($(allItems).get(0)).toggleClass("selected");
-	else 
+	else
 		// if there is something after the last selected item, we
 		// add that to the selection
 		$(".selected").last().next().toggleClass("selected");
-	
+
 	// if the last selected thing is not in viewport, we scroll
 	if (!isElementInViewport($(".selected").last()))
 		$(window).scrollTop($(".selected").last().offset().top - 200);
 }
 
 function move_selection_down() {
-	var allItems = $(".active ul.outline li:visible");
+	var allItems = $(".active .outline li:visible");
 
 	// get index of last selected item
 	var index = allItems.index($("li.selected").last());
-	
+
 	// we remove the selection from everything that is selected
 		
 	$(".selected").toggleClass("selected");
 	// if nothing is selected
 	if (index == -1) {
 		// we select the first thing on the page
-		$($(allItems).get(0)).toggleClass("selected");		
+		$($(allItems).get(0)).toggleClass("selected");
 	// if there is something after the last selected item, we select that
 	} else if (index < $(allItems).length-1) {
 		// if shift is not pressed, we select the next item of all items
@@ -1083,7 +1083,7 @@ function extend_selection_up() {
 	
 	// get index of first selected item
 	var index = allItems.index($("li.selected").first());
-	
+
 	// if select the new item
 	if (index > 0) {
 			$(".selected").first().prev().toggleClass("selected");
@@ -1102,7 +1102,7 @@ function move_selection_up() {
 	// if shift is not pressed, remove the selection
 	if (index > 0)
 		$(".selected").toggleClass("selected");
-	
+
 	// if select the new item
 	if (index > 0) {
 		$($(allItems).get(index-1)).toggleClass("selected");
@@ -1134,7 +1134,7 @@ function act(keyCode) {
 					add_operation(kc, selection, val);
 					enableSaveButton();
 				}
-				if ("post" in operations[kc][interaction_mode] && 
+				if ("post" in operations[kc][interaction_mode] &&
 						"mode" in operations[kc][interaction_mode]["post"]) {
 					interaction_mode = operations[kc][interaction_mode]["post"]["mode"];
 				}
@@ -1155,8 +1155,8 @@ function key_down(e) {
 }
 
 /**
- * This method checks whether the preconditions for a certain keycode are met, 
- * if they are set at all. If no preconditions have been set, the method 
+ * This method checks whether the preconditions for a certain keycode are met,
+ * if they are set at all. If no preconditions have been set, the method
  * returns true.
  */
 function check_precondition(kc) {
@@ -1210,7 +1210,7 @@ function enter_category() {
 
 	var value = $("#cat_input").val();
 	$("#cat_input").remove();
-	
+
 	var r = set_category($(".selected"), value);
 	r['newcategory'] = value;
 	return r;
@@ -1218,7 +1218,7 @@ function enter_category() {
 }
 
 /**
- * Functions returns a javascript object representing an item. Field values are 
+ * Functions returns a javascript object representing an item. Field values are
  * retrieved from the DOM tree.
  * @param id The id of the item
  * @returns {___anonymous20257_20259}
@@ -1247,7 +1247,7 @@ function merge(item1, item0, newId) {
 	var correctOrder = (item1['begin'] > item0['begin']);
 	var element0 = id2element(item0['id']);
 	var element1 = id2element(item1['id']);
-	
+
 	var nitem = new Object();
 	var distance = (correctOrder?item1['begin']-item0['end']:item0['begin']-item1['end']);
 	var str = (configuration["treeanno.includeSeparationWhenMerging"]?new Array(distance+1).join(" "):"");
@@ -1256,23 +1256,23 @@ function merge(item1, item0, newId) {
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
 	nitem['id'] = (newId?newId:++idCounter);
-	
+
 	var sublist0 = $(element0).children("ul").detach();
 	element0.remove();
-	
+
 	var nhitem = get_html_item(nitem, idCounter);
 	var nj = $(element1).after(nhitem);
-	
+
 	var sublist1 = element1.children("ul").detach();
 	element1.remove();
 	nj.append(sublist0);
 	nj.append(sublist1);
-	
+
 	return {
 		split:(correctOrder?item0['end']-item0['begin']:item1['end']-item1['begin']),
 		'newId':nitem['id']
 	};
-	
+
 }
 
 
@@ -1280,13 +1280,13 @@ function merge(item1, item0, newId) {
 function splitdialog() {
 	var item = get_item($(".selected").first().attr("data-treeanno-id"));
 	$("#form_splittext").append(configuration["treeanno.ui.paragraphSplitCharacter"]+item['text']);
-	
+
 	$("#split").dialog({
 		title: i18n.t("split_dialog.title"),
 		modal: true,
 		minWidth: 400,
 		close: splitdialog_cleanup,
-		buttons: 
+		buttons:
 		[
 		    {
 		    	text: i18n.t("split_dialog.cancel"),
@@ -1303,7 +1303,7 @@ function splitdialog() {
 
 function split_move_right_text(text, dist) {
 	var p = text.indexOf(configuration["treeanno.ui.paragraphSplitCharacter"]);
-	
+
 	var newText = text.substring(0,p)+
 		text.substring(p+1,p+1+dist)+
 		configuration["treeanno.ui.paragraphSplitCharacter"]+
@@ -1373,15 +1373,15 @@ function split(item, lines, moveSelection, ids) {
 	litems[1]['begin'] = litems[0]['end'];
 	litems[1]['id'] = (ids?ids[1]:++idCounter);
 	// items[itemid] = undefined;
-	
+
 	var sublist = $(element).children("ul").detach();
 	// items[litems[1]['id']] = litems[1];
-	
+
 	var nitem1 = get_html_item(litems[1], idCounter);
 	element.after(nitem1);
 	element.next().append(sublist);
 	// items[litems[0]['id']] = litems[0];
-	
+
 	var nitem0 = get_html_item(litems[0], idCounter);
 	element.after(nitem0);
 	var nsel = element.next();
@@ -1405,7 +1405,7 @@ function splitdialog_enter() {
 		noty({
 			type:"information",
 			text:i18n.t("action.split.done", {
-				left:lines[0].substring(lines[0].length-10,lines[0].length), 
+				left:lines[0].substring(lines[0].length-10,lines[0].length),
 				right:lines[1].substring(0, 10)
 			})
 		});
@@ -1424,9 +1424,9 @@ function outdentById(id) {
 
 function outdentElement(element) {
 	var id = $(element).attr("data-treeanno-id");
-	
+
 	// if it's not the very first item
-	if (!$(element).parent("ul#outline").length) {
+	if (!$(element).parent("ul.outline").length) {
 		var newParent = $(element).parentsUntil("li").parent();
 		var parentId = parseInt($(newParent).attr("data-treeanno-id"));
 		var siblings = $(element).nextAll("li").detach();
@@ -1453,13 +1453,13 @@ function force_indent_elements(elements, newId) {
 			vitem["end"] = vitem["begin"];
 			vitem["id"] = (newId?newId:++idCounter);
 			vitem["text"] = "";
-			
+
 			var htmlItem = get_html_item(vitem, 0);
 			$(element).before(htmlItem);
 			cleanup_list();
 		}
 		indentElement(element);
-		cleanup_list();			
+		cleanup_list();
 	});
 }
 
@@ -1478,17 +1478,17 @@ function delete_virtual_node() {
 function deleteVirtualNodeElement(element, moveSelection) {
 	// check if it's really a virtual node
 	var children=[];
-	
+
 	if ($(element).attr("data-treeanno-begin") == $(element).attr("data-treeanno-end")) {
 		console.log("TreeAnno: Found a virtual node to delete")
 		var vNodeId = $(element).attr("data-treeanno-id");
-		
+
 		$(element).children("ul").children("li").each(function(i2, e2) {
 			console.log("TreeAnno: Outdenting children of virtual node");
 			outdentElement(e2);
 			children.push($(e2).attr("data-treeanno-id"));
 		});
-		
+
 		if (moveSelection)
 			$(element).prev().addClass("selected");
 		$(element).remove();
@@ -1514,13 +1514,13 @@ function indentElement(element) {
 function indent() {
 	$(".selected").each(function(index, element) {
 		indentElement(element);
-		cleanup_list();		
+		cleanup_list();
 	});
 }
 
 
 function cleanup_list() {
-	$("#outline ul:not(:has(*))").remove();
+	$(".outline ul:not(:has(*))").remove();
 }
 
 function add_operation(kc, tgts) {
@@ -1549,4 +1549,3 @@ function undo() {
 function id2element(id) {
 	return $(".active li[data-treeanno-id=\""+id+"\"]");
 }
-
