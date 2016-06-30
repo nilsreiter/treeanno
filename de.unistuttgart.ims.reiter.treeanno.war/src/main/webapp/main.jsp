@@ -48,7 +48,7 @@
 	<div id="status"><span class="loading"><img src="gfx/loading1.gif" /></span></div>
 	<div id="content">
 		<div class="outline_container">
-		<ul id="outline" class="text sortable">
+		<ul class="text sortable outline">
     	</ul>
     	</div>
 	</div>

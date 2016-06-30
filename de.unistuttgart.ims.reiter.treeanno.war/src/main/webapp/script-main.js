@@ -304,7 +304,7 @@ var ops={
 			history:false,
 			pre:{
 				fun:function() {
-					return !$(".selected").first().is($("#outline li").first());
+					return !$(".selected").first().is($(".outline li").first());
 				},
 				fail: {
 					type: "information",
@@ -320,7 +320,7 @@ var ops={
 			history:false,
 			pre: {
 				fun: function() {
-					return !$(".selected").last().is($("#outline li").last());
+					return !$(".selected").last().is($(".outline li").last());
 				},
 				fail: {
 					type: "information",
@@ -614,13 +614,13 @@ function init_main() {
 						$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, 0));
 					}
 				} else {
-					$('#outline').append(get_html_item(item, 0));
+					$('.outline').append(get_html_item(item, 0));
 				}
 			}
 
-			$('#outline > li:first-child').addClass("selected");
+			$('.outline > li:first-child').addClass("selected");
 
-			$("#outline li > div").click(function(e) {
+			$(".outline li > div").click(function(e) {
 				var liElement = $(this).parent();
 				if (shifted) {
 					// if they have the same parent
@@ -629,13 +629,13 @@ function init_main() {
 						$(liElement).addClass("selected");
 					}
 				} else {
-					$("#outline li").removeClass("selected");
+					$(".outline li").removeClass("selected");
 					$(liElement).addClass("selected");
 				}
 			});
 			init_help();
 			$("#status .loading").hide();
-			$("#outline").show();
+			$(".outline").show();
 		}).error(function(xhr) {
 			noty({
 				text:xhr,
@@ -735,14 +735,14 @@ function search() {
 function save_document() {
 	var sitems = new Array(); //items;
 
-	$("#outline li").each(function(index, element) {
+	$(".outline li").each(function(index, element) {
 		var item = new Object();
 		item['id'] = $(element).attr("data-treeanno-id");
 		item['begin'] = $(element).attr("data-treeanno-begin");
 		item['end'] = $(element).attr("data-treeanno-end");
 		item['Mark1'] = $(element).hasClass("mark1");
 		// alert(id);
-		var parents = $(element).parentsUntil("#outline", "li");
+		var parents = $(element).parentsUntil(".outline", "li");
 		if (parents.length > 0) {
 			var parent = parents.first();
 			var parentId = parseInt(parent.attr("data-treeanno-id"));
@@ -817,10 +817,10 @@ function key_up(e) {
 }
 
 function extend_selection_down() {
-	var allItems = $("#outline li");
+	var allItems = $(".outline li");
 
 	// get index of last selected item
-	var index = $(".selected").last().index("#outline li");
+	var index = $(".selected").last().index(".outline li");
 
 	// if nothing is selected
 	if (index == -1)
@@ -837,10 +837,10 @@ function extend_selection_down() {
 }
 
 function move_selection_down() {
-	var allItems = $("#outline li");
+	var allItems = $(".outline li");
 
 	// get index of last selected item
-	var index = $(".selected").last().index("#outline li");
+	var index = $(".selected").last().index(".outline li");
 
 	// we remove the selection from everything that is selected
 	$(".selected").toggleClass("selected");
@@ -861,9 +861,9 @@ function move_selection_down() {
 }
 
 function extend_selection_up() {
-	var allItems = $("#outline li");
+	var allItems = $(".outline li");
 	// get index of first selected item
-	var index = $(".selected").first().index("#outline li");
+	var index = $(".selected").first().index(".outline li");
 
 	// if select the new item
 	if (index > 0) {
@@ -875,9 +875,9 @@ function extend_selection_up() {
 }
 
 function move_selection_up() {
-	var allItems = $("#outline li");
+	var allItems = $(".outline li");
 	// get index of first selected item
-	var index = $(".selected").first().index("#outline li");
+	var index = $(".selected").first().index(".outline li");
 	// if shift is not pressed, remove the selection
 	if (index > 0)
 		$(".selected").toggleClass("selected");
@@ -930,7 +930,7 @@ function key_down(e) {
 	if (mode[interaction_mode]['preventDefault'])
 		e.preventDefault();
 	var keyCode = e.keyCode || e.which;
-	var allItems = $("#outline li");
+	var allItems = $(".outline li");
 
 	act(keyCode);
 }
@@ -1207,7 +1207,7 @@ function outdentElement(element) {
 	var id = $(element).attr("data-treeanno-id");
 
 	// if it's not the very first item
-	if (!$(element).parent("ul#outline").length) {
+	if (!$(element).parent("ul.outline").length) {
 		var newParent = $(element).parentsUntil("li").parent();
 		var parentId = parseInt($(newParent).attr("data-treeanno-id"));
 		var siblings = $(element).nextAll("li").detach();
@@ -1301,7 +1301,7 @@ function indent() {
 
 
 function cleanup_list() {
-	$("#outline ul:not(:has(*))").remove();
+	$(".outline ul:not(:has(*))").remove();
 }
 
 function add_operation(kc, tgts) {
