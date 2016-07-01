@@ -77,9 +77,9 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
 							new JCasConverter()
-									.getJSONArrayFromAnnotations(
-											jcas,
-											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+					.getJSONArrayFromAnnotations(
+							jcas,
+							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -150,9 +150,9 @@ public class DocumentContentHandling extends HttpServlet {
 				obj.put("document", JSONUtil.getJSONObject(document));
 				obj.put("list",
 						new JCasConverter()
-								.getJSONArrayFromAnnotations(
-										jcas,
-										de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+				.getJSONArrayFromAnnotations(
+						jcas,
+						de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 				Util.returnJSON(response, obj);
 			} else {
 				throw new ServletException("JCas could not be loaded: " + docId);
@@ -212,6 +212,7 @@ public class DocumentContentHandling extends HttpServlet {
 					newDoc.setType(dType);
 					newDoc.setName(doc.getName());
 					newDoc.setProject(doc.getProject());
+					newDoc.setOrigin(doc);
 					jcas =
 							Util.addAnnotationsToJCas(
 									JCasConverter.getJCas(doc.getXmi()), jObj);
@@ -221,8 +222,8 @@ public class DocumentContentHandling extends HttpServlet {
 					break;
 				default:
 					jcas =
-							Util.addAnnotationsToJCas(
-									JCasConverter.getJCas(doc.getXmi()), jObj);
+					Util.addAnnotationsToJCas(
+							JCasConverter.getJCas(doc.getXmi()), jObj);
 					doc.setXmi(JCasConverter.getXmi(jcas));
 					r = dataLayer.updateDocument(doc);
 				}

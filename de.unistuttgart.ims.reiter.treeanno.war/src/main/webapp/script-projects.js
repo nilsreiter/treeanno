@@ -372,7 +372,7 @@ function show_documentlist(id) {
 				var trh = document.createElement("tr");
 				$(trh).append("<th>"+i18n.t("document_id")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_name")+"</th>");
-				//$(trh).append("<th>"+i18n.t("document_mod_date")+"</th>");
+				$(trh).append("<th>"+i18n.t("document_type")+"</th>");
 				$(trh).append("<th>"+i18n.t("document_actions")+"</th>");
 				$(table).append(trh);
 				header = true;
@@ -381,7 +381,7 @@ function show_documentlist(id) {
 			$(tr).addClass(data['documents'][i]['status']);
 			$(tr).append("<td>"+data['documents'][i]['document']['id']+"</td>");
 			$(tr).append("<td>"+data['documents'][i]['document']['name']+"</td>");
-			//$(tr).append("<td>"+data['documents'][i]['modificationDate']+"</td>");
+			$(tr).append("<td>"+data['documents'][i]['document']['type']+(data.documents[i].document.origin!=null?" ("+data.documents[i].document.origin+")":"")+"</td>");
 			
 			var actionCell = document.createElement("td");
 			if (al < Perm["PADMINACCESS"] && al >= Perm["WRITEACCESS"])

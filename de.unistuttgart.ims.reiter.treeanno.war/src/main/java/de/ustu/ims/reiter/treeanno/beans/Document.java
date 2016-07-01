@@ -34,6 +34,9 @@ public class Document {
 	@DatabaseField(defaultValue = "MASTER")
 	DocumentType type;
 
+	@DatabaseField(foreign = true)
+	Document origin;
+
 	public int getId() {
 		return id;
 	}
@@ -99,6 +102,14 @@ public class Document {
 
 	public void setType(DocumentType type) {
 		this.type = type;
+	}
+
+	public Document getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(Document origin) {
+		this.origin = origin;
 	}
 
 }
