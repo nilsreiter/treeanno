@@ -119,13 +119,6 @@
 			<version>1.7.0</version>
 		</dependency>
 		<dependency>
-			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-			<artifactId>
-    		de.tudarmstadt.ukp.dkpro.core.languagetool-asl
-    	</artifactId>
-			<version>1.7.0</version>
-		</dependency>
-		<dependency>
 			<groupId>de.unistuttgart.ims</groupId>
 			<artifactId>uimautil</artifactId>
 			<version>0.2</version>
@@ -149,6 +142,13 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+			<artifactId>
+				de.tudarmstadt.ukp.dkpro.core.tokit-asl
+			</artifactId>
+			<version>1.8.0</version>
 		</dependency>
 	</dependencies>
 	<scm>
