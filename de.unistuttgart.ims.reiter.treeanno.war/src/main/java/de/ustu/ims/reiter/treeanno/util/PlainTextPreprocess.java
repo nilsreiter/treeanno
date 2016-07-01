@@ -14,7 +14,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
-import de.tudarmstadt.ukp.dkpro.core.languagetool.LanguageToolSegmenter;
+import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 
 public class PlainTextPreprocess<T extends Annotation> {
 	AnalysisEngineDescription[] ae;
@@ -25,10 +25,10 @@ public class PlainTextPreprocess<T extends Annotation> {
 		this.clazz = clazz;
 		this.ae =
 				new AnalysisEngineDescription[] {
-						createEngineDescription(LanguageToolSegmenter.class),
-						createEngineDescription(MapToTreeAnnoClass.class,
-								MapToTreeAnnoClass.PARAM_CLASSNAME,
-								clazz.getCanonicalName()) };
+				createEngineDescription(BreakIteratorSegmenter.class),
+				createEngineDescription(MapToTreeAnnoClass.class,
+						MapToTreeAnnoClass.PARAM_CLASSNAME,
+						clazz.getCanonicalName()) };
 	}
 
 	public Iterator<JCas> process(File inputDirectory, String language)
@@ -37,7 +37,7 @@ public class PlainTextPreprocess<T extends Annotation> {
 				CollectionReaderFactory.createReaderDescription(
 						TextReader.class, TextReader.PARAM_SOURCE_LOCATION,
 						inputDirectory.getAbsolutePath() + File.separator
-						+ "*.txt", TextReader.PARAM_LANGUAGE, language);
+								+ "*.txt", TextReader.PARAM_LANGUAGE, language);
 
 		return SimplePipeline.iteratePipeline(crd, ae).iterator();
 	}
