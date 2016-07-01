@@ -24,6 +24,10 @@
 	//<![CDATA[
 	//]]>
 	</script>
+	<script src="jquery.noty.packaged.min.js">
+	//<![CDATA[
+	//]]>
+	</script>
 	<script src="jquery-ui/jquery-ui.js" >
 	// <![CDATA[
 	// ]]>

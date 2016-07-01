@@ -110,10 +110,18 @@
 		"annotations_title_for_X":"Annotationen für __document__",
 		"annotations_from_X":"Annotationen von __user__",
 		"open_view":"Annotationen vergleichen",
-		"select":"Auswählen"
+		"select":"Auswählen",
+		"segmentations_from_X":"Segmentierung von __user__"
 	},
 	"bc":{
 		"master":"Master: "
+	},
+	"compare":{
+		"segmentation":{
+			"true":"Identische Segmentierung",
+			"false":"Verschiedene Segmentierung vergleichen",
+			"undef":"Segmentierung"
+		}
 	},
 	"alert":{
 		"in-memory":"Datenbank nicht erreichbar. Änderungen und Annotationen können nicht gespeichert werden."

@@ -126,6 +126,11 @@ public class Util {
 		return Util.getFirstIntegerParameter(request, response, "projectId");
 	}
 
+	public static int[] getAllUserIds(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		return Util.getAllIntegerParameters(request, response, "userId");
+	}
+
 	private static int[] getAllIntegerParameters(HttpServletRequest request,
 			HttpServletResponse response, String parameterName)
 			throws IOException {

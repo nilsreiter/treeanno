@@ -28,10 +28,10 @@
 	var language = "${sessionScope.User.language}";
 	var userIds = new Array();
 	var documentId = ${param.documentId};
+	var parallel_mode = "${ paramValues.mode[0] }";
 	<c:forEach items="${paramValues.userId }" var="id">
 	userIds[userIds.length] = ${id};
 	</c:forEach>
-	[ "${paramValues.userId[0]}", "${paramValues.userId[1]}" ];
 	var treeanno = new Object();
 	treeanno["version"] = "${applicationScope['treeanno.version']}";
 	treeanno["name"] = "${applicationScope['treeanno.name']}";
@@ -52,10 +52,16 @@
 	<div id="content" class="parallel-${ fn:length(paramValues.userId) }">
 		<c:forEach items="${paramValues.userId }">
 			<div class="outline_container">
-			<ul class="outline text">
+			<ul class="outline text userDocument id-${uDocId}">
     		</ul>
     		</div>
 		</c:forEach>
+		<c:if test="${ paramValues.mode[0] eq 'segmentation' }">
+			<div class="outline_container active">
+				<ul class="outline text document id-${paramValues.documentId[0]}">
+				</ul>
+	</div>
+		</c:if>
 	</div>
 	<div id="split">
 		<p data-i18n="howto_split" class="trans">howto_split</p>

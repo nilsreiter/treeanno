@@ -8,6 +8,8 @@
   - document type
   - document status
 - The project admin can now assign documents to annotators and track their progress. 
+- We now display info about the segmentation whenever two annotated documents 
+  are selected
 
 0.7
 (this version is skipped for complicated reasons)

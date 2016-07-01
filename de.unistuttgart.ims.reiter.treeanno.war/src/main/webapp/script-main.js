@@ -3,6 +3,7 @@ var INTERACTION_TREEANNO = "treeanno";
 var INTERACTION_SPLIT = "split";
 var INTERACTION_CATEGORY = "category";
 var INTERACTION_CATEGORY_T2 = "category_t2";
+var INTERACTION_MERGE_SEGMENTATION = "segmentation";
 var interaction_mode = INTERACTION_TREEANNO;
 
 var mode = {
@@ -17,6 +18,9 @@ var mode = {
 	},
 	category_t2:{
 		preventDefault:false
+	},
+	segmentation:{
+		preventDefault:true
 	}
 };
 
@@ -25,6 +29,7 @@ var mode = {
  */
 var shifted = false;
 var idCounter = 0;
+var loaded = 0;
 
 /**
  * This array stores the edit history (locally)
@@ -304,7 +309,7 @@ var ops={
 			history:false,
 			pre:{
 				fun:function() {
-					return !$(".selected").first().is($("#outline li").first());
+					return !$(".selected").first().is($(".active .outline li:visible").first());
 				},
 				fail: {
 					type: "information",
@@ -320,7 +325,7 @@ var ops={
 			history:false,
 			pre: {
 				fun: function() {
-					return !$(".selected").last().is($("#outline li").last());
+					return !$(".selected").last().is($(".active .outline li:visible").last());
 				},
 				fail: {
 					type: "information",
@@ -422,29 +427,47 @@ var ops={
 		}
 	};
 var operations = {
+		// backspace
 		 8: { treeanno: ops.undo },
+		// enter
 		13: { split: ops.split_enter,
 			  category: ops.category_enter,
 			  category_t2: ops.category_enter },
+		// escape
 		27: { category: ops.category_cancel,
 			  split: ops.split_cancel,
 			  category_t2: ops.category_cancel},
+		// left
 		37: { treeanno: ops.outdent,
 			  split: ops.split_move_left },
-		38: { treeanno: ops.up },
+		// up
+		38: { treeanno: ops.up,
+			  segmentation: ops.up },
+		// right
 		39: { treeanno: ops.indent,
 			  split: ops.split_move_right },
-		40: { treeanno: ops.down },
+		// down
+		40: { treeanno: ops.down,
+			  segmentation: ops.down },
+		// 1
 		49: { treeanno: ops.mark },
+		// c
 		67: { treeanno: ops.categorize },
+		// d
 		68: { treeanno: ops.delete_category },
-		77: { treeanno: ops.merge },
-		83: { treeanno: ops.split },
+		// m
+		77: { treeanno: ops.merge,
+		      segmentation: ops.merge },
+		// s
+		83: { treeanno: ops.split,
+			  segmentation: ops.split }, 
 		1037: { split:ops.split_move_left_big },
-		1038: { treeanno: ops.select_up },
+		1038: { treeanno: ops.select_up,
+			    segmentation: ops.select_up },
 		1039: { treeanno: ops.force_indent,
 			    split:ops.split_move_right_big },
-		1040: { treeanno: ops.select_down },
+		1040: { treeanno: ops.select_down,
+				segmentation: ops.select_down},
 		1068: { treeanno:ops.delete_virtual_node },
 		1083: { treeanno:ops.save_document }
 };
@@ -614,13 +637,13 @@ function init_main() {
 						$("li[data-treeanno-id='"+parentId+"'] > ul").append(get_html_item(item, 0));
 					}
 				} else {
-					$('#outline').append(get_html_item(item, 0));
+					$('.outline').append(get_html_item(item, 0));
 				}
 			}
 
-			$('#outline > li:first-child').addClass("selected");
+			$('.outline > li:first-child').addClass("selected");
 
-			$("#outline li > div").click(function(e) {
+			$(".outline li > div").click(function(e) {
 				var liElement = $(this).parent();
 				if (shifted) {
 					// if they have the same parent
@@ -629,13 +652,13 @@ function init_main() {
 						$(liElement).addClass("selected");
 					}
 				} else {
-					$("#outline li").removeClass("selected");
+					$(".outline li").removeClass("selected");
 					$(liElement).addClass("selected");
 				}
 			});
 			init_help();
 			$("#status .loading").hide();
-			$("#outline").show();
+			$(".outline").show();
 		}).error(function(xhr) {
 			noty({
 				text:xhr,
@@ -645,6 +668,178 @@ function init_main() {
 			});
 			console.error(xhr);
         });
+}
+
+function init_segmentation_merge() {
+	init_all();
+	$("#split").hide();
+	$( "button.button_edit_user" ).button({
+		icons: { primary: "ui-icon-person", secondary:null },
+		disabled: true
+	});
+	
+	$( "button.button_save_document" ).button({
+		icons: { primary: "ui-icon-disk", secondary:null },
+		label: i18n.t("save"),
+	}).click(
+		function() {
+			save_document();
+		}
+	);
+	$("#button_search").button({
+		icons:{primary: "ui-icon-search", secondary: null },
+		label: i18n.t("search")
+	}).click(search);
+	$("#form_search").keyup(search);
+	$("#form_search").focus(function() { interaction_mode = INTERACTION_NONE; });
+	$("#form_search").blur(function() { interaction_mode = INTERACTION_TREEANNO; });
+	
+	disableSaveButton();
+	interaction_mode = INTERACTION_TREEANNO;
+	document.onkeydown = function(e) {
+		key_down(e);
+	};
+	document.onkeyup = function(e) {
+		key_up(e);
+	};
+	master = false;
+	var allData = {
+			'uDoc':{},
+			'doc':{}
+		};
+	for (var i = 0; i < userIds.length; i++) {
+		var dUserId = userIds[i];
+		jQuery.getJSON("rpc/c/0/"+documentIds[0]+"/"+dUserId, function(data) {
+			allData['uDoc'][data['user']['id']] = data;
+			loaded++;
+			if (loaded == 3) 
+				init_segmentation_merge2(allData);
+		});
+	}
+	jQuery.getJSON("rpc/c/0/"+documentIds[0], function(data) {
+		var breadcrumbHTML = "<a href=\"projects.jsp?projectId="+
+			data["document"]["project"]["id"]+
+			"\">"+data["document"]["project"]["name"]+
+			"</a> &gt; "+(master?i18n.t("bc.master"):"")+
+		data["document"]["name"];
+		if (targetUserId !== userId) {
+			breadcrumbHTML += " &gt; "+data["user"]["name"];
+		}
+		$(".breadcrumb").append(breadcrumbHTML);
+
+		allData['doc'][documentIds[0]] = data;
+		loaded++;
+		if (loaded == 3) 
+			init_segmentation_merge2(allData);
+	});
+	
+}
+
+function init_segmentation_merge2(data) {
+	var data0 = data['uDoc'][userIds[0]];
+	var data1 = data['uDoc'][userIds[1]];
+	var doc = data['doc'][documentIds[0]];
+	console.log(doc);
+	for (var i = 0; i < data0['list'].length; i++) {
+		var b0 = data0['list'][i]['begin'];
+		var e0 = data0['list'][i]['end'];
+		for (var j = 0; j < data1['list'].length; j++) {
+			var b1 = data1['list'][j]['begin'];
+			var e1 = data1['list'][j]['end'];
+			if (b0 == b1 && e0 == e1) {
+				data0['list'].splice(i--, 1);
+				data1['list'].splice(j--, 1);
+			}
+		}
+	}
+	var areas = [];
+	var item0 = data0.list.shift();
+	var item1 = data1.list.shift();
+	var thisArea = [];
+	while(typeof(item0) !== "undefined" || typeof(item1) !== "undefined") {
+		if (item0.begin === item1.begin) {
+			thisArea = [];
+			if (item0.end < item1.end) {
+				item0.src = 1;
+				thisArea.push(item0);
+				item0 = data0.list.shift();
+			} else if (item0.end > item1.end) {
+				item1.src = 2;
+				thisArea.push(item1);
+				item1 = data1.list.shift();
+			} else if (item0.end === item1.end) {
+				item0.src = 1;
+				item1.src = 2;
+				thisArea.push(item0);
+				thisArea.push(item1);
+				areas.push(thisArea);
+				thisArea = [];
+				item0 = data0.list.shift();
+				item1 = data1.list.shift();
+			}
+		} else if (item0.end === item1.end) {
+			item0.src = 1;
+			item1.src = 2;
+			thisArea.push(item0);
+			thisArea.push(item1);
+			areas.push(thisArea);
+			thisArea = [];
+			item0 = data0.list.shift();
+			item1 = data1.list.shift();
+		} else if (item0.end < item1.end) {
+			item0.src = 1;
+			thisArea.push(item0);
+			item0 = data0.list.shift();	
+		} else if (item0.end > item1.end) {
+			item1.src = 2;
+			thisArea.push(item1);
+			item1 = data1.list.shift();
+		}
+	}
+	var doclist = doc.list;
+	
+	$("#content thead th:nth-child(1)").text(data0.user.name);
+	$("#content thead th:nth-child(2)").text(data1.user.name);
+	$("#content thead th:nth-child(3)").text("Zieldokument");
+	
+	for (var area of areas) {
+		var row = document.createElement("tr");
+		var min = Number.MAX_SAFE_INTEGER;
+		var max = 0;
+		$(row).append("<td><ul class=\"outline\"></ul></td>");
+		$(row).append("<td><ul class=\"outline\"></ul></td>");
+		$(row).append("<td class=\"active\"><ul class=\"outline\"></ul></td>");
+		
+		for (var item of area) {
+			min = Math.min(min, item.begin);
+			max = Math.max(max, item.end);
+			$(row).children("td:nth-child("+item.src+")").children("ul").append(get_html_item(item));
+		};
+		for (var i = 0; i < doclist.length; i++) {
+			docItem = doclist.shift();
+			if (docItem.begin >= min && docItem.end <= max) {
+				$(row).children("td:nth-child(3)").children("ul").append(get_html_item(docItem));
+			} else {
+				doclist.push(docItem);
+			}
+		}
+		
+		$("#content tbody").append(row);
+	}
+	
+	var cellar  = document.createElement("ul");
+	$(cellar).addClass("outline").hide();
+	for (var item of doclist) {
+		$(cellar).append(get_html_item(item));
+	}
+	$("#content").append("<div></div>");
+	$("#content div:last-child").addClass("active");
+	$("#content div:last-child").append(cellar);
+	
+	$(".userDocument.id-"+data0.user.id).show();
+	$(".userDocument.id-"+data1.user.id).show();
+	$(".document.id-"+doc.document.id).show();
+	$("#status").hide();
 }
 
 function init_parallel() {
@@ -657,7 +852,6 @@ function init_parallel() {
 
 	$( "button.button_change_document" ).button({
 		icons: { primary: "ui-icon-folder-collapsed", secondary:null },
-		//label: i18n.t("open"),
 	}).click(function() {
 		window.location.href="projects.jsp?projectId="+projectId;
 	});
@@ -678,15 +872,37 @@ function init_parallel() {
 	$("#form_search").blur(function() { interaction_mode = INTERACTION_TREEANNO; });
 
 	disableSaveButton();
+	if (parallel_mode == "segmentation") {
+		interaction_mode = INTERACTION_MERGE_SEGMENTATION;
+		document.onkeydown = function(e) {
+			key_down(e);
+		};
+		document.onkeyup = function(e) {
+			key_up(e);
+		};
+
+	}
 
 	$(".outline").hide();
-	$("#content > div > .outline").each(function(index, element) {
-		var targetUserId = userIds[index];
-		var url = "rpc/c/0/"+documentId+"/"+targetUserId;
+	// first we load the two document by the annotators
+	for (var i = 0; i < userDocumentIds.length; i++) {
+		var uDocId = userDocumentIds[i];
+		load_parallel($(".userDocument.id-"+uDocId), "rpc/c/0/"+documentId, userId, false);
+	}
+	var goalElement = $(".id-"+documentIds[0]).first();
+	// ... then we load the merge document, which is a (new?) master document
+	load_parallel(goalElement, "DocumentContentHandling?documentId=", documentIds[0], true);
 
-		console.log(url);
-		jQuery.getJSON(url, function(data) {
-			$(element).parent().prepend("<h2>"+i18n.t("parallel.annotations_from_X",{"user":data["user"]["name"]})+"</h2>");
+}
+
+function load_parallel(element, urlhead, dId, goal) {
+	jQuery.getJSON(urlhead+dId, function(data) {
+		var titleString = "parallel.annotations_from_X";
+		if (parallel_mode == "segmentation") {
+			titleString = "parallel.segmentations_from_X";
+		}
+		if (!goal) {
+			$(element).parent().prepend("<h2>"+i18n.t(titleString,{"user":data["document"]["user"]["name"]})+"</h2>");
 			if (ends_with($(".breadcrumb").text().trim(), ">")) {
 				$(".breadcrumb").append(" <a href=\"projects.jsp?projectId="+data["document"]["project"]["id"]+"\">"+data["document"]["project"]["name"]+"</a> &gt; "+i18n.t("parallel.annotations_for_X",{"document":data["document"]["name"]}));
 				document.title = treeanno["name"]+" "+treeanno["version"]+": "+i18n.t("parallel.annotations_title_for_X",{"document":data["document"]["name"]});
@@ -694,15 +910,19 @@ function init_parallel() {
 				//$(".breadcrumb").append(", "+data["document"]["name"]);
 				// document.title = document.title + ", " + data["document"]["name"];
 			}
+		} else {
+			$(element).parent().prepend("<h2>"+i18n.t("parallel.merged")+"</h2>");
 
+		}
+		
 			var list = data["list"];
 
 			while (list.length > 0) {
 				var item = list.shift();
 
-				if ('parentId' in item) {
+			if (parallel_mode != 'segmentation' && 'parentId' in item) {
 					var parentId = item['parentId'];
-					var parentItem = $("li[data-treeanno-id='"+parentId+"']", element);
+				var parentItem = $(element).children("li[data-treeanno-id='"+parentId+"']");
 					if (parentItem.length == 0)
 						list.push(item);
 					else {
@@ -717,14 +937,31 @@ function init_parallel() {
 
 			$("#status .loading").hide();
 			$(element).show();
-			/*$("li > div", element).smartTruncation({
-			    'truncateCenter'    : true
-			 });*/
+		loaded++;
+		if (loaded == 3) {
+			$(".userDocument > li").each(function(index, element) {
+				var begin = parseInt($(element).attr("data-treeanno-begin"));
+				var end = parseInt($(element).attr("data-treeanno-end"));
+				
+				var objects = $(".userDocument li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']");
+				if (objects.length == 2) {
+					$(objects).replaceWith("<hr/>");
+					$(".document li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']").replaceWith("<hr/>");
+				}
+				
 		});
+			$(".text > hr + hr").remove();
+			
+			$(".text > hr").each(function(index, element) {
+				$(element).nextUntil("hr").wrapAll("<div></div>");
+	});
+
+			
+			$(".document li:visible()").first().addClass("selected");
+}
 	});
 
 }
-
 
 function search() {
 	$("li.searchFound").removeClass("searchFound");
@@ -735,14 +972,13 @@ function search() {
 function save_document() {
 	var sitems = new Array(); //items;
 
-	$("#outline li").each(function(index, element) {
+	$(".active .outline li").each(function(index, element) {
 		var item = new Object();
 		item['id'] = $(element).attr("data-treeanno-id");
 		item['begin'] = $(element).attr("data-treeanno-begin");
 		item['end'] = $(element).attr("data-treeanno-end");
 		item['Mark1'] = $(element).hasClass("mark1");
-		// alert(id);
-		var parents = $(element).parentsUntil("#outline", "li");
+		var parents = $(element).parentsUntil(".outline", "li");
 		if (parents.length > 0) {
 			var parent = parents.first();
 			var parentId = parseInt(parent.attr("data-treeanno-id"));
@@ -751,7 +987,14 @@ function save_document() {
 		item['category'] = $(element).children("p").text();
 		sitems.push(item);
 	});
-	var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
+	var url = "rpc/c/0/"+documentId+"/";
+	if (master) {
+		url += "m";
+	} else if (typeof(parallel_mode) !== "undefined" ) {
+		url += "ms";
+	} else {
+		url += userId
+	}
 	console.log(url);
 	$.ajax({
 		type: "POST",
@@ -817,10 +1060,10 @@ function key_up(e) {
 }
 
 function extend_selection_down() {
-	var allItems = $("#outline li");
+	var allItems = $(".outline li");
 
 	// get index of last selected item
-	var index = $(".selected").last().index("#outline li");
+	var index = $(".selected").last().index(".outline li");
 
 	// if nothing is selected
 	if (index == -1)
@@ -837,14 +1080,14 @@ function extend_selection_down() {
 }
 
 function move_selection_down() {
-	var allItems = $("#outline li");
+	var allItems = $(".active .outline li:visible");
 
 	// get index of last selected item
-	var index = $(".selected").last().index("#outline li");
+	var index = allItems.index($("li.selected").last());
 
 	// we remove the selection from everything that is selected
+		
 	$(".selected").toggleClass("selected");
-
 	// if nothing is selected
 	if (index == -1) {
 		// we select the first thing on the page
@@ -852,7 +1095,6 @@ function move_selection_down() {
 	// if there is something after the last selected item, we select that
 	} else if (index < $(allItems).length-1) {
 		// if shift is not pressed, we select the next item of all items
-		if (!shifted)
 			$($(allItems).get(index+1)).toggleClass("selected");
 	}
 	// if the last selected thing is not in viewport, we scroll
@@ -861,9 +1103,10 @@ function move_selection_down() {
 }
 
 function extend_selection_up() {
-	var allItems = $("#outline li");
+	var allItems = $(".active ul.outline li");
+	
 	// get index of first selected item
-	var index = $(".selected").first().index("#outline li");
+	var index = allItems.index($("li.selected").first());
 
 	// if select the new item
 	if (index > 0) {
@@ -875,9 +1118,11 @@ function extend_selection_up() {
 }
 
 function move_selection_up() {
-	var allItems = $("#outline li");
+	var allItems = $(".active ul.outline li:visible");
+
 	// get index of first selected item
-	var index = $(".selected").first().index("#outline li");
+	var index = allItems.index($("li.selected").first());
+	
 	// if shift is not pressed, remove the selection
 	if (index > 0)
 		$(".selected").toggleClass("selected");
@@ -930,8 +1175,6 @@ function key_down(e) {
 	if (mode[interaction_mode]['preventDefault'])
 		e.preventDefault();
 	var keyCode = e.keyCode || e.which;
-	var allItems = $("#outline li");
-
 	act(keyCode);
 }
 
@@ -1207,7 +1450,7 @@ function outdentElement(element) {
 	var id = $(element).attr("data-treeanno-id");
 
 	// if it's not the very first item
-	if (!$(element).parent("ul#outline").length) {
+	if (!$(element).parent("ul.outline").length) {
 		var newParent = $(element).parentsUntil("li").parent();
 		var parentId = parseInt($(newParent).attr("data-treeanno-id"));
 		var siblings = $(element).nextAll("li").detach();
@@ -1301,7 +1544,7 @@ function indent() {
 
 
 function cleanup_list() {
-	$("#outline ul:not(:has(*))").remove();
+	$(".outline ul:not(:has(*))").remove();
 }
 
 function add_operation(kc, tgts) {
@@ -1328,5 +1571,5 @@ function undo() {
 }
 
 function id2element(id) {
-	return $("li[data-treeanno-id=\""+id+"\"]");
+	return $(".active li[data-treeanno-id=\""+id+"\"]");
 }

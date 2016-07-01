@@ -33,7 +33,6 @@ div#artifact {
 	padding:5px;
 }
 
-#outline li div .drg, 
 .outline li div .drg { 
 	 padding:1px;
 	  margin:0 .5em 0 0; 
@@ -44,7 +43,7 @@ div#artifact {
 	max-width:45%
 }
 .parallel-3 .outline_container {
-	max-width:30%
+	width:30%
 }
 .outline_container {
 	float:left;
@@ -54,27 +53,22 @@ div#artifact {
 	
 }
 
-#outline,
 .outline { 
 	margin:.5em 0;
 		 }
-#outline li,
 .outline li { padding:0; margin:.5em 0 0 0; }
-#outline li div,
 .outline li div { margin:0; padding:.25em; position:relative; border:1px solid #aaa; }
-#outline, 
 .outline,
-#outline ul,
 .outline ul { margin:0;list-style-type:none; }
-.outline li div a.del,
-#outline li div a.del { color:#ccc; top:-5px; right:5px;  font-size:20px; position:absolute; text-decoration:none; }
-.outline li div a.del:hover,
-#outline li div a.del:hover { color:#c33; }
-.outline li.rem > div,
-#outline li.rem > div { border:1px solid #000; }
+.outline li div a.del { color:#ccc; top:-5px; right:5px;  font-size:20px; position:absolute; text-decoration:none; }
+.outline li div a.del:hover { color:#c33; }
+.outline li.rem > div { border:1px solid #000; }
 .placeholder { background:#eee; }
 .nesttoodeep { background:#ffdedd; }
 
+#content table.segmentationmerge tr > td {
+	padding-bottom:40px;
+}
 
 #split,#merge { display:none; }
 #form_mergecandidates { width:350px; }
@@ -185,6 +179,12 @@ span.search_container {
 	font-family:monospace;
 	font-size:small;
 }
+
+#segcompare {
+	margin-left:10px;
+	display: inline-block;
+}
+
 
 .noty_message {
 	font-family:sans-serif;

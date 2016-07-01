@@ -24,6 +24,11 @@ public class JSONUtil {
 		json.put("id", document.getId());
 		json.put("name", document.getName());
 		json.put("project", JSONUtil.getJSONObject(document.getProject()));
+		json.put("type", document.getType());
+		if (document.getOrigin() != null)
+			json.put("origin", document.getOrigin().getId());
+		else
+			json.put("origin", JSONObject.NULL);
 		return json;
 	}
 
