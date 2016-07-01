@@ -978,7 +978,6 @@ function save_document() {
 		item['begin'] = $(element).attr("data-treeanno-begin");
 		item['end'] = $(element).attr("data-treeanno-end");
 		item['Mark1'] = $(element).hasClass("mark1");
-		// alert(id);
 		var parents = $(element).parentsUntil(".outline", "li");
 		if (parents.length > 0) {
 			var parent = parents.first();
@@ -988,7 +987,14 @@ function save_document() {
 		item['category'] = $(element).children("p").text();
 		sitems.push(item);
 	});
-	var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
+	var url = "rpc/c/0/"+documentId+"/";
+	if (master) {
+		url += "m";
+	} else if (typeof(parallel_mode) !== "undefined" ) {
+		url += "ms";
+	} else {
+		url += userId
+	}
 	console.log(url);
 	$.ajax({
 		type: "POST",

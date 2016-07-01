@@ -19,6 +19,7 @@ import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.DocumentStatus;
+import de.ustu.ims.reiter.treeanno.beans.DocumentType;
 import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
@@ -47,6 +48,7 @@ public class DocumentContentHandling extends HttpServlet {
 
 	}
 
+	@Deprecated
 	protected void processUserDocumentId(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		DataLayer dl = CW.getDataLayer(getServletContext());
@@ -75,9 +77,9 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
 							new JCasConverter()
-					.getJSONArrayFromAnnotations(
-							jcas,
-							de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+									.getJSONArrayFromAnnotations(
+											jcas,
+											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
 					throw new ServletException("JCas could not be loaded: "
@@ -118,7 +120,9 @@ public class DocumentContentHandling extends HttpServlet {
 			}
 			User targetUser = dl.getUser(targetUserId);
 			// if the request parameter "master" has been set
-			boolean master = (request.getParameter("master") != null);
+			DocumentType dType = null;
+			if (request.getParameter("type") != null)
+				dType = DocumentType.valueOf(request.getParameter("type"));
 			Document document = dl.getDocument(docId);
 			if (document == null) {
 				throw new ServletException("Document could not be loaded.");
@@ -131,10 +135,12 @@ public class DocumentContentHandling extends HttpServlet {
 
 			JCas jcas = null;
 			JSONObject obj = new JSONObject();
-			if (master && accessLevel >= Perm.PADMIN_ACCESS) {
+			if (dType == DocumentType.MASTER
+					&& accessLevel >= Perm.PADMIN_ACCESS) {
 				Document doc = dl.getDocument(docId);
 				jcas = JCasConverter.getJCas(doc.getXmi());
 				obj.put("master", true);
+
 			} else {
 				UserDocument udoc = dl.createUserDocument(targetUser, document);
 				jcas = JCasConverter.getJCas(udoc.getXmi());
@@ -189,7 +195,7 @@ public class DocumentContentHandling extends HttpServlet {
 		JSONObject jObj = new JSONObject(s);
 		JSONObject returnObject = new JSONObject();
 		int docId = Util.getFirstDocumentId(request, response);
-		boolean master = (request.getParameter("master") != null);
+		DocumentType dType = DocumentType.valueOf(request.getParameter("type"));
 		boolean r = false;
 
 		try {
@@ -198,14 +204,28 @@ public class DocumentContentHandling extends HttpServlet {
 					dataLayer.getAccessLevel(doc.getProject(),
 							CW.getUser(request));
 
-			if (master && accessLevel >= Perm.PADMIN_ACCESS) {
-				// saving the master document
-				// TODO: permission level check
-				JCas jcas =
-						Util.addAnnotationsToJCas(
-								JCasConverter.getJCas(doc.getXmi()), jObj);
-				doc.setXmi(JCasConverter.getXmi(jcas));
-				r = dataLayer.updateDocument(doc);
+			if (accessLevel >= Perm.PADMIN_ACCESS) {
+				JCas jcas;
+				switch (dType) {
+				case MERGED_SEG:
+					Document newDoc = new Document();
+					newDoc.setType(dType);
+					newDoc.setName(doc.getName());
+					newDoc.setProject(doc.getProject());
+					jcas =
+							Util.addAnnotationsToJCas(
+									JCasConverter.getJCas(doc.getXmi()), jObj);
+					newDoc.setXmi(JCasConverter.getXmi(jcas));
+					dataLayer.createNewDocument(newDoc);
+					r = dataLayer.updateDocument(newDoc);
+					break;
+				default:
+					jcas =
+							Util.addAnnotationsToJCas(
+									JCasConverter.getJCas(doc.getXmi()), jObj);
+					doc.setXmi(JCasConverter.getXmi(jcas));
+					r = dataLayer.updateDocument(doc);
+				}
 			} else {
 				// saving the user document
 				UserDocument document =
