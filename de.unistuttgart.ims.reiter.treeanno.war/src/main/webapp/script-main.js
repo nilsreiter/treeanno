@@ -708,8 +708,8 @@ function init_segmentation_merge() {
 			'doc':{}
 		};
 	for (var i = 0; i < userIds.length; i++) {
-		var userId = userIds[i];
-		jQuery.getJSON("rpc/c/0/"+documentIds[0]+"/"+userId, function(data) {
+		var dUserId = userIds[i];
+		jQuery.getJSON("rpc/c/0/"+documentIds[0]+"/"+dUserId, function(data) {
 			allData['uDoc'][data['user']['id']] = data;
 			loaded++;
 			if (loaded == 3) 
@@ -717,6 +717,16 @@ function init_segmentation_merge() {
 		});
 	}
 	jQuery.getJSON("rpc/c/0/"+documentIds[0], function(data) {
+		var breadcrumbHTML = "<a href=\"projects.jsp?projectId="+
+			data["document"]["project"]["id"]+
+			"\">"+data["document"]["project"]["name"]+
+			"</a> &gt; "+(master?i18n.t("bc.master"):"")+
+		data["document"]["name"];
+		if (targetUserId !== userId) {
+			breadcrumbHTML += " &gt; "+data["user"]["name"];
+		}
+		$(".breadcrumb").append(breadcrumbHTML);
+
 		allData['doc'][documentIds[0]] = data;
 		loaded++;
 		if (loaded == 3) 
