@@ -21,8 +21,12 @@ import org.xml.sax.SAXException;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
+import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
+import de.ustu.ims.reiter.treeanno.tree.PrintParenthesesWalker;
+import de.ustu.ims.reiter.treeanno.tree.PrintXmlWalker;
+import de.ustu.ims.reiter.treeanno.tree.Walker;
 import de.ustu.ims.reiter.treeanno.uima.GraphExporter;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.Util;
@@ -66,6 +70,10 @@ public class DocumentExport extends HttpServlet {
 						.equalsIgnoreCase("PAR")) {
 					exportPAR(document, zos);
 				}
+				if (request.getParameterValues("format")[0]
+						.equalsIgnoreCase("XML")) {
+					exportXML(document, zos);
+				}
 			}
 			zos.flush();
 		} catch (SQLException | UIMAException | SAXException e1) {
@@ -76,7 +84,7 @@ public class DocumentExport extends HttpServlet {
 		return;
 	}
 
-	protected void exportPAR(Document document, ZipOutputStream zos)
+	protected void exportXML(Document document, ZipOutputStream zos)
 			throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
@@ -91,9 +99,46 @@ public class DocumentExport extends HttpServlet {
 		// root folder
 		// zos.putNextEntry(new ZipEntry(name + "/"));
 
+		Walker<TreeSegment> walker = new PrintXmlWalker();
+
+		// original document
+		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + ".xml"));
+		String treeString = GraphExporter.getTreeString(jcas, walker);
+		zos.write(treeString.getBytes());
+
+		// annotations folder
+		zos.putNextEntry(new ZipEntry(name + "/annotations/"));
+
+		for (UserDocument ud : document.getUserDocuments()) {
+			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId()
+					+ ".xml"));
+			treeString =
+					GraphExporter.getTreeString(
+							JCasConverter.getJCas(ud.getXmi()), walker);
+			zos.write(treeString.getBytes());
+
+		}
+	}
+
+	protected void exportPAR(Document document, ZipOutputStream zos)
+			throws UIMAException, SAXException, IOException {
+		JCas jcas = JCasConverter.getJCas(document.getXmi());
+		String name = document.getName();
+		if (name == null || name.isEmpty())
+			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
+					.getDocumentTitle();
+		if (name == null || name.isEmpty())
+			name =
+					JCasUtil.selectSingle(jcas, DocumentMetaData.class)
+			.getDocumentId();
+		Walker<TreeSegment> walker = new PrintParenthesesWalker<TreeSegment>();
+
+		// root folder
+		// zos.putNextEntry(new ZipEntry(name + "/"));
+
 		// original document
 		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + ".par"));
-		String treeString = GraphExporter.getTreeString(jcas);
+		String treeString = GraphExporter.getTreeString(jcas, walker);
 		zos.write(treeString.getBytes());
 
 		// annotations folder
@@ -103,8 +148,8 @@ public class DocumentExport extends HttpServlet {
 			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId()
 					+ ".par"));
 			treeString =
-					GraphExporter.getTreeString(JCasConverter.getJCas(ud
-							.getXmi()));
+					GraphExporter.getTreeString(
+							JCasConverter.getJCas(ud.getXmi()), walker);
 			zos.write(treeString.getBytes());
 
 		}

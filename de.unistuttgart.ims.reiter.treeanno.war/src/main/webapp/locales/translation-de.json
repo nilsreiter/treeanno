@@ -102,7 +102,8 @@
 		"title_for_X":"Exportoptionen für Dokument &bdquo;__document__&ldquo;",
 		"breadcrumb_for_X":"Export Dokument &bdquo;__document__&ldquo;",
 		"xmi":"UIMA XMI",
-		"par":"Klammerausdruck"
+		"par":"Klammerausdruck",
+		"xml":"Simple XML"
 	},
 	"parallel":{
 		"annotations_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
