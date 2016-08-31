@@ -17,19 +17,25 @@ import org.apache.uima.resource.ResourceInitializationException;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 import de.ustu.ims.reiter.treeanno.tree.Node;
-import de.ustu.ims.reiter.treeanno.tree.PrintParenthesesWalker;
 import de.ustu.ims.reiter.treeanno.tree.Tree;
 import de.ustu.ims.reiter.treeanno.tree.Walker;
 
 public class GraphExporter extends JCasConsumer_ImplBase {
 
 	public static final String PARAM_OUTPUT_DIRECTORY = "Output Directory";
+	public static final String PARAM_WALKER_CLASS_NAME = "Walker Class";
 
 	@ConfigurationParameter(name = PARAM_OUTPUT_DIRECTORY)
 	String outputLocationPath;
 
+	@ConfigurationParameter(name = PARAM_WALKER_CLASS_NAME)
+	String walkerClassName;
+
 	File outputLocation;
 
+	Class<? extends Walker<?>> walkerClass;
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(final UimaContext context)
 			throws ResourceInitializationException {
@@ -38,12 +44,26 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 		outputLocation = new File(outputLocationPath);
 		if (!outputLocation.isDirectory())
 			throw new ResourceInitializationException();
+
+		try {
+			walkerClass =
+					(Class<? extends Walker<?>>) Class.forName(walkerClassName);
+		} catch (ClassNotFoundException e) {
+			throw new ResourceInitializationException(e);
+		}
 	}
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 
-		String treeString = getTreeString(jcas);
+		String treeString;
+		try {
+			treeString =
+					getTreeString(jcas,
+							(Walker<TreeSegment>) walkerClass.newInstance());
+		} catch (InstantiationException | IllegalAccessException e1) {
+			throw new AnalysisEngineProcessException(e1);
+		}
 
 		String did = DocumentMetaData.get(jcas).getDocumentId();
 		File outFile = new File(outputLocation, did + ".par");
@@ -61,7 +81,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 	}
 
-	public static String getTreeString(JCas jcas) {
+	public static String getTreeString(JCas jcas, Walker<TreeSegment> walker) {
 		Tree<TreeSegment> tree = new Tree<TreeSegment>();
 		tree.setRoot(new Node<TreeSegment>(null));
 
@@ -74,7 +94,6 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 				tree.addChild(ts.getParent(), ts);
 			}
 		}
-		Walker<TreeSegment> walker = new PrintParenthesesWalker<TreeSegment>();
 		tree.depthFirstWalk(walker);
 		return walker.toString();
 	}
