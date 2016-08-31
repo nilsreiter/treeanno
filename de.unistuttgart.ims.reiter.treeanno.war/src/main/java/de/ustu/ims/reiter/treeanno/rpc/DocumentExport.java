@@ -105,6 +105,7 @@ public class DocumentExport extends HttpServlet {
 		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + ".xml"));
 		String treeString = GraphExporter.getTreeString(jcas, walker);
 		zos.write(treeString.getBytes());
+		zos.flush();
 
 		// annotations folder
 		zos.putNextEntry(new ZipEntry(name + "/annotations/"));
@@ -116,7 +117,7 @@ public class DocumentExport extends HttpServlet {
 					GraphExporter.getTreeString(
 							JCasConverter.getJCas(ud.getXmi()), walker);
 			zos.write(treeString.getBytes());
-
+			zos.flush();
 		}
 	}
 
