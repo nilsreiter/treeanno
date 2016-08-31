@@ -24,7 +24,7 @@
   		</dependency>
   	</dependencies>
   </dependencyManagement>
-  <modules>
+    <modules>
   	<module>de.unistuttgart.ims.reiter.treeanno.api</module>
   	<module>de.unistuttgart.ims.reiter.treeanno.tools</module>
   	<module>de.unistuttgart.ims.reiter.treeanno.util</module>
