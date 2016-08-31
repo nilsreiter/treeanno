@@ -5,13 +5,13 @@ public class PrintParenthesesWalker<T> implements Walker<T> {
 	StringBuilder b;
 
 	@Override
-	public void beginNode(Node<T> node) {
+	public void beginNode(Node<T> node, Node<T> parent) {
 		b.append('(');
 		// b.append(node.getObject().toString());
 	}
 
 	@Override
-	public void endNode(Node<T> node) {
+	public void endNode(Node<T> node, Node<T> parent) {
 		b.append(')');
 	}
 
