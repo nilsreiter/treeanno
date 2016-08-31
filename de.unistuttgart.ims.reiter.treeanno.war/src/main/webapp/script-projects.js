@@ -19,7 +19,7 @@ function init_projects() {
 	
 	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
 	$(".splitleft #projectlistarea").hide();
-	jQuery.getJSON("rpc/projectlist", function(data) {
+	jQuery.getJSON("rpc/projects", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
 			var id=data[i]['id'];
@@ -50,14 +50,66 @@ function init_projects() {
 	});
 }
 
-function show_annodoclist(id) {
+function show_exportoptions(projectId,document) {
+	
+	$("#annodoclistarea").remove();
+	$("#topbar .left .adocname").remove();
+
+	$("#content .splitright").append("<div id=\"annodoclistarea\"></div>");
+	var area = $("#annodoclistarea");
+	
+	area.hide();
+	
+	area.append("<h2>"+i18n.t("exportoptions.title_for_X", {"document":document['name']})+"</h2>");
+	$("#topbar .left").append("<span class=\"adocname\">&nbsp;&gt; "+i18n.t("exportoptions.breadcrumb_for_X", {"document":document['name']})+"</span>");
+	
+	area.append("<div class=\"actionbar\"></div>");
+	var abar = area.children(".actionbar");
+	abar.append("<button class=\"export_xmi\" name=\"export_xmi\" value=\""+document['id']+"\">"+i18n.t("exportoptions.xmi")+"</button>");
+	abar.append("<button class=\"export_par\" name=\"export_par\" value=\""+document['id']+"\">"+i18n.t("exportoptions.par")+"</button>");
+	abar.append("<button class=\"export_xml\" name=\"export_xml\" value=\""+document['id']+"\">"+i18n.t("exportoptions.xml")+"</button>");
+	
+	abar.children(".export_xmi").button({
+		label:i18n.t("exportoptions.xmi"),
+		text:configuration["treeanno.ui.showTextOnButtons"]
+	}).click({
+		'documentId':document['id']
+	}, function(event) {
+		window.location.href="rpc/xmi/"+projectId+"/"+event.data.documentId;
+	});
+	
+	abar.children(".export_par").button({
+		label:i18n.t("exportoptions.par"),
+		text:configuration["treeanno.ui.showTextOnButtons"]
+	}).click({
+		'documentId':document['id']
+	}, function(event) {
+		window.location.href="rpc/par/"+projectId+"/"+event.data.documentId;
+	});
+	
+	abar.children(".export_xml").button({
+		label:i18n.t("exportoptions.xml"),
+		text:configuration["treeanno.ui.showTextOnButtons"]
+	}).click({
+		'documentId':document['id']
+	}, function(event) {
+		window.location.href="rpc/xml/"+projectId+"/"+event.data.documentId;
+	});
+	
+	abar.buttonset();
+	
+	area.show();
+	
+}
+
+function show_annodoclist(projectId, id) {
 	$("#annodoclistarea").remove();
 	$("#topbar .left .adocname").remove();
 
 	$("#content .splitright").append("<div id=\"annodoclistarea\"></div>");
 	$("#annodoclistarea").hide();
 
-	jQuery.getJSON("rpc/userdocumentlist?documentId="+id, function(data) {
+	jQuery.getJSON("rpc/"+projectId+"/"+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
 
@@ -107,9 +159,10 @@ function show_annodoclist(id) {
 				}).click({'userDocumentId':data['documents'][i]['id']}, function(event) {
 					if (confirm(i18n.t("document_action_delete_confirm"))) {
 						jQuery.ajax({
-							url:"DocumentHandling?action=delete&userDocumentId="+event.data.userDocumentId,
+							url:"rpc/c/"+projectId+"/"+id+"/"+event.data.userDocumentId,
 							complete:function() {show_annodoclist(id); },
-							method:"DELETE"
+							method:"DELETE",
+							dataType:"json"
 						});
 					}
 				});
@@ -159,7 +212,7 @@ function show_documentlist(id) {
 	$("#documentlistarea").hide();		
 
 	
-	jQuery.getJSON("rpc/documentlist?projectId="+id, function(data) {
+	jQuery.getJSON("rpc/"+id, function(data) {
 		var header = false;
 		var table = document.createElement("table");
 		var al = data['accesslevel'];
@@ -210,7 +263,7 @@ function show_documentlist(id) {
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
-				jQuery.getJSON("rpc/userdocumentlist?documentId="+event.data.documentId, function(data) {
+				jQuery.getJSON("rpc/"+id+"/"+event.data.documentId, function(data) {
 					if ('documents' in data && data['documents'].length>0) {
 						if (confirm(i18n.t("document_action_open_master_confirm"))) {
 							window.location.href="main.jsp?master=master&documentId="+event.data.documentId;							
@@ -244,7 +297,7 @@ function show_documentlist(id) {
 					},{ 
 						text: i18n.t("rename_dialog.ok"),
 						click: function() {
-							jQuery.getJSON("DocumentHandling?action=rename&name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
+							jQuery.getJSON("rpc/document/rename?name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
 								show_documentlist(id);
 							});
 					        $( this ).dialog( "close" );
@@ -265,9 +318,10 @@ function show_documentlist(id) {
 			}, function(event) {
 				if (confirm(i18n.t("document_action_delete_confirm"))) {
 					jQuery.ajax({
-						url:"DocumentHandling?action=delete&documentId="+event.data.documentId,
+						url:"rpc/c/"+id+"/"+event.data.documentId,
 						complete:function() {show_documentlist(id); },
-						method:"DELETE"
+						method:"DELETE",
+						dataType:"json"
 					});
 				}
 			});
@@ -279,7 +333,7 @@ function show_documentlist(id) {
 			}).click({
 				'documentId':data['documents'][i]['id']
 			}, function(event) {
-				show_annodoclist(event.data.documentId);
+				show_annodoclist(id, event.data.documentId);
 			});
 			
 			
@@ -289,9 +343,10 @@ function show_documentlist(id) {
 				icons:{primary:"ui-icon-arrowstop-1-s", secondary:null},
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
-				'documentId':data['documents'][i]['id']
+				'document':data['documents'][i]
 			}, function(event) {
-				window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
+				show_exportoptions(id, event.data.document);
+				// window.location.href="DocumentHandling?action=export&documentId="+event.data.documentId;
 			});
 			
 			

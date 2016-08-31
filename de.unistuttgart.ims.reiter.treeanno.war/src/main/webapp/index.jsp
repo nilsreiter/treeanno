@@ -47,6 +47,7 @@
 	</c:if>
 	<script>
 	// <![CDATA[
+	var language = configuration["treeanno.user.defaultlanguage"];
 	$(document).ready(init_trans(function() {
 		init_all();
 		$("button.button_login").button({

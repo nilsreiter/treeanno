@@ -16,8 +16,20 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<finalName>treeanno</finalName>
+		<finalName>treeanno##${project.version}</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<path>/${project.build.finalName}</path>
+					<update>true</update>
+					<url>http://zwergdrossel.ims.uni-stuttgart.de:8080/manager/text</url>
+					<server>zwergdrossel</server>
+					<tag>${project.version}</tag>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
@@ -174,6 +186,11 @@
 			<artifactId>h2</artifactId>
 			<version>1.4.191</version>
 		</dependency>
+		<dependency>
+			<groupId>xom</groupId>
+			<artifactId>xom</artifactId>
+			<version>1.2.5</version>
+		</dependency>
 	</dependencies>
 	<scm>
 		<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>
@@ -184,7 +201,7 @@
 	<parent>
 		<groupId>de.unistuttgart.ims.reiter</groupId>
 		<artifactId>treeanno</artifactId>
-		<version>0.6.5</version>
+		<version>0.6.6</version>
 	</parent>
 	<name>${parent.name}</name>
 </project>

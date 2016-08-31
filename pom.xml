@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.unistuttgart.ims.reiter</groupId>
   <packaging>pom</packaging>
-  <version>0.6.5</version>
+  <version>0.6.6</version>
   <name>TreeAnno</name>
   <url>https://clarin06.ims.uni-stuttgart.de/reiterns/treeanno</url>
   <properties>
@@ -24,7 +24,7 @@
   		</dependency>
   	</dependencies>
   </dependencyManagement>
-  <modules>
+    <modules>
   	<module>de.unistuttgart.ims.reiter.treeanno.api</module>
   	<module>de.unistuttgart.ims.reiter.treeanno.tools</module>
   	<module>de.unistuttgart.ims.reiter.treeanno.util</module>
