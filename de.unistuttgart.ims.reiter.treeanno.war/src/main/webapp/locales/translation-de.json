@@ -49,6 +49,7 @@
 	"document_id":"Id",
 	"document_name":"Name",
 	"document_mod_date":"Letzte Änderung",
+	"document_type":"Typ",
 	"document_actions":"Aktionen",
 	"document_action_open":"Annotieren",
 	"document_action_open_master":"Master bearbeiten",
