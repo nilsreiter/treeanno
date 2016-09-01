@@ -150,6 +150,11 @@
 			</artifactId>
 			<version>1.8.0</version>
 		</dependency>
+		<dependency>
+			<groupId>xom</groupId>
+			<artifactId>xom</artifactId>
+			<version>1.2.5</version>
+		</dependency>
 	</dependencies>
 	<scm>
 		<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>

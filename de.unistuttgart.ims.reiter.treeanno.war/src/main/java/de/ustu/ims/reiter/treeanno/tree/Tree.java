@@ -29,14 +29,15 @@ public class Tree<T> {
 
 	public void depthFirstWalk(Walker<T> walker) {
 		walker.init();
-		depthFirstWalk(walker, getRoot());
+		depthFirstWalk(walker, getRoot(), null);
 	}
 
-	protected void depthFirstWalk(Walker<T> walker, Node<T> node) {
-		walker.beginNode(node);
+	protected void
+	depthFirstWalk(Walker<T> walker, Node<T> node, Node<T> parent) {
+		walker.beginNode(node, parent);
 		for (Node<T> child : node.getChildren()) {
-			depthFirstWalk(walker, child);
+			depthFirstWalk(walker, child, node);
 		}
-		walker.endNode(node);
+		walker.endNode(node, parent);
 	}
 }
