@@ -460,7 +460,7 @@ var operations = {
 		      segmentation: ops.merge },
 		// s
 		83: { treeanno: ops.split,
-			  segmentation: ops.split }, 
+			  segmentation: ops.split },
 		1037: { split:ops.split_move_left_big },
 		1038: { treeanno: ops.select_up,
 			    segmentation: ops.select_up },
@@ -514,6 +514,8 @@ function init_operations(projectType) {
 	operations[40][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[40][INTERACTION_TREEANNO]['pre']['fail']['text']);
 	operations[83][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[83][INTERACTION_TREEANNO]['pre']['fail']['text']);
 	operations[77][INTERACTION_TREEANNO]['pre']['fail']['text'] = i18n.t(operations[77][INTERACTION_TREEANNO]['pre']['fail']['text']);
+	operations[38][INTERACTION_MERGE_SEGMENTATION]['pre']['fail']['text'] = i18n.t(operations[38][INTERACTION_MERGE_SEGMENTATION]['pre']['fail']['text']);
+	operations[40][INTERACTION_MERGE_SEGMENTATION]['pre']['fail']['text'] = i18n.t(operations[40][INTERACTION_MERGE_SEGMENTATION]['pre']['fail']['text']);
 
 }
 
@@ -677,7 +679,7 @@ function init_segmentation_merge() {
 		icons: { primary: "ui-icon-person", secondary:null },
 		disabled: true
 	});
-	
+
 	$( "button.button_save_document" ).button({
 		icons: { primary: "ui-icon-disk", secondary:null },
 		label: i18n.t("save"),
@@ -693,7 +695,7 @@ function init_segmentation_merge() {
 	$("#form_search").keyup(search);
 	$("#form_search").focus(function() { interaction_mode = INTERACTION_NONE; });
 	$("#form_search").blur(function() { interaction_mode = INTERACTION_TREEANNO; });
-	
+
 	disableSaveButton();
 	interaction_mode = INTERACTION_TREEANNO;
 	document.onkeydown = function(e) {
@@ -712,7 +714,7 @@ function init_segmentation_merge() {
 		jQuery.getJSON("rpc/c/0/"+documentIds[0]+"/"+dUserId, function(data) {
 			allData['uDoc'][data['user']['id']] = data;
 			loaded++;
-			if (loaded == 3) 
+			if (loaded == 3)
 				init_segmentation_merge2(allData);
 		});
 	}
@@ -729,10 +731,10 @@ function init_segmentation_merge() {
 
 		allData['doc'][documentIds[0]] = data;
 		loaded++;
-		if (loaded == 3) 
+		if (loaded == 3)
 			init_segmentation_merge2(allData);
 	});
-	
+
 }
 
 function init_segmentation_merge2(data) {
@@ -789,7 +791,7 @@ function init_segmentation_merge2(data) {
 		} else if (item0.end < item1.end) {
 			item0.src = 1;
 			thisArea.push(item0);
-			item0 = data0.list.shift();	
+			item0 = data0.list.shift();
 		} else if (item0.end > item1.end) {
 			item1.src = 2;
 			thisArea.push(item1);
@@ -797,11 +799,11 @@ function init_segmentation_merge2(data) {
 		}
 	}
 	var doclist = doc.list;
-	
+
 	$("#content thead th:nth-child(1)").text(data0.user.name);
 	$("#content thead th:nth-child(2)").text(data1.user.name);
 	$("#content thead th:nth-child(3)").text("Zieldokument");
-	
+
 	for (var area of areas) {
 		var row = document.createElement("tr");
 		var min = Number.MAX_SAFE_INTEGER;
@@ -809,7 +811,7 @@ function init_segmentation_merge2(data) {
 		$(row).append("<td><ul class=\"outline\"></ul></td>");
 		$(row).append("<td><ul class=\"outline\"></ul></td>");
 		$(row).append("<td class=\"active\"><ul class=\"outline\"></ul></td>");
-		
+
 		for (var item of area) {
 			min = Math.min(min, item.begin);
 			max = Math.max(max, item.end);
@@ -823,10 +825,10 @@ function init_segmentation_merge2(data) {
 				doclist.push(docItem);
 			}
 		}
-		
+
 		$("#content tbody").append(row);
 	}
-	
+
 	var cellar  = document.createElement("ul");
 	$(cellar).addClass("outline").hide();
 	for (var item of doclist) {
@@ -835,11 +837,12 @@ function init_segmentation_merge2(data) {
 	$("#content").append("<div></div>");
 	$("#content div:last-child").addClass("active");
 	$("#content div:last-child").append(cellar);
-	
+
 	$(".userDocument.id-"+data0.user.id).show();
 	$(".userDocument.id-"+data1.user.id).show();
 	$(".document.id-"+doc.document.id).show();
 	$("#status").hide();
+	init_operations(data['doc'][documentIds[0]].document.project.type);
 }
 
 function init_parallel() {
@@ -914,7 +917,7 @@ function load_parallel(element, urlhead, dId, goal) {
 			$(element).parent().prepend("<h2>"+i18n.t("parallel.merged")+"</h2>");
 
 		}
-		
+
 			var list = data["list"];
 
 			while (list.length > 0) {
@@ -942,21 +945,21 @@ function load_parallel(element, urlhead, dId, goal) {
 			$(".userDocument > li").each(function(index, element) {
 				var begin = parseInt($(element).attr("data-treeanno-begin"));
 				var end = parseInt($(element).attr("data-treeanno-end"));
-				
+
 				var objects = $(".userDocument li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']");
 				if (objects.length == 2) {
 					$(objects).replaceWith("<hr/>");
 					$(".document li[data-treeanno-begin='"+begin+"'][data-treeanno-end='"+end+"']").replaceWith("<hr/>");
 				}
-				
+
 		});
 			$(".text > hr + hr").remove();
-			
+
 			$(".text > hr").each(function(index, element) {
 				$(element).nextUntil("hr").wrapAll("<div></div>");
 	});
 
-			
+
 			$(".document li:visible()").first().addClass("selected");
 }
 	});
@@ -1086,7 +1089,7 @@ function move_selection_down() {
 	var index = allItems.index($("li.selected").last());
 
 	// we remove the selection from everything that is selected
-		
+
 	$(".selected").toggleClass("selected");
 	// if nothing is selected
 	if (index == -1) {
@@ -1104,7 +1107,7 @@ function move_selection_down() {
 
 function extend_selection_up() {
 	var allItems = $(".active ul.outline li");
-	
+
 	// get index of first selected item
 	var index = allItems.index($("li.selected").first());
 
@@ -1122,7 +1125,7 @@ function move_selection_up() {
 
 	// get index of first selected item
 	var index = allItems.index($("li.selected").first());
-	
+
 	// if shift is not pressed, remove the selection
 	if (index > 0)
 		$(".selected").toggleClass("selected");
