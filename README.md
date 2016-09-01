@@ -60,6 +60,29 @@ TreeAnno makes use of the Tomcat database connection pooling mechanism. The data
 </Context>
 ```
 
+#### Upgrading the database schema
+
+##### 0.6.x to 0.8
+
+```sql
+ALTER TABLE treeanno_documents DROP COLUMN `typesystemId`;
+ALTER TABLE treeanno_documents DROP COLUMN `cloneOf`;
+ALTER TABLE treeanno_documents DROP COLUMN `hidden`;
+
+ALTER TABLE treeanno_documents ADD `type` VARCHAR(100) DEFAULT "MASTER";
+ALTER TABLE treeanno_documents ADD `origin_id` int;
+UPDATE treeanno_documents SET `type`="MASTER";
+
+ALTER TABLE treeanno_userdocuments ADD `status` VARCHAR(100) DEFAULT "NEW";
+UPDATE treeanno_userdocument SET `status`="ASSIGNED";
+
+ALTER TABLE treeanno_users ADD `password` VARCHAR(255);
+
+DROP TABLE treeanno_typesystems;
+
+```
+
+
 ### App settings
 Web app settings are read from a UTF-8 encoded properties file that can be located anywhere on the file system. The path to the configuration file has to be specified as a JNDI resource with the name `treeanno/configurationPath`.
 
