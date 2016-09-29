@@ -2,7 +2,6 @@ package de.ustu.ims.reiter.treeanno.rpc;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+
+import com.j256.ormlite.dao.CloseableIterator;
+import com.j256.ormlite.dao.ForeignCollection;
 
 import de.ustu.ims.reiter.treeanno.CA;
 import de.ustu.ims.reiter.treeanno.CW;
@@ -45,11 +47,14 @@ public class DocumentList extends HttpServlet {
 				return;
 			}
 			if (CW.getDataLayer(getServletContext()).getAccessLevel(proj, user) >= Perm.READ_ACCESS) {
-				Collection<Document> list = proj.getDocuments();
+				ForeignCollection<Document> list = proj.getDocuments();
 				JSONObject obj = new JSONObject();
-				for (Document doc : list) {
+				CloseableIterator<Document> iter = list.iteratorThrow();
+				while (iter.hasNext()) {
+					Document doc = iter.next();
 					obj.append("documents", JSONUtil.getJSONObject(doc));
 				}
+				iter.close();
 				obj.put("project", JSONUtil.getJSONObject(proj));
 				obj.put("accesslevel",
 						CW.getDataLayer(getServletContext()).getAccessLevel(
