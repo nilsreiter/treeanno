@@ -53,6 +53,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 

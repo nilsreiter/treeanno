@@ -15,7 +15,6 @@ import org.xml.sax.SAXException;
 
 import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
-import de.ustu.ims.reiter.treeanno.beans.User;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.util.Comparison;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
@@ -35,11 +34,9 @@ public class UserDocumentComparison extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		int projectId = Util.getFirstProjectId(request, response);
 		int documentId = Util.getFirstDocumentId(request, response);
 		int[] userIds = Util.getAllUserIds(request, response);
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
-		User currentUser = CW.getUser(request);
 		if (userIds.length == 2) {
 			try {
 				JSONObject object = new JSONObject();
