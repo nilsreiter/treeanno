@@ -47,18 +47,8 @@ public class Document {
 	}
 
 	@Deprecated
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	@Deprecated
 	public Date getModificationDate() {
 		return modificationDate;
-	}
-
-	@Deprecated
-	public void setModificationDate(Date modificationDate) {
-		this.modificationDate = modificationDate;
 	}
 
 	public Project getProject() {
@@ -90,11 +80,6 @@ public class Document {
 		return hidden;
 	}
 
-	@Deprecated
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
-	}
-
 	@Override
 	public int hashCode() {
 		return id;
@@ -106,7 +91,6 @@ public class Document {
 		return this.hashCode() == obj.hashCode();
 	}
 
-	
 	@Deprecated
 	public Document getCloneOf() {
 		return cloneOf;
