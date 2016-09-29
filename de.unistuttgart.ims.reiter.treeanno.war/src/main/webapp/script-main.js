@@ -34,7 +34,7 @@ var loaded = 0;
 /**
  * This array stores the edit history (locally)
  */
-var history = [];
+var ta_history = [];
 
 
 var kbkey = { up: 38, down: 40, right: 39, left: 37,
@@ -1560,17 +1560,17 @@ function add_operation(kc, tgts, opts) {
 		s.push($(element).attr("data-treeanno-id"));
 	});
 	var logObj = {op:operations[kc][interaction_mode]['id'], arg:s, opt:opts};
-	history.push(logObj);
+	ta_history.push(logObj);
 	$( "button.button_undo" ).button({disabled:false});
 	console.log(logObj);
 	$("#history").prepend("<li>"+JSON.stringify(logObj)+"</li>");
 }
 
 function undo() {
-	var action = history.pop();
+	var action = ta_history.pop();
 	ops[action['op']]['revert'].fun(action);
 	$("#history > li:first()").remove();
-	$( "button.button_undo" ).button({disabled:(history.length==0)});
+	$( "button.button_undo" ).button({disabled:(ta_history.length==0)});
 }
 
 function id2element(id) {
