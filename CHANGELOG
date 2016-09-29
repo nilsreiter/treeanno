@@ -14,6 +14,25 @@
 0.7
 (this version is skipped for complicated reasons)
 
+0.6.10
+
+- Removed more deprecated code
+
+0.6.9
+
+- Preparations for database changes: Removed deprecated setter methods for beans</li>
+- Fixed yet another issue with the split dialog
+
+0.6.8
+
+- Fixed a history bug
+- Fixed a potential memory leak when iterating over the documents
+
+
+0.6.7
+
+- All actions now have a nice REST APi</li>
+
 0.6.6
 
 - Fixed: TreeAnno stuck in splitting mode after clicking on the split button
