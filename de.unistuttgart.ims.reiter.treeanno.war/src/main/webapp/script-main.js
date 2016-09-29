@@ -1056,12 +1056,12 @@ function splitdialog() {
 		title: i18n.t("split_dialog.title"),
 		modal: true,
 		minWidth: 400,
-		close: splitdialog_cleanup,
+		close: function() { act(27) },
 		buttons: 
 		[
 		    {
 		    	text: i18n.t("split_dialog.cancel"),
-		    	click: splitdialog_cleanup,
+		    	click: function() { act(27) },
 		    	tabindex:2
 		    },{
 		 		text: i18n.t("split_dialog.ok"),
