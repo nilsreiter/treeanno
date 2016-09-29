@@ -73,7 +73,7 @@ ALTER TABLE treeanno_documents ADD `type` VARCHAR(100) DEFAULT "MASTER";
 ALTER TABLE treeanno_documents ADD `origin_id` int;
 UPDATE treeanno_documents SET `type`="MASTER";
 
-ALTER TABLE treeanno_userdocuments ADD `status` VARCHAR(100) DEFAULT "NEW";
+ALTER TABLE treeanno_userdocument ADD `status` VARCHAR(100) DEFAULT "NEW";
 UPDATE treeanno_userdocument SET `status`="ASSIGNED";
 
 ALTER TABLE treeanno_users ADD `password` VARCHAR(255);
