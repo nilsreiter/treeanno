@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.uima.UimaContext;
@@ -37,8 +39,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void initialize(final UimaContext context)
-			throws ResourceInitializationException {
+	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 
 		outputLocation = new File(outputLocationPath);
@@ -46,8 +47,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 			throw new ResourceInitializationException();
 
 		try {
-			walkerClass =
-					(Class<? extends Walker<?>>) Class.forName(walkerClassName);
+			walkerClass = (Class<? extends Walker<?>>) Class.forName(walkerClassName);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -58,9 +58,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 		String treeString;
 		try {
-			treeString =
-					getTreeString(jcas,
-							(Walker<TreeSegment>) walkerClass.newInstance());
+			treeString = getTreeString(jcas, (Walker<TreeSegment>) walkerClass.newInstance());
 		} catch (InstantiationException | IllegalAccessException e1) {
 			throw new AnalysisEngineProcessException(e1);
 		}
@@ -87,12 +85,19 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 		// this only works if the ordering has not changed, because the parents
 		// always precede their children
-		for (TreeSegment ts : JCasUtil.select(jcas, TreeSegment.class)) {
+		List<TreeSegment> waiters = new LinkedList<TreeSegment>(JCasUtil.select(jcas, TreeSegment.class));
+		while (!waiters.isEmpty()) {
+			TreeSegment ts = waiters.remove(0);
 			if (ts.getParent() == null) {
 				tree.addChild(null, ts);
 			} else {
-				tree.addChild(ts.getParent(), ts);
+				try {
+					tree.addChild(ts.getParent(), ts);
+				} catch (NullPointerException e) {
+					waiters.add(ts);
+				}
 			}
+
 		}
 		tree.depthFirstWalk(walker);
 		return walker.toString();

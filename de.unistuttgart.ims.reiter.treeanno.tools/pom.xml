@@ -41,11 +41,6 @@
     	<version>1.7.0</version>
     </dependency>
     <dependency>
-    	<groupId>de.ustu.ims</groupId>
-    	<artifactId>segmentation.api</artifactId>
-    	<version>1.0</version>
-    </dependency>
-    <dependency>
     	<groupId>com.lexicalscope.jewelcli</groupId>
     	<artifactId>jewelcli</artifactId>
     	<version>0.8.9</version>
@@ -56,11 +51,6 @@
     		de.tudarmstadt.ukp.dkpro.core.io.xmi-asl
     	</artifactId>
     	<version>1.7.0</version>
-    </dependency>
-    <dependency>
-    	<groupId>de.ustu.ims.reiter</groupId>
-    	<artifactId>treeanno.api</artifactId>
-    	<version>0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
@@ -77,9 +67,14 @@
     	<version>1.7.0</version>
     </dependency>
     <dependency>
-    	<groupId>de.ustu.ims.reiter</groupId>
+    	<groupId>de.unistuttgart.ims.reiter</groupId>
+    	<artifactId>treeanno.api</artifactId>
+    	<version>0.2</version>
+    </dependency>
+    <dependency>
+    	<groupId>de.unistuttgart.ims.reiter</groupId>
     	<artifactId>treeanno.util</artifactId>
-    	<version>0.2-SNAPSHOT</version>
+    	<version>0.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

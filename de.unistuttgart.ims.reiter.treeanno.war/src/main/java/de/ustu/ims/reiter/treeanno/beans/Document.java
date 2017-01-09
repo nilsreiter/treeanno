@@ -1,7 +1,6 @@
 package de.ustu.ims.reiter.treeanno.beans;
 
 import java.util.Collection;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +16,6 @@ public class Document {
 	@DatabaseField(generatedId = true)
 	int id;
 
-	@Deprecated
-	@Column
-	Date modificationDate;
 
 	@DatabaseField(canBeNull = false, foreign = true, columnName = "project",
 			foreignAutoRefresh = true)
@@ -28,13 +24,6 @@ public class Document {
 	@Column
 	String name;
 
-	@Deprecated
-	@Column
-	boolean hidden;
-
-	@Deprecated
-	@DatabaseField(canBeNull = true, foreign = true, columnName = "cloneOf")
-	Document cloneOf;
 
 	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
@@ -44,11 +33,6 @@ public class Document {
 
 	public int getId() {
 		return id;
-	}
-
-	@Deprecated
-	public Date getModificationDate() {
-		return modificationDate;
 	}
 
 	public Project getProject() {
@@ -75,10 +59,7 @@ public class Document {
 		this.id = databaseId;
 	}
 
-	@Deprecated
-	public boolean isHidden() {
-		return hidden;
-	}
+
 
 	@Override
 	public int hashCode() {
@@ -91,10 +72,7 @@ public class Document {
 		return this.hashCode() == obj.hashCode();
 	}
 
-	@Deprecated
-	public Document getCloneOf() {
-		return cloneOf;
-	}
+
 
 	public String getXmi() {
 		return xmi;

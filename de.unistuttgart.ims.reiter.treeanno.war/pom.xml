@@ -1,8 +1,5 @@
-<project
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>war</packaging>
 	<url>http://maven.apache.org</url>
@@ -41,13 +38,14 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
+				<version>2.6</version>
 				<configuration>
 					<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<webResources>
 						<resource>
 							<!-- this is relative to the pom.xml directory -->
-							<directory>${project.basedir}/src/main/resources 
+							<directory>${project.basedir}/src/main/resources
 							</directory>
 						</resource>
 					</webResources>
@@ -77,6 +75,12 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -201,7 +205,7 @@
 	<parent>
 		<groupId>de.unistuttgart.ims.reiter</groupId>
 		<artifactId>treeanno</artifactId>
-		<version>0.6.9</version>
+		<version>0.6.10</version>
 	</parent>
 	<name>${parent.name}</name>
 </project>
