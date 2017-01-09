@@ -1,29 +1,28 @@
 package de.ustu.ims.reiter.treeanno.beans;
 
 import java.util.Collection;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import java.util.Date;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
 
-@Entity(name = "treeanno_documents")
+@DatabaseTable(tableName = "treeanno_documents")
 public class Document {
 	private static final String FIELD_XMI = "xmi";
 
 	@DatabaseField(generatedId = true)
 	int id;
 
+	@DatabaseField(version = true)
+	Date modificationDate;
 
-	@DatabaseField(canBeNull = false, foreign = true, columnName = "project",
-			foreignAutoRefresh = true)
+	@DatabaseField(canBeNull = false, foreign = true, columnName = "project", foreignAutoRefresh = true)
 	Project project;
 
-	@Column
+	@DatabaseField
 	String name;
-
 
 	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
@@ -31,8 +30,22 @@ public class Document {
 	@ForeignCollectionField(eager = false)
 	ForeignCollection<UserDocument> userDocuments;
 
+	@DatabaseField(defaultValue = "MASTER")
+	DocumentType type;
+
+	@DatabaseField(foreign = true)
+	Document origin;
+
 	public int getId() {
 		return id;
+	}
+
+	public Date getModificationDate() {
+		return modificationDate;
+	}
+
+	public void setModificationDate(Date modificationDate) {
+		this.modificationDate = modificationDate;
 	}
 
 	public Project getProject() {
@@ -59,8 +72,6 @@ public class Document {
 		this.id = databaseId;
 	}
 
-
-
 	@Override
 	public int hashCode() {
 		return id;
@@ -68,11 +79,10 @@ public class Document {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Document)) return false;
+		if (!(obj instanceof Document))
+			return false;
 		return this.hashCode() == obj.hashCode();
 	}
-
-
 
 	public String getXmi() {
 		return xmi;
@@ -84,6 +94,22 @@ public class Document {
 
 	public Collection<UserDocument> getUserDocuments() {
 		return userDocuments;
+	}
+
+	public DocumentType getType() {
+		return type;
+	}
+
+	public void setType(DocumentType type) {
+		this.type = type;
+	}
+
+	public Document getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(Document origin) {
+		this.origin = origin;
 	}
 
 }
