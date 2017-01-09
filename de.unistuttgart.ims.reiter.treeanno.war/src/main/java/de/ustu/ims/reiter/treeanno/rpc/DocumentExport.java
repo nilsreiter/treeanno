@@ -25,6 +25,7 @@ import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
+import de.ustu.ims.reiter.treeanno.tree.PrintDotWalker;
 import de.ustu.ims.reiter.treeanno.tree.PrintParenthesesWalker;
 import de.ustu.ims.reiter.treeanno.tree.PrintXmlWalker;
 import de.ustu.ims.reiter.treeanno.tree.Walker;
@@ -44,8 +45,8 @@ public class DocumentExport extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 		int[] docIds = Util.getAllDocumentIds(request, response);
 
@@ -54,27 +55,26 @@ public class DocumentExport extends HttpServlet {
 			zos = new ZipOutputStream(response.getOutputStream());
 			zos.setLevel(9);
 			response.setContentType("application/zip");
-			response.setHeader("Content-Disposition",
-					"attachment; filename=\"export.zip\"");
+			response.setHeader("Content-Disposition", "attachment; filename=\"export.zip\"");
 
 			for (int i = 0; i < docIds.length;) {
 				Document document = dataLayer.getDocument(docIds[i]);
 				if (request.getParameter("format") == null
-						|| request.getParameterValues("format")[0]
-								.equalsIgnoreCase("XMI")) {
+						|| request.getParameterValues("format")[0].equalsIgnoreCase("XMI")) {
 					try {
 						exportXMI(document, zos);
 					} catch (SAXException | UIMAException e) {
 						throw new ServletException(e);
 					}
 				}
-				if (request.getParameterValues("format")[0]
-						.equalsIgnoreCase("PAR")) {
+				if (request.getParameterValues("format")[0].equalsIgnoreCase("PAR")) {
 					exportPAR(document, zos);
 				}
-				if (request.getParameterValues("format")[0]
-						.equalsIgnoreCase("XML")) {
+				if (request.getParameterValues("format")[0].equalsIgnoreCase("XML")) {
 					exportXML(document, zos);
+				}
+				if (request.getParameterValues("format")[0].equalsIgnoreCase("DOT")) {
+					exportWithWalker(document, zos, new PrintDotWalker(), "dot");
 				}
 			}
 			zos.flush();
@@ -86,17 +86,13 @@ public class DocumentExport extends HttpServlet {
 		return;
 	}
 
-	protected void exportXML(Document document, ZipOutputStream zos)
-			throws UIMAException, SAXException, IOException {
+	protected void exportXML(Document document, ZipOutputStream zos) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
 		if (name == null || name.isEmpty())
-			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-					.getDocumentTitle();
+			JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentTitle();
 		if (name == null || name.isEmpty())
-			name =
-					JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-			.getDocumentId();
+			name = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 
 		// root folder
 		// zos.putNextEntry(new ZipEntry(name + "/"));
@@ -113,27 +109,48 @@ public class DocumentExport extends HttpServlet {
 		zos.putNextEntry(new ZipEntry(name + "/annotations/"));
 
 		for (UserDocument ud : document.getUserDocuments()) {
-			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId()
-					+ ".xml"));
-			treeString =
-					GraphExporter.getTreeString(
-							JCasConverter.getJCas(ud.getXmi()), walker);
+			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + ".xml"));
+			treeString = GraphExporter.getTreeString(JCasConverter.getJCas(ud.getXmi()), walker);
 			zos.write(treeString.getBytes());
 			zos.flush();
 		}
 	}
 
-	protected void exportPAR(Document document, ZipOutputStream zos)
+	protected void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment> walker, String suffix)
 			throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
 		if (name == null || name.isEmpty())
-			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-					.getDocumentTitle();
+			JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentTitle();
 		if (name == null || name.isEmpty())
-			name =
-					JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-			.getDocumentId();
+			name = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
+
+		// root folder
+		// zos.putNextEntry(new ZipEntry(name + "/"));
+
+		// original document
+		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + "." + suffix));
+		String treeString = GraphExporter.getTreeString(jcas, walker);
+		zos.write(treeString.getBytes());
+
+		// annotations folder
+		zos.putNextEntry(new ZipEntry(name + "/annotations/"));
+
+		for (UserDocument ud : document.getUserDocuments()) {
+			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + suffix));
+			treeString = GraphExporter.getTreeString(JCasConverter.getJCas(ud.getXmi()), walker);
+			zos.write(treeString.getBytes());
+
+		}
+	}
+
+	protected void exportPAR(Document document, ZipOutputStream zos) throws UIMAException, SAXException, IOException {
+		JCas jcas = JCasConverter.getJCas(document.getXmi());
+		String name = document.getName();
+		if (name == null || name.isEmpty())
+			JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentTitle();
+		if (name == null || name.isEmpty())
+			name = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 		Walker<TreeSegment> walker = new PrintParenthesesWalker<TreeSegment>();
 
 		// root folder
@@ -148,28 +165,21 @@ public class DocumentExport extends HttpServlet {
 		zos.putNextEntry(new ZipEntry(name + "/annotations/"));
 
 		for (UserDocument ud : document.getUserDocuments()) {
-			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId()
-					+ ".par"));
-			treeString =
-					GraphExporter.getTreeString(
-							JCasConverter.getJCas(ud.getXmi()), walker);
+			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + ".par"));
+			treeString = GraphExporter.getTreeString(JCasConverter.getJCas(ud.getXmi()), walker);
 			zos.write(treeString.getBytes());
 
 		}
 	}
 
-	protected void exportXMI(Document document, ZipOutputStream zos)
-			throws UIMAException, SAXException, IOException {
+	protected void exportXMI(Document document, ZipOutputStream zos) throws UIMAException, SAXException, IOException {
 
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
 		if (name == null || name.isEmpty())
-			JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-					.getDocumentTitle();
+			JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentTitle();
 		if (name == null || name.isEmpty())
-			name =
-					JCasUtil.selectSingle(jcas, DocumentMetaData.class)
-							.getDocumentId();
+			name = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
 
 		// root folder
 		// zos.putNextEntry(new ZipEntry(name + "/"));
@@ -186,10 +196,8 @@ public class DocumentExport extends HttpServlet {
 		zos.putNextEntry(new ZipEntry(name + "/annotations/"));
 
 		for (UserDocument ud : document.getUserDocuments()) {
-			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId()
-					+ ".xmi"));
-			XmiCasSerializer.serialize(JCasConverter.getJCas(ud.getXmi())
-					.getCas(), zos);
+			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + ".xmi"));
+			XmiCasSerializer.serialize(JCasConverter.getJCas(ud.getXmi()).getCas(), zos);
 		}
 	}
 

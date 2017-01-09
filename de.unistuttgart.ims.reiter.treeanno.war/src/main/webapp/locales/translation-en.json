@@ -105,7 +105,8 @@
 		"breadcrumb_for_X":"Export Document &bdquo;__document__&ldquo;",
 		"xmi":"UIMA XMI",
 		"par":"Parentheses",
-		"xml":"Simple XML"
+		"xml":"Simple XML",
+		"dot":"Dot Language"
 	},
 	"parallel":{
 		"annotations_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
