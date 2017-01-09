@@ -16,7 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.ustu.ims.narratology.util.ClearAnnotation;
+import de.unistuttgart.ims.uimautil.ClearAnnotation;
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 
 /**
@@ -24,8 +24,7 @@ import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
  */
 public class Util {
 
-	public static void returnJSON(HttpServletResponse response,
-			JSONObject object) throws IOException {
+	public static void returnJSON(HttpServletResponse response, JSONObject object) throws IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(object.toString());
@@ -33,9 +32,7 @@ public class Util {
 		response.getWriter().close();
 	}
 
-	public static void
-	returnJSON(HttpServletResponse response, JSONArray object)
-			throws IOException {
+	public static void returnJSON(HttpServletResponse response, JSONArray object) throws IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(object.toString());
@@ -44,14 +41,11 @@ public class Util {
 	}
 
 	public static JCas addAnnotationsToJCas(JCas jcas, JSONObject annotations)
-			throws AnalysisEngineProcessException,
-			ResourceInitializationException {
+			throws AnalysisEngineProcessException, ResourceInitializationException {
 
 		// remove old annotations
-		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory
-				.createEngineDescription(ClearAnnotation.class,
-						ClearAnnotation.PARAM_TYPE,
-						TreeSegment.class.getCanonicalName()));
+		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(ClearAnnotation.class,
+				ClearAnnotation.PARAM_TYPE, TreeSegment.class.getCanonicalName()));
 
 		// add annotations to JCas
 		Map<Integer, TreeSegment> idMap = new HashMap<Integer, TreeSegment>();
@@ -64,16 +58,16 @@ public class Util {
 				int end = item.getInt("end");
 				int id = item.getInt("id");
 
-				TreeSegment ts =
-						AnnotationFactory.createAnnotation(jcas, begin, end,
-								TreeSegment.class);
+				TreeSegment ts = AnnotationFactory.createAnnotation(jcas, begin, end, TreeSegment.class);
 				ts.setId(id);
 				ts.setMark1(item.getBoolean("Mark1"));
 
 				try {
 					if (!item.getString("category").isEmpty())
 						ts.setCategory(item.getString("category"));
-				} catch (JSONException e) {};
+				} catch (JSONException e) {
+				}
+				;
 				idMap.put(id, ts);
 			}
 		}
@@ -84,7 +78,8 @@ public class Util {
 				int id = item.getInt("id");
 				try {
 					parentId = item.getInt("parentId");
-				} catch (JSONException e) {}
+				} catch (JSONException e) {
+				}
 				if (parentId >= 0) {
 					idMap.get(id).setParent(idMap.get(parentId));
 				}
