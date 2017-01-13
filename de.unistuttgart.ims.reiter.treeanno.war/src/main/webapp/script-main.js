@@ -741,7 +741,6 @@ function init_segmentation_merge2(data) {
 	var data0 = data['uDoc'][userIds[0]];
 	var data1 = data['uDoc'][userIds[1]];
 	var doc = data['doc'][documentIds[0]];
-	console.log(doc);
 	for (var i = 0; i < data0['list'].length; i++) {
 		var b0 = data0['list'][i]['begin'];
 		var e0 = data0['list'][i]['end'];
@@ -749,8 +748,13 @@ function init_segmentation_merge2(data) {
 			var b1 = data1['list'][j]['begin'];
 			var e1 = data1['list'][j]['end'];
 			if (b0 == b1 && e0 == e1) {
-				data0['list'].splice(i--, 1);
-				data1['list'].splice(j--, 1);
+				data0.list.splice(i, 1);
+				data1.list.splice(j, 1);
+				if (i > 0)
+					i--;
+				if (j > 0)
+					j--;
+					
 			}
 		}
 	}
@@ -758,7 +762,8 @@ function init_segmentation_merge2(data) {
 	var item0 = data0.list.shift();
 	var item1 = data1.list.shift();
 	var thisArea = [];
-	while(typeof(item0) !== "undefined" || typeof(item1) !== "undefined") {
+	while(typeof(item0) !== "undefined" && typeof(item1) !== "undefined") {
+		
 		if (item0.begin === item1.begin) {
 			thisArea = [];
 			if (item0.end < item1.end) {
@@ -772,8 +777,10 @@ function init_segmentation_merge2(data) {
 			} else if (item0.end === item1.end) {
 				item0.src = 1;
 				item1.src = 2;
-				thisArea.push(item0);
-				thisArea.push(item1);
+				//thisArea.push(item0);
+				//thisArea.push(item1);
+				console.log(thisArea);
+
 				areas.push(thisArea);
 				thisArea = [];
 				item0 = data0.list.shift();
@@ -784,6 +791,7 @@ function init_segmentation_merge2(data) {
 			item1.src = 2;
 			thisArea.push(item0);
 			thisArea.push(item1);
+			console.log(thisArea);
 			areas.push(thisArea);
 			thisArea = [];
 			item0 = data0.list.shift();
@@ -798,6 +806,17 @@ function init_segmentation_merge2(data) {
 			item1 = data1.list.shift();
 		}
 	}
+	if (data1.list.length > 0) {
+		thisArea = []
+		thisArea.push(data1.list)
+		areas.push(thisArea);
+	} else if (data0.list.length > 0) {
+		thisArea = []
+		thisArea.push(data0.list)
+		areas.push(thisArea);
+	}
+	
+	
 	var doclist = doc.list;
 
 	$("#content thead th:nth-child(1)").text(data0.user.name);
@@ -813,17 +832,18 @@ function init_segmentation_merge2(data) {
 		$(row).append("<td class=\"active\"><ul class=\"outline\"></ul></td>");
 
 		for (var item of area) {
-			min = Math.min(min, item.begin);
-			max = Math.max(max, item.end);
+			min = Math.min(min, item.begin)-20;
+			max = Math.max(max, item.end)+20;
 			$(row).children("td:nth-child("+item.src+")").children("ul").append(get_html_item(item));
 		};
 		for (var i = 0; i < doclist.length; i++) {
 			docItem = doclist.shift();
-			if (docItem.begin >= min && docItem.end <= max) {
+			if (docItem.begin <= max && docItem.begin >= min) {
+			//if (docItem.begin >= min && docItem.end <= max) {
 				$(row).children("td:nth-child(3)").children("ul").append(get_html_item(docItem));
-			} else {
-				doclist.push(docItem);
-			}
+			} 
+			doclist.push(docItem);
+			
 		}
 
 		$("#content tbody").append(row);
