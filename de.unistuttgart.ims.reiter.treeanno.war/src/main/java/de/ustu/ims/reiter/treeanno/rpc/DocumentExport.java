@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.configuration2.ConfigurationMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
@@ -59,10 +58,19 @@ public class DocumentExport extends HttpServlet {
 			zos = new ZipOutputStream(response.getOutputStream());
 			zos.setLevel(9);
 			response.setContentType("application/zip");
-			response.setHeader("Content-Disposition", "attachment; filename=\"export.zip\"");
 
 			for (int i = 0; i < docIds.length;) {
 				Document document = dataLayer.getDocument(docIds[i]);
+				JCas jcas = JCasConverter.getJCas(document.getXmi());
+
+				String name = document.getName();
+				if (name == null || name.isEmpty())
+					JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentTitle();
+				if (name == null || name.isEmpty())
+					name = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
+
+				response.setHeader("Content-Disposition", "attachment; filename=\"export-" + name + ".zip\"");
+
 				if (request.getParameter("format") == null
 						|| request.getParameterValues("format")[0].equalsIgnoreCase("XMI")) {
 					try {
