@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.configuration2.ConfigurationMap;
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.impl.TypeSystem2Xml;
 import org.apache.uima.cas.impl.XmiCasSerializer;
@@ -30,7 +32,9 @@ import de.ustu.ims.reiter.treeanno.tree.PrintParenthesesWalker;
 import de.ustu.ims.reiter.treeanno.tree.PrintXmlWalker;
 import de.ustu.ims.reiter.treeanno.tree.Walker;
 import de.ustu.ims.reiter.treeanno.uima.GraphExporter;
+import de.ustu.ims.reiter.treeanno.util.Generator;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
+import de.ustu.ims.reiter.treeanno.util.PngGenerator;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
@@ -74,7 +78,11 @@ public class DocumentExport extends HttpServlet {
 					exportXML(document, zos);
 				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("DOT")) {
-					exportWithWalker(document, zos, new PrintDotWalker(), "dot");
+					ConfigurationMap cnf = (ConfigurationMap) getServletContext().getAttribute("conf");
+					exportWithWalker(document, zos,
+							new PrintDotWalker((String) cnf.getOrDefault("treeanno.dot.style.segment", "shape=oval"),
+									(String) cnf.getOrDefault("treeanno.dot.style.vsegment", "shape=box")),
+							"dot", new PngGenerator((String) cnf.get("treeanno.dot.path")));
 				}
 			}
 			zos.flush();
@@ -116,8 +124,8 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
-	protected void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment> walker, String suffix)
-			throws UIMAException, SAXException, IOException {
+	protected void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment> walker, String suffix,
+			Generator generator) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
 		if (name == null || name.isEmpty())
@@ -140,6 +148,11 @@ public class DocumentExport extends HttpServlet {
 			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + suffix));
 			treeString = GraphExporter.getTreeString(JCasConverter.getJCas(ud.getXmi()), walker);
 			zos.write(treeString.getBytes());
+			if (generator != null) {
+				zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + generator.getSuffix()));
+				generator.setDotString(treeString);
+				IOUtils.copy(generator.generate(), zos);
+			}
 
 		}
 	}
