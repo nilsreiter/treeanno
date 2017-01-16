@@ -76,8 +76,10 @@ public class DocumentExport extends HttpServlet {
 				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("DOT")) {
 					ConfigurationMap cnf = (ConfigurationMap) getServletContext().getAttribute("conf");
-					exportWithWalker(document, zos, new PrintDotWalker(), "dot",
-							new PngGenerator((String) cnf.get("treeanno.dot.path")));
+					exportWithWalker(document, zos,
+							new PrintDotWalker((String) cnf.getOrDefault("treeanno.dot.style.segment", "shape=oval"),
+									(String) cnf.getOrDefault("treeanno.dot.style.vsegment", "shape=box")),
+							"dot", new PngGenerator((String) cnf.get("treeanno.dot.path")));
 				}
 			}
 			zos.flush();
