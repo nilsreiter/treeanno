@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.connector.Response;
 import org.json.JSONObject;
 
 import de.ustu.ims.reiter.treeanno.CW;
@@ -46,7 +45,7 @@ public class UserDocumentList extends HttpServlet {
 						json.append("documents", JSONUtil.getJSONObject(ud));
 					}
 				} else {
-					response.setStatus(Response.SC_FORBIDDEN);
+					response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 					return;
 				}
 				Util.returnJSON(response, json);
