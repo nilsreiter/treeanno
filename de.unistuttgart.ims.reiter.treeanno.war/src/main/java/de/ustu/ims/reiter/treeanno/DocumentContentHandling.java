@@ -178,7 +178,7 @@ public class DocumentContentHandling extends HttpServlet {
 		}
 
 		InputStream is = request.getInputStream();
-		String s = IOUtils.toString(is);
+		String s = IOUtils.toString(is, "UTF-8");
 		JSONObject jObj = new JSONObject(s);
 		JSONObject returnObject = new JSONObject();
 		int docId = Util.getFirstDocumentId(request, response);
