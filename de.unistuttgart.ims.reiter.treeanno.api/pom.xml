@@ -68,6 +68,6 @@
   <parent>
   	<groupId>de.unistuttgart.ims.reiter</groupId>
   	<artifactId>treeanno</artifactId>
-  	<version>0.6.12-SNAPSHOT</version>
+  	<version>0.6.13-SNAPSHOT</version>
   </parent>
 </project>
