@@ -563,6 +563,13 @@ function init_main() {
 				$("#content").width("100%");
 		});
 		
+		$("#show_ids").button({
+			icons: { primary: "ui-icon-tag", secondary:null },
+			label: i18n.t("show_ids")
+		}).click(function() {
+			$("p.treeanno_id").toggle();
+		});
+		
 		$( "button.button_undo" ).button({
 			icons: { primary: "ui-icon-arrowreturnthick-1-w", secondary:null },
 			label: i18n.t("undo"),
