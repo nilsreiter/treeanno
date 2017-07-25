@@ -751,6 +751,7 @@ function save_document() {
 		item['begin'] = $(element).attr("data-treeanno-begin");
 		item['end'] = $(element).attr("data-treeanno-end");
 		item['Mark1'] = $(element).hasClass("mark1");
+		item['nodetype'] = $(element).attr("data-treeanno-nodetype");
 		// alert(id);
 		var parents = $(element).parentsUntil("#outline", "li");
 		if (parents.length > 0) {
