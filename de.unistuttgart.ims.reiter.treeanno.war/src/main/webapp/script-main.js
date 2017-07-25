@@ -452,7 +452,8 @@ var operations = {
 
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
-	$(htmlItem).attr("title", item['text']);
+	if (item["text"] != "")
+		$(htmlItem).attr("title", item['text']);
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
