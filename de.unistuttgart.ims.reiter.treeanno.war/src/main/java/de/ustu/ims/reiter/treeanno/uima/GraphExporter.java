@@ -79,13 +79,14 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 	}
 
-	public static String getTreeString(JCas jcas, Walker<TreeSegment> walker) {
+	public static Tree<TreeSegment> getTree(JCas jcas) {
 		Tree<TreeSegment> tree = new Tree<TreeSegment>();
 		tree.setRoot(new Node<TreeSegment>(null));
 
 		// this only works if the ordering has not changed, because the parents
 		// always precede their children
 		List<TreeSegment> waiters = new LinkedList<TreeSegment>(JCasUtil.select(jcas, TreeSegment.class));
+
 		while (!waiters.isEmpty()) {
 			TreeSegment ts = waiters.remove(0);
 			if (ts.getParent() == null) {
@@ -99,6 +100,11 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 			}
 
 		}
+		return tree;
+	}
+
+	public static String getTreeString(JCas jcas, Walker<TreeSegment> walker) {
+		Tree<TreeSegment> tree = getTree(jcas);
 		tree.depthFirstWalk(walker);
 		return walker.toString();
 	}
