@@ -85,6 +85,8 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 		// this only works if the ordering has not changed, because the parents
 		// always precede their children
+		// SortedSet<TreeSegment> waiters = new
+		// SortedSet<TreeSegment>(JCasUtil.select(jcas, type))
 		List<TreeSegment> waiters = new LinkedList<TreeSegment>(JCasUtil.select(jcas, TreeSegment.class));
 
 		while (!waiters.isEmpty()) {
@@ -95,7 +97,10 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 				try {
 					tree.addChild(ts.getParent(), ts);
 				} catch (NullPointerException e) {
-					waiters.add(ts);
+					if (waiters.size() > 0)
+						waiters.add(1, ts);
+					else
+						waiters.add(ts);
 				}
 			}
 
