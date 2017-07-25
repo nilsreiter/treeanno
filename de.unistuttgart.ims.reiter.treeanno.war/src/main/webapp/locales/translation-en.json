@@ -66,6 +66,7 @@
 	"login_dialog_ok":"Enter",
 	"show_helper":"Show Cheat Sheet",
 	"show_history":"Show History",
+	"show_ids":"Show ids",
 	"documents_in_X":"Documents in project \"__projectname__\"",
 	"howto_split":"Move the paragraph character to where you want to split using arrow keys. Make bigger jumps with &#8679;+arrow keys.",
 	"rename_dialog":{
