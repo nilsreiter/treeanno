@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-    <name/>
+    <name>TreeAnno type system</name>
   <description/>
-  <version>0.2</version>
+  <version>0.3</version>
   <vendor/>
   <types>
     <typeDescription>
@@ -29,6 +29,11 @@
           <name>Mark1</name>
           <description/>
           <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+      <featureDescription>
+          <name>NodeType</name>
+          <description>Node type controls rendering in dot export. Is "text" by default, and "virtual" if begin == end.</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
