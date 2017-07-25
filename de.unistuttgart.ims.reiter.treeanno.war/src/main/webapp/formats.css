@@ -79,6 +79,7 @@ div#artifact {
 #split,#merge { display:none; }
 #form_mergecandidates { width:350px; }
 
+li.nodetype_virtual > div,
 .annocat { font-style:italic; }
 
 #topbar { 
