@@ -13,14 +13,14 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<finalName>treeanno##${project.version}</finalName>
+		<finalName>treeanno</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<path>/${project.build.finalName}</path>
+					<path>/${project.build.finalName}##${project.version}</path>
 					<update>true</update>
 					<url>http://zwergdrossel.ims.uni-stuttgart.de:8080/manager/text</url>
 					<server>zwergdrossel</server>
