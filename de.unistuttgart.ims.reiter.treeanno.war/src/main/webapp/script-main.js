@@ -1040,6 +1040,7 @@ function get_item(id) {
 	var liElement= $("li[data-treeanno-id=\""+id+"\"]");
 	obj['begin'] = parseInt($(liElement).attr("data-treeanno-begin"));
 	obj['end'] = parseInt($(liElement).attr("data-treeanno-end"));
+	obj.nodetype = $(liElement).attr("data-treeanno-nodetype");
 	obj['text'] = $(liElement).attr("title");
 	return obj;
 }
