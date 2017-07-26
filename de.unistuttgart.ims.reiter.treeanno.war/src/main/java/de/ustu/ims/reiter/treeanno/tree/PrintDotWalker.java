@@ -1,16 +1,34 @@
 package de.ustu.ims.reiter.treeanno.tree;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 
 public class PrintDotWalker implements Walker<TreeSegment> {
 
 	StringBuilder b;
+	@Deprecated
 	String segmentStyle;
+	@Deprecated
 	String virtualSegmentStyle;
+	Map<String, String> segmentStyles;
+
+	public PrintDotWalker(Map<String, String> segmentStyles) {
+		this.segmentStyles = segmentStyles;
+	}
+
+	public PrintDotWalker() {
+		segmentStyles = new HashMap<String, String>();
+		segmentStyles.put("text", "shape=oval");
+		segmentStyles.put("virtual", "shape=oval");
+	}
+
 
 	public PrintDotWalker(String segmentStyle, String virtualSegmentStyle) {
-		this.segmentStyle = segmentStyle;
-		this.virtualSegmentStyle = virtualSegmentStyle;
+		segmentStyles = new HashMap<String, String>();
+		segmentStyles.put("text", segmentStyle);
+		segmentStyles.put("virtual", virtualSegmentStyle);
 	}
 
 	@Override
@@ -19,14 +37,12 @@ public class PrintDotWalker implements Walker<TreeSegment> {
 
 			TreeSegment ts = node.getObject();
 			b.append(ts.getId());
-			if (ts.getBegin() == ts.getEnd() && virtualSegmentStyle != null) {
-				b.append("[").append(virtualSegmentStyle);
-				// b.append(",label=\"").append(ts.getCategory().replace("\"",
-				// "\\\""));
+			if (segmentStyles.containsKey(ts.getNodeType())) {
+				b.append("[");
+				b.append(segmentStyles.get(ts.getNodeType()));
 				b.append("]");
-			} else if (segmentStyle != null) {
-				b.append("[").append(segmentStyle).append("]");
 			}
+
 			b.append(";\n");
 			if (parent.getObject() != null) {
 				b.append(parent.getObject().getId()).append(" -> ").append(ts.getId()).append(";\n");

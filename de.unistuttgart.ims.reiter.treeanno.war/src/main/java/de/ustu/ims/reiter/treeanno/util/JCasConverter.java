@@ -60,6 +60,13 @@ public class JCasConverter {
 		obj.put("begin", annotation.getBegin());
 		obj.put("end", annotation.getEnd());
 		obj.put("text", annotation.getCoveredText());
+		if (annotation.getNodeType() == null)
+			if (annotation.getBegin() == annotation.getEnd())
+				obj.put("nodetype", "virtual");
+			else
+				obj.put("nodetype", "text");
+		else
+			obj.put("nodetype", annotation.getNodeType());
 		obj.put("Mark1", annotation.getMark1());
 		if (annotation.getParent() != null)
 			obj.put("parentId", annotation.getParent().getId());

@@ -70,6 +70,12 @@ public class Util {
 								TreeSegment.class);
 				ts.setId(id);
 				ts.setMark1(item.getBoolean("Mark1"));
+				if (item.has("nodetype"))
+					ts.setNodeType(item.getString("nodetype"));
+				else if (begin == end)
+					ts.setNodeType("virtual");
+				else
+					ts.setNodeType("text");
 
 				try {
 					if (!item.getString("category").isEmpty())
