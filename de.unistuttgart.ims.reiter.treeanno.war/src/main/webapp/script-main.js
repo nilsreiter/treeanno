@@ -470,7 +470,8 @@ var operations = {
 
 function get_html_item(item, i) {
 	var htmlItem = document.createElement("li");
-	$(htmlItem).attr("title", item['text']);
+	if (item["text"] != "")
+		$(htmlItem).attr("title", item['text']);
 	$(htmlItem).attr("data-treeanno-id", item['id']);
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
@@ -482,6 +483,7 @@ function get_html_item(item, i) {
 	idCounter = Math.max(idCounter, item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
+	$(htmlItem).append("<p class=\"treeanno_id\">"+item["id"]+"</p>");
 	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
 	return htmlItem;
 }
@@ -580,6 +582,13 @@ function init_main() {
 				$("#content").css("width", "calc(100% - 400px)");
 			else 
 				$("#content").width("100%");
+		});
+		
+		$("#show_ids").button({
+			icons: { primary: "ui-icon-tag", secondary:null },
+			label: i18n.t("show_ids")
+		}).click(function() {
+			$("p.treeanno_id").toggle();
 		});
 		
 		$( "button.button_undo" ).button({
