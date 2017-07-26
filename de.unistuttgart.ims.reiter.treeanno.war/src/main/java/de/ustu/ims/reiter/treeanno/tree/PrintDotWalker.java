@@ -24,7 +24,6 @@ public class PrintDotWalker implements Walker<TreeSegment> {
 		segmentStyles.put("virtual", "shape=oval");
 	}
 
-
 	public PrintDotWalker(String segmentStyle, String virtualSegmentStyle) {
 		segmentStyles = new HashMap<String, String>();
 		segmentStyles.put("text", segmentStyle);
@@ -37,10 +36,23 @@ public class PrintDotWalker implements Walker<TreeSegment> {
 
 			TreeSegment ts = node.getObject();
 			b.append(ts.getId());
-			if (segmentStyles.containsKey(ts.getNodeType())) {
+			if (ts.getNodeType() == null) {
+
+				// this is for old documents who don't have a node type yet
 				b.append("[");
-				b.append(segmentStyles.get(ts.getNodeType()));
+				if (ts.getBegin() == ts.getEnd()) {
+					b.append(segmentStyles.get("virtual"));
+				} else {
+					b.append(segmentStyles.get("text"));
+				}
 				b.append("]");
+
+			} else {
+				if (segmentStyles.containsKey(ts.getNodeType())) {
+					b.append("[");
+					b.append(segmentStyles.get(ts.getNodeType()));
+					b.append("]");
+				}
 			}
 
 			b.append(";\n");
