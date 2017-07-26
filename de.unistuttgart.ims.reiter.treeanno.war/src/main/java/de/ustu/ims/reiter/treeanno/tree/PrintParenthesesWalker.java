@@ -7,7 +7,7 @@ import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 public class PrintParenthesesWalker<T> implements Walker<T> {
 
 	public static Function<TreeSegment, String> treeSegmentId = (TreeSegment ts) -> {
-		return (ts == null ? "null" : String.valueOf(ts.getId()));
+		return (ts == null ? "root" : String.valueOf(ts.getId()));
 	};
 
 	public PrintParenthesesWalker() {

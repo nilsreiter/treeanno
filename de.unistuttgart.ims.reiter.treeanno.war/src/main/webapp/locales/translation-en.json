@@ -104,6 +104,7 @@
 		"breadcrumb_for_X":"Export Document &bdquo;__document__&ldquo;",
 		"xmi":"UIMA XMI",
 		"par":"Parentheses",
+		"par_id":"Parentheses (incl. IDs)",
 		"xml":"Simple XML",
 		"dot":"Dot Language"
 	},
