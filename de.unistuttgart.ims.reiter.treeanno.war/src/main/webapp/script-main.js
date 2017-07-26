@@ -33,7 +33,7 @@ var ta_history = [];
 
 
 var kbkey = { up: 38, down: 40, right: 39, left: 37, 
-		enter: 13, s: 83, m:77, c:67, d:68, shift: 16, one: 49 };
+		enter: 13, s: 83, t:84, m:77, c:67, d:68, shift: 16, one: 49 };
 var keyString = {
 		8: '&#9003;',
 		37:'&larr;',
@@ -45,6 +45,7 @@ var keyString = {
 		68:'d',
 		77:'m',
 		83:'s',
+		84:'t',
 		1038:'&#8679;&uarr;',
 		1039:'&#8679;&rarr;',
 		1040:'&#8679;&darr;',
@@ -164,6 +165,22 @@ var ops={
 			history:false,
 			post:{
 				mode:INTERACTION_SPLIT
+			}
+		},
+		toggle_type: {
+			id:'toggle_type',
+			fun:toggle_type,
+			history:true,
+			desc:'toggle-type',
+			post:{
+				mode:INTERACTION_TREEANNO
+			},
+			revert: {
+				fun: function(action) {
+					for (var i = 0; i < action['arg'].length; i++) {
+						toggle_type_for_nodes(id2element(action.arg[i]));
+					}
+				}
 			}
 		},
 		category_enter:{
@@ -440,6 +457,7 @@ var operations = {
 		68: { treeanno: ops.delete_category },
 		77: { treeanno: ops.merge },
 		83: { treeanno: ops.split }, 
+		84: { treeanno: ops.toggle_type },
 		1037: { split:ops.split_move_left_big },
 		1038: { treeanno: ops.select_up },
 		1039: { treeanno: ops.force_indent,
@@ -458,7 +476,9 @@ function get_html_item(item, i) {
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
 	$(htmlItem).attr("data-treeanno-categories", item['category']);
+	$(htmlItem).attr("data-treeanno-nodetype", item['nodetype']);
 	$(htmlItem).addClass("unselectable");
+	$(htmlItem).addClass("nodetype_"+item["nodetype"]);
 	if (item['Mark1']) $(htmlItem).addClass("mark1");
 	idCounter = Math.max(idCounter, item['id']);
 	if ('category' in item)
@@ -740,6 +760,7 @@ function save_document() {
 		item['begin'] = $(element).attr("data-treeanno-begin");
 		item['end'] = $(element).attr("data-treeanno-end");
 		item['Mark1'] = $(element).hasClass("mark1");
+		item['nodetype'] = $(element).attr("data-treeanno-nodetype");
 		// alert(id);
 		var parents = $(element).parentsUntil("#outline", "li");
 		if (parents.length > 0) {
@@ -997,6 +1018,26 @@ function enter_category() {
 
 }
 
+function toggle_type() {
+	toggle_type_for_nodes($(".selected"));
+}
+
+function toggle_type_for_nodes(nodes) {
+	var vnodes = $(nodes).filter("li[data-treeanno-nodetype='virtual']");
+	var tnodes = $(nodes).filter("li[data-treeanno-nodetype='text']");
+	
+	if (vnodes.length > 0) {
+		vnodes.attr("data-treeanno-nodetype","text");
+		vnodes.removeClass("nodetype_virtual");
+		vnodes.addClass("nodetype_text");
+	}
+	if (tnodes.length > 0) {
+		tnodes.attr("data-treeanno-nodetype","virtual");
+		tnodes.removeClass("nodetype_text");
+		tnodes.addClass("nodetype_virtual");
+	}
+}
+
 /**
  * Functions returns a javascript object representing an item. Field values are 
  * retrieved from the DOM tree.
@@ -1009,6 +1050,7 @@ function get_item(id) {
 	var liElement= $("li[data-treeanno-id=\""+id+"\"]");
 	obj['begin'] = parseInt($(liElement).attr("data-treeanno-begin"));
 	obj['end'] = parseInt($(liElement).attr("data-treeanno-end"));
+	obj.nodetype = $(liElement).attr("data-treeanno-nodetype");
 	obj['text'] = $(liElement).attr("title");
 	return obj;
 }

@@ -87,6 +87,7 @@ p.treeanno_id {
 	margin:0;
 }
 
+li.nodetype_virtual > div,
 .annocat { font-style:italic; }
 
 #topbar { 
