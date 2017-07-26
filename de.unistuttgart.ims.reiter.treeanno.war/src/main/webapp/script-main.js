@@ -747,7 +747,7 @@ function save_document() {
 			var parentId = parseInt(parent.attr("data-treeanno-id"));
 			item["parentId"] = parentId;
 		}
-		item['category'] = $(element).children("p").text();
+		item['category'] = $(element).children("p.annocat").text();
 		sitems.push(item);
 	});
 	var url = "rpc/c/0/"+documentId+(master?"":"/"+userId);
