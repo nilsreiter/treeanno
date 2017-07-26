@@ -8,11 +8,25 @@
   - document type
   - document status
 - The project admin can now assign documents to annotators and track their progress. 
-- We now display info about the segmentation whenever two annotated documents 
-  are selected
+- We now display info about the segmentation whenever two annotated documents are selected
 
 0.7
 (this version is skipped for complicated reasons)
+
+0.6.13
+
+- New option to export parentheses strings with node ids
+- Nodes can now be explicitly marked as question nodes (using t). They will be rendered in boxes in the dot output. (#110)
+- Node ids are now displayed (and can be hidden if annoying) (#111)
+- Fix: Ordering of child nodes in dot export should now be more in line with textual ordering (#109)
+
+0.6.12
+
+Added node styling for exported trees, we can now distinguish inserted "virtual" nodes from real text nodes
+
+0.6.11
+
+- Dot export now includes png files generated on the fly</li>
 
 0.6.10
 
