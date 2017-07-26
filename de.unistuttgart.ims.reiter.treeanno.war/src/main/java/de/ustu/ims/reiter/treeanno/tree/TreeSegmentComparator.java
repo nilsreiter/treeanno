@@ -26,7 +26,7 @@ public class TreeSegmentComparator implements Comparator<Node<TreeSegment>> {
 			return 1;
 
 		// we can't decide otherwise, but these cases should not appear
-		return 0;
+		return -1;
 	}
 
 	/**
