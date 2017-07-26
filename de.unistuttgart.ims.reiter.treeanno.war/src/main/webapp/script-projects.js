@@ -67,6 +67,7 @@ function show_exportoptions(projectId,document) {
 	var abar = area.children(".actionbar");
 	abar.append("<button class=\"export_xmi\" name=\"export_xmi\" value=\""+document['id']+"\">"+i18n.t("exportoptions.xmi")+"</button>");
 	abar.append("<button class=\"export_par\" name=\"export_par\" value=\""+document['id']+"\">"+i18n.t("exportoptions.par")+"</button>");
+	abar.append("<button class=\"export_par_id\" name=\"export_par_id\" value=\""+document['id']+"\">"+i18n.t("exportoptions.par_id")+"</button>");
 	abar.append("<button class=\"export_xml\" name=\"export_xml\" value=\""+document['id']+"\">"+i18n.t("exportoptions.xml")+"</button>");
 	abar.append("<button class=\"export_dot\" name=\"export_dot\" value=\""+document['id']+"\">"+i18n.t("exportoptions.dot")+"</button>");
 	
@@ -86,6 +87,15 @@ function show_exportoptions(projectId,document) {
 		'documentId':document['id']
 	}, function(event) {
 		window.location.href="rpc/par/"+projectId+"/"+event.data.documentId;
+	});
+	
+	abar.children(".export_par_id").button({
+		label:i18n.t("exportoptions.par_id"),
+		text:configuration["treeanno.ui.showTextOnButtons"]
+	}).click({
+		'documentId':document['id']
+	}, function(event) {
+		window.location.href="rpc/par_id/"+projectId+"/"+event.data.documentId;
 	});
 	
 	abar.children(".export_xml").button({

@@ -5,6 +5,8 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+    	<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<build>
 		<resources>
@@ -13,14 +15,14 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<finalName>treeanno##${project.version}</finalName>
+		<finalName>treeanno</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<path>/${project.build.finalName}</path>
+					<path>/${project.build.finalName}##${project.version}</path>
 					<update>true</update>
 					<url>http://zwergdrossel.ims.uni-stuttgart.de:8080/manager/text</url>
 					<server>zwergdrossel</server>
@@ -28,19 +30,9 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
-					<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<webResources>
 						<resource>
@@ -178,7 +170,7 @@
 		<dependency>
 			<groupId>de.unistuttgart.ims.reiter</groupId>
 			<artifactId>treeanno.api</artifactId>
-			<version>0.2</version>
+			<version>0.6.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -205,7 +197,7 @@
 	<parent>
 		<groupId>de.unistuttgart.ims.reiter</groupId>
 		<artifactId>treeanno</artifactId>
-		<version>0.6.12</version>
+		<version>0.6.13</version>
 	</parent>
 	<name>${parent.name}</name>
 </project>

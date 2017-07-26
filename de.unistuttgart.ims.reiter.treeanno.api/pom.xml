@@ -3,7 +3,6 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>treeanno.api</artifactId>
-  <version>0.2</version>
   <packaging>jar</packaging>
 
   <name>treeanno.api</name>
@@ -68,6 +67,6 @@
   <parent>
   	<groupId>de.unistuttgart.ims.reiter</groupId>
   	<artifactId>treeanno</artifactId>
-  	<version>0.6.12</version>
+  	<version>0.6.13</version>
   </parent>
 </project>
