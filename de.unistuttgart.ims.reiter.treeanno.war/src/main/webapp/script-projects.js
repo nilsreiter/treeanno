@@ -520,6 +520,7 @@ function show_documentlist(id) {
 			
 			$(actionCell).find("button.view_annotators").button({
 				label:i18n.t("document_action_view_annotators"),
+				icons: { primary: "ui-icon-zoomin", secondary: null },
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
 				'document':data['documents'][i]['document']
