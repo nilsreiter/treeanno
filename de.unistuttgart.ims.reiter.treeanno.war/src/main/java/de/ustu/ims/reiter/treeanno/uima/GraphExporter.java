@@ -20,12 +20,15 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 import de.ustu.ims.reiter.treeanno.tree.Node;
 import de.ustu.ims.reiter.treeanno.tree.Tree;
+import de.ustu.ims.reiter.treeanno.tree.TreeSegmentComparator;
 import de.ustu.ims.reiter.treeanno.tree.Walker;
 
 public class GraphExporter extends JCasConsumer_ImplBase {
 
 	public static final String PARAM_OUTPUT_DIRECTORY = "Output Directory";
 	public static final String PARAM_WALKER_CLASS_NAME = "Walker Class";
+
+	public static final TreeSegmentComparator tsComparator = new TreeSegmentComparator();
 
 	@ConfigurationParameter(name = PARAM_OUTPUT_DIRECTORY)
 	String outputLocationPath;
@@ -79,9 +82,10 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 	}
 
+
 	public static Tree<TreeSegment> getTree(JCas jcas) {
-		Tree<TreeSegment> tree = new Tree<TreeSegment>();
-		tree.setRoot(new Node<TreeSegment>(null));
+		Tree<TreeSegment> tree = new Tree<TreeSegment>(tsComparator);
+		tree.setRoot(new Node<TreeSegment>(null, tsComparator));
 
 		// this only works if the ordering has not changed, because the parents
 		// always precede their children
@@ -97,10 +101,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 				try {
 					tree.addChild(ts.getParent(), ts);
 				} catch (NullPointerException e) {
-					if (waiters.size() > 0)
-						waiters.add(1, ts);
-					else
-						waiters.add(ts);
+					waiters.add(ts);
 				}
 			}
 

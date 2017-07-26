@@ -1,18 +1,23 @@
 package de.ustu.ims.reiter.treeanno.tree;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Node<T> {
 	T object;
-	List<Node<T>> children = new LinkedList<Node<T>>();
+	SortedSet<Node<T>> children;
+	Comparator<Node<T>> comparator;
 
-	public Node(T obj) {
+	public Node(T obj, Comparator<Node<T>> comp) {
 		object = obj;
+		comparator = comp;
+		children = new TreeSet<Node<T>>(comparator);
 	}
 
-	public Node(T obj, List<Node<T>> children) {
+	public Node(T obj, Comparator<Node<T>> comp, SortedSet<Node<T>> children) {
 		this.object = obj;
+		this.comparator = comp;
 		this.children = children;
 	}
 
@@ -24,11 +29,11 @@ public class Node<T> {
 		this.object = object;
 	}
 
-	public List<Node<T>> getChildren() {
+	public SortedSet<Node<T>> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Node<T>> children) {
+	public void setChildren(SortedSet<Node<T>> children) {
 		this.children = children;
 	}
 }

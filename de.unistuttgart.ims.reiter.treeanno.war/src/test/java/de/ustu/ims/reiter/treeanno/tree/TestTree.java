@@ -2,28 +2,36 @@ package de.ustu.ims.reiter.treeanno.tree;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Comparator;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TestTree {
 
-	Object[] objects;
+	final Object[] objects = new Object[] { new Object(), new Object(), new Object(), new Object(), new Object(),
+			new Object(), new Object(), new Object(), new Object() };
+	Comparator<Node<Object>> comp;
 
 	@Before
 	public void setUp() {
-		objects =
-				new Object[] { new Object(), new Object(), new Object(),
-						new Object(), new Object(), new Object(), new Object(),
-						new Object(), new Object() };
+		comp = new Comparator<Node<Object>>() {
+			@Override
+			public int compare(Node<Object> o1, Node<Object> o2) {
+				return Integer.compare(ArrayUtils.indexOf(objects, o1.getObject()),
+						ArrayUtils.indexOf(objects, o2.getObject()));
+			}
 
+		};
 	}
 
 	@Test
 	public void testTreeCreation() {
 		Walker<Object> w = new PrintParenthesesWalker<Object>();
 
-		Tree<Object> tree = new Tree<Object>();
-		tree.setRoot(new Node<Object>(objects[0]));
+		Tree<Object> tree = new Tree<Object>(comp);
+		tree.setRoot(new Node<Object>(objects[0], comp));
 		tree.depthFirstWalk(w);
 		assertEquals("()", w.toString());
 
