@@ -69,6 +69,7 @@
 			</span>
 		</span>
 		<span class="right">
+			<input type="checkbox" id="show_ids" checked="checked"><label for="show_ids">show_ids</label>
 			<button class="button_undo">undo</button>
 			<input type="checkbox" id="show_history"><label for="show_history">show_history</label>
 			<button class="button_save_document">save</button>

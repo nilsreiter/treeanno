@@ -73,6 +73,15 @@ div#artifact {
 #split,#merge { display:none; }
 #form_mergecandidates { width:350px; }
 
+p.treeanno_id { 
+	display: inline-block; 
+	font-size:small; 
+	position: absolute; 
+	left:20px;
+	margin:0;
+}
+
+li.nodetype_virtual > div,
 .annocat { font-style:italic; }
 
 #topbar { 
@@ -84,6 +93,7 @@ div#artifact {
 	padding:10px; 
 	height:32px;
 	font-size:10pt;
+	z-index:10;
 }
 
 .searchFound {

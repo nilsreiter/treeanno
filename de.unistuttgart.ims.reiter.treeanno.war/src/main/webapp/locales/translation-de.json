@@ -68,6 +68,7 @@
 	"login_dialog_ok":"Enter",
 	"show_helper":"Spickzettel",
 	"show_history":"Aktionslog",
+	"show_ids":"Ids anzeigen",
 	"documents_in_X":"Dokumente in Projekt &bdquo;__projectname__&ldquo;",
 	"howto_split":"Mit den Pfeiltasten das Absatzzeichen an die richtige Stelle setzen. Weitere Sprünge mit &#8679;+Pfeiltasten.",
 	"rename_dialog":{
@@ -105,6 +106,7 @@
 		"breadcrumb_for_X":"Export Dokument &bdquo;__document__&ldquo;",
 		"xmi":"UIMA XMI",
 		"par":"Klammerausdruck",
+		"par_id":"Klammerausdruck (mit IDs)",
 		"xml":"Simple XML",
 		"dot":"Dot Language"
 	},

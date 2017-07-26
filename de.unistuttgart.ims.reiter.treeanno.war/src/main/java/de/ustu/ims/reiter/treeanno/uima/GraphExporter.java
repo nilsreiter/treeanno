@@ -20,12 +20,15 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 import de.ustu.ims.reiter.treeanno.tree.Node;
 import de.ustu.ims.reiter.treeanno.tree.Tree;
+import de.ustu.ims.reiter.treeanno.tree.TreeSegmentComparator;
 import de.ustu.ims.reiter.treeanno.tree.Walker;
 
 public class GraphExporter extends JCasConsumer_ImplBase {
 
 	public static final String PARAM_OUTPUT_DIRECTORY = "Output Directory";
 	public static final String PARAM_WALKER_CLASS_NAME = "Walker Class";
+
+	public static final TreeSegmentComparator tsComparator = new TreeSegmentComparator();
 
 	@ConfigurationParameter(name = PARAM_OUTPUT_DIRECTORY)
 	String outputLocationPath;
@@ -80,13 +83,17 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 	}
 
-	public static String getTreeString(JCas jcas, Walker<TreeSegment> walker) {
-		Tree<TreeSegment> tree = new Tree<TreeSegment>();
-		tree.setRoot(new Node<TreeSegment>(null));
+
+	public static Tree<TreeSegment> getTree(JCas jcas) {
+		Tree<TreeSegment> tree = new Tree<TreeSegment>(tsComparator);
+		tree.setRoot(new Node<TreeSegment>(null, tsComparator));
 
 		// this only works if the ordering has not changed, because the parents
 		// always precede their children
+		// SortedSet<TreeSegment> waiters = new
+		// SortedSet<TreeSegment>(JCasUtil.select(jcas, type))
 		List<TreeSegment> waiters = new LinkedList<TreeSegment>(JCasUtil.select(jcas, TreeSegment.class));
+
 		while (!waiters.isEmpty()) {
 			TreeSegment ts = waiters.remove(0);
 			if (ts.getParent() == null) {
@@ -100,6 +107,11 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 			}
 
 		}
+		return tree;
+	}
+
+	public static String getTreeString(JCas jcas, Walker<TreeSegment> walker) {
+		Tree<TreeSegment> tree = getTree(jcas);
 		tree.depthFirstWalk(walker);
 		return walker.toString();
 	}

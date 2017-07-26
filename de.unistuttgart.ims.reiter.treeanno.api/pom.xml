@@ -3,7 +3,6 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>treeanno.api</artifactId>
-  <version>0.2</version>
   <packaging>jar</packaging>
 
   <name>treeanno.api</name>

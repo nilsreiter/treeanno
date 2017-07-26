@@ -85,6 +85,10 @@ public class DocumentExport extends HttpServlet {
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("XML")) {
 					exportXML(document, zos);
 				}
+				if (request.getParameterValues("format")[0].equalsIgnoreCase("PAR_ID")) {
+					exportWithWalker(document, zos,
+							new PrintParenthesesWalker<TreeSegment>(PrintParenthesesWalker.treeSegmentId), "par", null);
+				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("DOT")) {
 					ConfigurationMap cnf = (ConfigurationMap) getServletContext().getAttribute("conf");
 					exportWithWalker(document, zos,
