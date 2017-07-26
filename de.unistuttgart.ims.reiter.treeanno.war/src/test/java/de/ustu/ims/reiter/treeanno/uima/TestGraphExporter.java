@@ -92,7 +92,7 @@ public class TestGraphExporter {
 		ts[2].setParent(v2);
 		String result = GraphExporter.getTreeString(jcas,
 				new PrintParenthesesWalker<TreeSegment>(PrintParenthesesWalker.treeSegmentId));
-		assertEquals("(null(0(1))(10(11(2)))(3))", result);
+		assertEquals("(root(0(1))(10(11(2)))(3))", result);
 
 		tree = GraphExporter.getTree(jcas).getRoot();
 		assertEquals(3, tree.getChildren().size());
@@ -106,7 +106,7 @@ public class TestGraphExporter {
 		tree = GraphExporter.getTree(jcas).getRoot();
 
 		assertEquals(2, tree.getChildren().size());
-		assertEquals("(null(0(1(2)(10)(11)))(3))", GraphExporter.getTreeString(jcas,
+		assertEquals("(root(0(1(11)(10)(2)))(3))", GraphExporter.getTreeString(jcas,
 				new PrintParenthesesWalker<TreeSegment>(PrintParenthesesWalker.treeSegmentId)));
 		
 

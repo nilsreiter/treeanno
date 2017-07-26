@@ -99,6 +99,7 @@ li.nodetype_virtual > div,
 	padding:10px; 
 	height:32px;
 	font-size:10pt;
+	z-index:10;
 }
 
 .searchFound {
