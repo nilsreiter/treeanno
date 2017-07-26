@@ -413,7 +413,7 @@ function show_documentlist(id) {
 			$(tr).append("<td>"+data['documents'][i]['document']['type']+(data.documents[i].document.origin!=null?" ("+data.documents[i].document.origin+")":"")+"</td>");
 			
 			var actionCell = document.createElement("td");
-			if (al < Perm["PADMINACCESS"] && al >= Perm["WRITEACCESS"])
+			if (al >= Perm["WRITEACCESS"])
 				$(actionCell).append("<button class=\"button_open\"></button>");
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_open_master\"></button>");
