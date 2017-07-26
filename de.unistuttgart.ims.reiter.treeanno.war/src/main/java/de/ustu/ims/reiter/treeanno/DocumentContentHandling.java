@@ -195,7 +195,6 @@ public class DocumentContentHandling extends HttpServlet {
 		JSONObject jObj = new JSONObject(s);
 		JSONObject returnObject = new JSONObject();
 		int docId = Util.getFirstDocumentId(request, response);
-		DocumentType dType = DocumentType.valueOf(request.getParameter("type"));
 		boolean r = false;
 
 		try {
@@ -204,8 +203,10 @@ public class DocumentContentHandling extends HttpServlet {
 					dataLayer.getAccessLevel(doc.getProject(),
 							CW.getUser(request));
 
-			if (accessLevel >= Perm.PADMIN_ACCESS) {
+			if (request.getParameter("type") != null && accessLevel >= Perm.PADMIN_ACCESS) {
 				JCas jcas;
+				DocumentType dType = DocumentType.valueOf(request.getParameter("type"));
+
 				switch (dType) {
 				case MERGED_SEG:
 					Document newDoc = new Document();
