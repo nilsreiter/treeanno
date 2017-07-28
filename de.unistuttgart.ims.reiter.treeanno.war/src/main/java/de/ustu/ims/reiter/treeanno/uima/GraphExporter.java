@@ -111,7 +111,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 	public static String getTreeString(JCas jcas, Walker<TreeSegment> walker) {
 		Tree<TreeSegment> tree = getTree(jcas);
-		tree.depthFirstWalk(walker);
+		tree.getRoot().depthFirstWalk(walker);
 		return walker.toString();
 	}
 
