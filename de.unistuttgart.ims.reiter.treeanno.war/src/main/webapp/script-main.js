@@ -1279,6 +1279,7 @@ function force_indent_elements(elements, newId) {
 			vitem["end"] = vitem["begin"];
 			vitem["id"] = (newId?newId:++idCounter);
 			vitem["text"] = "";
+			vitem["virtualId"] = getVirtualId(vitem);
 			
 			var htmlItem = get_html_item(vitem, 0);
 			$(element).before(htmlItem);
