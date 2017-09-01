@@ -2,6 +2,9 @@ package de.ustu.ims.reiter.treeanno.rpc;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -126,9 +129,15 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
-	protected void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment, String> walker,
+	protected <T> void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment, T> walker,
 			String suffix,
-			Generator<String> generator) throws UIMAException, SAXException, IOException {
+			Generator<T> generator) throws UIMAException, SAXException, IOException {
+		exportWithWalker(document, zos, walker, suffix, Arrays.asList(generator));
+	}
+
+	protected <T> void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment, T> walker,
+			String suffix,
+			List<Generator<T>> generator) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
 		if (name == null || name.isEmpty())
@@ -140,23 +149,23 @@ public class DocumentExport extends HttpServlet {
 		// zos.putNextEntry(new ZipEntry(name + "/"));
 
 		// original document
-		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + "." + suffix));
-		String treeString = GraphExporter.getTreeString(jcas, walker);
-		zos.write(treeString.getBytes());
+		T treeString = GraphExporter.getWalkerResult(jcas, walker);
+		for (Generator<T> gen : generator) {
+			zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + "." + gen.getSuffix()));
+			gen.setInput(treeString);
+			IOUtils.copy(gen.generate(), zos);
+		}
 
 		// annotations folder
 		zos.putNextEntry(new ZipEntry(name + "/annotations/"));
 
 		for (UserDocument ud : document.getUserDocuments()) {
-			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + suffix));
-			treeString = GraphExporter.getTreeString(JCasConverter.getJCas(ud.getXmi()), walker);
-			zos.write(treeString.getBytes());
-			if (generator != null) {
-				zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + generator.getSuffix()));
-				generator.setInput(treeString);
-				IOUtils.copy(generator.generate(), zos);
+			treeString = GraphExporter.getWalkerResult(JCasConverter.getJCas(ud.getXmi()), walker);
+			for (Generator<T> gen : generator) {
+				zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + gen.getSuffix()));
+				gen.setInput(treeString);
+				IOUtils.copy(gen.generate(), zos);
 			}
-
 		}
 	}
 
