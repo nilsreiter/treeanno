@@ -95,6 +95,7 @@ public class DocumentExport extends HttpServlet {
 		return;
 	}
 
+	// TODO: merge into exportWithWalker
 	protected void exportXML(Document document, ZipOutputStream zos) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
@@ -159,6 +160,7 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
+	// TODO: merge into exportWithWalker
 	protected void exportPAR(Document document, ZipOutputStream zos) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
@@ -187,6 +189,7 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
+	// TODO: merge into exportWithWalker
 	protected void exportXMI(Document document, ZipOutputStream zos) throws UIMAException, SAXException, IOException {
 
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
