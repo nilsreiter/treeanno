@@ -4,28 +4,42 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class PrintSpanningTableWalker<T> implements Walker<T, Map<String, Map<String, Integer>>> {
+public class PrintSpanningTableWalker<T> implements Walker<T, Map<T, Map<T, T>>> {
 
 	public PrintSpanningTableWalker(Function<T, String> idFunction) {
 		super();
 		this.idFunction = idFunction;
 	}
 
-	Map<String, Map<String, T>> matrix;
+	Map<T, Map<T, T>> matrix;
 	Function<T, String> idFunction;
 
 	@Override
 	public void init() {
-		matrix = new HashMap<String, Map<String, T>>();
+		matrix = new HashMap<T, Map<T, T>>();
 	}
 
 	@Override
 	public void beginNode(Node<T> node, Node<T> parent) {
 		if (!node.getChildren().isEmpty()) {
-			String x = idFunction.apply(node.getChildren().first().getObject());
-			String y = idFunction.apply(node.getChildren().last().getObject());
+			T x = (findFirstLeaf(node).getObject());
+			T y = (findLastLeaf(node).getObject());
 			store(x, y, node.getObject());
 		}
+	}
+
+	protected Node<T> findFirstLeaf(Node<T> node) {
+		if (node.getChildren().first().getChildren().isEmpty())
+			return node.getChildren().first();
+		else
+			return findFirstLeaf(node.getChildren().first());
+	}
+
+	protected Node<T> findLastLeaf(Node<T> node) {
+		if (node.getChildren().last().getChildren().isEmpty())
+			return node.getChildren().last();
+		else
+			return findLastLeaf(node.getChildren().last());
 	}
 
 	@Override
@@ -33,9 +47,9 @@ public class PrintSpanningTableWalker<T> implements Walker<T, Map<String, Map<St
 		// intentionally empty
 	}
 
-	protected void store(String x, String y, T ts) {
+	protected void store(T x, T y, T ts) {
 		if (!matrix.containsKey(x)) {
-			matrix.put(x, new HashMap<String, T>());
+			matrix.put(x, new HashMap<T, T>());
 		}
 		matrix.get(x).put(y, ts);
 	}
@@ -46,14 +60,10 @@ public class PrintSpanningTableWalker<T> implements Walker<T, Map<String, Map<St
 
 	}
 
-	public Map<String, Map<String, T>> getMatrix() {
-		return matrix;
-	}
 
 	@Override
-	public Map<String, Map<String, Integer>> getResult() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<T, Map<T, T>> getResult() {
+		return matrix;
 	}
 
 }
