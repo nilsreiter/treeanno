@@ -127,7 +127,7 @@ public class DocumentExport extends HttpServlet {
 
 	protected void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment, String> walker,
 			String suffix,
-			Generator generator) throws UIMAException, SAXException, IOException {
+			Generator<String> generator) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
 		if (name == null || name.isEmpty())
@@ -152,7 +152,7 @@ public class DocumentExport extends HttpServlet {
 			zos.write(treeString.getBytes());
 			if (generator != null) {
 				zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + generator.getSuffix()));
-				generator.setDotString(treeString);
+				generator.setInput(treeString);
 				IOUtils.copy(generator.generate(), zos);
 			}
 

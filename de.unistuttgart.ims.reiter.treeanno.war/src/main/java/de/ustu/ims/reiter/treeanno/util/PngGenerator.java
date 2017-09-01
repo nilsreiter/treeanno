@@ -7,7 +7,7 @@ import java.io.InputStream;
 
 import org.apache.commons.compress.utils.IOUtils;
 
-public class PngGenerator implements Generator {
+public class PngGenerator implements Generator<String> {
 
 	String dotString;
 
@@ -18,7 +18,7 @@ public class PngGenerator implements Generator {
 	}
 
 	@Override
-	public void setDotString(String s) {
+	public void setInput(String s) {
 		dotString = s;
 	}
 
@@ -36,7 +36,7 @@ public class PngGenerator implements Generator {
 	public static final void main(String args[]) throws FileNotFoundException, IOException {
 		PngGenerator g = new PngGenerator("/usr/local/bin/dot");
 
-		g.setDotString("digraph G{ a -> b }");
+		g.setInput("digraph G{ a -> b }");
 		InputStream is = g.generate();
 		IOUtils.copy(is, new FileOutputStream("f.png"));
 
