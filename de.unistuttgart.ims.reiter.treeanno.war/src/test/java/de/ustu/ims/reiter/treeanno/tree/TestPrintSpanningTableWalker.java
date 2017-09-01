@@ -1,6 +1,10 @@
 package de.ustu.ims.reiter.treeanno.tree;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Comparator;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +33,9 @@ public class TestPrintSpanningTableWalker {
 		PrintSpanningTableWalker<Integer> pstw = new PrintSpanningTableWalker<Integer>(
 				(Integer i) -> String.valueOf(i));
 		tree.getRoot().depthFirstWalk(pstw);
+		Map<String, Map<String, Integer>> m = pstw.getMatrix();
+		assertNotNull(m);
+		assertEquals(2, m.size());
 		System.out.println(pstw.toString());
 	}
 }
