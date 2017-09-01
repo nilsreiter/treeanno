@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
+import de.ustu.ims.reiter.treeanno.VirtualIdProvider;
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
@@ -244,7 +245,10 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
-	public static Function<TreeSegment, String> treeSegmentId = (TreeSegment ts) -> {
-		return (ts == null ? "root" : String.valueOf(ts.getId()));
+	public Function<TreeSegment, String> treeSegmentId = (TreeSegment ts) -> {
+		VirtualIdProvider.Scheme scheme = VirtualIdProvider.Scheme
+				.valueOf((String) ((ConfigurationMap) getServletContext().getAttribute("conf"))
+						.getOrDefault("treeanno.id.scheme", "NONE"));
+		return VirtualIdProvider.getVirtualId(scheme, ts);
 	};
 }
