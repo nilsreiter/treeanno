@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.configuration2.ConfigurationMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
@@ -71,7 +72,9 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("documentId", userDocument.getId());
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
-							new JCasConverter()
+							new JCasConverter(VirtualIdProvider.Scheme
+									.valueOf((String) ((ConfigurationMap) getServletContext().getAttribute("conf"))
+											.getOrDefault("treeanno.id.scheme", "NONE")))
 									.getJSONArrayFromAnnotations(
 											jcas,
 											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
@@ -136,7 +139,9 @@ public class DocumentContentHandling extends HttpServlet {
 			if (jcas != null) {
 				obj.put("document", JSONUtil.getJSONObject(document));
 				obj.put("list",
-						new JCasConverter()
+						new JCasConverter(VirtualIdProvider.Scheme
+								.valueOf((String) ((ConfigurationMap) getServletContext().getAttribute("conf"))
+										.getOrDefault("treeanno.id.scheme", "NONE")))
 								.getJSONArrayFromAnnotations(
 										jcas,
 										de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));

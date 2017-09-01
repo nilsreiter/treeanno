@@ -21,9 +21,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
+import de.ustu.ims.reiter.treeanno.VirtualIdProvider;
+import de.ustu.ims.reiter.treeanno.VirtualIdProvider.Scheme;
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 
 public class JCasConverter {
+
+	VirtualIdProvider.Scheme idScheme;
+
+	public JCasConverter(Scheme idScheme) {
+		super();
+		this.idScheme = idScheme;
+	}
 
 	public JSONArray getJSONArrayFromAnnotations(JCas jcas,
 			Class<? extends TreeSegment> annoClass) {
@@ -73,6 +82,7 @@ public class JCasConverter {
 		if (annotation.getCategory() != null)
 			obj.put("category", annotation.getCategory());
 		obj.put("id", annotation.getId());
+		obj.put("virtualId", VirtualIdProvider.getVirtualId(idScheme, annotation));
 		return obj;
 	}
 
@@ -105,6 +115,14 @@ public class JCasConverter {
 			e.printStackTrace();
 		}
 		return s;
+	}
+
+	public VirtualIdProvider.Scheme getIdScheme() {
+		return idScheme;
+	}
+
+	public void setIdScheme(VirtualIdProvider.Scheme idScheme) {
+		this.idScheme = idScheme;
 	}
 
 }
