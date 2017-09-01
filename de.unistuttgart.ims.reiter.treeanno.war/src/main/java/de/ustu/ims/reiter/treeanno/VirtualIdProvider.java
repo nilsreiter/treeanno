@@ -19,6 +19,8 @@ public class VirtualIdProvider {
 	}
 
 	private static String getVirtualId_ARNDT(TreeSegment ts) {
+		if (ts == null)
+			return "root";
 		if (Util.isVirtual(ts)) {
 			return "Q" + String.valueOf(ts.getBegin());
 		} else {
@@ -27,7 +29,10 @@ public class VirtualIdProvider {
 	}
 
 	private static String getVirtualId_NONE(TreeSegment ts) {
-		return String.valueOf(ts.getId());
+		if (ts != null)
+			return String.valueOf(ts.getId());
+		else
+			return "root";
 	}
 
 }
