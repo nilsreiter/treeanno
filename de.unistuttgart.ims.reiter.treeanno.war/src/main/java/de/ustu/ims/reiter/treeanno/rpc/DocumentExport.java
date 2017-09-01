@@ -79,14 +79,16 @@ public class DocumentExport extends HttpServlet {
 				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("PAR_ID")) {
 					exportWithWalker(document, zos,
-							new PrintParenthesesWalker<TreeSegment>(PrintParenthesesWalker.treeSegmentId), "par", null);
+							new PrintParenthesesWalker<TreeSegment>(treeSegmentId), "par",
+							new TxtGenerator("par"));
 				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("DOT")) {
 					ConfigurationMap cnf = (ConfigurationMap) getServletContext().getAttribute("conf");
 					exportWithWalker(document, zos,
 							new PrintDotWalker((String) cnf.getOrDefault("treeanno.dot.style.segment", "shape=oval"),
 									(String) cnf.getOrDefault("treeanno.dot.style.vsegment", "shape=box")),
-							"dot", new PngGenerator((String) cnf.get("treeanno.dot.path")));
+							"dot", Arrays.asList(new TxtGenerator("dot"),
+									new PngGenerator((String) cnf.get("treeanno.dot.path"))));
 				}
 			}
 			zos.flush();
@@ -228,4 +230,7 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
+	public static Function<TreeSegment, String> treeSegmentId = (TreeSegment ts) -> {
+		return (ts == null ? "root" : String.valueOf(ts.getId()));
+	};
 }
