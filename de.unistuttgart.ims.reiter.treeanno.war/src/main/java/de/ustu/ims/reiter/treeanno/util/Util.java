@@ -148,4 +148,9 @@ public class Util {
 		return Integer.valueOf(docIdString);
 	}
 
+	public static boolean isVirtual(TreeSegment ts) {
+		if (ts.getNodeType() == null)
+			return ts.getBegin() == ts.getEnd();
+		return ts.getNodeType().equalsIgnoreCase("virtual");
+	}
 }
