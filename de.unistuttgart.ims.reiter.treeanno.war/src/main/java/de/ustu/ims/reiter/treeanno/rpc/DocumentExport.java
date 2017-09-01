@@ -3,6 +3,7 @@ package de.ustu.ims.reiter.treeanno.rpc;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.zip.ZipEntry;
@@ -30,9 +31,11 @@ import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.tree.PrintDotWalker;
 import de.ustu.ims.reiter.treeanno.tree.PrintParenthesesWalker;
+import de.ustu.ims.reiter.treeanno.tree.PrintSpanningTableWalker;
 import de.ustu.ims.reiter.treeanno.tree.PrintXmlWalker;
 import de.ustu.ims.reiter.treeanno.tree.Walker;
 import de.ustu.ims.reiter.treeanno.uima.GraphExporter;
+import de.ustu.ims.reiter.treeanno.util.CsvGenerator;
 import de.ustu.ims.reiter.treeanno.util.Generator;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.PngGenerator;
@@ -77,6 +80,16 @@ public class DocumentExport extends HttpServlet {
 				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("XML")) {
 					exportXML(document, zos);
+				}
+				if (request.getParameterValues("format")[0].equalsIgnoreCase("CHART")) {
+					exportWithWalker(document, zos, new PrintSpanningTableWalker(treeSegmentId),
+							"csv", new CsvGenerator(treeSegmentId, new Comparator<TreeSegment>() {
+
+								@Override
+								public int compare(TreeSegment o1, TreeSegment o2) {
+									return Integer.compare(o1.getBegin(), o2.getBegin());
+								}
+							}));
 				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("PAR_ID")) {
 					exportWithWalker(document, zos,
