@@ -473,6 +473,7 @@ function get_html_item(item, i) {
 	if (item["text"] != "")
 		$(htmlItem).attr("title", item['text']);
 	$(htmlItem).attr("data-treeanno-id", item['id']);
+	$(htmlItem).attr("data-treeanno-virtualId", item['virtualId']);
 	$(htmlItem).attr("data-treeanno-begin", item['begin']);
 	$(htmlItem).attr("data-treeanno-end", item['end']);
 	$(htmlItem).attr("data-treeanno-categories", item['category']);
@@ -483,7 +484,7 @@ function get_html_item(item, i) {
 	idCounter = Math.max(idCounter, item['id']);
 	if ('category' in item)
 		$(htmlItem).append("<p class=\"annocat\">"+item['category']+"</p>");
-	$(htmlItem).append("<p class=\"treeanno_id\">"+item["id"]+"</p>");
+	$(htmlItem).append("<p class=\"treeanno_id\">"+item["virtualId"]+"</p>");
 	$(htmlItem).append("<div>"+dtext(item['text'])+"</div>");
 	return htmlItem;
 }
@@ -1078,6 +1079,7 @@ function merge(item1, item0, newId) {
 	nitem['begin'] = (correctOrder?item0['begin']:item1['begin']);
 	nitem['end'] = (correctOrder?item1['end']:item0['end']);
 	nitem['id'] = (newId?newId:++idCounter);
+	nitem['virtualId'] = getVirtualId(nitem);
 	
 	var sublist0 = $(element0).children("ul").detach();
 	element0.remove();
@@ -1189,11 +1191,13 @@ function split(item, lines, moveSelection, ids) {
 	litems[0]['text'] = lines[0];
 	litems[0]['end'] = parseInt(item['begin'])+parseInt(lines[0].length);
 	litems[0]['id'] = (ids?ids[0]:++idCounter);
+	litems[0]['virtualId'] = getVirtualId(litems[0]);
 	litems[1] = new Object();
 	litems[1]['end'] = item['end'];
 	litems[1]['text'] = lines[1];
 	litems[1]['begin'] = litems[0]['end'];
 	litems[1]['id'] = (ids?ids[1]:++idCounter);
+	litems[1]['virtualId'] = getVirtualId(litems[1]);
 	// items[itemid] = undefined;
 	
 	var sublist = $(element).children("ul").detach();
@@ -1275,6 +1279,7 @@ function force_indent_elements(elements, newId) {
 			vitem["end"] = vitem["begin"];
 			vitem["id"] = (newId?newId:++idCounter);
 			vitem["text"] = "";
+			vitem["virtualId"] = getVirtualId(vitem);
 			
 			var htmlItem = get_html_item(vitem, 0);
 			$(element).before(htmlItem);
@@ -1370,5 +1375,22 @@ function undo() {
 
 function id2element(id) {
 	return $("li[data-treeanno-id=\""+id+"\"]");
+}
+
+function getVirtualId(item) {
+	switch(configuration["treeanno.id.scheme"]) {
+	case "ARNDT":
+		return getVirtualId_ARNDT(item);
+	default:
+		return item["id"];
+	}
+}
+
+function getVirtualId_ARNDT(item) {
+	if (item["nodetype"] == "virtual") {
+		return "Q"+item["begin"];
+	} else {
+		return "A"+item["begin"];
+	}
 }
 
