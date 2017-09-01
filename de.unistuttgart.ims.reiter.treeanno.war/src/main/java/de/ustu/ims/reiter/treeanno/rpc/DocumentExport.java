@@ -36,6 +36,7 @@ import de.ustu.ims.reiter.treeanno.uima.GraphExporter;
 import de.ustu.ims.reiter.treeanno.util.Generator;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.PngGenerator;
+import de.ustu.ims.reiter.treeanno.util.TxtGenerator;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
