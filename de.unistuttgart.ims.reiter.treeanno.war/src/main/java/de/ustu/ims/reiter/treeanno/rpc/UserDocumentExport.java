@@ -39,7 +39,7 @@ public class UserDocumentExport extends HttpServlet {
 			try {
 				UserDocument udoc = dataLayer.getUserDocument(udocIds[0]);
 				JCas jcas = JCasConverter.getJCas(udoc.getXmi());
-				Walker<TreeSegment> walker = null;
+				Walker<TreeSegment, String> walker = null;
 				if (fmt.equalsIgnoreCase("par"))
 					walker = new PrintParenthesesWalker<TreeSegment>();
 				else if (fmt.equalsIgnoreCase("xml"))

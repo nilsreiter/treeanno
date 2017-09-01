@@ -37,12 +37,12 @@ public class Node<T> {
 		this.children = children;
 	}
 
-	public void depthFirstWalk(Walker<T> walker) {
+	public void depthFirstWalk(Walker<T, ? extends Object> walker) {
 		walker.init();
 		depthFirstWalk(walker, this, null);
 	}
 
-	protected void depthFirstWalk(Walker<T> walker, Node<T> node, Node<T> parent) {
+	protected void depthFirstWalk(Walker<T, ? extends Object> walker, Node<T> node, Node<T> parent) {
 		walker.beginNode(node, parent);
 		for (Node<T> child : node.getChildren()) {
 			depthFirstWalk(walker, child, node);

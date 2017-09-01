@@ -106,7 +106,7 @@ public class DocumentExport extends HttpServlet {
 		// root folder
 		// zos.putNextEntry(new ZipEntry(name + "/"));
 
-		Walker<TreeSegment> walker = new PrintXmlWalker();
+		Walker<TreeSegment, String> walker = new PrintXmlWalker();
 
 		// original document
 		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + ".xml"));
@@ -125,7 +125,8 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
-	protected void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment> walker, String suffix,
+	protected void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment, String> walker,
+			String suffix,
 			Generator generator) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
@@ -165,7 +166,7 @@ public class DocumentExport extends HttpServlet {
 			JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentTitle();
 		if (name == null || name.isEmpty())
 			name = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
-		Walker<TreeSegment> walker = new PrintParenthesesWalker<TreeSegment>();
+		Walker<TreeSegment, String> walker = new PrintParenthesesWalker<TreeSegment>();
 
 		// root folder
 		// zos.putNextEntry(new ZipEntry(name + "/"));

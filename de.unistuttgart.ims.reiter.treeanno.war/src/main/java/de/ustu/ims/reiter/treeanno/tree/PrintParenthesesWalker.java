@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 
-public class PrintParenthesesWalker<T> implements Walker<T> {
+public class PrintParenthesesWalker<T> implements Walker<T, String> {
 
 	public static Function<TreeSegment, String> treeSegmentId = (TreeSegment ts) -> {
 		return (ts == null ? "root" : String.valueOf(ts.getId()));
@@ -55,5 +55,10 @@ public class PrintParenthesesWalker<T> implements Walker<T> {
 
 	public void setIdFunction(Function<T, String> idFunction) {
 		this.idFunction = idFunction;
+	}
+
+	@Override
+	public String getResult() {
+		return toString();
 	}
 }

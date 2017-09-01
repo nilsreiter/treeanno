@@ -34,14 +34,14 @@ public class Tree<T> {
 	}
 
 	@Deprecated
-	public void depthFirstWalk(Walker<T> walker) {
+	public void depthFirstWalk(Walker<T, ? extends Object> walker) {
 		walker.init();
 		depthFirstWalk(walker, getRoot(), null);
 	}
 
 	@Deprecated
 	protected void
-	depthFirstWalk(Walker<T> walker, Node<T> node, Node<T> parent) {
+			depthFirstWalk(Walker<T, ? extends Object> walker, Node<T> node, Node<T> parent) {
 		walker.beginNode(node, parent);
 		for (Node<T> child : node.getChildren()) {
 			depthFirstWalk(walker, child, node);

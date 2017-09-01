@@ -5,7 +5,7 @@ import java.util.Map;
 
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 
-public class PrintDotWalker implements Walker<TreeSegment> {
+public class PrintDotWalker implements Walker<TreeSegment, String> {
 
 	StringBuilder b;
 	@Deprecated
@@ -76,5 +76,10 @@ public class PrintDotWalker implements Walker<TreeSegment> {
 	public void init() {
 		b = new StringBuilder();
 		b.append("digraph G {\n");
+	}
+
+	@Override
+	public String getResult() {
+		return toString();
 	}
 }

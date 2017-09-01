@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class PrintSpanningTableWalker<T> implements Walker<T> {
+public class PrintSpanningTableWalker<T> implements Walker<T, Map<String, Map<String, Integer>>> {
 
 	public PrintSpanningTableWalker(Function<T, String> idFunction) {
 		super();
@@ -48,6 +48,12 @@ public class PrintSpanningTableWalker<T> implements Walker<T> {
 
 	public Map<String, Map<String, T>> getMatrix() {
 		return matrix;
+	}
+
+	@Override
+	public Map<String, Map<String, Integer>> getResult() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
