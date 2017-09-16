@@ -35,7 +35,7 @@ public class TestPrintSpanningTableWalker {
 		tree.getRoot().depthFirstWalk(pstw);
 		Map<Integer, Map<Integer, Integer>> m = pstw.getResult();
 		assertNotNull(m);
-		assertEquals(2, m.size());
 		System.out.println(pstw.toString());
+		assertEquals(1, m.size());
 	}
 }
