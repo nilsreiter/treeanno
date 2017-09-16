@@ -31,6 +31,7 @@ public class UserHandling extends HttpServlet {
 		if (unames.length == 1 && pwords.length == 1) {
 			if (check(unames[0], pwords[0])) {
 				HttpSession session = request.getSession();
+				session.setMaxInactiveInterval(0);
 				User user = null;
 				DataLayer dl = CW.getDataLayer(getServletContext());
 				try {
