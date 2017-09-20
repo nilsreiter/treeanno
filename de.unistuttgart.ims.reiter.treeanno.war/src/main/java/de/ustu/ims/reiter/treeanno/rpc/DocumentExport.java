@@ -170,6 +170,10 @@ public class DocumentExport extends HttpServlet {
 		for (Generator<T> gen : generator) {
 			zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + "." + gen.getSuffix()));
 			gen.setInput(treeString);
+			if (gen instanceof CsvGenerator) {
+				((CsvGenerator<TreeSegment>) gen)
+						.setKeys(JCasUtil.select(jcas, TreeSegment.class));
+			}
 			IOUtils.copy(gen.generate(), zos);
 		}
 
@@ -177,10 +181,16 @@ public class DocumentExport extends HttpServlet {
 		zos.putNextEntry(new ZipEntry(name + "/annotations/"));
 
 		for (UserDocument ud : document.getUserDocuments()) {
-			treeString = GraphExporter.getWalkerResult(JCasConverter.getJCas(ud.getXmi()), walker);
+			JCas udJcas = JCasConverter.getJCas(ud.getXmi());
+			treeString = GraphExporter.getWalkerResult(udJcas, walker);
 			for (Generator<T> gen : generator) {
 				zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + gen.getSuffix()));
 				gen.setInput(treeString);
+				if (gen instanceof CsvGenerator) {
+					((CsvGenerator<TreeSegment>) gen)
+							.setKeys(JCasUtil.select(udJcas, TreeSegment.class));
+				}
+
 				IOUtils.copy(gen.generate(), zos);
 			}
 		}

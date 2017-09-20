@@ -2,6 +2,7 @@ package de.ustu.ims.reiter.treeanno.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.SortedSet;
@@ -17,11 +18,13 @@ public class CsvGenerator<T> implements Generator<Map<T, Map<T, T>>> {
 	Map<T, Map<T, T>> matrix;
 	Function<T, String> idFunction;
 	Comparator<T> comparator;
+	SortedSet<T> keys;
 
 	public CsvGenerator(Function<T, String> idFunction, Comparator<T> comparator) {
 		super();
 		this.idFunction = idFunction;
 		this.comparator = comparator;
+		this.keys = new TreeSet<T>(comparator);
 	}
 
 	@Override
@@ -31,11 +34,6 @@ public class CsvGenerator<T> implements Generator<Map<T, Map<T, T>>> {
 
 	@Override
 	public InputStream generate() throws IOException {
-		SortedSet<T> keys = new TreeSet<T>(this.comparator);
-		keys.addAll(matrix.keySet());
-		for (Map<T, T> row : matrix.values()) {
-			keys.addAll(row.keySet());
-		}
 		StringBuilder b = new StringBuilder();
 		CSVPrinter p = new CSVPrinter(b, CSVFormat.EXCEL);
 		boolean headDone = false;
@@ -65,6 +63,11 @@ public class CsvGenerator<T> implements Generator<Map<T, Map<T, T>>> {
 	@Override
 	public String getSuffix() {
 		return "csv";
+	}
+
+	public void setKeys(Collection<T> keys) {
+		this.keys.clear();
+		this.keys.addAll(keys);
 	}
 
 }
