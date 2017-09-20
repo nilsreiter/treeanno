@@ -83,8 +83,8 @@ public class DocumentExport extends HttpServlet {
 					exportXML(document, zos);
 				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("CHART")) {
-					exportWithWalker(document, zos, new PrintSpanningTableWalker(treeSegmentId),
-							"csv", new CsvGenerator(treeSegmentId, new Comparator<TreeSegment>() {
+					exportWithWalker(document, zos, new PrintSpanningTableWalker<TreeSegment>(treeSegmentId), "csv",
+							new CsvGenerator<TreeSegment>(treeSegmentId, new Comparator<TreeSegment>() {
 
 								@Override
 								public int compare(TreeSegment o1, TreeSegment o2) {
