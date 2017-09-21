@@ -106,7 +106,8 @@
 		"par":"Parentheses",
 		"par_id":"Parentheses (incl. IDs)",
 		"xml":"Simple XML",
-		"dot":"Dot Language"
+		"dot":"Dot Language (DOT+PNG)",
+		"chart": "Chart (CSV)"
 	},
 	"parallel":{
 		"annotations_for_X":"Annotations for Document &bdquo;__document__&ldquo;",

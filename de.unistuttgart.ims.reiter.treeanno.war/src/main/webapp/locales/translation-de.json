@@ -106,7 +106,8 @@
 		"par":"Klammerausdruck",
 		"par_id":"Klammerausdruck (mit IDs)",
 		"xml":"Simple XML",
-		"dot":"Dot Language"
+		"dot":"Dot Language (DOT+PNG)",
+		"chart": "Chart (CSV)"
 	},
 	"parallel":{
 		"annotations_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
