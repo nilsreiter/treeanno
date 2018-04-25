@@ -22,7 +22,7 @@ public class VirtualIdProvider {
 		if (ts == null)
 			return "root";
 		if (Util.isVirtual(ts)) {
-			return "Q" + String.valueOf(ts.getBegin());
+			return "Q" + ts.getBegin() + "." + ts.getEnd();
 		} else {
 			return "A" + String.valueOf(ts.getBegin());
 		}

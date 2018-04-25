@@ -1277,6 +1277,7 @@ function force_indent_elements(elements, newId) {
 			var vitem = new Object();
 			vitem["begin"] = $(element).attr("data-treeanno-begin");
 			vitem["end"] = vitem["begin"];
+			vitem["nodetype"] = "virtual";
 			vitem["id"] = (newId?newId:++idCounter);
 			vitem["text"] = "";
 			vitem["virtualId"] = getVirtualId(vitem);
@@ -1387,8 +1388,8 @@ function getVirtualId(item) {
 }
 
 function getVirtualId_ARNDT(item) {
-	if (item["nodetype"] == "virtual") {
-		return "Q"+item["begin"];
+	if (item["nodetype"] === "virtual") {
+		return "Q"+item["begin"]+"."+item["end"];
 	} else {
 		return "A"+item["begin"];
 	}
