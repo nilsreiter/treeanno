@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.unistuttgart.ims.reiter</groupId>
     <artifactId>treeanno</artifactId>
-    <version>0.6.14-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>treeanno.exec-war</artifactId>
   <packaging>pom</packaging>

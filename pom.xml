@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.unistuttgart.ims.reiter</groupId>
   <packaging>pom</packaging>
-  <version>0.6.14-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <name>TreeAnno</name>
   <url>https://clarin06.ims.uni-stuttgart.de/reiterns/treeanno</url>
   <properties>
