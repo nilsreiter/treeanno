@@ -3,3 +3,4 @@ org.eclipse.wst.common.component
 .settings/
 .classpath
 de.unistuttgart.ims.reiter.treeanno.exec-war/target
+.extract
