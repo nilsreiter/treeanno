@@ -8,6 +8,7 @@
   <url>https://clarin06.ims.uni-stuttgart.de/reiterns/treeanno</url>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<tomcat.version>8.0.32</tomcat.version>
   </properties>
   <scm>
   	<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>
@@ -21,6 +22,21 @@
   			<groupId>junit</groupId>
   			<artifactId>junit</artifactId>
   			<version>4.11</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.apache.tomcat</groupId>
+  			<artifactId>tomcat-catalina</artifactId>
+  			<version>${tomcat.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.apache.tomcat</groupId>
+  			<artifactId>tomcat-servlet-api</artifactId>
+  			<version>${tomcat.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.apache.tomcat</groupId>
+  			<artifactId>tomcat-dbcp</artifactId>
+  			<version>${tomcat.version}</version>
   		</dependency>
   	</dependencies>
   </dependencyManagement>
