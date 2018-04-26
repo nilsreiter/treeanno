@@ -26,19 +26,19 @@ public class ProjectList {
 	HttpServletRequest request;
 
 	@GET
-	public String getProjectList() throws SQLException {
+	public JSONArray getProjectList() throws SQLException {
 		Collection<Project> list;
-			list = CW.getDataLayer(context).getProjects();
-			User user = (User) request.getSession().getAttribute(CA.USER);
+		list = CW.getDataLayer(context).getProjects();
+		User user = (User) request.getSession().getAttribute(CA.USER);
 
-			JSONArray array = new JSONArray();
-			for (Project project : list) {
-				if (CW.getDataLayer(context).getAccessLevel(project, user) >= Perm.READ_ACCESS) {
-					array.put(JSONUtil.getJSONObject(project));
-				}
+		JSONArray array = new JSONArray();
+		for (Project project : list) {
+			if (CW.getDataLayer(context).getAccessLevel(project, user) >= Perm.READ_ACCESS) {
+				array.put(JSONUtil.getJSONObject(project));
 			}
-			context.log(user.getId() + " requests project list.");
-			return array.toString();
+		}
+		context.log(user.getId() + " requests project list.");
+		return array;
 	}
 
 }
