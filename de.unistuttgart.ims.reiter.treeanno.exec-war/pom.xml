@@ -5,8 +5,7 @@
     <artifactId>treeanno</artifactId>
     <version>0.6.14-SNAPSHOT</version>
   </parent>
-  <groupId>de.unistuttgart.ims.reiter.treeanno.exec-war</groupId>
-  <artifactId>de.unistuttgart.ims.reiter.treeanno.exec-war</artifactId>
+  <artifactId>treeanno.exec-war</artifactId>
   <packaging>pom</packaging>
   <build>
 		<plugins>
