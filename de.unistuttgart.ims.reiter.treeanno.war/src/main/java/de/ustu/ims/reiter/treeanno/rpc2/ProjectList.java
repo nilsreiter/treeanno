@@ -17,7 +17,7 @@ import de.ustu.ims.reiter.treeanno.Perm;
 import de.ustu.ims.reiter.treeanno.beans.Project;
 import de.ustu.ims.reiter.treeanno.beans.User;
 
-@Path("/projectlist")
+@Path("/projects")
 public class ProjectList {
 	@javax.ws.rs.core.Context
 	ServletContext context;
