@@ -24,7 +24,7 @@
 						<configuration>
 							<enableNaming>true</enableNaming>
 							<finalName>TreeAnno.jar</finalName>
-							<mainClass>de.unistuttgart.ims.creta.networker.main.CRETANetworker</mainClass>
+							<mainClass>de.ustu.ims.reiter.treeanno.tools.RunServer</mainClass>
 							<extraDependencies>
 								<extraDependency>
 									<groupId>de.unistuttgart.ims.reiter</groupId>
