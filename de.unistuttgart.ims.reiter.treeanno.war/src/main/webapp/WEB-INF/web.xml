@@ -57,16 +57,6 @@
   </jsp-config>
   <servlet>
     <description></description>
-    <display-name>DocumentList</display-name>
-    <servlet-name>DocumentList</servlet-name>
-    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.DocumentList</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DocumentList</servlet-name>
-    <url-pattern>/rpc/documentlist</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
     <display-name>AccessLevel</display-name>
     <servlet-name>AccessLevel</servlet-name>
     <servlet-class>de.ustu.ims.reiter.treeanno.rpc.AccessLevel</servlet-class>

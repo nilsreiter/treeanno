@@ -1,5 +1,6 @@
 package de.ustu.ims.reiter.treeanno.rpc2;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.ws.rs.ApplicationPath;
@@ -13,8 +14,9 @@ public class RPC extends Application {
 	@Override
 	public Set<Class<?>> getClasses() {
 		if (classes == null) {
-			classes = super.getClasses();
-
+			classes = new HashSet<Class<?>>(super.getClasses());
+			classes.add(ProjectList.class);
+			classes.add(DocumentList.class);
 		}
 
 		return classes;
