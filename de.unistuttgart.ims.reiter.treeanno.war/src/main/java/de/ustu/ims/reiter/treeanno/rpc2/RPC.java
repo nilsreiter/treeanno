@@ -25,6 +25,7 @@ public class RPC extends Application {
 			classes.add(NewDocument.class);
 			classes.add(JSONObjectBodyWriter.class);
 			classes.add(JSONArrayBodyWriter.class);
+			classes.add(UserDocumentList.class);
 		}
 
 		return classes;
