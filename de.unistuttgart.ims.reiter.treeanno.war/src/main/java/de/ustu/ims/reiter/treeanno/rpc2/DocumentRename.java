@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
@@ -13,7 +14,7 @@ import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 
-@Path("/document/rename")
+@Path("document/rename")
 public class DocumentRename {
 	@javax.ws.rs.core.Context
 	ServletContext context;
@@ -21,6 +22,7 @@ public class DocumentRename {
 	@javax.ws.rs.core.Context
 	HttpServletRequest request;
 
+	@GET
 	public JSONObject rename(@QueryParam("documentId") int docId, @QueryParam("name") String name) throws SQLException {
 		DataLayer dataLayer = CW.getDataLayer(context);
 		Document document = dataLayer.getDocument(docId);
