@@ -17,7 +17,7 @@ import org.json.JSONObject;
 @Singleton
 @Produces({ MediaType.APPLICATION_JSON })
 @Provider
-public class JSONBodyWriter implements MessageBodyWriter<JSONObject> {
+public class JSONObjectBodyWriter implements MessageBodyWriter<JSONObject> {
 
 	@Override
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {

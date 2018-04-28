@@ -17,6 +17,8 @@ public class RPC extends Application {
 			classes = new HashSet<Class<?>>(super.getClasses());
 			classes.add(ProjectList.class);
 			classes.add(DocumentList.class);
+			classes.add(JSONObjectBodyWriter.class);
+			classes.add(JSONArrayBodyWriter.class);
 		}
 
 		return classes;
