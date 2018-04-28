@@ -38,15 +38,17 @@ import de.ustu.ims.reiter.treeanno.util.PlainTextPreprocess;
 /**
  * Servlet implementation class NewDocument
  */
+@Deprecated
 public class NewDocument extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		if (isMultipart) {
 			File temp = File.createTempFile("treeanno-upload", "");
@@ -57,11 +59,8 @@ public class NewDocument extends HttpServlet {
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 
 			// Configure a repository (to ensure a secure temp location is used)
-			ServletContext servletContext =
-					this.getServletConfig().getServletContext();
-			File repository =
-					(File) servletContext
-					.getAttribute("javax.servlet.context.tempdir");
+			ServletContext servletContext = this.getServletConfig().getServletContext();
+			File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
 			factory.setRepository(repository);
 
 			// Create a new file upload handler
@@ -81,18 +80,12 @@ public class NewDocument extends HttpServlet {
 							p = dbio.getProject(Integer.valueOf(value));
 						} else if (fname.equalsIgnoreCase("segmenttype")) {
 							if (value.equalsIgnoreCase("token")) {
-								pp =
-										new PlainTextPreprocess<Token>(
-												Token.class);
+								pp = new PlainTextPreprocess<Token>(Token.class);
 							} else
-								pp =
-								new PlainTextPreprocess<Sentence>(
-										Sentence.class);
+								pp = new PlainTextPreprocess<Sentence>(Sentence.class);
 						}
 					} else {
-						BufferedWriter bw =
-								new BufferedWriter(new FileWriter(new File(
-										temp, fi.getName())));
+						BufferedWriter bw = new BufferedWriter(new FileWriter(new File(temp, fi.getName())));
 						IOUtils.copy(fi.getInputStream(), bw);
 						bw.flush();
 						bw.close();
@@ -103,15 +96,13 @@ public class NewDocument extends HttpServlet {
 					JCas jcas = iterator.next();
 					Document document = new Document();
 					document.setProject(p);
-					document.setName(JCasUtil.selectSingle(jcas,
-							DocumentMetaData.class).getDocumentId());
+					document.setName(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId());
 					document.setXmi(JCasConverter.getXmi(jcas));
 					dbio.createNewDocument(document);
 				}
 				response.sendRedirect("../projects.jsp?projectId=" + p.getId());
 				return;
-			} catch (FileUploadException | ResourceInitializationException
-					| SQLException | SAXException e) {
+			} catch (FileUploadException | ResourceInitializationException | SQLException | SAXException e) {
 				throw new ServletException(e);
 			}
 		}
