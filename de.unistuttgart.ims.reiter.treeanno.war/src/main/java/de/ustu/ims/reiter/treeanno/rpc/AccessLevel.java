@@ -19,27 +19,27 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class AccessLevel
  */
+@Deprecated
 public class AccessLevel extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int projectId = Integer.valueOf(request.getParameter("projectId"));
 
 		User user = (User) request.getSession().getAttribute(CA.USER);
 
 		try {
-			Project proj =
-					CW.getDataLayer(getServletContext()).getProject(projectId);
+			Project proj = CW.getDataLayer(getServletContext()).getProject(projectId);
 
 			JSONObject json = new JSONObject();
 			json.put("ProjectId", projectId);
-			json.put("AccessLevel", CW.getDataLayer(getServletContext())
-					.getAccessLevel(proj, user));
+			json.put("AccessLevel", CW.getDataLayer(getServletContext()).getAccessLevel(proj, user));
 			Util.returnJSON(response, json);
 		} catch (SQLException e) {
 			throw new ServletException(e);

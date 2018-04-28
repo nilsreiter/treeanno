@@ -15,6 +15,8 @@ public class RPC extends Application {
 	public Set<Class<?>> getClasses() {
 		if (classes == null) {
 			classes = new HashSet<Class<?>>(super.getClasses());
+			classes.add(AccessLevel.class);
+			classes.add(Configuration.class);
 			classes.add(ProjectList.class);
 			classes.add(DocumentList.class);
 			classes.add(DocumentRename.class);
