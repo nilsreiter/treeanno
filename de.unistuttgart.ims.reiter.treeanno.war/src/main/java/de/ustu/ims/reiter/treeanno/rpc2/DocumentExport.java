@@ -1,7 +1,7 @@
-package de.ustu.ims.reiter.treeanno.rpc;
+package de.ustu.ims.reiter.treeanno.rpc2;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -9,10 +9,16 @@ import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
 import org.apache.commons.configuration2.ConfigurationMap;
 import org.apache.commons.io.IOUtils;
@@ -41,79 +47,76 @@ import de.ustu.ims.reiter.treeanno.util.Generator;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.PngGenerator;
 import de.ustu.ims.reiter.treeanno.util.TxtGenerator;
-import de.ustu.ims.reiter.treeanno.util.Util;
 
-/**
- * Servlet implementation class DocumentExport
- */
-@Deprecated
-public class DocumentExport extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@Path("")
+public class DocumentExport {
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		DataLayer dataLayer = CW.getDataLayer(getServletContext());
-		int[] docIds = Util.getAllDocumentIds(request, response);
+	@javax.ws.rs.core.Context
+	ServletContext context;
 
-		ZipOutputStream zos = null;
-		try {
-			zos = new ZipOutputStream(response.getOutputStream());
-			zos.setLevel(9);
-			response.setContentType("application/zip");
-			response.setHeader("Content-Disposition", "attachment; filename=\"export.zip\"");
+	@javax.ws.rs.core.Context
+	HttpServletRequest request;
 
-			for (int i = 0; i < docIds.length;) {
-				Document document = dataLayer.getDocument(docIds[i]);
-				if (request.getParameter("format") == null
-						|| request.getParameterValues("format")[0].equalsIgnoreCase("XMI")) {
-					try {
+	@GET
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	@Path("{format}/{projectId}/{documentId}")
+	public Response doGet(@PathParam("documentId") int docId, @PathParam("format") String format,
+			@PathParam("projectId") String projectId) throws Exception {
+		DataLayer dataLayer = CW.getDataLayer(context);
+		Document document = dataLayer.getDocument(docId);
+
+		StreamingOutput so = new StreamingOutput() {
+
+			@Override
+			public void write(OutputStream output) throws IOException, WebApplicationException {
+				ZipOutputStream zos = null;
+				zos = new ZipOutputStream(output);
+				zos.setLevel(9);
+				try {
+					if (format.equalsIgnoreCase("XMI")) {
 						exportXMI(document, zos);
-					} catch (SAXException | UIMAException e) {
-						throw new ServletException(e);
 					}
-				}
-				if (request.getParameterValues("format")[0].equalsIgnoreCase("PAR")) {
-					exportPAR(document, zos);
-				}
-				if (request.getParameterValues("format")[0].equalsIgnoreCase("XML")) {
-					exportXML(document, zos);
-				}
-				if (request.getParameterValues("format")[0].equalsIgnoreCase("CHART")) {
-					exportWithWalker(document, zos, new PrintSpanningTableWalker<TreeSegment>(treeSegmentId), "csv",
-							new CsvGenerator<TreeSegment>(treeSegmentId, new Comparator<TreeSegment>() {
+					if (format.equalsIgnoreCase("PAR")) {
+						exportPAR(document, zos);
+					}
+					if (format.equalsIgnoreCase("XML")) {
+						exportXML(document, zos);
+					}
+					if (format.equalsIgnoreCase("CHART")) {
+						exportWithWalker(document, zos, new PrintSpanningTableWalker<TreeSegment>(treeSegmentId), "csv",
+								new CsvGenerator<TreeSegment>(treeSegmentId, new Comparator<TreeSegment>() {
 
-								@Override
-								public int compare(TreeSegment o1, TreeSegment o2) {
-									return Integer.compare(o1.getBegin(), o2.getBegin());
-								}
-							}));
+									@Override
+									public int compare(TreeSegment o1, TreeSegment o2) {
+										return Integer.compare(o1.getBegin(), o2.getBegin());
+									}
+								}));
+					}
+					if (format.equalsIgnoreCase("PAR_ID")) {
+						exportWithWalker(document, zos, new PrintParenthesesWalker<TreeSegment>(treeSegmentId), "par",
+								new TxtGenerator("par"));
+					}
+					if (format.equalsIgnoreCase("DOT")) {
+						ConfigurationMap cnf = (ConfigurationMap) context.getAttribute("conf");
+						PrintDotWalker pdw = new PrintDotWalker(
+								(String) cnf.getOrDefault("treeanno.dot.style.segment", "shape=oval"),
+								(String) cnf.getOrDefault("treeanno.dot.style.vsegment", "shape=box"));
+						pdw.setLabelFunction(treeSegmentId);
+						exportWithWalker(document, zos, pdw, "dot", Arrays.asList(new TxtGenerator("dot"),
+								new PngGenerator((String) cnf.get("treeanno.dot.path"))));
+					}
+				} catch (SAXException | UIMAException e) {
+					throw new WebApplicationException(e);
 				}
-				if (request.getParameterValues("format")[0].equalsIgnoreCase("PAR_ID")) {
-					exportWithWalker(document, zos, new PrintParenthesesWalker<TreeSegment>(treeSegmentId), "par",
-							new TxtGenerator("par"));
-				}
-				if (request.getParameterValues("format")[0].equalsIgnoreCase("DOT")) {
-					ConfigurationMap cnf = (ConfigurationMap) getServletContext().getAttribute("conf");
-					PrintDotWalker pdw = new PrintDotWalker(
-							(String) cnf.getOrDefault("treeanno.dot.style.segment", "shape=oval"),
-							(String) cnf.getOrDefault("treeanno.dot.style.vsegment", "shape=box"));
-					pdw.setLabelFunction(treeSegmentId);
-					exportWithWalker(document, zos, pdw, "dot", Arrays.asList(new TxtGenerator("dot"),
-							new PngGenerator((String) cnf.get("treeanno.dot.path"))));
-				}
+				zos.flush();
+				zos.close();
+
 			}
-			zos.flush();
-		} catch (SQLException | UIMAException | SAXException e1) {
-			throw new ServletException(e1);
-		} finally {
-			IOUtils.closeQuietly(zos);
-		}
-		return;
+		};
+
+		return Response.ok(so, MediaType.APPLICATION_OCTET_STREAM)
+				.header("Content-disposition", "attachment; filename=\"export.zip\"").build();
+
 	}
 
 	// TODO: merge into exportWithWalker
@@ -253,9 +256,8 @@ public class DocumentExport extends HttpServlet {
 	}
 
 	public Function<TreeSegment, String> treeSegmentId = (TreeSegment ts) -> {
-		VirtualIdProvider.Scheme scheme = VirtualIdProvider.Scheme
-				.valueOf((String) ((ConfigurationMap) getServletContext().getAttribute("conf"))
-						.getOrDefault("treeanno.id.scheme", "NONE"));
+		VirtualIdProvider.Scheme scheme = VirtualIdProvider.Scheme.valueOf(
+				(String) ((ConfigurationMap) context.getAttribute("conf")).getOrDefault("treeanno.id.scheme", "NONE"));
 		return VirtualIdProvider.getVirtualId(scheme, ts);
 	};
 }

@@ -77,16 +77,6 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>DocumentExport</display-name>
-    <servlet-name>DocumentExport</servlet-name>
-    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.DocumentExport</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DocumentExport</servlet-name>
-    <url-pattern>/rpc/document/export</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
     <display-name>UserDocumentExport</display-name>
     <servlet-name>UserDocumentExport</servlet-name>
     <servlet-class>de.ustu.ims.reiter.treeanno.rpc.UserDocumentExport</servlet-class>
