@@ -67,16 +67,6 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>DocumentDelete</display-name>
-    <servlet-name>DocumentDelete</servlet-name>
-    <servlet-class>de.ustu.ims.reiter.treeanno.rpc.DocumentDelete</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DocumentDelete</servlet-name>
-    <url-pattern>/rpc/document/delete</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
     <display-name>UserDocumentExport</display-name>
     <servlet-name>UserDocumentExport</servlet-name>
     <servlet-class>de.ustu.ims.reiter.treeanno.rpc.UserDocumentExport</servlet-class>

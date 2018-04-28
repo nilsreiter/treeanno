@@ -18,6 +18,7 @@ public class RPC extends Application {
 			classes.add(AccessLevel.class);
 			classes.add(Configuration.class);
 			classes.add(ProjectList.class);
+			classes.add(DocumentDelete.class);
 			classes.add(DocumentExport.class);
 			classes.add(DocumentList.class);
 			classes.add(DocumentRename.class);
