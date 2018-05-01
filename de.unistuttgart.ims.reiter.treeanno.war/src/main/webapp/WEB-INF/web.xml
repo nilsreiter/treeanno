@@ -16,16 +16,16 @@
     <servlet-name>DocumentContentHandling</servlet-name>
     <servlet-class>de.ustu.ims.reiter.treeanno.DocumentContentHandling</servlet-class>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>DocumentContentHandling</servlet-name>
+    <url-pattern>/DocumentContentHandling</url-pattern>
+  </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>UserHandling</display-name>
     <servlet-name>UserHandling</servlet-name>
     <servlet-class>de.ustu.ims.reiter.treeanno.UserHandling</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>DocumentContentHandling</servlet-name>
-    <url-pattern>/DocumentContentHandling</url-pattern>
-  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>UserHandling</servlet-name>
     <url-pattern>/login</url-pattern>
