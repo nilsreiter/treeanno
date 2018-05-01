@@ -270,6 +270,8 @@ function show_documentlist(id) {
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_rename\">rename</button>")
 			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_describe\">describe</button>")
+			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_delete\">delete</button>");
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_view_annodoc\">view annotation</button>");
@@ -328,6 +330,40 @@ function show_documentlist(id) {
 						text: i18n.t("rename_dialog.ok"),
 						click: function() {
 							jQuery.getJSON("rpc/document/rename?name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
+								show_documentlist(id);
+							});
+					        $( this ).dialog( "close" );
+					    }
+					}],
+					closeOnEscape: true,
+					modal:true	
+				}).show();
+				
+			});
+			$(actionCell).find("button.button_describe").button({
+				label:i18n.t("document_edit_description"),
+				icons:{primary:"ui-icon-pencil",secondary:null},
+				text:configuration["treeanno.ui.showTextOnButtons"]
+			}).click({
+				'document':data['documents'][i]
+			}, function(event) {
+				var diagDiv = document.createElement("div");
+				$(diagDiv).append(i18n.t("describe_dialog.desc")+"<br/><textarea rows=\"5\" cols=\"40\">"+event.data.document['description']+"</textarea>");
+				$("body").append(diagDiv);
+				
+				$(diagDiv).dialog({
+					title:i18n.t("describe_dialog.title"),
+					dialogClass: "no-close",
+					buttons: [{
+						text:i18n.t("describe_dialog.cancel"),
+			        	click: function() {
+			        		$(this).dialog("destroy");
+			        		document.getElementsByTagName("BODY")[0].removeChild(diagDiv);
+			        	}
+					},{ 
+						text: i18n.t("describe_dialog.ok"),
+						click: function() {
+							jQuery.getJSON("rpc/document/describe?description="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
 								show_documentlist(id);
 							});
 					        $( this ).dialog( "close" );
