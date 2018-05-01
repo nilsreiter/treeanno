@@ -24,6 +24,8 @@ public class Document {
 	@Column
 	String name;
 
+	@Column
+	String description;
 
 	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
