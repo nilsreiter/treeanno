@@ -25,6 +25,7 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class DocumentList
  */
+@Deprecated
 public class DocumentList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

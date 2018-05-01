@@ -22,6 +22,7 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class ProjectList
  */
+@Deprecated
 public class ProjectList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

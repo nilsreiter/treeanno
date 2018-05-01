@@ -17,6 +17,18 @@ import org.apache.tomcat.maven.runner.Tomcat7RunnerCli;
 public class RunServer extends Tomcat7RunnerCli {
 
 	public static void main(String[] args) throws Exception {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Tomcat7RunnerCli.main(new String[] {});
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
 		JFrame frame = new JFrame("TreeAnno");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -56,7 +68,6 @@ public class RunServer extends Tomcat7RunnerCli {
 		frame.getContentPane().add(quitButton, BorderLayout.SOUTH);
 		frame.pack();
 		frame.setVisible(true);
-		Tomcat7RunnerCli.main(args);
 	}
 
 }

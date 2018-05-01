@@ -26,12 +26,13 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class DocumentExport
  */
+@Deprecated
 public class UserDocumentExport extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 		int[] udocIds = Util.getAllUserDocumentIds(request, response);
 		String fmt = request.getParameter("format");
@@ -48,8 +49,7 @@ public class UserDocumentExport extends HttpServlet {
 					response.getWriter().print(udoc.getXmi());
 
 				if (walker != null)
-					response.getWriter().print(
-							GraphExporter.getTreeString(jcas, walker));
+					response.getWriter().print(GraphExporter.getTreeString(jcas, walker));
 			} catch (SQLException | UIMAException | SAXException e) {
 				e.printStackTrace();
 			}
