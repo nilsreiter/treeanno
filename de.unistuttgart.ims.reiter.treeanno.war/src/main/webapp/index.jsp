@@ -50,6 +50,7 @@
 	var language = configuration["treeanno.user.defaultlanguage"];
 	$(document).ready(init_trans(function() {
 		init_all();
+
 		$("button.button_login").button({
 			disabled: true,
 			label:i18n.t("login_open_dialog"),
@@ -59,7 +60,6 @@
 			$("button.button_login").button({disabled:true});
 		});
 
-		$("#login select").selectmenu();
 		$("#login").dialog({
 			title: i18n.t("login_dialog_title"),
 			buttons: 
@@ -78,6 +78,7 @@
 				$("button.button_login").button({disabled:false});
 			}
 		});
+
 	}));
 	// ]]>
 	</script>
