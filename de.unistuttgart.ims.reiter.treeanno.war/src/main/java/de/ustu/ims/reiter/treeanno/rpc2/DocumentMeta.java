@@ -14,8 +14,8 @@ import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 
-@Path("document/rename")
-public class DocumentRename {
+@Path("document")
+public class DocumentMeta {
 	@javax.ws.rs.core.Context
 	ServletContext context;
 
@@ -23,6 +23,7 @@ public class DocumentRename {
 	HttpServletRequest request;
 
 	@GET
+	@Path("rename")
 	public JSONObject rename(@QueryParam("documentId") int docId, @QueryParam("name") String name) throws SQLException {
 		DataLayer dataLayer = CW.getDataLayer(context);
 		Document document = dataLayer.getDocument(docId);
@@ -30,4 +31,16 @@ public class DocumentRename {
 		dataLayer.updateDocument(document);
 		return new JSONObject();
 	}
+
+	@GET
+	@Path("describe")
+	public JSONObject describe(@QueryParam("documentId") int docId, @QueryParam("description") String desc)
+			throws SQLException {
+		DataLayer dataLayer = CW.getDataLayer(context);
+		Document document = dataLayer.getDocument(docId);
+		document.setDescription(desc);
+		dataLayer.updateDocument(document);
+		return new JSONObject();
+	}
+
 }

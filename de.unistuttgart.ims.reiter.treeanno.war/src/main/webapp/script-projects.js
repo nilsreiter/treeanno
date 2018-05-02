@@ -363,7 +363,8 @@ function show_documentlist(id) {
 					},{ 
 						text: i18n.t("describe_dialog.ok"),
 						click: function() {
-							jQuery.getJSON("rpc/document/describe?description="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
+							
+							jQuery.getJSON("rpc/document/describe?description="+$(diagDiv).children("textarea").val()+"&documentId="+event.data.document['id'], function() {
 								show_documentlist(id);
 							});
 					        $( this ).dialog( "close" );
