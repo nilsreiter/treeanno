@@ -89,7 +89,7 @@
 <body>
 	<div>
 		<div id="login">
-			<form action="login" method="POST">
+			<form action="rpc/user/login" method="POST">
 				
 				<p><label for="form_username" class="trans">username</label> 
 				<select size="1" id="form_username" name="username">

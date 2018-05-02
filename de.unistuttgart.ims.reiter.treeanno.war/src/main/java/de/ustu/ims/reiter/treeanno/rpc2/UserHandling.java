@@ -1,17 +1,25 @@
 package de.ustu.ims.reiter.treeanno.rpc2;
 
+import java.net.URI;
+import java.sql.SQLException;
+
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.ForbiddenException;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.ustu.ims.reiter.treeanno.CA;
 import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
 import de.ustu.ims.reiter.treeanno.JSONUtil;
@@ -26,6 +34,32 @@ public class UserHandling {
 
 	@javax.ws.rs.core.Context
 	HttpServletRequest request;
+
+	@Path("login")
+	@POST
+	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED })
+	public Response login(@FormParam("username") String username, @FormParam("password") String password)
+			throws Exception {
+		if (check(username, password)) {
+			HttpSession session = request.getSession();
+			session.setMaxInactiveInterval(0);
+			User user = null;
+			DataLayer dl = CW.getDataLayer(context);
+			try {
+				user = dl.getUser(Integer.valueOf(username));
+			} catch (NumberFormatException | SQLException e) {
+				context.log(e.getMessage(), e);
+				throw new ServletException(e);
+			}
+			if (user != null) {
+				session.setAttribute(CA.USER, user);
+				context.log("User " + user.getId() + " logged in.");
+				return Response.temporaryRedirect(new URI("../projects.jsp")).build();
+			}
+
+		}
+		throw new ForbiddenException();
+	}
 
 	@Path("assign")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -87,5 +121,9 @@ public class UserHandling {
 			array.put(JSONUtil.getJSONObject(u));
 		return array;
 
+	}
+
+	protected boolean check(String username, String password) {
+		return true;
 	}
 }
