@@ -58,6 +58,7 @@
 	"document_action_delete_confirm":"Das Dokument wird unwiderbringlich gelöscht. Wirklich löschen?",
 	"document_action_export_xmi":"Export",
 	"document_action_rename":"Umbenennen",
+	"document_action_describe":"Beschreiben",
 	"document_action_view_annodoc":"Annotationen ansehen",
 	"project_id":"Id",
 	"project_name":"Name",
@@ -74,6 +75,12 @@
 		"ok":"Umbenennen",
 		"cancel":"Abbrechen",
 		"desc":"Neuer Name"
+	},
+	"rename_dialog":{
+		"title":"Document beschreiben",
+		"ok":"Beschreibung speichern",
+		"cancel":"Abbrechen",
+		"desc":"Beschreibung oder Kommentar"
 	},
 	"split_dialog":{
 		"title":"Segment teilen",

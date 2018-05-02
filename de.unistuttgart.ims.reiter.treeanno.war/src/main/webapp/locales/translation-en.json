@@ -58,6 +58,7 @@
 	"document_action_delete_confirm":"The document will be removed from the database, which is irreversible. Do you really want to do that?",
 	"document_action_export_xmi":"Export",
 	"document_action_rename":"Rename",
+	"document_action_describe":"Describe",
 	"document_action_view_annodoc":"View annotations",
 	"project_id":"Id",
 	"project_name":"Name",
@@ -74,6 +75,12 @@
 		"ok":"Rename",
 		"cancel":"Cancel",
 		"desc":"New Name"
+	},
+	"describe_dialog":{
+		"title":"Describe Document",
+		"ok":"Set description",
+		"cancel":"Cancel",
+		"desc":"Description or comment"
 	},
 	"split_dialog":{
 		"title":"Split segment",

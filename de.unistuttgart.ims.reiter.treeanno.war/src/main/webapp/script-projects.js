@@ -341,7 +341,7 @@ function show_documentlist(id) {
 				
 			});
 			$(actionCell).find("button.button_describe").button({
-				label:i18n.t("document_edit_description"),
+				label:i18n.t("document_action_describe"),
 				icons:{primary:"ui-icon-pencil",secondary:null},
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click({
