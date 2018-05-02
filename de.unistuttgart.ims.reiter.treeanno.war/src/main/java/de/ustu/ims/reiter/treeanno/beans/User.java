@@ -19,6 +19,9 @@ public class User {
 	@DatabaseField
 	String language = "en";
 
+	@Column
+	boolean admin;
+
 	public String getName() {
 		return username;
 	}
@@ -45,6 +48,14 @@ public class User {
 
 	public void setLanguage(String language) {
 		this.language = language;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 }
