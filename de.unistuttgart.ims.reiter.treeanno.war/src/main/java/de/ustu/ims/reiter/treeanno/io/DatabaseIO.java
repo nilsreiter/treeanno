@@ -299,6 +299,15 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
+	public User createNewUser(User d) throws SQLException {
+		int r = userDao.create(d);
+		if (r == 1)
+			return d;
+		else
+			return null;
+	}
+
+	@Override
 	public UserDocument getUserDocument(int id) throws SQLException {
 		// TODO: prevent immediate retrieval of xmi column
 		return userDocumentDao.queryForId(id);

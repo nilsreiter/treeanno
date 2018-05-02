@@ -45,6 +45,7 @@ public interface DataLayer {
 
 	Document createNewDocument(Document d) throws SQLException;
 
+	User createNewUser(User u) throws SQLException;
 	boolean updateUserDocument(UserDocument document) throws SQLException;
 
 	boolean deleteUserDocument(int id) throws SQLException;
