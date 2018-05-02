@@ -21,7 +21,7 @@ public class RPC extends Application {
 			classes.add(DocumentDelete.class);
 			classes.add(DocumentExport.class);
 			classes.add(DocumentList.class);
-			classes.add(DocumentRename.class);
+			classes.add(DocumentMeta.class);
 			classes.add(NewDocument.class);
 			classes.add(JSONObjectBodyReader.class);
 			classes.add(JSONObjectBodyWriter.class);

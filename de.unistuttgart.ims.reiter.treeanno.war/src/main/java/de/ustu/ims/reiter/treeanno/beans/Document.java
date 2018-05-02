@@ -16,14 +16,14 @@ public class Document {
 	@DatabaseField(generatedId = true)
 	int id;
 
-
-	@DatabaseField(canBeNull = false, foreign = true, columnName = "project",
-			foreignAutoRefresh = true)
+	@DatabaseField(canBeNull = false, foreign = true, columnName = "project", foreignAutoRefresh = true)
 	Project project;
 
 	@Column
 	String name;
 
+	@Column
+	String description = "";
 
 	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
@@ -59,8 +59,6 @@ public class Document {
 		this.id = databaseId;
 	}
 
-
-
 	@Override
 	public int hashCode() {
 		return id;
@@ -68,11 +66,10 @@ public class Document {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Document)) return false;
+		if (!(obj instanceof Document))
+			return false;
 		return this.hashCode() == obj.hashCode();
 	}
-
-
 
 	public String getXmi() {
 		return xmi;
@@ -84,6 +81,14 @@ public class Document {
 
 	public Collection<UserDocument> getUserDocuments() {
 		return userDocuments;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }
