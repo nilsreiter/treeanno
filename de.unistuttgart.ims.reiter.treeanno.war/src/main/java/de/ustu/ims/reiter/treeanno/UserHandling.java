@@ -14,6 +14,7 @@ import de.ustu.ims.reiter.treeanno.beans.User;
 /**
  * Servlet implementation class UserHandling
  */
+@Deprecated
 public class UserHandling extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -24,8 +25,8 @@ public class UserHandling extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String[] unames = request.getParameterValues("username");
 		String[] pwords = request.getParameterValues("password");
 		if (unames.length == 1 && pwords.length == 1) {
