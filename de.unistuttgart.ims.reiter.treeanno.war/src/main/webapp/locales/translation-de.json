@@ -43,6 +43,7 @@
 		"undo":"Rückgängig"
 	},
 	"action_category_virtual_nodes":"Virtuelle Knoten",
+	"assign_save":"Speichern",
 	"help_title":"Spickzettel",
 	"open":"Öffnen",
 	"list_of_projects":"Projektliste",
@@ -60,6 +61,7 @@
 	"document_action_rename":"Umbenennen",
 	"document_action_describe":"Beschreiben",
 	"document_action_view_annodoc":"Annotationen ansehen",
+	"project_access": "Zugriffsrechte",
 	"project_id":"Id",
 	"project_name":"Name",
 	"project_action_open":"Öffnen",
@@ -70,6 +72,7 @@
 	"show_ids":"Ids anzeigen",
 	"documents_in_X":"Dokumente in Projekt &bdquo;__projectname__&ldquo;",
 	"howto_split":"Mit den Pfeiltasten das Absatzzeichen an die richtige Stelle setzen. Weitere Sprünge mit &#8679;+Pfeiltasten.",
+	"user_action_assign": "Projekte zuweisen",
 	"rename_dialog":{
 		"title":"Document umbenennen",
 		"ok":"Umbenennen",
@@ -94,6 +97,14 @@
 		"sentence":"Sätze",
 		"token":"Tokens",
 		"open_dialog":"Neues Dokument"
+	},
+	"new_user":{
+		"title":"Neuen Benutzer anlegen",
+		"submit":"Erstellen",
+		"name":"Name",
+		"email":"E-Mail",
+		"language":"Sprache",
+		"open_dialog":"Neuen Benutzer anlegen"
 	},
 	"annodoclistarea":{
 		"title_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
@@ -128,5 +139,12 @@
 	},
 	"alert":{
 		"in-memory":"Datenbank nicht erreichbar. Änderungen und Annotationen können nicht gespeichert werden."
+	},
+	"perm":{
+		"no_access": "Kein Zugriff",
+		"read_access": "Lesezugriff",
+		"write_access": "Schreibzugriff",
+		"padmin_access": "Projektadministrator",
+		"admin_access": "Globaler Administrator"
 	}
 }

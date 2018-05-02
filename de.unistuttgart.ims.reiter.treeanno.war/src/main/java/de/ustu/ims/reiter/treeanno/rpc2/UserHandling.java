@@ -1,7 +1,5 @@
 package de.ustu.ims.reiter.treeanno.rpc2;
 
-import java.sql.SQLException;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -40,16 +38,18 @@ public class UserHandling {
 		int targetUserId = object.getInt("user");
 		User targetUser = dataLayer.getUser(targetUserId);
 
-		object.getJSONArray("levels").forEach(obj -> {
-			JSONObject jObj = (JSONObject) obj;
+		int maxLevel = 0;
+		JSONArray levels = object.getJSONArray("levels");
+		for (int i = 0; i < levels.length(); i++) {
+			JSONObject jObj = levels.getJSONObject(i);
 			int projectId = jObj.getInt("project");
 			int level = jObj.getInt("level");
-			try {
-				dataLayer.setAccessLevel(dataLayer.getProject(projectId), targetUser, level);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		});
+			dataLayer.setAccessLevel(dataLayer.getProject(projectId), targetUser, level);
+			maxLevel = Math.max(maxLevel, level);
+		}
+
+		targetUser.setAdmin(maxLevel >= Perm.ADMIN_ACCESS);
+		dataLayer.updateUser(targetUser);
 
 		return new JSONObject();
 	}

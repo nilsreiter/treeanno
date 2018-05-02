@@ -57,7 +57,9 @@ function init_projects() {
 			} ]
 		});
 		$("#newuserdialog").dialog("close");
-	}
+	} else
+		$("#newuserdialog").hide();
+
 
 	
 	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
@@ -275,7 +277,7 @@ function assign_users(user) {
 	
 	jQuery.getJSON("rpc/AccessLevel/all?userId="+user.id, function(data) {
 		var table = document.createElement("table");
-		$(table).append("<thead><th data-i18n=\"project_name\">project_name</th></thead>");
+		$(table).append("<thead><th>"+i18n.t("project_name")+"</th><th>"+i18n.t("project_access")+"</th></thead>");
 		var tbody = document.createElement("tbody");
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
@@ -303,7 +305,7 @@ function assign_users(user) {
 		$("#projectassignarea").append("<button class=\"save\"></button>");
 		
 		$("#projectassignarea button.save").button({
-			label:i18n.t("assign.save"),
+			label:i18n.t("assign_save"),
 			icons:{primary:null,secondary:null},
 			text:configuration["treeanno.ui.showTextOnButtons"]
 		}).click(function() {

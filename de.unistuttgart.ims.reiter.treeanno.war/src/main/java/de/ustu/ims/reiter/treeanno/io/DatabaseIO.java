@@ -352,4 +352,9 @@ public class DatabaseIO implements DataLayer {
 			list.add(iter.next());
 		return list;
 	}
+
+	@Override
+	public boolean updateUser(User user) throws SQLException {
+		return (userDao.update(user) == 1);
+	}
 }

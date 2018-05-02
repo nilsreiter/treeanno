@@ -129,8 +129,11 @@
 				<input type="text" id="new_user_email" />
 			</div>
 			<div>
-				<label for="new_user_language" data-i18n="new_user.name">new_user.language</label>
-				<input type="text" id="new_user_language" />
+				<label for="new_user_language" data-i18n="new_user.language">new_user.language</label>
+				<select id="new_user_language">
+					<option value="en" selected="selected">English</option>
+					<option value="de">German</option>
+				</select>
 			</div>
 		</form>
 	</div>

@@ -43,6 +43,7 @@
 		"undo":"Undo"
 	},
 	"action_category_virtual_nodes":"Virtual Nodes",
+	"assign_save":"Save",
 	"help_title":"Cheat Sheet",
 	"open":"Open",
 	"list_of_projects":"List of Projects",
@@ -63,13 +64,17 @@
 	"project_id":"Id",
 	"project_name":"Name",
 	"project_action_open":"Open",
+	"project_access": "Project access",
 	"login_dialog_title":"Login",
 	"login_dialog_ok":"Enter",
 	"show_helper":"Show Cheat Sheet",
 	"show_history":"Show History",
 	"show_ids":"Show ids",
+	"user_admin":"User administration",
 	"documents_in_X":"Documents in project \"__projectname__\"",
+	"projects_for_X": "Projects for user \"__username__\"",
 	"howto_split":"Move the paragraph character to where you want to split using arrow keys. Make bigger jumps with &#8679;+arrow keys.",
+	"user_action_assign": "Assign projects",
 	"rename_dialog":{
 		"title":"Rename Document",
 		"ok":"Rename",
@@ -94,6 +99,14 @@
 		"sentence":"Sentences",
 		"token":"Tokens",
 		"open_dialog":"New Document"
+	},
+	"new_user":{
+		"title":"Create New User",
+		"submit":"Create",
+		"name":"Name",
+		"email":"Email",
+		"language":"Language",
+		"open_dialog":"New User"
 	},
 	"annodoclistarea":{
 		"title_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
@@ -128,5 +141,12 @@
 	},
 	"alert":{
 		"in-memory":"Database can't be reached. Annotations will not be stored permanently."
+	},
+	"perm":{
+		"no_access": "No access",
+		"read_access": "Read access",
+		"write_access": "Write access",
+		"padmin_access": "Project administrator",
+		"admin_access": "Global administrator"
 	}
 }
