@@ -23,7 +23,7 @@ public class Document {
 	String name;
 
 	@Column
-	String description;
+	String description = "";
 
 	@DatabaseField(columnName = FIELD_XMI, columnDefinition = "LONGTEXT")
 	String xmi;
