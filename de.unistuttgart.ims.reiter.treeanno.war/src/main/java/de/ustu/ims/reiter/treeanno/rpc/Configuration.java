@@ -16,6 +16,7 @@ import de.ustu.ims.reiter.treeanno.ProjectType;
 /**
  * Servlet implementation class Configuration
  */
+@Deprecated
 public class Configuration extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -24,10 +25,9 @@ public class Configuration extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		ConfigurationMap cnf =
-				(ConfigurationMap) getServletContext().getAttribute("conf");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		ConfigurationMap cnf = (ConfigurationMap) getServletContext().getAttribute("conf");
 
 		JSONObject o = new JSONObject(cnf);
 		StringBuilder b = new StringBuilder();

@@ -3,11 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.unistuttgart.ims.reiter</groupId>
   <packaging>pom</packaging>
-  <version>0.6.14-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <name>TreeAnno</name>
   <url>https://clarin06.ims.uni-stuttgart.de/reiterns/treeanno</url>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<tomcat.version>8.0.32</tomcat.version>
   </properties>
   <scm>
   	<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>
@@ -22,6 +23,21 @@
   			<artifactId>junit</artifactId>
   			<version>4.11</version>
   		</dependency>
+  		<dependency>
+  			<groupId>org.apache.tomcat</groupId>
+  			<artifactId>tomcat-catalina</artifactId>
+  			<version>${tomcat.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.apache.tomcat</groupId>
+  			<artifactId>tomcat-servlet-api</artifactId>
+  			<version>${tomcat.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.apache.tomcat</groupId>
+  			<artifactId>tomcat-dbcp</artifactId>
+  			<version>${tomcat.version}</version>
+  		</dependency>
   	</dependencies>
   </dependencyManagement>
     <modules>
@@ -29,5 +45,6 @@
   	<module>de.unistuttgart.ims.reiter.treeanno.tools</module>
   	<module>de.unistuttgart.ims.reiter.treeanno.util</module>
   	<module>de.unistuttgart.ims.reiter.treeanno.war</module>
-  </modules>
+  	<module>de.unistuttgart.ims.reiter.treeanno.exec-war</module>
+    </modules>
 </project>

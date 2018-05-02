@@ -55,23 +55,18 @@ public class DatabaseIO implements DataLayer {
 	Dao<UserDocument, Integer> userDocumentDao;
 	Dao<UserPermission, Integer> userPermissionDao;
 
-	public DatabaseIO(DataSource dataSource, int dsType)
-			throws ClassNotFoundException, NamingException, SQLException {
+	public DatabaseIO(DataSource dataSource, int dsType) throws ClassNotFoundException, NamingException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
 		Class.forName("org.h2.Driver");
 
-		DataSourceConnectionSource connectionSource =
-				new DataSourceConnectionSource(dataSource,
-						(dsType == 0 ? new MysqlDatabaseType()
-								: new H2DatabaseType()));
+		DataSourceConnectionSource connectionSource = new DataSourceConnectionSource(dataSource,
+				(dsType == 0 ? new MysqlDatabaseType() : new H2DatabaseType()));
 
 		userDao = DaoManager.createDao(connectionSource, User.class);
 		projectDao = DaoManager.createDao(connectionSource, Project.class);
 		documentDao = DaoManager.createDao(connectionSource, Document.class);
-		userDocumentDao =
-				DaoManager.createDao(connectionSource, UserDocument.class);
-		userPermissionDao =
-				DaoManager.createDao(connectionSource, UserPermission.class);
+		userDocumentDao = DaoManager.createDao(connectionSource, UserDocument.class);
+		userPermissionDao = DaoManager.createDao(connectionSource, UserPermission.class);
 
 		userDao.setObjectCache(true);
 		projectDao.setObjectCache(true);
@@ -83,8 +78,7 @@ public class DatabaseIO implements DataLayer {
 		TableUtils.createTableIfNotExists(connectionSource, Project.class);
 		TableUtils.createTableIfNotExists(connectionSource, Document.class);
 		TableUtils.createTableIfNotExists(connectionSource, UserDocument.class);
-		TableUtils.createTableIfNotExists(connectionSource,
-				UserPermission.class);
+		TableUtils.createTableIfNotExists(connectionSource, UserPermission.class);
 
 		Project p = null;
 		if (projectDao.countOf() == 0) {
@@ -109,23 +103,23 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	public int getAccessLevel(int documentId, User user) throws SQLException {
+		if (user == null)
+			return Perm.NO_ACCESS;
 		return getAccessLevel(getDocument(documentId).getProject(), user);
 	}
 
 	@Override
 	public int getAccessLevel(Project project, User user) throws SQLException {
-		List<UserPermission> list =
-				userPermissionDao.queryBuilder().where()
-						.eq(UserPermission.FIELD_USER, user).and()
-						.eq(UserPermission.FIELD_PROJECT, project).query();
+		List<UserPermission> list = userPermissionDao.queryBuilder().where().eq(UserPermission.FIELD_USER, user).and()
+				.eq(UserPermission.FIELD_PROJECT, project).query();
 
-		if (!list.isEmpty()) return list.get(0).getLevel();
+		if (!list.isEmpty())
+			return list.get(0).getLevel();
 		return Perm.NO_ACCESS;
 
 	}
 
-	public boolean updateJCas(int documentId, JCas jcas) throws SQLException,
-	SAXException {
+	public boolean updateJCas(int documentId, JCas jcas) throws SQLException, SAXException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		XmiCasSerializer.serialize(jcas.getCas(), baos);
@@ -140,9 +134,7 @@ public class DatabaseIO implements DataLayer {
 
 		Connection connection = dataSource.getConnection();
 
-		PreparedStatement stmt =
-				connection
-				.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
+		PreparedStatement stmt = connection.prepareStatement("UPDATE treeanno_documents SET xmi=? WHERE id=?");
 		stmt.setString(1, s);
 		stmt.setInt(2, documentId);
 		int r = stmt.executeUpdate();
@@ -158,15 +150,11 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public UserDocument getUserDocument(User user, Document document)
-			throws SQLException {
+	public UserDocument getUserDocument(User user, Document document) throws SQLException {
 		// TODO: prevent immediate retrieval of xmi column
 
-		QueryBuilder<UserDocument, Integer> queryBuilder =
-				userDocumentDao.queryBuilder();
-		PreparedQuery<UserDocument> pq =
-				queryBuilder.where()
-				.eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
+		QueryBuilder<UserDocument, Integer> queryBuilder = userDocumentDao.queryBuilder();
+		PreparedQuery<UserDocument> pq = queryBuilder.where().eq(UserDocument.FIELD_SRC_DOCUMENT, document).and()
 				.eq(UserDocument.FIELD_USER, user).prepare();
 		List<UserDocument> ret = userDocumentDao.query(pq);
 		if (ret.isEmpty()) {
@@ -182,34 +170,28 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public UserDocument getUserDocument(int user, int document)
-			throws SQLException {
+	public UserDocument getUserDocument(int user, int document) throws SQLException {
 		// TODO: prevent immediate retrieval of xmi column
 		// TODO: also, make more efficient
 
 		return getUserDocument(getUser(user), getDocument(document));
 	}
 
-	public JCas getJCas(int documentId) throws SQLException, UIMAException,
-	SAXException, IOException {
+	public JCas getJCas(int documentId) throws SQLException, UIMAException, SAXException, IOException {
 		JCas jcas = null;
 
 		Connection connection = dataSource.getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			stmt =
-					connection
-							.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
+			stmt = connection.prepareStatement("SELECT xmi FROM treeanno_documents WHERE id=?");
 			stmt.setInt(1, documentId);
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
 
 				String textXML = rs.getString(1);
-				TypeSystemDescription tsd =
-						TypeSystemDescriptionFactory
-								.createTypeSystemDescription();
+				TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription();
 				jcas = JCasFactory.createJCas(tsd);
 				InputStream is = null;
 				try {
@@ -247,20 +229,29 @@ public class DatabaseIO implements DataLayer {
 
 	private void closeQuietly(Connection connection) {
 		try {
-			if (connection != null) connection.close();
-		} catch (Exception e) {};
+			if (connection != null)
+				connection.close();
+		} catch (Exception e) {
+		}
+		;
 	}
 
 	private void closeQuietly(Statement statement) {
 		try {
-			if (statement != null) statement.close();
-		} catch (Exception e) {};
+			if (statement != null)
+				statement.close();
+		} catch (Exception e) {
+		}
+		;
 	}
 
 	private void closeQuietly(ResultSet resultSet) {
 		try {
-			if (resultSet != null) resultSet.close();
-		} catch (Exception e) {};
+			if (resultSet != null)
+				resultSet.close();
+		} catch (Exception e) {
+		}
+		;
 	}
 
 	@Override
@@ -280,8 +271,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public boolean setJCas(Document document, JCas jcas) throws SQLException,
-	SAXException {
+	public boolean setJCas(Document document, JCas jcas) throws SQLException, SAXException {
 		return this.updateJCas(document.getDatabaseId(), jcas);
 	}
 
@@ -291,8 +281,7 @@ public class DatabaseIO implements DataLayer {
 	}
 
 	@Override
-	public boolean updateUserDocument(UserDocument document)
-			throws SQLException {
+	public boolean updateUserDocument(UserDocument document) throws SQLException {
 		return (userDocumentDao.update(document) == 1);
 	}
 
