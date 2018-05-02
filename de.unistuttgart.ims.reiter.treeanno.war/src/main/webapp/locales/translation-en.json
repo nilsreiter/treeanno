@@ -108,6 +108,12 @@
 		"language":"Language",
 		"open_dialog":"New User"
 	},
+	"new_project":{
+		"title":"Create New Project",
+		"submit":"Create",
+		"name":"Name",
+		"open_dialog":"New Project"
+	},
 	"annodoclistarea":{
 		"title_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
 		"breadcrumb_for_X":"Annotations for document &bdquo;__document__&ldquo;",

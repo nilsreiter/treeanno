@@ -20,7 +20,7 @@ function init_projects() {
 	if (admin) {
 		$("button#new_user_open_dialog").button({
 			label:i18n.t("new_user.open_dialog"),
-			icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null },
+			icons: { primary: "ui-icon-plus", secondary: null },
 			text:configuration["treeanno.ui.showTextOnButtons"]
 		}).click(function() {
 			$("#newuserdialog").dialog("open");
@@ -28,7 +28,7 @@ function init_projects() {
 		
 		$("button#new_project_open_dialog").button({
 			label:i18n.t("new_project.open_dialog"),
-			icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null },
+			icons: { primary: "ui-icon-plus", secondary: null },
 			text:configuration["treeanno.ui.showTextOnButtons"]
 		}).click(function() {
 			$("#newprojectdialog").dialog("open");
@@ -350,7 +350,7 @@ function assign_users(user) {
 		
 		$("#projectassignarea button.save").button({
 			label:i18n.t("assign_save"),
-			icons:{primary:null,secondary:null},
+			icons:{primary:"ui-icon-disk",secondary:null},
 			text:configuration["treeanno.ui.showTextOnButtons"]
 		}).click(function() {
 			var list = $("#projectassignarea tbody select").map(function(index, element) {
@@ -403,7 +403,7 @@ function show_userlist() {
 					$(actionCell).append("<button class=\"button_user_assign\"></button>");
 					$(actionCell).find("button.button_user_assign").button({
 						label:i18n.t("user_action_assign"),
-						icons:{primary:"ui-icon-document",secondary:null},
+						icons:{primary:null,secondary:null},
 						text:configuration["treeanno.ui.showTextOnButtons"]
 					}).click({
 						'user':data[i]

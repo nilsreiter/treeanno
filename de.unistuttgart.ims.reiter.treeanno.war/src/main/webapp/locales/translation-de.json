@@ -106,6 +106,12 @@
 		"language":"Sprache",
 		"open_dialog":"Neuen Benutzer anlegen"
 	},
+	"new_project":{
+		"title":"Neues Projekt anlegen",
+		"submit":"Anlegen",
+		"name":"Name",
+		"open_dialog":"Neues Projekt anlegen"
+	},
 	"annodoclistarea":{
 		"title_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
 		"breadcrumb_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
