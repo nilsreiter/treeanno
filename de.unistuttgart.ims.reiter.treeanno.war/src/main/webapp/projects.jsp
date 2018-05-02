@@ -54,6 +54,7 @@
 		//<![CDATA[
 			var selected = ${param.projectId};
 			var language = "${sessionScope.User.language}";
+			var admin = ${sessionScope.User.admin};
 			$(document).ready(init_trans(init_projects));
 		//]]>
 		</script>
@@ -63,6 +64,7 @@
 		//<![CDATA[
 			var selected = -1;
 			var language = "${sessionScope.User.language}";
+			var admin = ${sessionScope.User.admin};
 			$(document).ready(init_trans(init_projects));
 		//]]>
 		</script>
