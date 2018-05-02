@@ -54,6 +54,7 @@
 		//<![CDATA[
 			var selected = ${param.projectId};
 			var language = "${sessionScope.User.language}";
+			var admin = ${sessionScope.User.admin};
 			$(document).ready(init_trans(init_projects));
 		//]]>
 		</script>
@@ -63,6 +64,7 @@
 		//<![CDATA[
 			var selected = -1;
 			var language = "${sessionScope.User.language}";
+			var admin = ${sessionScope.User.admin};
 			$(document).ready(init_trans(init_projects));
 		//]]>
 		</script>
@@ -85,7 +87,19 @@
 					<thead><tr><th data-i18n="project_id"></th><th data-i18n="project_name"></th></tr></thead>
 					<tbody></tbody>
 				</table>
+				<button id="new_project_open_dialog"></button>
 			</div>
+			<c:if test="${ sessionScope.User.admin }">
+			<div id="useradminarea">
+				<h2 data-i18n="user_admin">user_admin</h2>
+				<table>
+					<thead><tr><th data-i18n="user_id"></th><th data-i18n="user_name"></th><th data-i18n="user_actions"></th></tr></thead>
+					<tbody>
+					</tbody>
+				</table>
+				<button data-i18n="new_user.open_dialog" id="new_user_open_dialog"></button>
+			</div>
+			</c:if>
 		</div>
 		<div class="splitright">
 		</div>
@@ -104,6 +118,31 @@
 			</div>
 			<input type="hidden" name="projectId" value="1" />
 		</form>
+	</div>
+	<div id="newuserdialog">
+		<form method="POST" action="rpc/user/create" enctype="multipart/form-data">
+			<div>
+				<label for="new_user_name" data-i18n="new_user.name">new_user.name</label>
+				<input type="text" id="new_user_name" />
+			</div>
+			<div>
+				<label for="new_user_email" data-i18n="new_user.email">new_user.email</label>
+				<input type="text" id="new_user_email" />
+			</div>
+			<div>
+				<label for="new_user_language" data-i18n="new_user.language">new_user.language</label>
+				<select id="new_user_language">
+					<option value="en" selected="selected">English</option>
+					<option value="de">German</option>
+				</select>
+			</div>
+		</form>
+	</div>
+	<div id="newprojectdialog">
+		<div>
+			<label for="new_project_name" data-i18n="new_project.name">new_project.name</label>
+			<input type="text" id="new_project_name" />
+		</div>
 	</div>
 </body>
 </html>

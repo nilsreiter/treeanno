@@ -49,8 +49,7 @@ public class DocumentList {
 			iter.close();
 			obj.put("project", JSONUtil.getJSONObject(proj));
 			obj.put("accesslevel",
-					CW.getDataLayer(context).getAccessLevel(proj,
-					(User) request.getSession().getAttribute(CA.USER)));
+					CW.getDataLayer(context).getAccessLevel(proj, (User) request.getSession().getAttribute(CA.USER)));
 			context.log(user.getId() + " requests document list.");
 
 			return obj;
@@ -60,4 +59,5 @@ public class DocumentList {
 		}
 
 	}
+
 }
