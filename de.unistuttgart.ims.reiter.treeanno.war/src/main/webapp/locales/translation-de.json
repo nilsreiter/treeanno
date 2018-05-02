@@ -79,7 +79,7 @@
 		"cancel":"Abbrechen",
 		"desc":"Neuer Name"
 	},
-	"rename_dialog":{
+	"describe_dialog":{
 		"title":"Document beschreiben",
 		"ok":"Beschreibung speichern",
 		"cancel":"Abbrechen",
