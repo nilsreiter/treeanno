@@ -38,7 +38,8 @@ public class ContextListener implements ServletContextListener {
 	 * @throws NamingException
 	 * @throws ClassNotFoundException
 	 */
-	public ContextListener() {}
+	public ContextListener() {
+	}
 
 	/**
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
@@ -56,11 +57,10 @@ public class ContextListener implements ServletContextListener {
 		ServletContext sc = sce.getServletContext();
 		Context envContext = null;
 		DataSource dataSource = null;
-		String dataSourceName = "jdbc/treeanno";
+		String dataSourceName = "treeanno/jdbc";
 		int dataSourceType = 0;
 		try {
-			envContext =
-					(Context) new InitialContext().lookup("java:/comp/env");
+			envContext = (Context) new InitialContext().lookup("java:/comp/env");
 
 			dataSource = (DataSource) envContext.lookup(dataSourceName);
 
@@ -71,8 +71,7 @@ public class ContextListener implements ServletContextListener {
 					Class.forName("org.h2.Driver");
 					dataSourceName = "jdbc/treeanno-mem";
 					dataSourceType = 1;
-					System.err.println("Falling back to data source "
-							+ dataSourceName);
+					System.err.println("Falling back to data source " + dataSourceName);
 					dataSource = (DataSource) envContext.lookup(dataSourceName);
 					dataSource.getConnection();
 					sc.setAttribute("dataSource", dataSource);
@@ -101,12 +100,10 @@ public class ContextListener implements ServletContextListener {
 		}
 
 		try {
-			// reading additional properties in seperate file, as specified
+			// reading additional properties in separate file, as specified
 			// in the context
 			if (envContext != null) {
-				String path =
-						(String) envContext
-								.lookup("treeanno/configurationPath");
+				String path = (String) envContext.lookup("treeanno/configurationPath");
 				is = new FileInputStream(new File(path));
 				serverConfig.read(new InputStreamReader(is, "UTF-8"));
 			}
@@ -116,16 +113,14 @@ public class ContextListener implements ServletContextListener {
 			IOUtils.closeQuietly(is);
 		}
 
-		CombinedConfiguration config =
-				new CombinedConfiguration(new OverrideCombiner());
+		CombinedConfiguration config = new CombinedConfiguration(new OverrideCombiner());
 		config.addConfiguration(serverConfig);
 		config.addConfiguration(defaultConfig);
 
 		sc.setAttribute("conf", new ConfigurationMap(config));
 
 		sc.setAttribute("treeanno.name", config.getString("treeanno.name"));
-		sc.setAttribute("treeanno.version",
-				config.getString("treeanno.version"));
+		sc.setAttribute("treeanno.version", config.getString("treeanno.version"));
 		sc.setAttribute("dsName", dataSourceName);
 
 		try {
