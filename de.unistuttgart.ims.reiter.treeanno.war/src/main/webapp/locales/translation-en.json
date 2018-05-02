@@ -75,6 +75,10 @@
 	"projects_for_X": "Projects for user \"__username__\"",
 	"howto_split":"Move the paragraph character to where you want to split using arrow keys. Make bigger jumps with &#8679;+arrow keys.",
 	"user_action_assign": "Assign projects",
+	"user_id": "Id",
+	"user_name": "Name",
+	"user_email": "Email",
+	"user_actions": "Actions",
 	"rename_dialog":{
 		"title":"Rename Document",
 		"ok":"Rename",

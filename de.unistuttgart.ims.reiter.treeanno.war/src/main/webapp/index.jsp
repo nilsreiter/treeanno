@@ -59,6 +59,7 @@
 			$("button.button_login").button({disabled:true});
 		});
 
+		$("#login select").selectmenu();
 		$("#login").dialog({
 			title: i18n.t("login_dialog_title"),
 			buttons: 
@@ -98,7 +99,7 @@
 					</c:forEach>
 				</select></p>
 				
-				<p><label for="form_password" class="trans">password</label> <input type="password" id="form_password" name="password" value="test" /></p>
+				<p style="display:none"><label for="form_password" class="trans">password</label> <input type="password" id="form_password" name="password" value="test" /></p>
 			</form>
 		</div>
 	</div>

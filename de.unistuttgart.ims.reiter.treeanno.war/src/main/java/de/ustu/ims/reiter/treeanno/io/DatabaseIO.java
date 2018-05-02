@@ -93,6 +93,7 @@ public class DatabaseIO implements DataLayer {
 		if (userDao.countOf() == 0) {
 			User user = new User();
 			user.setName("admin");
+			user.setEmail("example@example.org");
 			user.setAdmin(true);
 			userDao.create(user);
 

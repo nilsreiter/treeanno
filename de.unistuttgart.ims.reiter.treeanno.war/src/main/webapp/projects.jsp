@@ -93,7 +93,7 @@
 			<div id="useradminarea">
 				<h2 data-i18n="user_admin">user_admin</h2>
 				<table>
-					<thead><tr><th data-i18n="user_id"></th><th data-i18n="user_name"></th><th data-i18n="user_actions"></th></tr></thead>
+					<thead><tr><th data-i18n="user_id">user_id</th><th data-i18n="user_name">user_name</th><th data-i18n="user_email">user_email</th><th data-i18n="user_actions">user_actions</th></tr></thead>
 					<tbody>
 					</tbody>
 				</table>

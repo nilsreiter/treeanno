@@ -636,7 +636,7 @@ function show_documentlist(id) {
 			$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");	
 			$("button#new_document_open_dialog").button({
 				label:i18n.t("new_document.open_dialog"),
-				icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null },
+				icons: { primary: "ui-icon-plus", secondary: null },
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click(function() {
 				$("#documentuploaddialog").dialog("open");

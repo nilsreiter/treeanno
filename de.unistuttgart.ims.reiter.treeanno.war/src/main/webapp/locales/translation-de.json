@@ -73,6 +73,10 @@
 	"documents_in_X":"Dokumente in Projekt &bdquo;__projectname__&ldquo;",
 	"howto_split":"Mit den Pfeiltasten das Absatzzeichen an die richtige Stelle setzen. Weitere Sprünge mit &#8679;+Pfeiltasten.",
 	"user_action_assign": "Projekte zuweisen",
+	"user_id": "Id",
+	"user_name": "Name",
+	"user_email": "E-Mail",
+	"user_actions": "Aktionen",
 	"rename_dialog":{
 		"title":"Document umbenennen",
 		"ok":"Umbenennen",
