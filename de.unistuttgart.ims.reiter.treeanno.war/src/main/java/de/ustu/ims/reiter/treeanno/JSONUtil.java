@@ -22,6 +22,7 @@ public class JSONUtil {
 		json.put("id", document.getId());
 		json.put("name", document.getName());
 		json.put("project", JSONUtil.getJSONObject(document.getProject()));
+		json.put("description", document.getDescription());
 		return json;
 	}
 
