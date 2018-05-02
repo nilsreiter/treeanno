@@ -20,7 +20,7 @@ public class User {
 	String language = "en";
 
 	@Column
-	boolean admin;
+	boolean admin = false;
 
 	public String getName() {
 		return username;
