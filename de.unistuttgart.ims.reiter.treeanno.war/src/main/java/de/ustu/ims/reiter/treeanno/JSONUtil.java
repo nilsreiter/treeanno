@@ -41,6 +41,7 @@ public class JSONUtil {
 		json.put("name", user.getName());
 		json.put("email", user.getEmail());
 		json.put("language", user.getLanguage());
+		json.put("admin", user.isAdmin());
 		return json;
 	}
 }
