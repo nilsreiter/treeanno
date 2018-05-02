@@ -91,6 +91,7 @@ public class DatabaseIO implements DataLayer {
 		if (userDao.countOf() == 0) {
 			User user = new User();
 			user.setName("admin");
+			user.setAdmin(true);
 			userDao.create(user);
 
 			UserPermission up = new UserPermission();
@@ -110,6 +111,8 @@ public class DatabaseIO implements DataLayer {
 
 	@Override
 	public int getAccessLevel(Project project, User user) throws SQLException {
+		if (user.isAdmin())
+			return Perm.ADMIN_ACCESS;
 		List<UserPermission> list = userPermissionDao.queryBuilder().where().eq(UserPermission.FIELD_USER, user).and()
 				.eq(UserPermission.FIELD_PROJECT, project).query();
 
