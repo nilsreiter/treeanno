@@ -16,6 +16,49 @@ function init_projects() {
 		}]
 	});
 	$("#documentuploaddialog").dialog("close");
+
+	if (admin) {
+		$("button#new_user_open_dialog").button({
+			label:i18n.t("new_user.open_dialog"),
+			icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null },
+			text:configuration["treeanno.ui.showTextOnButtons"]
+		}).click(function() {
+			$("#newuserdialog").dialog("open");
+		});
+
+		$("#newuserdialog").dialog({
+			hide : false,
+			title : i18n.t("new_user.title"),
+			buttons : [ {
+				text : i18n.t("new_user.submit"),
+				click : function() {
+					$("#newuserdialog").dialog("close");
+					$.ajax({
+						type: "POST",
+						contentType: "application/json",
+						url: "rpc/user/create",
+						data: JSON.stringify({
+							name: $("#new_user_name").val(),
+							email: $("#new_user_email").val(),
+							language: $("#new_user_language").val()
+						}),
+						success: show_userlist,
+						error: function(jqXHR, textStatus, errorThrown) {
+							noty({
+								text:textStatus+": "+errorThrown,
+								timeout:false,
+								type:'error',
+								modal:true
+							});
+							console.log(textStatus, errorThrown);
+						}
+					});
+				}
+			} ]
+		});
+		$("#newuserdialog").dialog("close");
+	}
+
 	
 	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
 	$(".splitleft #projectlistarea").hide();
@@ -43,6 +86,7 @@ function init_projects() {
 		$(".splitleft img").remove();
 		$(".splitleft #projectlistarea").show();		
 	});
+	show_userlist();
 	
 	$( "button.button_edit_user" ).button({
 		icons: { primary: "ui-icon-person", secondary:null },
@@ -221,6 +265,119 @@ function show_annodoclist(projectId, id) {
 		$("#annodoclistarea").show();
 
 	});
+
+}
+
+function assign_users(user) {
+	$("#content .splitright").empty();
+	$("#content .splitright").append("<img src=\"gfx/loading1.gif\" />");
+	$("#content .splitright").append("<div id=\"projectassignarea\"></div>");
+	
+	jQuery.getJSON("rpc/AccessLevel/all?userId="+user.id, function(data) {
+		var table = document.createElement("table");
+		$(table).append("<thead><th data-i18n=\"project_name\">project_name</th></thead>");
+		var tbody = document.createElement("tbody");
+		for (var i = 0; i < data.length; i++) {
+			var tr = document.createElement("tr");
+			tr.setAttribute("id", "project-"+data[i].project.id);
+			$(tr).append("<td>"+data[i].project.name+"</td>");
+			$(tr).append("<td></td>");
+			var select = document.createElement("select");
+			$(select).attr("data-project-id", data[i].project.id);
+			
+			
+			$(select).append("<option "+(data[i].AccessLevel==0?"selected=\"selected\" ":"")+"value=\"0\">"+i18n.t("perm.no_access")+"</option>");
+			$(select).append("<option "+(data[i].AccessLevel==10?"selected=\"selected\" ":"")+"value=\"10\">"+i18n.t("perm.read_access")+"</option>");
+			$(select).append("<option "+(data[i].AccessLevel==20?"selected=\"selected\" ":"")+"value=\"20\">"+i18n.t("perm.write_access")+"</option>");
+			$(select).append("<option "+(data[i].AccessLevel==25?"selected=\"selected\" ":"")+"value=\"25\">"+i18n.t("perm.padmin_access")+"</option>");
+			$(select).append("<option "+(data[i].AccessLevel==30?"selected=\"selected\" ":"")+"value=\"30\">"+i18n.t("perm.admin_access")+"</option>");
+			$(select).appendTo($("td:last", tr));
+			$(tbody).append(tr);
+			$("select", tr).selectmenu({width:200});
+		};
+		
+		table.append(tbody);
+		
+		$("#projectassignarea").append("<h2>"+i18n.t("projects_for_X", {"username":user['name']})+"</h2>");
+		$("#projectassignarea").append(table);
+		$("#projectassignarea").append("<button class=\"save\"></button>");
+		
+		$("#projectassignarea button.save").button({
+			label:i18n.t("assign.save"),
+			icons:{primary:null,secondary:null},
+			text:configuration["treeanno.ui.showTextOnButtons"]
+		}).click(function() {
+			var list = $("#projectassignarea tbody select").map(function(index, element) {
+				pid = $(element).attr("data-project-id");
+				return {"project": pid, "level": $(element).val()};
+			}).get();
+			
+			console.log(list);
+			$.ajax({
+				type: "POST",
+				contentType: "application/json",
+				url: "rpc/user/assign",
+				data: JSON.stringify({
+					user: user.id,
+						levels: list}),
+				success: function() { assign_users(user) },
+				error: function(jqXHR, textStatus, errorThrown) {
+					noty({
+						text:textStatus+": "+errorThrown,
+						timeout:false,
+						type:'error',
+						modal:true
+					});
+					console.log(textStatus, errorThrown);
+				}
+			});
+		});
+		
+		$("#content .splitright img").remove();
+
+	});
+
+}
+
+function show_userlist() {
+		if (admin) {
+			$("#useradminarea table tbody").empty();
+			$("#useradminarea table").hide();
+			$("#useradminarea").append("<img src=\"gfx/loading1.gif\" />");
+			jQuery.getJSON("rpc/user/list", function(data) {
+				
+				for (var i = 0; i < data.length; i++) {
+					var tr = document.createElement("tr");
+					$(tr).append("<td>"+data[i]['id']+"</td>");
+					$(tr).append("<td>"+data[i]['name']+"</td>");
+					$(tr).append("<td>"+data[i]['email']+"</td>");
+					
+					
+					var actionCell = document.createElement("td");
+					$(actionCell).append("<button class=\"button_user_assign\"></button>");
+					$(actionCell).find("button.button_user_assign").button({
+						label:i18n.t("user_action_assign"),
+						icons:{primary:"ui-icon-document",secondary:null},
+						text:configuration["treeanno.ui.showTextOnButtons"]
+					}).click({
+						'user':data[i]
+					}, function(event) {
+						assign_users(event.data.user);
+					});
+
+					$(actionCell).buttonset();
+
+					$(tr).append(actionCell);
+					
+					$("#useradminarea table tbody").append(tr);
+				}
+				
+				
+				
+				$("#useradminarea table").show();
+				$("#useradminarea img").remove();
+			});
+		}
 
 }
 
