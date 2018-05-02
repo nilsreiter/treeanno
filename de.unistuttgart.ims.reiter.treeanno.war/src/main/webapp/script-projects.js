@@ -123,15 +123,14 @@ function init_projects() {
 				show_documentlist(event.data['projectId']); 
 			});
 			$("#projectlistarea table tbody").append(tr);
-			if (selected != -1) {
-				if (selected == id)
-					show_documentlist(id);
-			}
-
 		};
 		$(".splitleft img").remove();
-		$(".splitleft #projectlistarea").show();		
+		$(".splitleft #projectlistarea").show();
+		if (selected != -1)
+			show_documentlist(selected);
+
 	});
+	
 	show_userlist();
 	
 	$( "button.button_edit_user" ).button({
@@ -441,7 +440,6 @@ function show_documentlist(id) {
 	$("#topbar .left .adocname").remove();
 	$("#topbar .left .pname").remove();
 	$("#documentlistarea").hide();		
-
 	
 	jQuery.getJSON("rpc/"+id, function(data) {
 		var header = false;
