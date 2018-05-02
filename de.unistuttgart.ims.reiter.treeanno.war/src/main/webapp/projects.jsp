@@ -87,6 +87,7 @@
 					<thead><tr><th data-i18n="project_id"></th><th data-i18n="project_name"></th></tr></thead>
 					<tbody></tbody>
 				</table>
+				<button id="new_project_open_dialog"></button>
 			</div>
 			<c:if test="${ sessionScope.User.admin }">
 			<div id="useradminarea">
@@ -136,6 +137,12 @@
 				</select>
 			</div>
 		</form>
+	</div>
+	<div id="newprojectdialog">
+		<div>
+			<label for="new_project_name" data-i18n="new_project.name">new_project.name</label>
+			<input type="text" id="new_project_name" />
+		</div>
 	</div>
 </body>
 </html>

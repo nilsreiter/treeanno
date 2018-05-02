@@ -357,4 +357,13 @@ public class DatabaseIO implements DataLayer {
 	public boolean updateUser(User user) throws SQLException {
 		return (userDao.update(user) == 1);
 	}
+
+	@Override
+	public Project createNewProject(Project p) throws SQLException {
+		int r = projectDao.create(p);
+		if (r == 1)
+			return p;
+		else
+			return null;
+	}
 }

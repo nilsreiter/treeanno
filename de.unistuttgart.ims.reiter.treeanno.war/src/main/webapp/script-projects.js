@@ -25,6 +25,14 @@ function init_projects() {
 		}).click(function() {
 			$("#newuserdialog").dialog("open");
 		});
+		
+		$("button#new_project_open_dialog").button({
+			label:i18n.t("new_project.open_dialog"),
+			icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null },
+			text:configuration["treeanno.ui.showTextOnButtons"]
+		}).click(function() {
+			$("#newprojectdialog").dialog("open");
+		});
 
 		$("#newuserdialog").dialog({
 			hide : false,
@@ -57,25 +65,61 @@ function init_projects() {
 			} ]
 		});
 		$("#newuserdialog").dialog("close");
-	} else
+		
+		$("#newprojectdialog").dialog({
+			hide : false,
+			title : i18n.t("new_project.title"),
+			buttons : [ {
+				text : i18n.t("new_project.submit"),
+				click : function() {
+					$("#newprojectdialog").dialog("close");
+					$.ajax({
+						type: "POST",
+						contentType: "application/json",
+						url: "rpc/projects",
+						data: JSON.stringify({
+							name: $("#new_project_name").val(),
+						}),
+						success: function(data, a2, a3) {
+							console.log(data);
+							window.location.href = "projects.jsp?projectId="+data.id
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							noty({
+								text:textStatus+": "+errorThrown,
+								timeout:false,
+								type:'error',
+								modal:true
+							});
+							console.log(textStatus, errorThrown);
+						}
+					});
+				}
+			} ]
+		});
+		$("#newprojectdialog").dialog("close");
+	} else {
 		$("#newuserdialog").hide();
-
+		$("#newprojectdialog").hide();
+		$("#new_project_open_dialog").hide();
+	}
 
 	
 	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
 	$(".splitleft #projectlistarea").hide();
-	jQuery.getJSON("rpc/projects", function(data) {
+	jQuery.getJSON("rpc/AccessLevel/all?userId=-1", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
 			var id=data[i]['id'];
-			$(tr).append("<td>"+data[i]['id']+"</td>");
-			$(tr).append("<td>"+data[i]['name']+"</td>");
-			$(tr).append("<td><button class=\"button_open project "+data[i]['id']+"\"></button></td>");
+			$(tr).append("<td>"+data[i]['project']['id']+"</td>");
+			$(tr).append("<td>"+data[i]['project']['name']+"</td>");
+			$(tr).append("<td><button class=\"button_open project "+data[i]['project']['id']+"\"></button></td>");
 			$(tr).find("button.button_open").button({
 				label: i18n.t("project_action_open"),
 				icons:{primary:"ui-icon-folder-collapsed",secondary:null},
-				text:configuration["treeanno.ui.showTextOnButtons"]
-			}).click({'projectId':data[i]['id']}, function(event) {	
+				text:configuration["treeanno.ui.showTextOnButtons"],
+				disabled:(data[i]['AccessLevel'] == Perm.NOACCESS)
+			}).click({'projectId':data[i]['project']['id']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
 			$("#projectlistarea table tbody").append(tr);
@@ -389,11 +433,9 @@ function show_documentlist(id) {
 	$("#content .splitright").append("<div id=\"documentlistarea\"></div>");
 
 	$("button.button_open.project").button({
-		disabled:false,
 		icons:{primary:"ui-icon-folder-collapsed",secondary:null}
 	});
 	$("button.button_open.project."+id).button({
-		disabled:true,
 		icons:{primary:"ui-icon-folder-open",secondary:null}
 	});
 	$("#topbar .left .adocname").remove();

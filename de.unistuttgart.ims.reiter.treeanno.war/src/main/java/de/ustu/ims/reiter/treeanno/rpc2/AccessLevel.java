@@ -42,7 +42,11 @@ public class AccessLevel {
 	public JSONArray getAllForUser(@QueryParam("userId") int userId) throws Exception {
 
 		DataLayer dl = CW.getDataLayer(context);
-		User user = dl.getUser(userId);
+		User user;
+		if (userId == -1)
+			user = CW.getUser(request);
+		else
+			user = dl.getUser(userId);
 
 		JSONArray arr = new JSONArray();
 		for (Project p : dl.getProjects()) {
@@ -55,4 +59,5 @@ public class AccessLevel {
 		}
 		return arr;
 	}
+
 }
