@@ -69,7 +69,7 @@ public class ContextListener implements ServletContextListener {
 			} catch (SQLException e) {
 				try {
 					Class.forName("org.h2.Driver");
-					dataSourceName = "jdbc/treeanno-mem";
+					dataSourceName = "treeanno/jdbc-mem";
 					dataSourceType = 1;
 					System.err.println("Falling back to data source " + dataSourceName);
 					dataSource = (DataSource) envContext.lookup(dataSourceName);

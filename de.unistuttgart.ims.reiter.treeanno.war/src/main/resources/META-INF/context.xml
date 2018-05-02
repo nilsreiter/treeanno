@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context docBase="${catalina.home}/webapps/treeanno">
     <Resource 
-        name="jdbc/treeanno-mem" 
+        name="treeanno/jdbc-mem" 
         auth="Container" 
         type="javax.sql.DataSource" 
         username="sa" 

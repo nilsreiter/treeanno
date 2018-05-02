@@ -200,6 +200,11 @@
 			<artifactId>jersey-media-multipart</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.21.0.1</version>
+		</dependency>
 	</dependencies>
 	<scm>
 		<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>

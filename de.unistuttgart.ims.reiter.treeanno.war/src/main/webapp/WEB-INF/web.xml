@@ -7,6 +7,10 @@
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
+  <resource-ref>
+    <res-ref-name>treeanno/sqlite</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+  </resource-ref>
   <listener>
     <listener-class>de.ustu.ims.reiter.treeanno.ContextListener</listener-class>
   </listener>
@@ -25,7 +29,7 @@
   </welcome-file-list>
   <resource-ref>
     <description>DB Connection</description>
-    <res-ref-name>jdbc/treeanno</res-ref-name>
+    <res-ref-name>treeanno/jdbc</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
