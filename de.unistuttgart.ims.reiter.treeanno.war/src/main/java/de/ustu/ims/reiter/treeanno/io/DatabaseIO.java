@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.xml.sax.SAXException;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.db.H2DatabaseType;
@@ -119,6 +121,27 @@ public class DatabaseIO implements DataLayer {
 		if (!list.isEmpty())
 			return list.get(0).getLevel();
 		return Perm.NO_ACCESS;
+
+	}
+
+	@Override
+	public void setAccessLevel(Project project, User user, int level) throws SQLException {
+		List<UserPermission> list = userPermissionDao.queryBuilder().where().eq(UserPermission.FIELD_USER, user).and()
+				.eq(UserPermission.FIELD_PROJECT, project).query();
+		if (list.isEmpty()) {
+			UserPermission up = new UserPermission();
+			up.setUserId(user);
+			up.setProjectId(project);
+			up.setLevel(level);
+			userPermissionDao.create(up);
+		} else if (list.size() == 1) {
+			UserPermission up = list.get(0);
+			up.setLevel(level);
+			userPermissionDao.update(up);
+		} else {
+			// this should not happen
+			throw new SQLException();
+		}
 
 	}
 
@@ -319,5 +342,14 @@ public class DatabaseIO implements DataLayer {
 	@Override
 	public boolean deleteUserDocument(int id) throws SQLException {
 		return (userDocumentDao.deleteIds(Arrays.asList(id)) == 1);
+	}
+
+	@Override
+	public List<User> getUserList() throws SQLException {
+		CloseableIterator<User> iter = userDao.closeableIterator();
+		List<User> list = new ArrayList<User>();
+		while (iter.hasNext())
+			list.add(iter.next());
+		return list;
 	}
 }
