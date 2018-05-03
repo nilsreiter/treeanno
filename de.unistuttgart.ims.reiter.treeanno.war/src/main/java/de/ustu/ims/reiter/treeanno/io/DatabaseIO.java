@@ -32,8 +32,6 @@ import org.xml.sax.SAXException;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.db.H2DatabaseType;
-import com.j256.ormlite.db.MysqlDatabaseType;
 import com.j256.ormlite.jdbc.DataSourceConnectionSource;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -57,12 +55,12 @@ public class DatabaseIO implements DataLayer {
 	Dao<UserDocument, Integer> userDocumentDao;
 	Dao<UserPermission, Integer> userPermissionDao;
 
-	public DatabaseIO(DataSource dataSource, int dsType) throws ClassNotFoundException, NamingException, SQLException {
+	public DatabaseIO(DataSource dataSource) throws ClassNotFoundException, NamingException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
 		Class.forName("org.h2.Driver");
 
 		DataSourceConnectionSource connectionSource = new DataSourceConnectionSource(dataSource,
-				(dsType == 0 ? new MysqlDatabaseType() : new H2DatabaseType()));
+				dataSource.getConnection().getMetaData().getURL());
 
 		userDao = DaoManager.createDao(connectionSource, User.class);
 		projectDao = DaoManager.createDao(connectionSource, Project.class);

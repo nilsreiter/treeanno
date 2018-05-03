@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="${catalina.home}/webapps/treeanno">
+	<Resource name="treeanno/jdbc" auth="Container"
+		type="javax.sql.DataSource" username="sa" password=""
+		driverClassName="org.h2.Driver" url="jdbc:h2:mem:test" maxActive="8"
+		maxIdle="4" />
+</Context>	

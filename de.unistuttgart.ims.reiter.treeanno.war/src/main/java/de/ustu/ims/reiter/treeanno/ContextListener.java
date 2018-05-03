@@ -30,6 +30,8 @@ import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
  */
 public class ContextListener implements ServletContextListener {
 
+	static final String dataSourceName = "treeanno/jdbc";
+
 	DatabaseIO dr;
 
 	/**
@@ -57,8 +59,6 @@ public class ContextListener implements ServletContextListener {
 		ServletContext sc = sce.getServletContext();
 		Context envContext = null;
 		DataSource dataSource = null;
-		String dataSourceName = "treeanno/jdbc";
-		int dataSourceType = 0;
 		try {
 			envContext = (Context) new InitialContext().lookup("java:/comp/env");
 
@@ -69,13 +69,14 @@ public class ContextListener implements ServletContextListener {
 			} catch (SQLException e) {
 				try {
 					Class.forName("org.h2.Driver");
-					dataSourceName = "treeanno/jdbc-mem";
-					dataSourceType = 1;
+					Class.forName("org.sqlite.JDBC");
+
 					System.err.println("Falling back to data source " + dataSourceName);
 					dataSource = (DataSource) envContext.lookup(dataSourceName);
+
 					dataSource.getConnection();
 					sc.setAttribute("dataSource", dataSource);
-				} catch (ClassNotFoundException | SQLException e1) {
+				} catch (SQLException | ClassNotFoundException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -98,6 +99,7 @@ public class ContextListener implements ServletContextListener {
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
+		System.err.println(defaultConfig.getString("treeanno.user.defaultlanguage"));
 
 		try {
 			// reading additional properties in separate file, as specified
@@ -124,7 +126,7 @@ public class ContextListener implements ServletContextListener {
 		sc.setAttribute("dsName", dataSourceName);
 
 		try {
-			CW.setDataLayer(sc, new DatabaseIO(dataSource, dataSourceType));
+			CW.setDataLayer(sc, new DatabaseIO(dataSource));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
