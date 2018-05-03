@@ -12,7 +12,8 @@ running. Please check the documentation for your operating system on
 how to do that.
 
 If tomcat is running properly, the only thing you need to configure is 
-the database access:
+the database access. In addition, you *can* change some settings via a
+properties file.
 
 ### Database access
 
@@ -30,6 +31,22 @@ PASSWORD, and DATABASE URL with the proper values.
 
 Other databases can be used in a similar way, as long as the resource 
 name `treeanno/jdbc` is provided. 
+
+
+### Properties
+
+To supply your own properties file, include the following snippet into 
+the `context.xml` of your tomcat installation.
+
+```
+<Environment name="treeanno/configurationPath" 
+        value="PATH_TO_FILE/treeanno.properties" 
+        type="java.lang.String"/>
+```
+
+The file should (obviously) exist and be readable by the tomcat user.
+The default file, including comments for the properties, can be found
+[here](de.unistuttgart.ims.reiter.treeanno.war/src/main/resources/project.properties).
 
 ## Standalone (local)
 
