@@ -1,6 +1,20 @@
 # Installation
 
-## Database access
+You can run TreeAnno either on a server or locally on a single computer. 
+If you want multiple annotators to be able to annotate, you need to
+install it on a server. The local version is mainly for demoing and 
+testing.
+
+## Tomcat (web-access)
+
+To run TreeAnno via web access, you need to have a tomcat installation 
+running. Please check the documentation for your operating system on 
+how to do that.
+
+If tomcat is running properly, the only thing you need to configure is 
+the database access:
+
+### Database access
 
 TreeAnno stores all its data in a database, which should be configured 
 as a DataSource in the tomcat context. To use a MySQL/MariaDB data 
@@ -17,7 +31,11 @@ PASSWORD, and DATABASE URL with the proper values.
 Other databases can be used in a similar way, as long as the resource 
 name `treeanno/jdbc` is provided. 
 
-## In Memory database
+## Standalone (local)
+
+
+
+### In Memory database
 
 For testing and evaluation purposes, TreeAnno can be used as a 
 standalone app with an in-memory database. To enable this, you either 
@@ -30,7 +48,7 @@ $ mvn package -Pmem
 **Be aware that any changes made while using an in-memory database are 
 lost if you close the application.**
 
-## File based database
+### File based database
 
 The quickest way to do persistent annotation without doing a proper 
 installation is to use an sqlite database. To do this, compile the 
