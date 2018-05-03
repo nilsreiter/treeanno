@@ -22,7 +22,7 @@ public class RunServer extends Tomcat7RunnerCli {
 			@Override
 			public void run() {
 				try {
-					Tomcat7RunnerCli.main(new String[] {});
+					Tomcat7RunnerCli.main(args);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

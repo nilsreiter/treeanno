@@ -24,7 +24,6 @@
 					<resource>
 						<directory>src/main/profiles/default</directory>
 						<filtering>true</filtering>
-						<targetPath>META-INF</targetPath>
 					</resource>
 				</resources>
 			</build>
@@ -38,7 +37,6 @@
 				<resources>
 					<resource>
 						<directory>src/main/profiles/mem</directory>
-						<targetPath>META-INF</targetPath>
 					</resource>
 				</resources>
 			</build>
@@ -52,7 +50,6 @@
 				<resources>
 					<resource>
 						<directory>src/main/profiles/sqlite</directory>
-						<targetPath>META-INF</targetPath>
 					</resource>
 				</resources>
 			</build>

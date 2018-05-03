@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -65,6 +66,7 @@ public class ContextListener implements ServletContextListener {
 			dataSource = (DataSource) envContext.lookup(dataSourceName);
 
 			try {
+				sc.log("Using data source url: " + dataSource.getConnection().getMetaData().getURL());
 				dataSource.getConnection();
 			} catch (SQLException e) {
 				try {
@@ -76,13 +78,24 @@ public class ContextListener implements ServletContextListener {
 
 					dataSource.getConnection();
 					sc.setAttribute("dataSource", dataSource);
+
 				} catch (SQLException | ClassNotFoundException e1) {
 					e1.printStackTrace();
 				}
+
+			}
+
+			try {
+				Object o = sc.getInitParameter("dbInMemory");// envContext.lookup("dbInMemory");
+				sc.setAttribute("dbInMemory", o);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+				// fail silently
 			}
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}
+
 		PropertiesConfiguration defaultConfig = new PropertiesConfiguration();
 		PropertiesConfiguration serverConfig = new PropertiesConfiguration();
 
@@ -99,7 +112,6 @@ public class ContextListener implements ServletContextListener {
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
-		System.err.println(defaultConfig.getString("treeanno.user.defaultlanguage"));
 
 		try {
 			// reading additional properties in separate file, as specified
@@ -109,6 +121,8 @@ public class ContextListener implements ServletContextListener {
 				is = new FileInputStream(new File(path));
 				serverConfig.read(new InputStreamReader(is, "UTF-8"));
 			}
+		} catch (NameNotFoundException e) {
+			sc.log("configuration path not defined, using default properties.");
 		} catch (IOException | NamingException | ConfigurationException e) {
 			e.printStackTrace();
 		} finally {

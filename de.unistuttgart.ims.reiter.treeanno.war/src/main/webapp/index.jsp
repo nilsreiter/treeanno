@@ -38,7 +38,7 @@
 	//<![CDATA[
 	//]]>
 	</script>
-	<c:if test="${applicationScope['dsName'] eq 'jdbc/treeanno-mem' }">
+	<c:if test="${ not empty applicationScope['dbInMemory'] }">
 	<script>
 	// <![CDATA[
 		var showAlertMessage = "alert.in-memory";
