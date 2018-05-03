@@ -5,15 +5,15 @@
   <packaging>pom</packaging>
   <version>1.0.0-SNAPSHOT</version>
   <name>TreeAnno</name>
-  <url>https://clarin06.ims.uni-stuttgart.de/reiterns/treeanno</url>
+  <url>https://github.com/nilsreiter/treeanno</url>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<tomcat.version>8.0.32</tomcat.version>
   </properties>
   <scm>
-  	<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>
-  	<developerConnection>scm:git:ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</developerConnection>
-  	<connection>scm:git:ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</connection>
+  	<url>ssh://github.com/nilsreiter/treeanno.git</url>
+  	<developerConnection>scm:git:ssh://github.com/nilsreiter/treeanno.git</developerConnection>
+  	<connection>scm:git:ssh://github.com/nilsreiter/treeanno.git</connection>
   </scm>
   <artifactId>treeanno</artifactId>
   <dependencyManagement>
@@ -47,4 +47,8 @@
   	<module>de.unistuttgart.ims.reiter.treeanno.war</module>
   	<module>de.unistuttgart.ims.reiter.treeanno.exec-war</module>
     </modules>
+    <issueManagement>
+    	<system>GitHub Issues</system>
+    	<url>https://github.com/nilsreiter/treeanno/issues</url>
+    </issueManagement>
 </project>
