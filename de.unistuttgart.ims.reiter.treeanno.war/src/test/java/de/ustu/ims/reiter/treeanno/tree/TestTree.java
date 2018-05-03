@@ -28,7 +28,7 @@ public class TestTree {
 
 	@Test
 	public void testTreeCreation() {
-		Walker<Object> w = new PrintParenthesesWalker<Object>();
+		Walker<Object, String> w = new PrintParenthesesWalker<Object>();
 
 		Tree<Object> tree = new Tree<Object>(comp);
 		tree.setRoot(new Node<Object>(objects[0], comp));

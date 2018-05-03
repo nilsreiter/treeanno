@@ -18,6 +18,7 @@ import de.ustu.ims.reiter.treeanno.util.Util;
 /**
  * Servlet implementation class DocumentDelete
  */
+@Deprecated
 public class DocumentDelete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -25,8 +26,8 @@ public class DocumentDelete extends HttpServlet {
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	@Override
-	protected void doDelete(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int[] docIds;
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 

@@ -38,7 +38,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 	File outputLocation;
 
-	Class<? extends Walker<?>> walkerClass;
+	Class<? extends Walker<?, String>> walkerClass;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -50,7 +50,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 			throw new ResourceInitializationException();
 
 		try {
-			walkerClass = (Class<? extends Walker<?>>) Class.forName(walkerClassName);
+			walkerClass = (Class<? extends Walker<?, String>>) Class.forName(walkerClassName);
 		} catch (ClassNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -61,7 +61,7 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 
 		String treeString;
 		try {
-			treeString = getTreeString(jcas, (Walker<TreeSegment>) walkerClass.newInstance());
+			treeString = getTreeString(jcas, (Walker<TreeSegment, String>) walkerClass.newInstance());
 		} catch (InstantiationException | IllegalAccessException e1) {
 			throw new AnalysisEngineProcessException(e1);
 		}
@@ -109,10 +109,16 @@ public class GraphExporter extends JCasConsumer_ImplBase {
 		return tree;
 	}
 
-	public static String getTreeString(JCas jcas, Walker<TreeSegment> walker) {
+	public static String getTreeString(JCas jcas, Walker<TreeSegment, String> walker) {
 		Tree<TreeSegment> tree = getTree(jcas);
-		tree.depthFirstWalk(walker);
-		return walker.toString();
+		tree.getRoot().depthFirstWalk(walker);
+		return walker.getResult();
+	}
+
+	public static <R> R getWalkerResult(JCas jcas, Walker<TreeSegment, R> walker) {
+		Tree<TreeSegment> tree = getTree(jcas);
+		tree.getRoot().depthFirstWalk(walker);
+		return walker.getResult();
 	}
 
 }

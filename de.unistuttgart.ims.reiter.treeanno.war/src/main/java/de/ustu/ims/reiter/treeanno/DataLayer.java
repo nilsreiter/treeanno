@@ -2,6 +2,7 @@ package de.ustu.ims.reiter.treeanno;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.xml.sax.SAXException;
@@ -31,19 +32,27 @@ public interface DataLayer {
 
 	UserDocument getUserDocument(int u, int d) throws SQLException;
 
-	UserDocument getUserDocument(User user, Document document)
-			throws SQLException;
+	UserDocument getUserDocument(User user, Document document) throws SQLException;
+
+	List<User> getUserList() throws SQLException;
 
 	int getAccessLevel(Project proj, User user) throws SQLException;
 
+	void setAccessLevel(Project proj, User user, int level) throws SQLException;
+
 	boolean deleteDocument(Document document) throws SQLException;
 
-	boolean setJCas(Document document, JCas jcas) throws SQLException,
-	SAXException;
+	boolean setJCas(Document document, JCas jcas) throws SQLException, SAXException;
+
+	boolean updateUser(User user) throws SQLException;
 
 	boolean updateDocument(Document document) throws SQLException;
 
 	Document createNewDocument(Document d) throws SQLException;
+
+	User createNewUser(User u) throws SQLException;
+
+	Project createNewProject(Project p) throws SQLException;
 
 	boolean updateUserDocument(UserDocument document) throws SQLException;
 

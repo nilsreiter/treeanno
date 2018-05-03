@@ -43,6 +43,7 @@
 		"undo":"Rückgängig"
 	},
 	"action_category_virtual_nodes":"Virtuelle Knoten",
+	"assign_save":"Speichern",
 	"help_title":"Spickzettel",
 	"open":"Öffnen",
 	"list_of_projects":"Projektliste",
@@ -58,7 +59,9 @@
 	"document_action_delete_confirm":"Das Dokument wird unwiderbringlich gelöscht. Wirklich löschen?",
 	"document_action_export_xmi":"Export",
 	"document_action_rename":"Umbenennen",
+	"document_action_describe":"Beschreiben",
 	"document_action_view_annodoc":"Annotationen ansehen",
+	"project_access": "Zugriffsrechte",
 	"project_id":"Id",
 	"project_name":"Name",
 	"project_action_open":"Öffnen",
@@ -69,11 +72,22 @@
 	"show_ids":"Ids anzeigen",
 	"documents_in_X":"Dokumente in Projekt &bdquo;__projectname__&ldquo;",
 	"howto_split":"Mit den Pfeiltasten das Absatzzeichen an die richtige Stelle setzen. Weitere Sprünge mit &#8679;+Pfeiltasten.",
+	"user_action_assign": "Projekte zuweisen",
+	"user_id": "Id",
+	"user_name": "Name",
+	"user_email": "E-Mail",
+	"user_actions": "Aktionen",
 	"rename_dialog":{
 		"title":"Document umbenennen",
 		"ok":"Umbenennen",
 		"cancel":"Abbrechen",
 		"desc":"Neuer Name"
+	},
+	"describe_dialog":{
+		"title":"Document beschreiben",
+		"ok":"Beschreibung speichern",
+		"cancel":"Abbrechen",
+		"desc":"Beschreibung oder Kommentar"
 	},
 	"split_dialog":{
 		"title":"Segment teilen",
@@ -87,6 +101,20 @@
 		"sentence":"Sätze",
 		"token":"Tokens",
 		"open_dialog":"Neues Dokument"
+	},
+	"new_user":{
+		"title":"Neuen Benutzer anlegen",
+		"submit":"Erstellen",
+		"name":"Name",
+		"email":"E-Mail",
+		"language":"Sprache",
+		"open_dialog":"Neuen Benutzer anlegen"
+	},
+	"new_project":{
+		"title":"Neues Projekt anlegen",
+		"submit":"Anlegen",
+		"name":"Name",
+		"open_dialog":"Neues Projekt anlegen"
 	},
 	"annodoclistarea":{
 		"title_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
@@ -106,7 +134,8 @@
 		"par":"Klammerausdruck",
 		"par_id":"Klammerausdruck (mit IDs)",
 		"xml":"Simple XML",
-		"dot":"Dot Language"
+		"dot":"Dot Language (DOT+PNG)",
+		"chart": "Chart (CSV)"
 	},
 	"parallel":{
 		"annotations_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",
@@ -120,5 +149,12 @@
 	},
 	"alert":{
 		"in-memory":"Datenbank nicht erreichbar. Änderungen und Annotationen können nicht gespeichert werden."
+	},
+	"perm":{
+		"no_access": "Kein Zugriff",
+		"read_access": "Lesezugriff",
+		"write_access": "Schreibzugriff",
+		"padmin_access": "Projektadministrator",
+		"admin_access": "Globaler Administrator"
 	}
 }

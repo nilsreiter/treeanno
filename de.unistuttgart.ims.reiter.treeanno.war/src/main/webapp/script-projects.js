@@ -16,33 +16,122 @@ function init_projects() {
 		}]
 	});
 	$("#documentuploaddialog").dialog("close");
+
+	if (admin) {
+		$("button#new_user_open_dialog").button({
+			label:i18n.t("new_user.open_dialog"),
+			icons: { primary: "ui-icon-plus", secondary: null },
+			text:configuration["treeanno.ui.showTextOnButtons"]
+		}).click(function() {
+			$("#newuserdialog").dialog("open");
+		});
+		
+		$("button#new_project_open_dialog").button({
+			label:i18n.t("new_project.open_dialog"),
+			icons: { primary: "ui-icon-plus", secondary: null },
+			text:configuration["treeanno.ui.showTextOnButtons"]
+		}).click(function() {
+			$("#newprojectdialog").dialog("open");
+		});
+
+		$("#newuserdialog").dialog({
+			hide : false,
+			title : i18n.t("new_user.title"),
+			buttons : [ {
+				text : i18n.t("new_user.submit"),
+				click : function() {
+					$("#newuserdialog").dialog("close");
+					$.ajax({
+						type: "POST",
+						contentType: "application/json",
+						url: "rpc/user/create",
+						data: JSON.stringify({
+							name: $("#new_user_name").val(),
+							email: $("#new_user_email").val(),
+							language: $("#new_user_language").val()
+						}),
+						success: show_userlist,
+						error: function(jqXHR, textStatus, errorThrown) {
+							noty({
+								text:textStatus+": "+errorThrown,
+								timeout:false,
+								type:'error',
+								modal:true
+							});
+							console.log(textStatus, errorThrown);
+						}
+					});
+				}
+			} ]
+		});
+		$("#newuserdialog").dialog("close");
+		
+		$("#newprojectdialog").dialog({
+			hide : false,
+			title : i18n.t("new_project.title"),
+			buttons : [ {
+				text : i18n.t("new_project.submit"),
+				click : function() {
+					$("#newprojectdialog").dialog("close");
+					$.ajax({
+						type: "POST",
+						contentType: "application/json",
+						url: "rpc/projects",
+						data: JSON.stringify({
+							name: $("#new_project_name").val(),
+						}),
+						success: function(data, a2, a3) {
+							console.log(data);
+							window.location.href = "projects.jsp?projectId="+data.id
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							noty({
+								text:textStatus+": "+errorThrown,
+								timeout:false,
+								type:'error',
+								modal:true
+							});
+							console.log(textStatus, errorThrown);
+						}
+					});
+				}
+			} ]
+		});
+		$("#newprojectdialog").dialog("close");
+	} else {
+		$("#newuserdialog").hide();
+		$("#newprojectdialog").hide();
+		$("#new_project_open_dialog").hide();
+	}
+
 	
 	$(".splitleft").append("<img src=\"gfx/loading1.gif\" />");
 	$(".splitleft #projectlistarea").hide();
-	jQuery.getJSON("rpc/projects", function(data) {
+	jQuery.getJSON("rpc/AccessLevel/all?userId=-1", function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var tr = document.createElement("tr");
 			var id=data[i]['id'];
-			$(tr).append("<td>"+data[i]['id']+"</td>");
-			$(tr).append("<td>"+data[i]['name']+"</td>");
-			$(tr).append("<td><button class=\"button_open project "+data[i]['id']+"\"></button></td>");
+			$(tr).append("<td>"+data[i]['project']['id']+"</td>");
+			$(tr).append("<td>"+data[i]['project']['name']+"</td>");
+			$(tr).append("<td><button class=\"button_open project "+data[i]['project']['id']+"\"></button></td>");
 			$(tr).find("button.button_open").button({
 				label: i18n.t("project_action_open"),
 				icons:{primary:"ui-icon-folder-collapsed",secondary:null},
-				text:configuration["treeanno.ui.showTextOnButtons"]
-			}).click({'projectId':data[i]['id']}, function(event) {	
+				text:configuration["treeanno.ui.showTextOnButtons"],
+				disabled:(data[i]['AccessLevel'] == Perm.NOACCESS)
+			}).click({'projectId':data[i]['project']['id']}, function(event) {	
 				show_documentlist(event.data['projectId']); 
 			});
 			$("#projectlistarea table tbody").append(tr);
-			if (selected != -1) {
-				if (selected == id)
-					show_documentlist(id);
-			}
-
 		};
 		$(".splitleft img").remove();
-		$(".splitleft #projectlistarea").show();		
+		$(".splitleft #projectlistarea").show();
+		if (selected != -1)
+			show_documentlist(selected);
+
 	});
+	
+	show_userlist();
 	
 	$( "button.button_edit_user" ).button({
 		icons: { primary: "ui-icon-person", secondary:null },
@@ -70,6 +159,7 @@ function show_exportoptions(projectId,document) {
 	abar.append("<button class=\"export_par_id\" name=\"export_par_id\" value=\""+document['id']+"\">"+i18n.t("exportoptions.par_id")+"</button>");
 	abar.append("<button class=\"export_xml\" name=\"export_xml\" value=\""+document['id']+"\">"+i18n.t("exportoptions.xml")+"</button>");
 	abar.append("<button class=\"export_dot\" name=\"export_dot\" value=\""+document['id']+"\">"+i18n.t("exportoptions.dot")+"</button>");
+	abar.append("<button class=\"export_chart\" name=\"export_chart\" value=\""+document['id']+"\">"+i18n.t("exportoptions.chart")+"</button>");
 	
 	abar.children(".export_xmi").button({
 		label:i18n.t("exportoptions.xmi"),
@@ -106,6 +196,7 @@ function show_exportoptions(projectId,document) {
 	}, function(event) {
 		window.location.href="rpc/xml/"+projectId+"/"+event.data.documentId;
 	});
+	
 	abar.children(".export_dot").button({
 		label:i18n.t("exportoptions.dot"),
 		text:configuration["treeanno.ui.showTextOnButtons"]
@@ -113,6 +204,15 @@ function show_exportoptions(projectId,document) {
 		'documentId':document['id']
 	}, function(event) {
 		window.location.href="rpc/dot/"+projectId+"/"+event.data.documentId;
+	});
+	
+	abar.children(".export_chart").button({
+		label:i18n.t("exportoptions.chart"),
+		text:configuration["treeanno.ui.showTextOnButtons"]
+	}).click({
+		'documentId':document['id']
+	}, function(event) {
+		window.location.href="rpc/chart/"+projectId+"/"+event.data.documentId;
 	});
 	
 	abar.buttonset();
@@ -213,23 +313,133 @@ function show_annodoclist(projectId, id) {
 
 }
 
+function assign_users(user) {
+	$("#content .splitright").empty();
+	$("#content .splitright").append("<img src=\"gfx/loading1.gif\" />");
+	$("#content .splitright").append("<div id=\"projectassignarea\"></div>");
+	
+	jQuery.getJSON("rpc/AccessLevel/all?userId="+user.id, function(data) {
+		var table = document.createElement("table");
+		$(table).append("<thead><th>"+i18n.t("project_name")+"</th><th>"+i18n.t("project_access")+"</th></thead>");
+		var tbody = document.createElement("tbody");
+		for (var i = 0; i < data.length; i++) {
+			var tr = document.createElement("tr");
+			tr.setAttribute("id", "project-"+data[i].project.id);
+			$(tr).append("<td>"+data[i].project.name+"</td>");
+			$(tr).append("<td></td>");
+			var select = document.createElement("select");
+			$(select).attr("data-project-id", data[i].project.id);
+			
+			
+			$(select).append("<option "+(data[i].AccessLevel==0?"selected=\"selected\" ":"")+"value=\"0\">"+i18n.t("perm.no_access")+"</option>");
+			$(select).append("<option "+(data[i].AccessLevel==10?"selected=\"selected\" ":"")+"value=\"10\">"+i18n.t("perm.read_access")+"</option>");
+			$(select).append("<option "+(data[i].AccessLevel==20?"selected=\"selected\" ":"")+"value=\"20\">"+i18n.t("perm.write_access")+"</option>");
+			$(select).append("<option "+(data[i].AccessLevel==25?"selected=\"selected\" ":"")+"value=\"25\">"+i18n.t("perm.padmin_access")+"</option>");
+			$(select).append("<option "+(data[i].AccessLevel==30?"selected=\"selected\" ":"")+"value=\"30\">"+i18n.t("perm.admin_access")+"</option>");
+			$(select).appendTo($("td:last", tr));
+			$(tbody).append(tr);
+			$("select", tr).selectmenu({width:200});
+		};
+		
+		table.append(tbody);
+		
+		$("#projectassignarea").append("<h2>"+i18n.t("projects_for_X", {"username":user['name']})+"</h2>");
+		$("#projectassignarea").append(table);
+		$("#projectassignarea").append("<button class=\"save\"></button>");
+		
+		$("#projectassignarea button.save").button({
+			label:i18n.t("assign_save"),
+			icons:{primary:"ui-icon-disk",secondary:null},
+			text:configuration["treeanno.ui.showTextOnButtons"]
+		}).click(function() {
+			var list = $("#projectassignarea tbody select").map(function(index, element) {
+				pid = $(element).attr("data-project-id");
+				return {"project": pid, "level": $(element).val()};
+			}).get();
+			
+			console.log(list);
+			$.ajax({
+				type: "POST",
+				contentType: "application/json",
+				url: "rpc/user/assign",
+				data: JSON.stringify({
+					user: user.id,
+						levels: list}),
+				success: function() { assign_users(user) },
+				error: function(jqXHR, textStatus, errorThrown) {
+					noty({
+						text:textStatus+": "+errorThrown,
+						timeout:false,
+						type:'error',
+						modal:true
+					});
+					console.log(textStatus, errorThrown);
+				}
+			});
+		});
+		
+		$("#content .splitright img").remove();
+
+	});
+
+}
+
+function show_userlist() {
+		if (admin) {
+			$("#useradminarea table tbody").empty();
+			$("#useradminarea table").hide();
+			$("#useradminarea").append("<img src=\"gfx/loading1.gif\" />");
+			jQuery.getJSON("rpc/user/list", function(data) {
+				
+				for (var i = 0; i < data.length; i++) {
+					var tr = document.createElement("tr");
+					$(tr).append("<td>"+data[i]['id']+"</td>");
+					$(tr).append("<td>"+data[i]['name']+"</td>");
+					$(tr).append("<td>"+data[i]['email']+"</td>");
+					
+					
+					var actionCell = document.createElement("td");
+					$(actionCell).append("<button class=\"button_user_assign\"></button>");
+					$(actionCell).find("button.button_user_assign").button({
+						label:i18n.t("user_action_assign"),
+						icons:{primary:null,secondary:null},
+						text:configuration["treeanno.ui.showTextOnButtons"]
+					}).click({
+						'user':data[i]
+					}, function(event) {
+						assign_users(event.data.user);
+					});
+
+					$(actionCell).buttonset();
+
+					$(tr).append(actionCell);
+					
+					$("#useradminarea table tbody").append(tr);
+				}
+				
+				
+				
+				$("#useradminarea table").show();
+				$("#useradminarea img").remove();
+			});
+		}
+
+}
+
 function show_documentlist(id) {
 	$("#content .splitright").empty();
 	$("#content .splitright").append("<img src=\"gfx/loading1.gif\" />");
 	$("#content .splitright").append("<div id=\"documentlistarea\"></div>");
 
 	$("button.button_open.project").button({
-		disabled:false,
 		icons:{primary:"ui-icon-folder-collapsed",secondary:null}
 	});
 	$("button.button_open.project."+id).button({
-		disabled:true,
 		icons:{primary:"ui-icon-folder-open",secondary:null}
 	});
 	$("#topbar .left .adocname").remove();
 	$("#topbar .left .pname").remove();
 	$("#documentlistarea").hide();		
-
 	
 	jQuery.getJSON("rpc/"+id, function(data) {
 		var header = false;
@@ -258,6 +468,8 @@ function show_documentlist(id) {
 				$(actionCell).append("<button class=\"button_open_master\"></button>");
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_rename\">rename</button>")
+			if (al >= Perm["PADMINACCESS"])
+				$(actionCell).append("<button class=\"button_describe\">describe</button>")
 			if (al >= Perm["PADMINACCESS"])
 				$(actionCell).append("<button class=\"button_delete\">delete</button>");
 			if (al >= Perm["PADMINACCESS"])
@@ -317,6 +529,41 @@ function show_documentlist(id) {
 						text: i18n.t("rename_dialog.ok"),
 						click: function() {
 							jQuery.getJSON("rpc/document/rename?name="+$(diagDiv).children("input").val()+"&documentId="+event.data.document['id'], function() {
+								show_documentlist(id);
+							});
+					        $( this ).dialog( "close" );
+					    }
+					}],
+					closeOnEscape: true,
+					modal:true	
+				}).show();
+				
+			});
+			$(actionCell).find("button.button_describe").button({
+				label:i18n.t("document_action_describe"),
+				icons:{primary:"ui-icon-pencil",secondary:null},
+				text:configuration["treeanno.ui.showTextOnButtons"]
+			}).click({
+				'document':data['documents'][i]
+			}, function(event) {
+				var diagDiv = document.createElement("div");
+				$(diagDiv).append(i18n.t("describe_dialog.desc")+"<br/><textarea rows=\"5\" cols=\"40\">"+event.data.document['description']+"</textarea>");
+				$("body").append(diagDiv);
+				
+				$(diagDiv).dialog({
+					title:i18n.t("describe_dialog.title"),
+					dialogClass: "no-close",
+					buttons: [{
+						text:i18n.t("describe_dialog.cancel"),
+			        	click: function() {
+			        		$(this).dialog("destroy");
+			        		document.getElementsByTagName("BODY")[0].removeChild(diagDiv);
+			        	}
+					},{ 
+						text: i18n.t("describe_dialog.ok"),
+						click: function() {
+							
+							jQuery.getJSON("rpc/document/describe?description="+$(diagDiv).children("textarea").val()+"&documentId="+event.data.document['id'], function() {
 								show_documentlist(id);
 							});
 					        $( this ).dialog( "close" );
@@ -389,7 +636,7 @@ function show_documentlist(id) {
 			$("#documentlistarea").append("<button data-i18n=\"new_document.open_dialog\" id=\"new_document_open_dialog\"></button>");	
 			$("button#new_document_open_dialog").button({
 				label:i18n.t("new_document.open_dialog"),
-				icons: { primary: "ui-icon-arrowthickstop-1-n", secondary: null },
+				icons: { primary: "ui-icon-plus", secondary: null },
 				text:configuration["treeanno.ui.showTextOnButtons"]
 			}).click(function() {
 				$("#documentuploaddialog").dialog("open");

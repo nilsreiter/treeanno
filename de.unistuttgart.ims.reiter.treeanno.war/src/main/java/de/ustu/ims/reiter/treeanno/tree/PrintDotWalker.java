@@ -2,10 +2,11 @@ package de.ustu.ims.reiter.treeanno.tree;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 
-public class PrintDotWalker implements Walker<TreeSegment> {
+public class PrintDotWalker implements Walker<TreeSegment, String> {
 
 	StringBuilder b;
 	@Deprecated
@@ -13,6 +14,7 @@ public class PrintDotWalker implements Walker<TreeSegment> {
 	@Deprecated
 	String virtualSegmentStyle;
 	Map<String, String> segmentStyles;
+	Function<TreeSegment, String> labelFunction;
 
 	public PrintDotWalker(Map<String, String> segmentStyles) {
 		this.segmentStyles = segmentStyles;
@@ -45,12 +47,18 @@ public class PrintDotWalker implements Walker<TreeSegment> {
 				} else {
 					b.append(segmentStyles.get("text"));
 				}
+				if (labelFunction != null) {
+					b.append(",label=\"").append(labelFunction.apply(ts)).append("\"");
+				}
 				b.append("]");
 
 			} else {
 				if (segmentStyles.containsKey(ts.getNodeType())) {
 					b.append("[");
 					b.append(segmentStyles.get(ts.getNodeType()));
+					if (labelFunction != null) {
+						b.append(",label=\"").append(labelFunction.apply(ts)).append("\"");
+					}
 					b.append("]");
 				}
 			}
@@ -76,5 +84,18 @@ public class PrintDotWalker implements Walker<TreeSegment> {
 	public void init() {
 		b = new StringBuilder();
 		b.append("digraph G {\n");
+	}
+
+	@Override
+	public String getResult() {
+		return toString();
+	}
+
+	public Function<TreeSegment, String> getLabelFunction() {
+		return labelFunction;
+	}
+
+	public void setLabelFunction(Function<TreeSegment, String> labelFunction) {
+		this.labelFunction = labelFunction;
 	}
 }

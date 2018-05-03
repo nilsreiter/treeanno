@@ -33,13 +33,25 @@ public class Tree<T> {
 
 	}
 
-	public void depthFirstWalk(Walker<T> walker) {
+	/**
+	 * @deprecated Use {@link Node#depthFirstWalk(Walker)} instead
+	 * @param walker
+	 */
+	@Deprecated
+	public void depthFirstWalk(Walker<T, ? extends Object> walker) {
 		walker.init();
 		depthFirstWalk(walker, getRoot(), null);
 	}
 
+	/**
+	 * @deprecated Use {@link Node#depthFirstWalk(Walker, Node, Node)} instead.
+	 * @param walker
+	 * @param node
+	 * @param parent
+	 */
+	@Deprecated
 	protected void
-	depthFirstWalk(Walker<T> walker, Node<T> node, Node<T> parent) {
+			depthFirstWalk(Walker<T, ? extends Object> walker, Node<T> node, Node<T> parent) {
 		walker.beginNode(node, parent);
 		for (Node<T> child : node.getChildren()) {
 			depthFirstWalk(walker, child, node);

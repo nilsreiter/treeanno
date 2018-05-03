@@ -43,6 +43,7 @@
 		"undo":"Undo"
 	},
 	"action_category_virtual_nodes":"Virtual Nodes",
+	"assign_save":"Save",
 	"help_title":"Cheat Sheet",
 	"open":"Open",
 	"list_of_projects":"List of Projects",
@@ -58,22 +59,37 @@
 	"document_action_delete_confirm":"The document will be removed from the database, which is irreversible. Do you really want to do that?",
 	"document_action_export_xmi":"Export",
 	"document_action_rename":"Rename",
+	"document_action_describe":"Describe",
 	"document_action_view_annodoc":"View annotations",
 	"project_id":"Id",
 	"project_name":"Name",
 	"project_action_open":"Open",
+	"project_access": "Project access",
 	"login_dialog_title":"Login",
 	"login_dialog_ok":"Enter",
 	"show_helper":"Show Cheat Sheet",
 	"show_history":"Show History",
 	"show_ids":"Show ids",
+	"user_admin":"User administration",
 	"documents_in_X":"Documents in project \"__projectname__\"",
+	"projects_for_X": "Projects for user \"__username__\"",
 	"howto_split":"Move the paragraph character to where you want to split using arrow keys. Make bigger jumps with &#8679;+arrow keys.",
+	"user_action_assign": "Assign projects",
+	"user_id": "Id",
+	"user_name": "Name",
+	"user_email": "Email",
+	"user_actions": "Actions",
 	"rename_dialog":{
 		"title":"Rename Document",
 		"ok":"Rename",
 		"cancel":"Cancel",
 		"desc":"New Name"
+	},
+	"describe_dialog":{
+		"title":"Describe Document",
+		"ok":"Set description",
+		"cancel":"Cancel",
+		"desc":"Description or comment"
 	},
 	"split_dialog":{
 		"title":"Split segment",
@@ -87,6 +103,20 @@
 		"sentence":"Sentences",
 		"token":"Tokens",
 		"open_dialog":"New Document"
+	},
+	"new_user":{
+		"title":"Create New User",
+		"submit":"Create",
+		"name":"Name",
+		"email":"Email",
+		"language":"Language",
+		"open_dialog":"New User"
+	},
+	"new_project":{
+		"title":"Create New Project",
+		"submit":"Create",
+		"name":"Name",
+		"open_dialog":"New Project"
 	},
 	"annodoclistarea":{
 		"title_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
@@ -106,7 +136,8 @@
 		"par":"Parentheses",
 		"par_id":"Parentheses (incl. IDs)",
 		"xml":"Simple XML",
-		"dot":"Dot Language"
+		"dot":"Dot Language (DOT+PNG)",
+		"chart": "Chart (CSV)"
 	},
 	"parallel":{
 		"annotations_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
@@ -120,5 +151,12 @@
 	},
 	"alert":{
 		"in-memory":"Database can't be reached. Annotations will not be stored permanently."
+	},
+	"perm":{
+		"no_access": "No access",
+		"read_access": "Read access",
+		"write_access": "Write access",
+		"padmin_access": "Project administrator",
+		"admin_access": "Global administrator"
 	}
 }

@@ -9,7 +9,7 @@
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="false" />
-<sql:query var="rs" dataSource="${applicationScope['dsName'] }" sql="select id, username from treeanno_users">
+<sql:query var="rs" dataSource="treeanno/jdbc" sql="select id, username from treeanno_users">
 </sql:query>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -38,7 +38,7 @@
 	//<![CDATA[
 	//]]>
 	</script>
-	<c:if test="${applicationScope['dsName'] eq 'jdbc/treeanno-mem' }">
+	<c:if test="${ not empty applicationScope['dbInMemory'] }">
 	<script>
 	// <![CDATA[
 		var showAlertMessage = "alert.in-memory";
@@ -50,6 +50,7 @@
 	var language = configuration["treeanno.user.defaultlanguage"];
 	$(document).ready(init_trans(function() {
 		init_all();
+
 		$("button.button_login").button({
 			disabled: true,
 			label:i18n.t("login_open_dialog"),
@@ -77,6 +78,7 @@
 				$("button.button_login").button({disabled:false});
 			}
 		});
+
 	}));
 	// ]]>
 	</script>
@@ -89,7 +91,7 @@
 <body>
 	<div>
 		<div id="login">
-			<form action="login" method="POST">
+			<form action="rpc/user/login" method="POST">
 				
 				<p><label for="form_username" class="trans">username</label> 
 				<select size="1" id="form_username" name="username">
@@ -98,7 +100,7 @@
 					</c:forEach>
 				</select></p>
 				
-				<p><label for="form_password" class="trans">password</label> <input type="password" id="form_password" name="password" value="test" /></p>
+				<p style="display:none"><label for="form_password" class="trans">password</label> <input type="password" id="form_password" name="password" value="test" /></p>
 			</form>
 		</div>
 	</div>

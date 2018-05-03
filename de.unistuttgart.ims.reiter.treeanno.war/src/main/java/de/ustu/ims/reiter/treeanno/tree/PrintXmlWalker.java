@@ -3,12 +3,12 @@ package de.ustu.ims.reiter.treeanno.tree;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
-import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 
-public class PrintXmlWalker implements Walker<TreeSegment> {
+public class PrintXmlWalker implements Walker<TreeSegment, String> {
 
 	Document document;
 	Element rootElement;
@@ -45,6 +45,11 @@ public class PrintXmlWalker implements Walker<TreeSegment> {
 		Document document = new Document(rootElement);
 
 		return document.toXML();
+	}
+
+	@Override
+	public String getResult() {
+		return toString();
 	}
 
 }

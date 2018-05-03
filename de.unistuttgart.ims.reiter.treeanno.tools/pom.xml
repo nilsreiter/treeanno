@@ -2,11 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>de.unistuttgart.ims.reiter</groupId>
   <artifactId>treeanno.tools</artifactId>
-  <version>0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
-
+  <parent>
+		<groupId>de.unistuttgart.ims.reiter</groupId>
+		<artifactId>treeanno</artifactId>
+		<version>1.0.0-beta1</version>
+  </parent>
   <name>treeanno.tools</name>
   <url>http://maven.apache.org</url>
 
@@ -30,7 +32,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -76,5 +77,11 @@
     	<artifactId>treeanno.util</artifactId>
     	<version>0.4-SNAPSHOT</version>
     </dependency>
+    <dependency>
+		<groupId>org.apache.tomcat.maven</groupId>
+			<artifactId>tomcat7-maven-plugin</artifactId>
+			<version>2.3-SNAPSHOT</version>
+			<scope>provided</scope>
+	</dependency>
   </dependencies>
 </project>

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -30,6 +31,8 @@ import de.ustu.ims.reiter.treeanno.io.DatabaseIO;
  */
 public class ContextListener implements ServletContextListener {
 
+	static final String dataSourceName = "treeanno/jdbc";
+
 	DatabaseIO dr;
 
 	/**
@@ -38,7 +41,8 @@ public class ContextListener implements ServletContextListener {
 	 * @throws NamingException
 	 * @throws ClassNotFoundException
 	 */
-	public ContextListener() {}
+	public ContextListener() {
+	}
 
 	/**
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
@@ -56,33 +60,42 @@ public class ContextListener implements ServletContextListener {
 		ServletContext sc = sce.getServletContext();
 		Context envContext = null;
 		DataSource dataSource = null;
-		String dataSourceName = "jdbc/treeanno";
-		int dataSourceType = 0;
 		try {
-			envContext =
-					(Context) new InitialContext().lookup("java:/comp/env");
+			envContext = (Context) new InitialContext().lookup("java:/comp/env");
 
 			dataSource = (DataSource) envContext.lookup(dataSourceName);
 
 			try {
+				sc.log("Using data source url: " + dataSource.getConnection().getMetaData().getURL());
 				dataSource.getConnection();
 			} catch (SQLException e) {
 				try {
 					Class.forName("org.h2.Driver");
-					dataSourceName = "jdbc/treeanno-mem";
-					dataSourceType = 1;
-					System.err.println("Falling back to data source "
-							+ dataSourceName);
+					Class.forName("org.sqlite.JDBC");
+
+					System.err.println("Falling back to data source " + dataSourceName);
 					dataSource = (DataSource) envContext.lookup(dataSourceName);
+
 					dataSource.getConnection();
 					sc.setAttribute("dataSource", dataSource);
-				} catch (ClassNotFoundException | SQLException e1) {
+
+				} catch (SQLException | ClassNotFoundException e1) {
 					e1.printStackTrace();
 				}
+
+			}
+
+			try {
+				Object o = sc.getInitParameter("dbInMemory");// envContext.lookup("dbInMemory");
+				sc.setAttribute("dbInMemory", o);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+				// fail silently
 			}
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}
+
 		PropertiesConfiguration defaultConfig = new PropertiesConfiguration();
 		PropertiesConfiguration serverConfig = new PropertiesConfiguration();
 
@@ -101,35 +114,33 @@ public class ContextListener implements ServletContextListener {
 		}
 
 		try {
-			// reading additional properties in seperate file, as specified
+			// reading additional properties in separate file, as specified
 			// in the context
 			if (envContext != null) {
-				String path =
-						(String) envContext
-								.lookup("treeanno/configurationPath");
+				String path = (String) envContext.lookup("treeanno/configurationPath");
 				is = new FileInputStream(new File(path));
 				serverConfig.read(new InputStreamReader(is, "UTF-8"));
 			}
+		} catch (NameNotFoundException e) {
+			sc.log("configuration path not defined, using default properties.");
 		} catch (IOException | NamingException | ConfigurationException e) {
 			e.printStackTrace();
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
 
-		CombinedConfiguration config =
-				new CombinedConfiguration(new OverrideCombiner());
+		CombinedConfiguration config = new CombinedConfiguration(new OverrideCombiner());
 		config.addConfiguration(serverConfig);
 		config.addConfiguration(defaultConfig);
 
 		sc.setAttribute("conf", new ConfigurationMap(config));
 
 		sc.setAttribute("treeanno.name", config.getString("treeanno.name"));
-		sc.setAttribute("treeanno.version",
-				config.getString("treeanno.version"));
+		sc.setAttribute("treeanno.version", config.getString("treeanno.version"));
 		sc.setAttribute("dsName", dataSourceName);
 
 		try {
-			CW.setDataLayer(sc, new DatabaseIO(dataSource, dataSourceType));
+			CW.setDataLayer(sc, new DatabaseIO(dataSource));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {

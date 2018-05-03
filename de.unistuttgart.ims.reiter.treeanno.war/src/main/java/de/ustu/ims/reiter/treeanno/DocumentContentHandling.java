@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.configuration2.ConfigurationMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.jcas.JCas;
@@ -33,8 +34,8 @@ public class DocumentContentHandling extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		if (request.getParameter("documentId") != null) {
 			processDocumentId(request, response);
@@ -44,8 +45,8 @@ public class DocumentContentHandling extends HttpServlet {
 
 	}
 
-	protected void processUserDocumentId(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void processUserDocumentId(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		DataLayer dl = CW.getDataLayer(getServletContext());
 		int[] documents = Util.getAllUserDocumentIds(request, response);
 		if (request.getSession().getAttribute(CA.USER) == null) {
@@ -58,9 +59,7 @@ public class DocumentContentHandling extends HttpServlet {
 				if (userDocument == null) {
 					throw new ServletException("Document could not be loaded.");
 				}
-				int accessLevel =
-						dl.getAccessLevel(userDocument.getDocument()
-								.getProject(), CW.getUser(request));
+				int accessLevel = dl.getAccessLevel(userDocument.getDocument().getProject(), CW.getUser(request));
 				if (accessLevel == Perm.NO_ACCESS) {
 					response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 					return;
@@ -71,14 +70,13 @@ public class DocumentContentHandling extends HttpServlet {
 					obj.put("documentId", userDocument.getId());
 					obj.put("document", JSONUtil.getJSONObject(userDocument));
 					obj.put("list",
-							new JCasConverter()
-									.getJSONArrayFromAnnotations(
-											jcas,
-											de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+							new JCasConverter(VirtualIdProvider.Scheme
+									.valueOf((String) ((ConfigurationMap) getServletContext().getAttribute("conf"))
+											.getOrDefault("treeanno.id.scheme", "NONE"))).getJSONArrayFromAnnotations(
+													jcas, de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 					Util.returnJSON(response, obj);
 				} else {
-					throw new ServletException("JCas could not be loaded: "
-							+ userDocument.getId());
+					throw new ServletException("JCas could not be loaded: " + userDocument.getId());
 				}
 
 			}
@@ -91,8 +89,9 @@ public class DocumentContentHandling extends HttpServlet {
 		}
 	}
 
-	protected void processDocumentId(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	@Deprecated
+	protected void processDocumentId(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		DataLayer dl = CW.getDataLayer(getServletContext());
 		User user = CW.getUser(request);
 
@@ -115,9 +114,7 @@ public class DocumentContentHandling extends HttpServlet {
 				throw new ServletException("Document could not be loaded.");
 			}
 
-			int accessLevel =
-					dl.getAccessLevel(document.getProject(),
-							CW.getUser(request));
+			int accessLevel = dl.getAccessLevel(document.getProject(), CW.getUser(request));
 			if (accessLevel == Perm.NO_ACCESS) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				return;
@@ -136,10 +133,10 @@ public class DocumentContentHandling extends HttpServlet {
 			if (jcas != null) {
 				obj.put("document", JSONUtil.getJSONObject(document));
 				obj.put("list",
-						new JCasConverter()
-								.getJSONArrayFromAnnotations(
-										jcas,
-										de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
+						new JCasConverter(VirtualIdProvider.Scheme
+								.valueOf((String) ((ConfigurationMap) getServletContext().getAttribute("conf"))
+										.getOrDefault("treeanno.id.scheme", "NONE"))).getJSONArrayFromAnnotations(jcas,
+												de.ustu.ims.reiter.treeanno.api.type.TreeSegment.class));
 				Util.returnJSON(response, obj);
 			} else {
 				throw new ServletException("JCas could not be loaded: " + docId);
@@ -159,8 +156,10 @@ public class DocumentContentHandling extends HttpServlet {
 	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	@Deprecated
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		DataLayer dataLayer = CW.getDataLayer(getServletContext());
 
 		User user = CW.getUser(request);
@@ -187,25 +186,18 @@ public class DocumentContentHandling extends HttpServlet {
 
 		try {
 			Document doc = dataLayer.getDocument(docId);
-			int accessLevel =
-					dataLayer.getAccessLevel(doc.getProject(),
-							CW.getUser(request));
+			int accessLevel = dataLayer.getAccessLevel(doc.getProject(), CW.getUser(request));
 
 			if (master && accessLevel >= Perm.PADMIN_ACCESS) {
 				// saving the master document
 				// TODO: permission level check
-				JCas jcas =
-						Util.addAnnotationsToJCas(
-								JCasConverter.getJCas(doc.getXmi()), jObj);
+				JCas jcas = Util.addAnnotationsToJCas(JCasConverter.getJCas(doc.getXmi()), jObj);
 				doc.setXmi(JCasConverter.getXmi(jcas));
 				r = dataLayer.updateDocument(doc);
 			} else {
 				// saving the user document
-				UserDocument document =
-						dataLayer.getUserDocument(CW.getUser(request), doc);
-				JCas jcas =
-						Util.addAnnotationsToJCas(
-								JCasConverter.getJCas(document.getXmi()), jObj);
+				UserDocument document = dataLayer.getUserDocument(CW.getUser(request), doc);
+				JCas jcas = Util.addAnnotationsToJCas(JCasConverter.getJCas(document.getXmi()), jObj);
 				document.setXmi(JCasConverter.getXmi(jcas));
 
 				r = dataLayer.updateUserDocument(document);

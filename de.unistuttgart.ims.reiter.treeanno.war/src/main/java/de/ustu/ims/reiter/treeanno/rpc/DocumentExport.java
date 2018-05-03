@@ -2,6 +2,10 @@ package de.ustu.ims.reiter.treeanno.rpc;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -22,22 +26,27 @@ import org.xml.sax.SAXException;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.ustu.ims.reiter.treeanno.CW;
 import de.ustu.ims.reiter.treeanno.DataLayer;
+import de.ustu.ims.reiter.treeanno.VirtualIdProvider;
 import de.ustu.ims.reiter.treeanno.api.type.TreeSegment;
 import de.ustu.ims.reiter.treeanno.beans.Document;
 import de.ustu.ims.reiter.treeanno.beans.UserDocument;
 import de.ustu.ims.reiter.treeanno.tree.PrintDotWalker;
 import de.ustu.ims.reiter.treeanno.tree.PrintParenthesesWalker;
+import de.ustu.ims.reiter.treeanno.tree.PrintSpanningTableWalker;
 import de.ustu.ims.reiter.treeanno.tree.PrintXmlWalker;
 import de.ustu.ims.reiter.treeanno.tree.Walker;
 import de.ustu.ims.reiter.treeanno.uima.GraphExporter;
+import de.ustu.ims.reiter.treeanno.util.CsvGenerator;
 import de.ustu.ims.reiter.treeanno.util.Generator;
 import de.ustu.ims.reiter.treeanno.util.JCasConverter;
 import de.ustu.ims.reiter.treeanno.util.PngGenerator;
+import de.ustu.ims.reiter.treeanno.util.TxtGenerator;
 import de.ustu.ims.reiter.treeanno.util.Util;
 
 /**
  * Servlet implementation class DocumentExport
  */
+@Deprecated
 public class DocumentExport extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -74,16 +83,28 @@ public class DocumentExport extends HttpServlet {
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("XML")) {
 					exportXML(document, zos);
 				}
+				if (request.getParameterValues("format")[0].equalsIgnoreCase("CHART")) {
+					exportWithWalker(document, zos, new PrintSpanningTableWalker<TreeSegment>(treeSegmentId), "csv",
+							new CsvGenerator<TreeSegment>(treeSegmentId, new Comparator<TreeSegment>() {
+
+								@Override
+								public int compare(TreeSegment o1, TreeSegment o2) {
+									return Integer.compare(o1.getBegin(), o2.getBegin());
+								}
+							}));
+				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("PAR_ID")) {
-					exportWithWalker(document, zos,
-							new PrintParenthesesWalker<TreeSegment>(PrintParenthesesWalker.treeSegmentId), "par", null);
+					exportWithWalker(document, zos, new PrintParenthesesWalker<TreeSegment>(treeSegmentId), "par",
+							new TxtGenerator("par"));
 				}
 				if (request.getParameterValues("format")[0].equalsIgnoreCase("DOT")) {
 					ConfigurationMap cnf = (ConfigurationMap) getServletContext().getAttribute("conf");
-					exportWithWalker(document, zos,
-							new PrintDotWalker((String) cnf.getOrDefault("treeanno.dot.style.segment", "shape=oval"),
-									(String) cnf.getOrDefault("treeanno.dot.style.vsegment", "shape=box")),
-							"dot", new PngGenerator((String) cnf.get("treeanno.dot.path")));
+					PrintDotWalker pdw = new PrintDotWalker(
+							(String) cnf.getOrDefault("treeanno.dot.style.segment", "shape=oval"),
+							(String) cnf.getOrDefault("treeanno.dot.style.vsegment", "shape=box"));
+					pdw.setLabelFunction(treeSegmentId);
+					exportWithWalker(document, zos, pdw, "dot", Arrays.asList(new TxtGenerator("dot"),
+							new PngGenerator((String) cnf.get("treeanno.dot.path"))));
 				}
 			}
 			zos.flush();
@@ -95,6 +116,7 @@ public class DocumentExport extends HttpServlet {
 		return;
 	}
 
+	// TODO: merge into exportWithWalker
 	protected void exportXML(Document document, ZipOutputStream zos) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
@@ -106,7 +128,7 @@ public class DocumentExport extends HttpServlet {
 		// root folder
 		// zos.putNextEntry(new ZipEntry(name + "/"));
 
-		Walker<TreeSegment> walker = new PrintXmlWalker();
+		Walker<TreeSegment, String> walker = new PrintXmlWalker();
 
 		// original document
 		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + ".xml"));
@@ -125,8 +147,13 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
-	protected void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment> walker, String suffix,
-			Generator generator) throws UIMAException, SAXException, IOException {
+	protected <T> void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment, T> walker,
+			String suffix, Generator<T> generator) throws UIMAException, SAXException, IOException {
+		exportWithWalker(document, zos, walker, suffix, Arrays.asList(generator));
+	}
+
+	protected <T> void exportWithWalker(Document document, ZipOutputStream zos, Walker<TreeSegment, T> walker,
+			String suffix, List<Generator<T>> generator) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
 		if (name == null || name.isEmpty())
@@ -138,26 +165,35 @@ public class DocumentExport extends HttpServlet {
 		// zos.putNextEntry(new ZipEntry(name + "/"));
 
 		// original document
-		zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + "." + suffix));
-		String treeString = GraphExporter.getTreeString(jcas, walker);
-		zos.write(treeString.getBytes());
+		T treeString = GraphExporter.getWalkerResult(jcas, walker);
+		for (Generator<T> gen : generator) {
+			zos.putNextEntry(new ZipEntry(name + "/" + document.getId() + "." + gen.getSuffix()));
+			gen.setInput(treeString);
+			if (gen instanceof CsvGenerator) {
+				((CsvGenerator<TreeSegment>) gen).setKeys(JCasUtil.select(jcas, TreeSegment.class));
+			}
+			IOUtils.copy(gen.generate(), zos);
+		}
 
 		// annotations folder
 		zos.putNextEntry(new ZipEntry(name + "/annotations/"));
 
 		for (UserDocument ud : document.getUserDocuments()) {
-			zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + suffix));
-			treeString = GraphExporter.getTreeString(JCasConverter.getJCas(ud.getXmi()), walker);
-			zos.write(treeString.getBytes());
-			if (generator != null) {
-				zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + generator.getSuffix()));
-				generator.setDotString(treeString);
-				IOUtils.copy(generator.generate(), zos);
-			}
+			JCas udJcas = JCasConverter.getJCas(ud.getXmi());
+			treeString = GraphExporter.getWalkerResult(udJcas, walker);
+			for (Generator<T> gen : generator) {
+				zos.putNextEntry(new ZipEntry(name + "/annotations/" + ud.getId() + "." + gen.getSuffix()));
+				gen.setInput(treeString);
+				if (gen instanceof CsvGenerator) {
+					((CsvGenerator<TreeSegment>) gen).setKeys(JCasUtil.select(udJcas, TreeSegment.class));
+				}
 
+				IOUtils.copy(gen.generate(), zos);
+			}
 		}
 	}
 
+	// TODO: merge into exportWithWalker
 	protected void exportPAR(Document document, ZipOutputStream zos) throws UIMAException, SAXException, IOException {
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
 		String name = document.getName();
@@ -165,7 +201,7 @@ public class DocumentExport extends HttpServlet {
 			JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentTitle();
 		if (name == null || name.isEmpty())
 			name = JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId();
-		Walker<TreeSegment> walker = new PrintParenthesesWalker<TreeSegment>();
+		Walker<TreeSegment, String> walker = new PrintParenthesesWalker<TreeSegment>();
 
 		// root folder
 		// zos.putNextEntry(new ZipEntry(name + "/"));
@@ -186,6 +222,7 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
+	// TODO: merge into exportWithWalker
 	protected void exportXMI(Document document, ZipOutputStream zos) throws UIMAException, SAXException, IOException {
 
 		JCas jcas = JCasConverter.getJCas(document.getXmi());
@@ -215,4 +252,10 @@ public class DocumentExport extends HttpServlet {
 		}
 	}
 
+	public Function<TreeSegment, String> treeSegmentId = (TreeSegment ts) -> {
+		VirtualIdProvider.Scheme scheme = VirtualIdProvider.Scheme
+				.valueOf((String) ((ConfigurationMap) getServletContext().getAttribute("conf"))
+						.getOrDefault("treeanno.id.scheme", "NONE"));
+		return VirtualIdProvider.getVirtualId(scheme, ts);
+	};
 }
