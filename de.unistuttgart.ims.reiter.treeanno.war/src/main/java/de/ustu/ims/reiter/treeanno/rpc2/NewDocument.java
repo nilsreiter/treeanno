@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -61,6 +62,8 @@ public class NewDocument {
 		for (int i = 0; i < bodyParts.size(); i++) {
 			BodyPartEntity bodyPartEntity = (BodyPartEntity) bodyParts.get(i).getEntity();
 			String fileName = bodyParts.get(i).getContentDisposition().getFileName();
+			if (!fileName.matches("[\\.\\w\\d]+"))
+				fileName = UUID.randomUUID().toString() + ".txt";
 			context.log("Saving file " + fileName);
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(temp, fileName)));
 			IOUtils.copy(bodyPartEntity.getInputStream(), bw);
