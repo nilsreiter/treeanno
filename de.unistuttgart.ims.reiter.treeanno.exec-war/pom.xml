@@ -24,7 +24,7 @@
 						<phase>package</phase>
 						<configuration>
 							<enableNaming>true</enableNaming>
-							<finalName>TreeAnno.jar</finalName>
+							<finalName>TreeAnno-${profile.name}-${parent.version}.jar</finalName>
 							<mainClass>de.ustu.ims.reiter.treeanno.tools.RunServer</mainClass>
 							<extraDependencies>
 								<extraDependency>
