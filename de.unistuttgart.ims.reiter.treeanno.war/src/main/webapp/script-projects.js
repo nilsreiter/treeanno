@@ -79,6 +79,7 @@ function init_projects() {
 						url: "rpc/projects",
 						data: JSON.stringify({
 							name: $("#new_project_name").val(),
+							type: $("#new_project_type").val()
 						}),
 						success: function(data, a2, a3) {
 							console.log(data);
