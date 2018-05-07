@@ -37,7 +37,7 @@
 								<warRunDependency>
 									<dependency>
 										<groupId>de.unistuttgart.ims.reiter</groupId>
-										<artifactId>treeanno-${parent.version}.war</artifactId>
+										<artifactId>treeanno.war</artifactId>
 										<version>${parent.version}</version>
 										<type>war</type>
 									</dependency>
