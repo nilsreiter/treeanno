@@ -108,6 +108,7 @@
 		<form class="upload" method="POST" action="rpc/NewDocument" enctype="multipart/form-data">
 			<div>
 				<input class="fileupload" type="file" name="files" multiple="multiple" accept="text/plain" />
+				<p>(only plain text files)</p>
 			</div>
 			<div>
 				<label for="segmenttype" data-i18n="new_document.type_description">new_document.type_description</label>

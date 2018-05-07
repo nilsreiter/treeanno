@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -54,12 +55,16 @@ public class NewDocument {
 		File temp = File.createTempFile("treeanno-upload", "");
 		temp.delete();
 		temp.mkdir();
+		context.log("Temporary directory: " + temp.getAbsolutePath());
 
 		PlainTextPreprocess<? extends Annotation> pp = null;
 
 		for (int i = 0; i < bodyParts.size(); i++) {
 			BodyPartEntity bodyPartEntity = (BodyPartEntity) bodyParts.get(i).getEntity();
 			String fileName = bodyParts.get(i).getContentDisposition().getFileName();
+			if (!fileName.matches("[\\.\\w\\d]+"))
+				fileName = UUID.randomUUID().toString() + ".txt";
+			context.log("Saving file " + fileName);
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(temp, fileName)));
 			IOUtils.copy(bodyPartEntity.getInputStream(), bw);
 			bw.flush();
@@ -81,6 +86,8 @@ public class NewDocument {
 			document.setName(JCasUtil.selectSingle(jcas, DocumentMetaData.class).getDocumentId());
 			document.setXmi(JCasConverter.getXmi(jcas));
 			dbio.createNewDocument(document);
+			context.log("Created new document " + document.getName());
+
 		}
 
 		return Response.temporaryRedirect(new URI("../projects.jsp?projectId=" + p.getId())).build();
