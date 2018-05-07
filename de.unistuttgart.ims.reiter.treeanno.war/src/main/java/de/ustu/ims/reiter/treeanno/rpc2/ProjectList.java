@@ -2,6 +2,7 @@ package de.ustu.ims.reiter.treeanno.rpc2;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ public class ProjectList {
 	public JSONObject createProject(JSONObject object) throws Exception {
 		DataLayer dl = CW.getDataLayer(context);
 		Project p = new Project();
-		p.setName(object.getString("name"));
+		p.setName(object.optString("name", UUID.randomUUID().toString()));
 		p.setType(object.optInt("type", 1));
 		p = dl.createNewProject(p);
 		return JSONUtil.getJSONObject(p);
