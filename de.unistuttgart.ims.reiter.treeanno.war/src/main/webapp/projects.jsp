@@ -143,6 +143,13 @@
 			<label for="new_project_name" data-i18n="new_project.name">new_project.name</label>
 			<input type="text" id="new_project_name" />
 		</div>
+		<div>
+			<label for="new_project_type" data-i18n="new_project.type.label">new_project.type.label</label>
+			<select id="new_project_type">
+				<option value="1" data-i18n="new_project.type.default">new_project.type.default</option>
+				<option value="2" data-i18n="new_project.type.arndt">new_project.type.arndt</option>
+			</select>
+		</div>
 	</div>
 </body>
 </html>
