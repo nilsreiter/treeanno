@@ -114,7 +114,12 @@
 		"title":"Neues Projekt anlegen",
 		"submit":"Anlegen",
 		"name":"Name",
-		"open_dialog":"Neues Projekt anlegen"
+		"open_dialog":"Neues Projekt anlegen",
+		"type":{
+			"label":"Typ",
+			"default":"Default",
+			"arndt":"QUD"
+		}
 	},
 	"annodoclistarea":{
 		"title_for_X":"Annotationen für Dokument &bdquo;__document__&ldquo;",

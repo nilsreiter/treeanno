@@ -62,7 +62,7 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<finalName>treeanno</finalName>
+		<finalName>TreeAnno-${parent.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
@@ -266,6 +266,6 @@
 	<parent>
 		<groupId>de.unistuttgart.ims.reiter</groupId>
 		<artifactId>treeanno</artifactId>
-		<version>1.0.0-beta1</version>
+		<version>1.1.0-beta2</version>
 	</parent>
 </project>

@@ -81,14 +81,11 @@ public class DatabaseIO implements DataLayer {
 		TableUtils.createTableIfNotExists(connectionSource, UserPermission.class);
 
 		Project p = null;
-		if (projectDao.countOf() == 0) {
+		if (projectDao.countOf() == 0 && userDao.countOf() == 0) {
 			p = new Project();
 			p.setName("Project 1");
-			p.setType(ProjectType.DEFAULT);
+			p.setType(ProjectType.ARNDT);
 			projectDao.create(p);
-		}
-
-		if (userDao.countOf() == 0) {
 			User user = new User();
 			user.setName("admin");
 			user.setEmail("example@example.org");
@@ -100,6 +97,26 @@ public class DatabaseIO implements DataLayer {
 			up.setLevel(Perm.ADMIN_ACCESS);
 			up.setProjectId(p);
 			userPermissionDao.create(up);
+
+			Document d = new Document();
+			d.setName("Lincoln's Gettyburg Address");
+			d.setProject(p);
+			try {
+				d.setXmi(IOUtils.toString(getClass().getResourceAsStream("/lincoln_master.xmi")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			documentDao.create(d);
+
+			UserDocument ud = new UserDocument();
+			ud.setDocument(d);
+			ud.setUser(user);
+			try {
+				ud.setXmi(IOUtils.toString(getClass().getResourceAsStream("/lincoln_user.xmi")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			userDocumentDao.create(ud);
 		}
 
 	}

@@ -116,12 +116,7 @@
 			<button class="button_login" data-i18n="user_login">Login</button>
 		</span>		
 	</div>
-	<div id="content">
-	<div id="news">
-		<h1 data-i18n="changelog_h1">Changelog</h1>
-		<jsp:include page="changelog.html" />
-	</div>
-	</div>
+	<img src="gfx/tree.jpg" />
 </body>
 </html>
 </jsp:root>
