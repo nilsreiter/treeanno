@@ -84,7 +84,7 @@ public class DatabaseIO implements DataLayer {
 		if (projectDao.countOf() == 0) {
 			p = new Project();
 			p.setName("Project 1");
-			p.setType(ProjectType.DEFAULT);
+			p.setType(ProjectType.ARNDT);
 			projectDao.create(p);
 		}
 
