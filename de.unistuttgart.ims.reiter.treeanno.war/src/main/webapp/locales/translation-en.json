@@ -116,7 +116,12 @@
 		"title":"Create New Project",
 		"submit":"Create",
 		"name":"Name",
-		"open_dialog":"New Project"
+		"open_dialog":"New Project",
+		"type":{
+			"label":"Type",
+			"default":"Default",
+			"arndt":"QUD"
+		}
 	},
 	"annodoclistarea":{
 		"title_for_X":"Annotations for Document &bdquo;__document__&ldquo;",
