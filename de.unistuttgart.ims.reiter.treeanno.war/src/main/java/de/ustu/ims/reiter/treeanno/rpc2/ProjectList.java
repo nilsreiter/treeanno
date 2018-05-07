@@ -52,6 +52,7 @@ public class ProjectList {
 		DataLayer dl = CW.getDataLayer(context);
 		Project p = new Project();
 		p.setName(object.getString("name"));
+		p.setType(object.optInt("type", 1));
 		p = dl.createNewProject(p);
 		return JSONUtil.getJSONObject(p);
 
