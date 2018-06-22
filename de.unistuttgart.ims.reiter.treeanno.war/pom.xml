@@ -69,10 +69,10 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<path>/${project.build.finalName}##${project.version}</path>
+					<path>/treeanno##${project.version}</path>
 					<update>true</update>
-					<url>http://zwergdrossel.ims.uni-stuttgart.de:8080/manager/text</url>
-					<server>zwergdrossel</server>
+					<url>http://localhost:8080/manager/text</url>
+					<server>localhost</server>
 					<tag>${project.version}</tag>
 				</configuration>
 			</plugin>
