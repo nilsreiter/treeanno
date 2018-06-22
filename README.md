@@ -4,6 +4,8 @@ TreeAnno is an annotation tool develop to annotate trees on top of texts. It
 is designed for annotating longer text segments and allows fast annotation
 through the use of keyboard commands.
 
+![](de.unistuttgart.ims.reiter.treeanno.war/src/main/webapp/gfx/tree_small.jpg)
+
 ## Workflow 
 TreeAnno was built with the following workflow in mind:
 
