@@ -62,17 +62,17 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<finalName>treeanno</finalName>
+		<finalName>TreeAnno-${parent.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<path>/${project.build.finalName}##${project.version}</path>
+					<path>/treeanno##${project.version}</path>
 					<update>true</update>
-					<url>http://zwergdrossel.ims.uni-stuttgart.de:8080/manager/text</url>
-					<server>zwergdrossel</server>
+					<url>http://localhost:8080/manager/text</url>
+					<server>localhost</server>
 					<tag>${project.version}</tag>
 				</configuration>
 			</plugin>
@@ -86,8 +86,8 @@
 							<directory>${project.basedir}/src/main/resources</directory>
 							<filtering>true</filtering>
 							<includes>
-				                <include>project.properties</include>
-				            </includes>
+								<include>project.properties</include>
+							</includes>
 						</resource>
 						<resource>
 							<directory>${project.basedir}/src/main/profiles/${profile.name}</directory>
@@ -256,6 +256,26 @@
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.21.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+		</dependency>
 	</dependencies>
 	<scm>
 		<url>ssh://git@clarin06.ims.uni-stuttgart.de:reiterns/treeanno.git</url>
@@ -266,6 +286,6 @@
 	<parent>
 		<groupId>de.unistuttgart.ims.reiter</groupId>
 		<artifactId>treeanno</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 </project>

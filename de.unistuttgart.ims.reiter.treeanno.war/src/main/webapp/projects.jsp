@@ -108,6 +108,7 @@
 		<form class="upload" method="POST" action="rpc/NewDocument" enctype="multipart/form-data">
 			<div>
 				<input class="fileupload" type="file" name="files" multiple="multiple" accept="text/plain" />
+				<p>(only plain text files)</p>
 			</div>
 			<div>
 				<label for="segmenttype" data-i18n="new_document.type_description">new_document.type_description</label>
@@ -142,6 +143,13 @@
 		<div>
 			<label for="new_project_name" data-i18n="new_project.name">new_project.name</label>
 			<input type="text" id="new_project_name" />
+		</div>
+		<div>
+			<label for="new_project_type" data-i18n="new_project.type.label">new_project.type.label</label>
+			<select id="new_project_type">
+				<option value="1" data-i18n="new_project.type.default">new_project.type.default</option>
+				<option value="2" data-i18n="new_project.type.arndt">new_project.type.arndt</option>
+			</select>
 		</div>
 	</div>
 </body>
