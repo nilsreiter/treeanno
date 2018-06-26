@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/59232902.svg)](https://zenodo.org/badge/latestdoi/59232902)
+
 # TreeAnno
 
 TreeAnno is an annotation tool develop to annotate trees on top of texts. It 
