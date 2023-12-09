@@ -3,5 +3,5 @@
     <Resource name="treeanno/jdbc"
     	type="javax.sql.DataSource"
     	driverClassName="org.sqlite.JDBC"
-    	url="jdbc:sqlite:treeanno.db" />
-</Context>	
+      url="jdbc:sqlite:/var/lib/tomcat9/webapps/treeanno.db" />
+</Context>
